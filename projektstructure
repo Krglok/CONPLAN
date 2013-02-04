@@ -1,0 +1,14 @@
+/htdocs
+    ./              index.html, index.php
+    /conplan        *.php, *.inc
+    /layout
+        ./          *.css
+        /back       {background.images}
+        /button     {button.images}
+    /chars          {charakter.images}
+    /download       {download.files}
+    /images         {content.images}
+    /land           {land.html, land.images}
+    /pages          {html.pages}
+    /regeln         {regeln.html, regeln.images}
+    /BILDER         [bilder.images, bilder.thumbnails
