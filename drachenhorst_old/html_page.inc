@@ -1,0 +1,207 @@
+<?php
+
+/*
+ Projekt : LARP
+
+Datei   :  $RCSfile: html_page.inc,v $
+
+Datum   :  $Date: 2008/06/06 14:38:31 $  /
+
+Rev.    :  $Revision: 1.0 $   / 1.0
+
+Author  :  $Author: windu $  / duda
+
+beschreibung :
+Enthaelt function mit HTML pages
+fuer alle Bereiche
+Spieler
+SL
+ADMIN
+
+function print_
+
+*/
+
+function print_lpd()
+/*
+ Enthaelt die HTML Code fuer die Darstellung desLPD Textes
+in einerSpalte einer TABLE
+*/
+{
+	$text = '<center> <font face="Comic Sans MS" size="+2">'.
+			'LPD = LARP-Philosophie-Drachenhorst </font>'.
+			'</center>'.
+			'<center>'.
+			'</center>'.
+			'<p> <font face="Comic Sans MS" size="3">'.
+			'<br>'.
+			'Wir spielen Fantasy, nicht Krieg! &nbsp;&nbsp; Olaf Duda,'.
+			'Haupt-SL im Drachenhorst<br>'.
+			'<br>'.
+			'Dieser Text erhebt keinen Anspruch der alleinigen G&uuml;ltigkeit'.
+			'und er versucht auch nicht &uuml;ber jegliche andere Anschauung des'.
+			'LARP-Spieles erhaben zu sein. Er dient lediglich der'.
+			'Heranf&uuml;hrung von Neulingen an die Mentalit&auml;t der'.
+			'Drachenhorst-Spiele, aber ebenso soll er diejenigen ansprechen, welche'.
+			'schon Erfahrung mit Liverollenspiel haben und vielleicht nach neuen'.
+			'Ufern sinnen.<br>'.
+			'<br>'.
+			'These 1: Bei uns ist alles anders! <br>'.
+			'<br>'.
+			'Wieso? Na weil wir mit Conkosten von 12,50 Euro WEIT unter dem normalen '.
+			'Satz der LARP-Welt liegen. Damit wollen wir u.a. den Sch&uuml;ler,'.
+			'Studenten oder anderweitig schlecht Bezahlten die M&ouml;glichkeit'.
+			'geben, ebenfalls auf Liverollenspiele zu gehen. Nat&uuml;rlich'.
+			'spielen bei uns auch &auml;ltere Semester, jedoch wage ich zu'.
+			'behaupten, dass gerade durch die j&uuml;ngeren Mitspieler das Spiel'.
+			'einer brisanten Dynamik unterliegt. Grunds&auml;tzlich ist also'.
+			'jede/jeder dazu aufgerufen, egal welchen Alters, sich bei unserer'.
+			'Spielleitung um ein Treffen zu bem&uuml;hen!<br>'.
+			'<br>'.
+			'Zudem spielen wir nicht nach dem weit verbreiteten DragonSys-Regelwerk,'.
+			'sondern haben uns f&uuml;r ein modifiziertes Silbermond I-Regelwerk'.
+			'entschieden, welches durch die Jahre w&auml;chst und schrumpft (zu'.
+			'meist w&auml;chst es jedoch). Einer der markantesten Unterschiede'.
+			'der zwei Systeme ist die Sache mit den Murmeln. Im Silbermond wird zur'.
+			'Darstellung der Magie mit weissen und schwarzen Murmeln gezaubert.'.
+			'Schwarz bedeutet in diesem Fall &bdquo;gepatzt&ldquo;, was mit'.
+			'dem Nichtwirken des Spruches einhergeht. Somit ist in der'.
+			'Silbermondmagie eine relative Chance auf Versagen eingebaut, wohingegen'.
+			'im DragonSys die Magie &bdquo;einfach so&ldquo; wirkt. Ich'.
+			'pers&ouml;nlich finde die Silbermondvariante ansprechender, finde'.
+			'aber auch, dass die DragonSys-Variante zweifellos ihre'.
+			'Daseinsberechtigung besitzt.<br>'.
+			'<br>'.
+			'Unsere Hintergrundgeschichte wird Intime von den Spielercharakteren'.
+			'(SC) im Fluss gehalten und anders als beim tabletop (DSA, Shadowrun,'.
+			'etc.) greift der Meister, beim LARP die Spielleitung (SL), (so gut wie)'.
+			'nicht ins Spiel ein. Sie f&uuml;gt die Entscheidungen der Spieler'.
+			'lediglich zu einer konstanten, andauernden Story zusammen, welche'.
+			'stetig w&auml;chst und wiederkehrt. Daher ist nach einem Wochenende'.
+			'zwar die Con, nicht aber die Story abgeschlossen! <br>'.
+			'<br>'.
+			'Man kann LARP auch als Improvisationstheater in mittelalterlicher'.
+			'Gewandung verstehen, mit dem Schwerpunkt auf Kommunikation.'.
+			'F&uuml;r den Fall, das man mal in Erkl&auml;rungsn&ouml;te'.
+			'kommt, versteht der unbefangene Leihe dieses vielleicht am Besten. Bei'.
+			'unseren Cons legen wir sehr viel Wert auf das Spielen an sich. Es gibt'.
+			'viele Veranstalter, die ihre Cons als reine K&auml;mpfer-Cons'.
+			'ausschreiben oder auch jene, die 100% Ambiente bieten. Ein'.
+			'Drachenhorst-Con besteht aus ca. 5-10% Kampf, der Rest ist Rollenspiel.'.
+			'Allerdings kriegen unsere SC von der SL Auftr&auml;ge, welche dann'.
+			'Intime erf&uuml;llt werden m&uuml;ssen. Wir haben ein System'.
+			'kultiviert, welches f&uuml;r die sieben Spiele im Jahr (April bis'.
+			'Oktober) folgender Ma&szlig;en aussieht:<br>'.
+			'<br>'.
+			'*<br>'.
+			'These 2: Ying und Yang &ndash; die Kunst des ausgewogenen Spiels <br>'.
+			'<br>'.
+			'Die erste Con eines jeden Jahres dient der Orientierung und der'.
+			'Einstimmung f&uuml;r ein weiteres glorreiches LARP-Jahr. Daher'.
+			'findet dort immer ein Markttag statt, an dem Neuerungen'.
+			'eingef&uuml;hrt werden und jeder Spieler die M&ouml;glichkeit'.
+			'bekommt, f&uuml;r sich und/oder seine Gruppe Auftr&auml;ge zu'.
+			'ergattern. Diese Auftr&auml;ge werden von der SL ausgeschrieben und'.
+			'k&ouml;nnen f&uuml;r jeden SC, aber auch nur f&uuml;r'.
+			'bestimmte Spielergruppen zug&auml;nglich sein. Bei uns hat man'.
+			'nicht nur das Recht, sondern auch die Pflicht bei der SL'.
+			'Auftragsw&uuml;nsche abzugeben, aus denen neue Spielideen und'.
+			'Quests entstehen k&ouml;nnen. Je mehr die Spieler sich also'.
+			'einbringen, desto mehr passiert auch faktisch im Spiel. Die SL sieht'.
+			'zumeist davon ab, eine Orkhorde nach der anderen angreifen zu lassen,'.
+			'aufgrund von mangelnder Story.<br>'.
+			'<br>'.
+			'An den folgenden Cons nun werden die SC ausgesandt, ihre'.
+			'Auftr&auml;ge zu erledigen. Jeder Spieler, der f&uuml;r den'.
+			'Spieltag keinen Auftrag, sowie keinen besonderen Grund hat als SC zu'.
+			'erscheinen, spielt NSC (Nicht-Spielercharakter). Dies hat den Vorteil,'.
+			'dass jeder mal SC, bzw. NSC spielen kann/muss, damit zum einen der'.
+			'Spielanteil gerecht verteilt ist und zum anderen genug Abwechslung'.
+			'f&uuml;r die Spieler offeriert wird. Zudem achtet die SL stets'.
+			'darauf, dass sich mindestens zwei NSC-Gruppen im Spiel befinden. Dies'.
+			'hat den entscheidenden Vorteil, dass ein Spiel erm&ouml;glicht'.
+			'werden kann, in dem die SC quasi &bdquo;nur geduldete&ldquo;'.
+			'G&auml;ste sind, bzw. die NSC auch unter sich spielen'.
+			'k&ouml;nnen. Eine kleine Expertise aus dem'.
+			'N&auml;hk&auml;stchen dazu: Wir hatten einmal eine LARP-Gruppe'.
+			'aus dem &bdquo;Kreuzwald&ldquo; (Norden, bei Emden) zu Gast'.
+			'(sch&ouml;nen Gru&szlig; an dieser Stelle!), welche eine'.
+			'hervorragende Orkhorde dargestellt haben. Diese Horde bewachte eine'.
+			'Mine (eine der komplexesten Aufbauten, die wir jemals gemacht haben).'.
+			'Die SC waren im Wald und sollten in die Mine &ndash; um den Plot'.
+			'aufs Wesentliche zu reduzieren. Es wurde von Seiten der SC die ganze'.
+			'Spielzeit &uuml;ber nichts unternommen, was zu ihrem Ziel'.
+			'gef&uuml;hrt h&auml;tte. Dies f&uuml;hrte zu'.
+			'gro&szlig;er Langeweile bei den Orks &ndash;'.
+			'verst&auml;ndlicher Weise. Erst kurz vor Spielende versuchten die'.
+			'SC einen Verzweiflungsangriff, da man vers&auml;umt hatte, eine'.
+			'Schwachstelle im Orklager ausfindig zu machen (die SL ist ja eigentlich'.
+			'immer gro&szlig;z&uuml;gig bei so was). Lange Rede, kurzer'.
+			'Sinn: mittlerweile k&ouml;nnen die SC tun, aber eben auch lassen(!)'.
+			'was sie wollen, da das Spiel auch so weitergehen kann. DAS IST KEIN'.
+			'AUFRUF AN DIE SPIELER, NICHTS ZU TUN! RUMD&Ouml;DELN IST KEIN'.
+			'LARP!!! Man merkt daran erst, das die Theorie eines Regelwerkes nicht'.
+			'im Stande ist ohne die Praxis ein reibungsloses Spiel zu'.
+			'gew&auml;hrleisten. <br>'.
+			'<br>'.
+			'<br>'.
+			'These 3: Spielgebiet und Orga <br>'.
+			'<br>'.
+			'Unsere Cons finden im Viet, bei Wildeshausen statt. Ein befreundeter'.
+			'Landwirt nebst Gattin erm&ouml;glichen uns, auf ihrem Bauernhof zu'.
+			'spielen. Dort gibt es eine gro&szlig;e Scheune und einen'.
+			'sch&ouml;nen Wald. Beides nutzen wir f&uuml;r unsere Aufbauten:'.
+			'Dungeons, Tavernen, Minen &amp; andere H&ouml;hlen, Akademien,'.
+			'Burgen, etc.. Zudem haben wir die Erlaubnis des Hofherren, das'.
+			'G&auml;ste-WC samt Dusche zu nutzen. Die Dusche nutzen'.
+			'nat&uuml;rlich nur die warmduschenden Con-Duscher, igitt! Diese'.
+			'Optionen ziehen allerdings ein paar Dinge nach sich, die es auf vielen'.
+			'LARPs so nicht geben wird: Abwasch- und WC-Dienst. Mehrmals am Tag wird'.
+			'von den Spielern der ein oder andere Dienst ausgef&uuml;hrt, was'.
+			'zur Erhaltung der Hygiene, aber auch des Spielplatzes'.
+			'beitr&auml;gt. Nat&uuml;rlich ist ausserdem das Rauchen im Wald'.
+			'und in der Scheune (Stroh kann brennen, oh ja!) strengstens untersagt.<br>'.
+			'<br>'.
+			'Der Aufbau wird am Freitag vom Aufbauteam bewerkstelligt. Alle anderen'.
+			'd&uuml;rfen erst am Samstag zum Checkin, in Ausnahmef&auml;llen'.
+			'(l&auml;ngere Anreise, Immobilit&auml;t, gute Ausreden, etc.)'.
+			'jedoch schon vorher, anreisen.<br>'.
+			'<br>'.
+			'Der Abbau ist Pflicht! Nach dem Spiel, also am Sonntag um 12 Uhr'.
+			'Mittags, legt jeder Spieler sein Kost&uuml;m ab und kommt zur'.
+			'Scheune oder einem von der SL festgelegten Platz. Dann werden Teams'.
+			'gebildet und alle bauen ab. <br>'.
+			'<br>'.
+			'Dann kommt die Nachbesprechung, in der wir das Wochenende auswerten.'.
+			'Was war schlecht, was war gut? Hier haben alle die'.
+			'M&ouml;glichkeit, ihrem &Auml;rger/ihrer Freude Luft zu machen.'.
+			'Die Nachbesprechung ist ein wichtiger Bestandteil des Gesamtkonzeptes'.
+			'unseres Spieles und ist daher ebenfalls f&uuml;r alle Pflicht.<br>'.
+			'<br>'.
+			'Nach der Pflicht kommt die K&uuml;r: jeder baut seine Zelte ab und'.
+			'f&auml;hrt nach Hause oder nimmt noch ein paar Unterhaltungen mit.'.
+			'Wenn ihr einen guten Eindruck machen wollt, fragt ihr noch mal bei der'.
+			'SL nach, ob ihr noch etwas mitnehmen/wegr&auml;umen k&ouml;nnt'.
+			'(der Abbau klappt leider nie zu 100 Prozent...). ;-)<br>'.
+			'<br>'.
+			'<br>'.
+			'Ich danke Euch f&uuml;r die Zeit die ihr euch genommen habt, diesen'.
+			'Text zu lesen. Ich hoffe, ich konnte zumindest ein wenig Licht ins'.
+			'Dunkel bringen.<br>'.
+			'<br>'.
+			'Wenn trotzdem noch Fragen im Raum stehen, ihr konstruktive Kritik'.
+			'anbringen oder Morddrohungen aussto&szlig;en wollt, aber auch wenn'.
+			'ihr euch einfach denkt: &bdquo;was schreibt der Idiot denn da'.
+			'f&uuml;r einen Stuss!?&ldquo;'.
+			'&ndash; dann schreibt mir ne <a href="mailto:m.minner@gmx.de">'.
+			'mail: m.minner@gmx.de</a>'.
+			'<br>'.
+			'<br>'.
+			'<br>'.
+			'(c) 2005 Martin Minner, Sub- und Waffen-SL im Drachenhorst &nbsp; </font>'.
+			'</p>';
+	echo "\t<TD>";
+	echo $text;
+	echo "\t</TD>";
+
+}

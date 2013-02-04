@@ -1,0 +1,449 @@
+<xml>
+	<!-- comment -- - - phpMyAdmin XML-Dump - version 2.3.2 - http://www.phpmyadmin.net/ 
+		(download page) - - Host: db77.puretec.de - Erstellungszeit: 10. Juni 2008 
+		um 10:35 - Server Version: 4.00.27 - PHP-Version: 4.4.8 - Datenbank: 'db42039950' -->
+	-
+	<db42039950>
+		- <!-- Tabelle bilder_topic -->
+		-
+		<bilder_topic>
+			<ID>1</ID>
+			<name>Tag 01/96</name>
+			<tag>1</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>2</ID>
+			<name>Tag 10/00</name>
+			<tag>10</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>3</ID>
+			<name>Gruppen</name>
+			<tag>0</tag>
+			<sort>1</sort>
+			<path>BILDER/BASE/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>4</ID>
+			<name>Tag 11/00</name>
+			<tag>11</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>5</ID>
+			<name>Tag 22 / 02</name>
+			<tag>22</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>6</ID>
+			<name>Tag 23 / 02</name>
+			<tag>23</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>7</ID>
+			<name>Tag 21 / 01</name>
+			<tag>21</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>8</ID>
+			<name>DIVERSE</name>
+			<tag>99</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>9</ID>
+			<name>Tag 15/00</name>
+			<tag>15</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>10</ID>
+			<name>Tag 16 / 00</name>
+			<tag>16</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>11</ID>
+			<name>Tag 24 / 02</name>
+			<tag>24</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>12</ID>
+			<name>Tag 25 / 02</name>
+			<tag>25</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>14</ID>
+			<name>Tag 26 / 02</name>
+			<tag>26</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>15</ID>
+			<name>Tag 27 / 02</name>
+			<tag>27</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>16</ID>
+			<name>Tag 29 / 02</name>
+			<tag>29</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>17</ID>
+			<name>Tag 28 / 02</name>
+			<tag>28</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>18</ID>
+			<name>Tag 30/03</name>
+			<tag>30</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>19</ID>
+			<name>Tag 31/03</name>
+			<tag>31</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>20</ID>
+			<name>Tag 32/03</name>
+			<tag>32</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>21</ID>
+			<name>Tag 33 / 03</name>
+			<tag>33</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>22</ID>
+			<name>Tag 34 / 03</name>
+			<tag>34</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>23</ID>
+			<name>Tag 35 / 03</name>
+			<tag>35</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>24</ID>
+			<name>Tag 36/03</name>
+			<tag>36</tag>
+			<sort>0</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>25</ID>
+			<name>Tag 37 / 03</name>
+			<tag>37</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>26</ID>
+			<name>Tag 39 / 03</name>
+			<tag>39</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>27</ID>
+			<name>Tag 40/04</name>
+			<tag>40</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>28</ID>
+			<name>Tag 41/04</name>
+			<tag>41</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>29</ID>
+			<name>Tag 42/04</name>
+			<tag>42</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>30</ID>
+			<name>Tag 43/04</name>
+			<tag>43</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>31</ID>
+			<name>Tag 44/04</name>
+			<tag>44</tag>
+			<sort>0</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>32</ID>
+			<name>Tag 45/04</name>
+			<tag>45</tag>
+			<sort>0</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>33</ID>
+			<name>Tag 46/04</name>
+			<tag>46</tag>
+			<sort>0</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>34</ID>
+			<name>Tag 47/05</name>
+			<tag>47</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>35</ID>
+			<name>Tag 48/05</name>
+			<tag>48</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>36</ID>
+			<name>Tag 49/05</name>
+			<tag>49</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>37</ID>
+			<name>Tag 50 / 05</name>
+			<tag>50</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>38</ID>
+			<name>Tag 51 / 05</name>
+			<tag>51</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>39</ID>
+			<name>Tag 52 / 05</name>
+			<tag>52</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>40</ID>
+			<name>Tag 53/05</name>
+			<tag>53</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>41</ID>
+			<name>Tag 54 / 06</name>
+			<tag>54</tag>
+			<sort>0</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>42</ID>
+			<name>Tag 55 / 06</name>
+			<tag>55</tag>
+			<sort>0</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>43</ID>
+			<name>Tag 56 / 06</name>
+			<tag>56</tag>
+			<sort>0</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>44</ID>
+			<name>Tag 57 / 06</name>
+			<tag>57</tag>
+			<sort>0</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>45</ID>
+			<name>Tag 58 / 06</name>
+			<tag>58</tag>
+			<sort>0</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>46</ID>
+			<name>Tag 59 / 06</name>
+			<tag>59</tag>
+			<sort>0</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>47</ID>
+			<name>Tag 60 / 06</name>
+			<tag>60</tag>
+			<sort>0</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>48</ID>
+			<name>Tag 61 /07</name>
+			<tag>61</tag>
+			<sort>0</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>49</ID>
+			<name>Tag 62 / 07</name>
+			<tag>62</tag>
+			<sort>0</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>50</ID>
+			<name>Tag 63 / 07</name>
+			<tag>63</tag>
+			<sort>0</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>51</ID>
+			<name>Tag 64 / 07</name>
+			<tag>64</tag>
+			<sort>0</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>52</ID>
+			<name>Tag 65 / 07</name>
+			<tag>65</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>53</ID>
+			<name>Tag 66 / 07</name>
+			<tag>66</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>54</ID>
+			<name>Tag 67 / 07</name>
+			<tag>67</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>55</ID>
+			<name>Tag 68 / 08</name>
+			<tag>68</tag>
+			<sort>1</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+		-
+		<bilder_topic>
+			<ID>56</ID>
+			<name>Tag 69 / 08</name>
+			<tag>69</tag>
+			<sort>0</sort>
+			<path>BILDER/</path>
+		</bilder_topic>
+	</db42039950>
+</xml>  
