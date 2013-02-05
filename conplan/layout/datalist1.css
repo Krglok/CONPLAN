@@ -1,3 +1,4 @@
+@CHARSET "ISO-8859-1";
 
 #datatab
 {
@@ -51,7 +52,7 @@ left: 150px;
 
 #datalist.tr
 {
-	height: 20;
+	height: 20px;
 	border-width: 1;
 	border-color: black;
 	padding: 0;

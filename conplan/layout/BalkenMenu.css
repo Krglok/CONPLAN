@@ -1,0 +1,114 @@
+@CHARSET "ISO-8859-1";
+
+#balken_tab
+{
+	position: absolute;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: red;
+	border-right-color: red;
+	border-bottom-color: red;
+	border-left-color: red;
+	color: black;
+	top: 160px;
+	left: 5px;
+	height: 35px;
+	width: 880px;
+background-color: transparent;
+}
+
+#balken_menu1
+{
+	position:relative;
+	left: 3;
+	margin-right: 2;
+	border-style: outset;
+	border-width: 2;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+#balken_menu2
+{
+	position:relative;
+	margin-left: 2;
+	border-style: outset;
+	border-width: 2;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+#balken_menu_r
+{
+	position:absolute;
+	top:4;
+	right: 3;
+	margin-left: 2;
+	border-style: outset;
+	border-width: 2;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+#balken_menu_img
+{
+	left: 3px;
+	vertical-align: middle;
+	margin-left-ltr-source: physical;
+	margin-left-rtl-source: physical;
+	margin-right: 5;
+	width: 24px;
+	height: 24px;
+}
+
+#balken_data
+{
+border-top-width: 1px;
+border-right-width: 1px;
+border-bottom-width: 1px;
+border-left-width: 1px;
+border-top-style: solid;
+border-right-style: solid;
+border-bottom-style: solid;
+border-left-style: solid;
+border-top-color: silver;
+border-left-color: silver;
+border-right-color: silver;
+border-bottom-color: silver;
+position:absolute;
+top: 220px;
+background-color: transparent;
+width: 880px;
+left: 5px;
+right: 5px;
+}
+
+.balken_page
+{
+	position:absolute;
+	top: 210px;
+	/* background-color: transparent; */
+	background-image:url("../layout/back/paper.jpg");
+	width: 855px;
+	left: 5px;
+	right: 5px;	
+	padding-left: 15;
+	padding-right: 15;
+	font-family: cursive;
+}
+.balken_page h1 
+{
+	color: blue;
+	font-size: larger;
+	font-family: cursive;
+}
+.balken_page p 
+{
+	margin-top: 2px;
+	margin-bottom: 2px;
+	border-color: transparent;
+}
