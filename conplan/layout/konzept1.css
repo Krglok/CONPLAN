@@ -83,13 +83,19 @@ background-color: white;
 }
 #status1
 {
-position: relative;
-color: black;
-height: 20px;
+position: absolute;
+height: 25px;
 top: 110px;
 left: 5px;
 width: 880px;
 background-color: transparent;
+border-width: 0;
+border-color: silver;
+border-style: solid;
+margin-top: 2;
+margin-bottom: 2;
+margin-left: 5px;
+margin-right: 5px;
 }
 #menu_status_r
 {
