@@ -1,8 +1,4 @@
 <xml>
-	<!-- comment -- - - phpMyAdmin XML-Dump - version 2.3.2 - http://www.phpmyadmin.net/ 
-		(download page) - - Host: db77.puretec.de - Erstellungszeit: 10. Juni 2008 
-		um 10:35 - Server Version: 4.00.27 - PHP-Version: 4.4.8 - Datenbank: 'db42039950' -->
-	-
 	<db42039950>
 		- <!-- Tabelle bilder_topic -->
 		-

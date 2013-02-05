@@ -1,0 +1,54 @@
+#datatab
+{
+border-top-width: 1px;
+border-right-width: 1px;
+border-bottom-width: 1px;
+border-left-width: 1px;
+border-top-style: groove;
+border-right-style: groove;
+border-bottom-style: groove;
+border-left-style: groove;
+border-top-color: gray;
+border-left-color: gray;
+border-right-color: silver;
+border-bottom-color: silver;
+position:absolute;
+top: 170px;
+background-color: transparent;
+width: 720px;
+left: 180px;
+}
+
+#data_list_count {
+font-size: smaller;
+margin-top: 0px;
+margin-bottom: 0px;
+vertical-align: middle;
+position: absolute;
+height: 20px;
+left: 150px;
+}
+
+#data_table_header {
+height: 25px; 
+background-color: silver;"
+}
+
+#data_table_edit
+{
+font-size: xx-small;
+margin-top: 0px;
+margin-bottom: 0px;
+vertical-align: middle;
+background:silver;
+width: 16px;
+height: 16px;
+left: 0px;"
+}
+
+#data_table_row {
+font-size: smaller;
+vertical-align: middle;
+height: 16px;
+
+}

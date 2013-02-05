@@ -5,6 +5,7 @@
         ./          *.css
         /back       {background.images}
         /button     {button.images}
+        /images		{layout.images}
     /chars          {charakter.images}
     /download       {download.files}
     /images         {content.images}
