@@ -27,101 +27,75 @@ function print_data($html_file)
 
 */
 
-//include "config.inc";
+include_once "_config.inc";
+include_once "_lib.inc";
 
 
-
+/**
+ * erstellt einne html Header mit css-Layout 
+ * @param unknown $NAME, enthält den Seitennamen
+ */
 function print_header ($NAME)
 {
+	global $grp_name;
+	global $layout_path;
+	 
 	echo "<HTML>\n";
 	echo "<!-- PHP ".phpversion()." / Drachenhorst Framework V 2.0 / 2008-->\n";
 	echo "<HEAD>\n";
 	echo "<TITLE></TITLE>\n";
-	echo "<META NAME=\"Description\" CONTENT=\"Drachenhorst \">\n";
+	echo "<META NAME=\"Description\" CONTENT=\"$grp_name \">\n";
 	echo "<META NAME=\"Keywords\" CONTENT=\"LARP $NAME\">\n";
 	echo "<META NAME=\"Author\" CONTENT=\"Dipl. Ing. Olaf Duda\">\n";
-	echo"  <title>Drachenhorst $NAME </title>";
-	echo"  <style><!--
-			.header {background-color: #C0C0C0;}
-			.th,td {vertical-align: top; font: 10pt \"ocr a extended\" \"Comic Sans MS\"}
-			.input { font: 10pt \"ocr a extended\" \"Comic Sans MS\"}
-			//--></style>\n";
+	echo"  <title>$grp_name $NAME </title>";
+	echo"  <link rel=\"stylesheet\" type=\"text/css\" href=\"$layout_path/konzept1.css\">";
+	echo"  <style>  </style>\n";
 	echo "</HEAD>\n";
 	echo "\n";
 }
 
-function print_body($back_typ)
+/**
+ * Erstellt den Body Anfang einer Html Seite
+ * Das Layout wird aus dem css geholt siehe print_header
+ */
+function print_body()
 {
-	global $bg_path;
 
-	echo "<BODY Text=\"black\" BGColoR=\"#F5EAE4\"  LINK=\"black\" VLINK=\"#408080\" ";
-	print_background ($back_typ);
+	echo "<BODY id=\"div_1\" ";
+	//print_background ($back_typ);  //background ist m layout enthalten
 	echo " >\n";
-	echo "<FONT COLOR=\"black\" SIZE=2 FACE=\"Comic Sans MS\">\n";
-	echo"<CENTER>";  // setzt diegesamte Anzeige auf Center
-	//echo "<TABLE WIDTH=100%  BORDER=1 BGColoR=\"\" >\n";
 }
 
 function print_body_ende()
 {
 	//echo "</TABLE>\n";
-	echo "</FONT>\n";
 	echo "</BODY>\n";
 	echo "</HTML>\n";
 };
 
-function print_kopf ($logo_typ, $header_typ,$bereich,$anrede)
+function print_kopf ($logo_typ, $header_typ,$bereich,$anrede, $ref)
 {
-	global $spieler_id;
-	global $img_path;
-	echo "<TABLE WIDTH=\"950\" BORDER=\"0\"  CELLPADDING=\"1\" CELLSPACING=\"1\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\"
-			BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n\n";
-	echo "  <TR>\n";
-	echo "    <TD>\n";
-	echo "      <TABLE WIDTH=\"100%\" HEIGHT=\"100\"BORDER=\"0\" BGCOLOR=\"\" >\n";
-	echo "        <TR >\n";
-	echo "          <TD rowspan=4 WIDTH=\"120\"><!-- Row:1, Col:1   KOPF LOGO-->\n";
-	echo "          <TABLE WIDTH=\"100%\" BORDER=\"0\" BGCOLOR=\"\" >\n";
-	echo "          <TR>\n";
-	echo "          <TD>\n";
-	print_header_icon($logo_typ);
-	echo "          </TD>\n";
-	echo "          </TR>\n";
-	echo "          </TABLE>\n";
-	echo "          </TD>\n";
-	echo "          <TD  ALIGN=\"CENTER\" WIDTH=\"570\">\n";
-	echo "          <TABLE WIDTH=\"100%\" BORDER=\"0\" BGCOLOR=\"\"  >\n";
-	echo "          <TR>\n";
-	echo "          <TD ALIGN=\"CENTER\">\n";
-	print_header_icon($header_typ);
-	echo "          </TD>\n";
-	echo "          </TR>\n";
-	echo "          </TABLE>\n";
-	echo "          </TD>\n";
-	echo "          <TD >\n";
-	echo "          <TABLE WIDTH=\"200\" BORDER=\"0\" BGCOLOR=\"\" >\n";
-	echo "          <TR>\n";
-	echo "          <TD align=left >\n";
-	echo "            &nbsp;<B>$bereich</b>\n";
-	echo "          </TD>\n";
-	echo "          </TR>\n";
-	echo "          <TR>\n";
-	echo "          <TD align=left >\n";
-	echo "            &nbsp;<B></b>\n";
-	echo "          </TD>\n";
-	echo "          </TR>\n";
-	echo "          <TR>\n";
-	echo "          <TD >\n";
-	echo "            <b>$anrede";
-	echo "          </TD>\n";
-	echo "          </TR>\n";
-	echo "          </TABLE>\n";
-	echo "          </TD>\n";
-	echo "        </TR>\n";
-	echo "      </TABLE>\n";
-	echo "    </TD>\n\n";
-	echo "  </TR>\n\n";
-	echo "</TABLE>\n";
+	$typ = 13;
+	$info = "Login aufrufen";
+	
+	echo "<div id=\"div_1\">\n";
+	echo "  <div id=\"header1\">\n";
+	echo "    <div id=\"header1left\">\n";
+	print_header_icon($GLOBALS["logo_typ"]);
+	echo "    </div>\n";
+	echo "    <div id=\"header1main\">\n";
+	print_header_icon($GLOBALS["header_typ"]);
+	echo "    </div>\n";
+	echo "    <div id=\"header1right\">\n";
+	echo "      <p>$bereich</p>\n";
+	echo "      <p>$anrede</p>\n";
+	echo "      <div id=\"menu_status_r\">\n";
+	print_menu_icon($typ,$info);
+	print_menu_ref($typ, $ref);
+	echo "    	</div>\n";
+	echo "    </div>\n";
+	echo "  </div>\n";
+	echo "</div>\n";
 	echo "\n\n";
 };
 

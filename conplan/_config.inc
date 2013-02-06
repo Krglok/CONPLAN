@@ -32,7 +32,7 @@ $LOG$
 */
 
 // DB-Verbindung
-$DB_HOST='localhost';
+$DB_HOST='192.168.5.173';
 $DB_NAME='db42039950';
 $DB_USER='admin';
 $DB_PASS='';
@@ -41,19 +41,22 @@ $DB_INTERN='db42039950';
 
 $session_id ="FFFF";
 
+$grp_name="Drachenhorst";			// Refrenzname fuer omepage
 // Pfade die automatisch verwendet werden  ------------
-$img_path = '../images';
-$bg_path  = './layout1/back/';
+$img_path = './images';
+//$bg_path  = './layout1/back/';    // wird entfernt, da nur noch layout pfade gueltig sind
 $pic_path  = './BILDER';
-$laypout_path = "./layout";			// css-dateien
-$layoutButton_path = "./layout";	// buttons fuer das layout
-$layoutImages_path = "./layout";	// images fuer das layout
-$layoutBack_path = "./layout";		// backgrnd images fuer das layout
-		
+$layout_path = "./layout";			// css-dateien
+$layoutButton_path = "/button/";	// buttons fuer das layout
+$layoutImages_path = "/images/";	// images fuer das layout
+$layoutBack_path = "/back/";		// backgrnd images fuer das layout
+
+$loginRef = "http://www.drachen-horst.de/main.php?md=2&daten=slogin.html";
+
 // globale Variablen  ---------------------------------
-$bg_pic    = 'back_green.jpg';     // grünes Hintergrund bild
-$bg_color  = '$000000';            // sollte auf Hintergrundbild abgestimmt sein
-$tx_color  = 'yellow';             // sollte mit BG_pic abgestimmt sein
+$bg_pic    = 'back.jpg';     	  // default Hintergrund bild
+$bg_color  = 'silver';            // sollte auf Hintergrundbild abgestimmt sein
+$tx_color  = 'black';             // default Textfarbe sollte mit BG_pic abgestimmt sein
 
 // Zugriffsrechte -------------------------------------
 $lvl_spieler = array(0=>256,1=>512,14=>3840);

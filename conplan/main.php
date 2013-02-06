@@ -66,9 +66,9 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
  
 */
 
-include "_config.inc";
-include "_lib.inc";
-include "_head.inc";
+include_once "_config.inc";
+include_once "_lib.inc";
+include_once "_head.inc";
 
 
 function print_news()

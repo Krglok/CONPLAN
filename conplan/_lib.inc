@@ -40,6 +40,8 @@ function tumb_copy($bild_url,$zieldir,$max_x,$max_y,$type)
 
 */
 
+include_once '_config.inc';
+
 function print_menu_icon ($typ,$info = " ")
 /*
  Ausgabe eines Menu_icon anhand einer Indexnummer
@@ -176,6 +178,7 @@ function print_header_icon ($typ)
 		echo "\t<IMG SRC=\"images/_div.gif\" BORDER=\"0\"  HEIGHT=\"84\" WIDTH=\"84\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
 		break;
 	default:
+		echo "\t<IMG SRC=\"images/logo.gif\" BORDER=\"0\" HEIGHT=\"84\" WIDTH=\"97\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=\"CENTER\">";
 		break;
 		endswitch;
 };
@@ -187,22 +190,23 @@ function print_background ($typ)
 {
 	switch ($typ) :
 	case 1:
-		echo "BACKGROUND=\"back/papermiddlecenter.jpg\"";
+		echo "BACKGROUND=\"$layout_path$layoutBack_pathpapermiddlecenter.jpg\"";
 	break;
 	case 2:
-		echo "BACKGROUND=\"back/backmarble.jpg\"";
+		echo "BACKGROUND=\"$layout_path$layoutBack_pathbackmarble.jpg\"";
 		break;
 	case 3:
-		echo "BACKGROUND=\"back/paper.jpg\"";
+		echo "BACKGROUND=\"$layout_path$layoutBack_pathpaper.jpg\"";
 		break;
 	case 4:
-		echo "BACKGROUND=\"back/backbraun.jpg\"";
+		echo "BACKGROUND=\"$layout_path$layoutBack_pathbackbraun.jpg\"";
 		break;
 	case 5:
-		echo "BACKGROUND=\"back/bground_karte.jpg\"";
+		echo "BACKGROUND=\"$layout_path$layoutBack_pathbground_karte.jpg\"";
 		break;
 
 	default:
+		echo "BACKGROUND=\"$layout_path$layoutBack_pathback.jpg\"";
 		endswitch;
 };
 
