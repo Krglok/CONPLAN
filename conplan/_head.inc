@@ -3,13 +3,12 @@
 /*
  Projekt : CONPLAN
 
-Datei   :  $RCSfile: head.inc,v $
+Datum   :  $date$  / 03.02.2013 
 
-Datum   :  $Date: 2002/05/24 13:02:18 $  /
+Rev.    :  $rev$   / 3.0
 
-Rev.    :  $Revision: 1.8 $   / 1.0
+Author  :  @author oduda
 
-Author  :  $Author: windu $  / duda
 
 beschreibung :	Funktonssammlung fuer den Aufbau einer
 Drachenhorst HTML Seite
@@ -37,11 +36,12 @@ include_once "_lib.inc";
  */
 function print_header ($NAME)
 {
-	global $grp_name;
-	global $layout_path;
+	$grp_name = $GLOBALS[grp_name];
+	$layout_path = $GLOBALS[layout_path];
+	$version = $GLOBALS[version];
 	 
 	echo "<HTML>\n";
-	echo "<!-- PHP ".phpversion()." / Drachenhorst Framework V 2.0 / 2008-->\n";
+	echo "<!-- PHP ".phpversion()." / Drachenhorst Framework $version / 2013-->\n";
 	echo "<HEAD>\n";
 	echo "<TITLE></TITLE>\n";
 	echo "<META NAME=\"Description\" CONTENT=\"$grp_name \">\n";
@@ -90,8 +90,11 @@ function print_kopf ($logo_typ, $header_typ,$bereich,$anrede, $ref)
 	echo "      <p>$bereich</p>\n";
 	echo "      <p>$anrede</p>\n";
 	echo "      <div id=\"menu_status_r\">\n";
-	print_menu_icon($typ,$info);
-	print_menu_ref($typ, $ref);
+	if ($typ != "")
+	{
+		print_menu_icon($typ,$info);
+		print_menu_ref($typ, $ref);
+	}
 	echo "    	</div>\n";
 	echo "    </div>\n";
 	echo "  </div>\n";

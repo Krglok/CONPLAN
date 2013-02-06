@@ -3,13 +3,11 @@
 /*
  Projekt :  INTERN
 
-Datei   :  $RCSfile: lib.inc,v $
+Datum   :  $date$  / 03.02.2013
 
-Datum   :  $Date: 2002/06/08 14:38:31 $  /
+Rev.    :  $rev$   / 3.0
 
-Rev.    :  $Revision: 1.7 $   / 1.0
-
-Author  :  $Author: windu $  / duda
+Author  :  $author$  / krglok
 
 beschreibung :
 Enthält allgemiengültige Funktionen
@@ -47,91 +45,12 @@ function print_menu_icon ($typ,$info = " ")
  Ausgabe eines Menu_icon anhand einer Indexnummer
 */
 {
-	switch ($typ) :
-	case 99:
-		echo "\t";
-	break;
-	case 1:
-		if ($info == " ") {
-			$info = "Seite aufrufen " ;
-		}
-		echo "\t<IMG SRC=\"button/_folder.gif\" BORDER=\"0\" HEIGHT=\"24\" WIDTH=\"24\" ALT=\"$info\" TITLE=\"$info\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	case 2:
-		if ($info == " ") {
-			$info = "neuen Datensatz anlegen!" ;
-		}
-		echo "\t<IMG SRC=\"button/_add.gif\" BORDER=\"0\" HEIGHT=\"24\" WIDTH=\"24\" ALT=\"$info\" TITLE=\"$info\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	case 3:
-		echo "\t<IMG SRC=\"button/_edit.gif\" BORDER=\"0\" HEIGHT=\"24\" WIDTH=\"24\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	case 4:
-		if ($info == " ") {
-			$info = "Löschliste aufrufen" ;
-		}
-		echo "\t<IMG SRC=\"button/_del.gif\" BORDER=\"0\" HEIGHT=\"24\" WIDTH=\"24\" ALT=\"$info\" TITLE=\"$info\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	case 5:
-		if ($info == " ") {
-			$info = "Liste anzeigen " ;
-		}
-		echo "\t<IMG SRC=\"button/_list.gif\" BORDER=\"0\" HEIGHT=\"24\" WIDTH=\"24\" ALT=\"$info\" TITLE=\"$info\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	case 6:
-		if ($info == " ") {
-			$info = "Zurücjk zum vorigen Menü!" ;
-		}
-		echo "\t<IMG SRC=\"button/_stop.gif\" BORDER=\"0\" HEIGHT=\"24\" WIDTH=\"24\" ALT=\"$info\" TITLE=\"$info\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	case 7:
-		if ($info == " ") {
-			$info = "Datensatz anzeigen ohne Bearbeitung" ;
-		}
-		echo "\t<IMG SRC=\"button/_page.gif\" BORDER=\"0\" HEIGHT=\"24\" WIDTH=\"24\" ALT=\"$info\" TITLE=\"$info\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	case 8:
-		if ($info == " ") {
-			$info = "Druckliste aufrufen" ;
-		}
-		echo "\t<IMG SRC=\"button/_printer.gif\" BORDER=\"0\" HEIGHT=\"24\" WIDTH=\"24\" ALT=\"$info\" TITLE=\"$info\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	case 9:
-		if ($info == " ") {
-			$info = "Datensatz bearbeiten!" ;
-		}
-		echo "\t<IMG SRC=\"button/_db.gif\" BORDER=\"0\" HEIGHT=\"24\" WIDTH=\"24\" ALT=\"$info\" TITLE=\"$info\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	case 10:
-		if ($info == " ") {
-			$info = "Hilfe der Homepage aufrufen !" ;
-		}
-		echo "\t<IMG SRC=\"button/_help.gif\" BORDER=\"0\" HEIGHT=\"24\" WIDTH=\"24\" ALT=\"$info\" TITLE=\"$info\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	case 11:
-		if ($info == " ") {
-			$info = "neuen Datensatz anlegen!" ;
-		}
-		echo "\t<IMG SRC=\"button/add.gif\" BORDER=\"0\" HEIGHT=\"24\" WIDTH=\"24\" ALT=\"$info\" TITLE=\"$info\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	case 12:
-		if ($info == " ") {
-			$info = "Download starten !" ;
-		}
-		echo "\t<IMG SRC=\"button/_zip.gif\" BORDER=\"0\" HEIGHT=\"24\" WIDTH=\"24\" ALT=\"$info\" TITLE=\"$info\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	case 13:
-		echo "\t<IMG SRC=\"button/_key.gif\" BORDER=\"0\" HEIGHT=\"24\" WIDTH=\"24\" ALT=\"$info\" TITLE=\"$info\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	case 14:
-		echo "\t<IMG SRC=\"button/_tool.gif\" BORDER=\"0\" HEIGHT=\"24\" WIDTH=\"24\" ALT=\"$info\" TITLE=\"$info\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	case 15:
-		echo "\t<IMG SRC=\"button/nwn_eye.gif\" BORDER=\"0\" HEIGHT=\"24\" WIDTH=\"24\" ALT=\"$info\" TITLE=\"$info\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	default:
-		echo "</A><HR>"; // Leerzeile
-		endswitch;
+	if ($typ != "") 
+	{
+		echo "\t<IMG $GLOBALS[style_status_menu] SRC=\"$GLOBALS[layoutButton_path].$typ\"  ALT=\"$info\" TITLE=\"$info\">";
+	} else {
+		echo "\t[X]"; // Leerzeile
+	}
 };
 
 
@@ -140,47 +59,13 @@ function print_header_icon ($typ)
  Ausgabe eines Menu_icon anhand einer Indexnummer
 */
 {
-	switch ($typ) :
-	case 1:
-		echo "\t<IMG SRC=\"images/drache.gif\" BORDER=\"0\" HEIGHT=\"84\" WIDTH=\"97\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=\"CENTER\">";
-	break;
-	case 2:
-		echo "\t<IMG SRC=\"images/drachenhorst.gif\" BORDER=\"0\"  HEIGHT=\"84\" WIDTH=\"360\"  ALT=\"\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	case 3:
-		echo "\t<IMG SRC=\"images/buch.gif\" BORDER=\"0\" HEIGHT=\"84\" WIDTH=\"84\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	case 4:
-		echo "\t<IMG SRC=\"images/bibliothek.gif\" BORDER=\"0\"  ALT=\"\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	case 5:
-		echo "\t<IMG SRC=\"images/feminist.gif\" BORDER=\"0\" HEIGHT=\"84\" WIDTH=\"84\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	case 6:
-		echo "\t<IMG SRC=\"images/DRAGON.gif\" BORDER=\"0\"  HEIGHT=\"84\" WIDTH=\"84\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	case 7:
-		echo "\t<IMG SRC=\"images/penta.gif\" BORDER=\"0\"  HEIGHT=\"84\" WIDTH=\"84\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	case 8:
-		echo "\t<IMG SRC=\"images/mag_drag_s.gif\" BORDER=\"0\"  HEIGHT=\"84\" WIDTH=\"84\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	case 9:
-		echo "\t<IMG SRC=\"images/sl_header.gif\" BORDER=\"0\"   HEIGHT=\"84\" WIDTH=\"392\"  ALT=\"\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	case 10:
-		echo "\t<IMG SRC=\"images/cauldron.jpg\" BORDER=\"0\"  HEIGHT=\"84\" WIDTH=\"84\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	case 11:
-		echo "\t<IMG SRC=\"images/_tool.gif\" BORDER=\"0\"  HEIGHT=\"84\" WIDTH=\"84\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	case 12:
-		echo "\t<IMG SRC=\"images/_div.gif\" BORDER=\"0\"  HEIGHT=\"84\" WIDTH=\"84\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>";
-		break;
-	default:
-		echo "\t<IMG SRC=\"images/logo.gif\" BORDER=\"0\" HEIGHT=\"84\" WIDTH=\"97\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=\"CENTER\">";
-		break;
-		endswitch;
+	
+	if($typ != "") 
+	{
+		echo "\t<IMG $GLOBALS[style_header1left_img] SRC=\"$GLOBALS[layoutImages_path]. $typ\" >";
+	} else{
+		
+	}
 };
 
 function print_background ($typ)

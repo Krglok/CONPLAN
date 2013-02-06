@@ -1,3 +1,11 @@
+/*
+Datum   :  $date$  / 03.02.2013
+
+Rev.    :  $rev$   / 3.0
+
+Author  :  $author$  / krglok
+
+*/
 @CHARSET "ISO-8859-1";
 
 p {
@@ -56,6 +64,15 @@ p {
 	position: absolute;
 	color: black;
 }
+#header1left_img
+{
+	top: 12px; 
+	left: 21px; 
+	width: 119px; 
+	height: 98px;"
+	vertical-align: middle;
+}
+
 #header1main
 {
 	position: absolute;
@@ -67,6 +84,12 @@ p {
 	vertical-align: middle;
 	font-size: 200%;
 }
+#header1main_img
+{
+	width: 448px; 
+	height: 96px;	
+}
+
 #header1right
 {
 	background-color: transparent;
