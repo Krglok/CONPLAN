@@ -17,71 +17,72 @@ p {
 	border-right-style: solid;
 	border-bottom-style: solid;
 	border-left-style: solid;
-	border-top-color: red;
-	border-right-color: red;
-	border-bottom-color: red;
-	border-left-color: red;
+	border-top-color: silver;
+	border-right-color: silver;
+	border-bottom-color: silver;
+	border-left-color: silver;
 	margin-top: 1px;
 	margin-bottom: 1px;
 }
 
 #div_1
 {
+	/* fuer den body */
 	background-color: rgb(200, 200, 200);
-	background-image: url(../layout/back/backmarble.jpg);
 	font-family: Calibri;
 	font-size: medium;
-	left: 15;
+	background-image: url(back/back.jpg);
 }
 #page_1
 {
     position:absolute;
-	width: 900;
+	width: 900px;
+	height: auto;
 	align: center;
 	border-color: green;
-	border-width: 1;
+	border-width: 1px;
 	border-style: solid;
- 
- }
+	left: 105px;
+	background-color: transparent;
+}
 
 }
 #header1
 {
+    position:absolute;
 	color: black;
-	position: absolute;
 	height: 102px;
-	top: 3px;
+	top: 15px;
 	left: 5px;
 	width: 880px;
 	background-color: transparent;
 }
 #header1left
 {
+	position: absolute;
 	background-color: transparent
 	height: 100px;
 	left: 1px;
 	width: 124px;
-	position: absolute;
 	color: black;
 }
 #header1left_img
 {
+	position: absolute;
 	top: 12px; 
 	left: 21px; 
 	width: 119px; 
 	height: 98px;"
-	vertical-align: middle;
 }
-
 #header1main
 {
 	position: absolute;
-	left: 150;
+	top: 15px; 
+	left: 130px;
 	width: 600px;
 	height: 100px;
 	background-color: transparent;
 	text-align: center;
-	vertical-align: middle;
 	font-size: 200%;
 }
 #header1main_img
@@ -92,20 +93,21 @@ p {
 
 #header1right
 {
+	position: absolute;
 	background-color: transparent;
 	color: black;
-	position: absolute;
 	height: 100px;
-	right: 1px;
-	width: 180;
-	margin-top: 2;
-	margin-bottom: 2;
+	right: 0px;
+	width: 180px;
+	top: 15px; 
+	margin-top: 2px;
+	margin-bottom: 2px;
 	margin-left: 5px;
 	margin-right: 5px;
 }
 #bereich_head
 {
-	text-align:center;
+	text-align: center;
 	vertical-align: texttop;
 	background-color: white;
 }
@@ -131,10 +133,10 @@ p {
 }
 #status_menu
 {
-	position:relative;
-	margin-left: 2;
+	position: relative;
+	margin-left: 2px;
 	border-style: solid;
-	border-width: 1;
+	border-width: 1px;
 	border-color: silver;
 	padding-left: 5px;
 	padding-right: 5px;
@@ -148,7 +150,7 @@ p {
 	height: 24px;
 	vertical-align: texttop;
 	background-color: transparent;
-	border-width: 1;
+	border-width: 1px;
 	border-style: solid;
 	border-top-color: silver;
 	border-right-color: silver;
@@ -163,7 +165,7 @@ p {
 	vertical-align: middle;
 	position: absolute;
 	height: 20px;
-	left: 175;
+	left: 175px;
 }
 
 #menu_tab1
@@ -176,14 +178,15 @@ p {
 	border-right-style: solid;
 	border-bottom-style: solid;
 	border-left-style: solid;
-	border-top-color: red;
-	border-right-color: red;
-	border-bottom-color: red;
-	border-left-color: red;
+	border-top-color: silver;
+	border-right-color: silver;
+	border-bottom-color: silver;
+	border-left-color: silver;
 	color: black;
 	position:absolute;
 	top: 170px;
 	left: 5px;
+	margin_left: 5px;
 	/*  height: 642px; */
 	width: 160px;
 	background-color: transparent;
@@ -271,7 +274,7 @@ p {
 }
 #menu_page_img
 {
-	left: 3;
+	left: 3px;
 	vertical-align: middle;
 	width: 22px;
 	height: 22px;

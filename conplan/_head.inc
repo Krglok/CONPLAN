@@ -36,9 +36,9 @@ include_once "_lib.inc";
  */
 function print_header ($NAME)
 {
-	$grp_name = $GLOBALS[grp_name];
-	$layout_path = $GLOBALS[layout_path];
-	$version = $GLOBALS[version];
+	global $grp_name ;
+	global $layout_path ;
+	global $version ;
 	 
 	echo "<HTML>\n";
 	echo "<!-- PHP ".phpversion()." / Drachenhorst Framework $version / 2013-->\n";
@@ -66,196 +66,173 @@ function print_body()
 	echo " >\n";
 }
 
+/**
+ * Erstellt das Body ende und das page ende
+ */
 function print_body_ende()
 {
-	//echo "</TABLE>\n";
-	echo "</BODY>\n";
-	echo "</HTML>\n";
+  echo "</div>\n";
+//  echo "</div>\n";
+  echo "</BODY>\n";
+  echo "</HTML>\n";
 };
 
 function print_kopf ($logo_typ, $header_typ,$bereich,$anrede, $ref)
 {
-	$typ = 13;
-	$info = "Login aufrufen";
-	
-	echo "<div id=\"div_1\">\n";
-	echo "  <div id=\"header1\">\n";
-	echo "    <div id=\"header1left\">\n";
-	print_header_icon($GLOBALS["logo_typ"]);
-	echo "    </div>\n";
-	echo "    <div id=\"header1main\">\n";
-	print_header_icon($GLOBALS["header_typ"]);
-	echo "    </div>\n";
-	echo "    <div id=\"header1right\">\n";
-	echo "      <p>$bereich</p>\n";
-	echo "      <p>$anrede</p>\n";
-	echo "      <div id=\"menu_status_r\">\n";
-	if ($typ != "")
-	{
-		print_menu_icon($typ,$info);
-		print_menu_ref($typ, $ref);
-	}
-	echo "    	</div>\n";
-	echo "    </div>\n";
-	echo "  </div>\n";
-	echo "</div>\n";
-	echo "\n\n";
+  $typ = $GLOBALS['menu_key'];
+  $info = "Login aufrufen";
+  
+//  echo "<div id=\"div_1\">\n";
+  echo "<div id=\"page_1\">\n";
+    echo "  <div id=\"header1\">\n";
+      echo "    <div id=\"header1left\">\n";
+      print_header_icon($GLOBALS["logo_typ"],$GLOBALS['style_header1left_img']);
+      echo "    </div>\n";
+
+      echo "    <div id=\"header1main\">\n";
+      print_header_icon($GLOBALS["header_typ"],$GLOBALS['style_header1main_img']);
+      echo "    </div>\n";
+      
+      echo "    <div id=\"header1right\">\n";
+      echo "      <p>$bereich</p>\n";
+      echo "      <p>$anrede</p>\n";
+        if ($typ != "")
+        {
+          echo "      <div id=\"menu_status_r\">\n";
+          print_menu_icon($typ,$info);
+          print_menu_ref("Login", $ref);
+          echo "    	</div>\n";
+        } else
+        {
+          echo "      <p>$ref</p>\n";
+        }
+      echo "    </div>\n";
+    echo "  </div>\n";
+  echo "\n\n";
 };
 
 
-
+/**
+ * Kommentar fuer anfang menu/daten
+ */
 function print_md()
 {
-	echo "<!---  Menu und Daten   --->\n";
-	echo "<TABLE WIDTH=950px  BORDER=\"1\" CELLPADDING=\"0\" CELLSPACING=\"0\" BGColoR=\"\" BORDERCOLOR=\"#EDDBCB\"
-			BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\" >\n";
-	echo "<TR>\n";
+  echo "<!---  Menu und Daten   --->\n";
 };
 
+/**
+ * Kommentar fuer Ende Menu/Daten
+ */
 function print_md_ende()
 {
-	echo "</TR>\n";
-	echo "</TABLE>\n";
-
+  echo "<!---  ENDE Menu und Daten   --->\n";
 };
 
 
-
-function print_menu_ref($typ, $ref)
+/**
+ * Erzeugt einen Linkentrag mit default style
+ * @param unknown $caption  sichtbarer text
+ * @param unknown $ref  linkdaten, voll qualifiziert
+ */
+function print_menu_ref($caption, $ref)
 {
-	switch ($typ) :
-	case 1:
-		echo "            <A HREF=\"$ref\" >";
-	break;
-	case 2:
-		echo "            <A HREF=\"$ref\" >";
-		break;
-	case 3:
-		echo "            <A HREF=\"$ref\" >";
-		break;
-	case 4:
-		echo "            <A HREF=\"$ref\" >";
-		break;
-	case 5:
-		echo "            <A HREF=\"$ref\" >";
-		break;
-	default:
-		echo "            <A HREF=\"$ref\" >";
-		endswitch;
-
+  echo "            <A HREF=\"$ref\" > $caption </A>\n";
 };
 
 
+/**
+ * Erzeugt ein Menu mit default style
+ * @param unknown $menu  array mit menu daten
+ */
 function print_menu ($menu)
 {
-	global $user_lvl, $lvl_admin,$lvl_sl;
-
-	//   menü spalte
-	echo "<!---  Menu Spalte   --->\n";
-	//  stellt die breite der Menüspalte ein !!!
-	echo "<TD WIDTH=155>\n";
-
-	//  separate Tabelle fuer Menu !!
-	echo "\t<TABLE WIDTH=\"100%\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"1\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\"
-			BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
-	echo "\t<TR >\n";
-	echo "\t<TD WIDTH=150px>\n";
-	echo "\t\t<TABLE WIDTH=\"145px\" BORDER=\"0\" BGCOLOR=\"\" >";
-
-	reset ($menu);
-	while (list($key, $item) = each ($menu))
-	{
-		if ($key!=99)
-		{
-			if ($key!=98)
-			{
-				echo "\t\t<TR HEIGHT=30>\n";
-				echo "\t\t<TD><!-- Row:1, Col:1 -->\n";
-				$item = $menu[$key];
-				$item[caption] = substr($item[caption],0,16);
-				if ($key!=0) {
-					print_menu_ref($item[icon],$item[link]);
-				};
-				print_menu_icon($item[icon]);
-				echo "\t\t</A>\n";
-				if ($key!=0)
-				{
-					echo "\t\t$item[caption]\n";
-				} else
-				{
-					echo "\t\t<B>$item[caption]\n";
-				};
-				echo "\t\t</TD>\n";
-				echo "\t\t</TR>\n";
-			} else
-			{
-				$l1 = (int) $user_lvl;
-				$l2 = (int) $lvl_sl[14];
-				if ($l1 <= $l2)
-				{
-					echo "\t\t<TR HEIGHT=30>\n";
-					echo "\t\t<TD><!-- Row:1, Col:1 -->\n";
-					$item = $menu[$key];
-					if ($key!=0) {
-						print_menu_ref($item[icon],$item[link]);
-					};
-					print_menu_icon($item[icon]);
-					echo "\t\t</A>\n";
-					//            echo "\t\t$item[caption]\n";
-					echo "\t\t<B>$item[caption]\n";
-					echo "\t\t</TD>\n";
-					echo "\t\t</TR>\n";
-				};
-			}
-		} else
-		{
-			$l1 = (int) $user_lvl;
-			$l2 = (int) $lvl_admin[14];
-			if ($l1 <= $l2)
-			{
-				echo "\t\t<TR HEIGHT=30>\n";
-				echo "\t\t<TD><!-- Row:1, Col:1 -->\n";
-				$item = $menu[$key];
-				if ($key!=0) {
-					print_menu_ref($item[icon],$item[link]);
-				};
-				print_menu_icon($item[icon]);
-				echo "\t\t</A>\n";
-				echo "\t\t<B>$item[caption]\n";
-				echo "\t\t</TD>\n";
-				echo "\t\t</TR>\n";
-			};
-		}
-	}
-
-	echo "\t\t</TABLE>\n";
-	echo "\t</TD>\n";
-	echo "\t</TR>\n";
-	echo "\t</TABLE\n>";
-	echo "</TD>\n";
-	echo "<!---  Menu Spalte ENDE   --->\n\n";
+  global $user_lvl, $lvl_admin,$lvl_sl;
+  
+  //   menü spalte
+  echo "<!---  Menu Spalte   --->\n";
+  //  stellt die breite der Menüspalte ein !!!
+  $style = $GLOBALS['style_menu_tab1'];
+  echo "<div $style >\n";
+  
+  //  separate div pro Menu item
+  $style = $GLOBALS['style_menu_head'];
+  echo "\t<div  ><!-- Row:1, Col:1 -->\n";
+  echo "\t</div >\n";
+  
+  reset ($menu);
+  while (list($key, $item) = each ($menu))
+  {
+  	if ($key!=99)  // sl oder user menu
+  	{
+  		if ($key!=98)  // User Menu
+  		{
+  		    $style = $GLOBALS['style_menu_list'];
+  			echo "\t<div $style ><!-- Row:1, Col:1 -->\n";
+  			$item = $menu[$key];
+  			$item["caption"] = substr($item["caption"],0,16);
+  			if ($key!=0) 
+  			{
+  			 print_menu_icon($item["icon"]);
+  			 print_menu_ref($item["caption"],$item["link"]);
+  			};
+            echo "\t</div >\n";
+  		} else     // SL - menu
+  		{  
+  		    $style = $GLOBALS['style_menu_list'];
+  			$l1 = (int) $user_lvl;
+  			$l2 = (int) $lvl_sl[14];
+  			if ($l1 <= $l2)
+  			{
+              echo "\t<div $style ><!-- Row:1, Col:1 -->\n";
+  			  $item = $menu[$key];
+              if ($key!=0) 
+              {
+                print_menu_icon($item["icon"]);
+                print_menu_ref($item["caption"],$item["link"]);
+              };
+              echo "\t</div >\n";
+  			};
+  		}
+  	} else // admin menu
+  	{
+  	  $style = $GLOBALS['style_menu_list'];
+      $l1 = (int) $user_lvl;
+      $l2 = (int) $lvl_admin[14];
+      if ($l1 <= $l2)
+      {
+        echo "\t<div $style ><!-- Row:1, Col:1 -->\n";
+        $item = $menu[$key];
+        if ($key!=0) 
+        {
+          print_menu_icon($item["icon"]);
+          print_menu_ref($item["caption"],$item["link"]);
+        };
+        echo "\t</div >\n";
+      };
+  	}
+  }
+  
+  echo "</div>\n";
+  echo "<!---  Menu Spalte ENDE   --->\n\n";
 };
 
+/**
+ * Gibt eine Htnl Datei im Datentab aus, default style
+ * @param unknown $html_file
+ */
 function print_data($html_file)
 {
 	$ishead = 'true';
+	$html_file = $GLOBALS['path_html'].$html_file;
 	$file = fopen ($html_file, "r");
 	if (!$file)
 	{
 		echo "<p>Datei konnte nicht ge&uuml;ffnet werden.\n";
 		exit;
 	};
-	echo "<P>";
+	$style = $GLOBALS['style_datatab'];
+	echo "<div $style >";
 	echo "<!---  DATEN Spalte   --->\n";
-	echo "<TD>\n";
-	echo "\t<TABLE  BORDER=0 BGCOLOR=\"\" BORDERCOLOR=\"#008000\" BORDERCOLORDARK=\"#008040\"
-			BORDERCOLORLIGHT=\"#008F00\">\n";
-	echo "\t<TR >\n";
-	echo "\t<TD>\n";
-	echo "\t<TABLE WIDTH=100% BORDER=0 BGCOLOR=\"\" BORDERCOLOR=\"#008000\" BORDERCOLORDARK=\"#008040\"
-			BORDERCOLORLIGHT=\"#008F00\">\n";
-	echo "\t<TR >\n";
-	echo "\t<TD>\n";
 
 	while (!feof ($file))
 	{
@@ -263,17 +240,17 @@ function print_data($html_file)
 		/* Funktioniert nur, wenn Titel und title-Tags in einer Zeile stehen */
 		if ($ishead!='true')
 		{
-			if (eregi ("</head>", $line, $out))
+			if (preg_match ("</head>", $line, $out, PREG_OFFSET_CAPTURE))
 			{
 				$ishead = 'false';
 			} else
 			{
-				if (eregi ("</body>", $line, $out))
+				if (preg_match ("</body>", $line, $out, PREG_OFFSET_CAPTURE))
 				{
 					$ishead = 'false';
 				} else
 				{
-					if (eregi ("<body>", $line, $out))
+					if (preg_match ("<body>", $line, $out, PREG_OFFSET_CAPTURE))
 					{
 						$ishead = 'false';
 					} else
@@ -283,12 +260,13 @@ function print_data($html_file)
 				};
 			};
 		} else
-		{
-			if (eregi ("</head>", $line, $out))
+		{  //preg_match($pattern, substr($subject,3), $matches, PREG_OFFSET_CAPTURE);
+		  
+			if (preg_match("</head>", $line, $out, PREG_OFFSET_CAPTURE))
 			{
 				$ishead = 'false';
 			};
-			if (eregi ("</body>", $line, $out))
+			if (preg_match ("</body>", $line, $out))
 			{
 				$ishead = 'false';
 			};
@@ -297,17 +275,7 @@ function print_data($html_file)
 
 	};
 	fclose($file);
-	echo "\t</TD>\n";
-	echo "\t</TR >\n";
-	echo "\t</TABLE>\n";
-	echo "\t</TD>\n";
-	echo "\t</TR >\n";
-	echo "\t<TD >\n";
-	echo "&nbsp;";
-	echo "\t</TD >\n";
-	echo "\t</TR >\n";
-	echo "\t</TABLE>\n";
-	echo "</TD>\n";
+	echo "</div>\n";
 	echo "<!---  ENDE DATEN Spalte   --->\n";
 };
 

@@ -17,28 +17,28 @@ Diese Datei definiert die BAsisdaten für die Anwendung
 - globale Variablen
 
 Ver 3.0
-Es werden CSS-Dateien verwendet. 
+Es werden CSS-Dateien verwendet.
 Es wird eine strikte Trennung von Content und Layout durchgefuehrt.
-Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues 
+Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues
 Layoutpfades in der config.inc
 Ansonsten bleibt der Inhalt der Seiten identisch.
 
-ACHTUNG!! Die php-Skripte muessen alle im Basis verzeichnis sein, sonst stimmt die 
+ACHTUNG!! Die php-Skripte muessen alle im Basis verzeichnis sein, sonst stimmt die
 Verzeichnus logik nicht !!
 
 Die config-variablen werden erweitert.
-Variable fuer die Layoutpfade 
+Variable fuer die Layoutpfade
 Variable fuer die Styletypen
 $LOG$
 */
 
 // DB-Verbindung
 $DB_HOST='192.168.5.173';	// dies ist WICHTIG !!!!
-$DB_NAME='db42039950';		// 
+$DB_NAME='db42039950';		//
 $DB_USER='admin';			// Achtung user muss vorhanden sein und die rechte auf die DB haben
 $DB_PASS='';				// !!
 $TBL_USER='user_liste';		// Tabellname fuer die Userliste m, muss bestimmte Felder beinhalten
-//$DB_INTERN='db42039950';	// Alternative DB not used !!! 
+//$DB_INTERN='db42039950';	// Alternative DB not used !!!
 
 // Default Session fuer Gäste
 $session_id ="FFFF";
@@ -50,9 +50,9 @@ $grp_name="Drachenhorst";			// Refrenzname fuer Homepage
 // Pfade die automatisch verwendet werden  ------------
 $path_img 		= "./images";		// Dies sind die Content Bilder
 //$bg_path  = './layout1/back/';    // wird entfernt, da nur noch layout pfade gueltig sind
-$path_bilder	= './BILDER/';		// Dies sind die Bilder der Bildgallerie und thumbnails
-$path_thumbnail	= './BILDER/thumb/';// Dies sind die thumbnails der Bildgallerie 
-$path_base		= './BILDER/BASE/';	// Dies sind die Gruppenbilder der Bildgallerie 
+$path_bilder	= "./BILDER/";		// Dies sind die Bilder der Bildgallerie und thumbnails
+$path_thumbnail	= "./BILDER/thumb/";// Dies sind die thumbnails der Bildgallerie
+$path_base		= "./BILDER/BASE/";	// Dies sind die Gruppenbilder der Bildgallerie
 $path_download 	= "./download/";	// Hier sind die Downloads abgelegt
 $path_char		= "./chars/";		// Hier werden charakter Bilder abgelegt, fuer Charakterverwaltung
 $path_land		= "./land/";		// hier werden die Bilder fuer Laender und Karten abgelegt
@@ -61,7 +61,7 @@ $path_html		= "./pages/";		// Hier werden die embeded html.pages abgelegt
 $path_regeln	= "./regeln/";      // Hier werden ide regeln.html, regeln.images abgelegt
 
 // Layout pfade
-$layout_path = "./layout";			// css-dateien
+$layout_path = "layout";			// css-dateien
 $layoutButton_path = "./layout/button/";	// buttons fuer das layout
 $layoutImages_path = "./layout/images/";	// images fuer das layout
 $layoutBack_path = "./layout/back/";		// backgrnd images fuer das layout
@@ -72,13 +72,13 @@ $layoutBack_path = "./layout/back/";		// backgrnd images fuer das layout
 $loginRef = "http://www.drachen-horst.de/main.php?md=2&daten=slogin.html";
 
 // globale Variablen  ---------------------------------
-$background_pic    = 'back.jpg';     	  // default Hintergrund bild
-$background_color  = 'silver';            // sollte auf Hintergrundbild abgestimmt sein
-$text_color  = 'black';             // default Textfarbe sollte mit BG_pic abgestimmt sein
+$background_pic    = "back.jpg";     	  // default Hintergrund bild
+$background_color  = "silver";            // sollte auf Hintergrundbild abgestimmt sein
+$text_color  = "black";             // default Textfarbe sollte mit BG_pic abgestimmt sein
 
 // Header images
-$logo_typ = "_logo.gif";
-$header_typ = "_drachenhorst.gif";	
+$logo_typ = "logo.gif";
+$header_typ = "drachenhorst.gif";
 
 // Menu Icons
 $menu_add 		= "_add.gif";		// Insert Datensatz
@@ -93,7 +93,7 @@ $menu_list 		= "_list.gif";		// list page
 $menu_page 		= "_page.gif";		// html seite oder einzal page
 $menu_point 	= "_point.gif";		// einfacher punkt
 $menu_printer 	= "_printer.gif";	// drucken
-$menu_stop 		= "_stop.gif";		// zurück / back 
+$menu_stop 		= "_stop.gif";		// zurück / back
 $menu_text 		= "_text.gif";		// text page
 $menu_tool 		= "_tool.GIF";		// tools
 $menu_zip 		= "_zip.gif";		// download
@@ -137,7 +137,7 @@ $css_datalist = "datalist.css";
 // Datenbereich fuer Datensatzliste
 $style_datatab = "id=\"datatab\"";
 $style_datalist = "id=\"datalist\"";
-// Datensatz counter ?? 
+// Datensatz counter ??
 $style_data_list_count  = "id=\"data_list_count\"";
 // Datensatz zeile
 $style_datalist_tr = "id=\"datalist.tr\"";
@@ -171,10 +171,72 @@ $style_balken_page_p = "id=\"balken_page p\"";
 
 
 // Zugriffsrechte -------------------------------------
-// ACHTUNG nicht aendern beinhaltet das Rechte system !! 
+// ACHTUNG nicht aendern beinhaltet das Rechte system !!
 $lvl_spieler = array(0=>256,1=>512,14=>3840);
 $lvl_sl      = array(0=>16,1=>32,14=>240);
 $lvl_admin   = array(0=>1,1=>2,14=>15);
-$user_lvl = 3840;  // dies ist der Gastlevel 
+$user_lvl = 3840;  // dies ist der Gastlevel
+
+/**
+ * Setzt die alten menutyp nummern in die neuen Menutyptexte um
+ * Begrenzung auf die 9 standardtypen  , alle anderen werden auf 10 = _help umgesetzt  
+ * Sonderfall 99 = _none, soll trennbalken erzeugen
+ * @param unknown $typ
+ * @return string|unknown
+ */
+function index2menutyp ($typ ) {
+  global $menu_add,
+  $menu_db, 
+  $menu_del,
+  $menu_edit,
+  $menu_folder,
+  $menu_help, 
+  $menu_kalender,
+  $menu_key, 	
+  $menu_list, 	
+  $menu_page, 	
+  $menu_point, 	
+  $menu_printer, 
+  $menu_stop, 	
+  $menu_text, 	
+  $menu_tool, 	
+  $menu_zip;
+  
+ switch ($typ) :
+ case 99:
+  return "_none";
+  break;
+ case 1:
+  return $menu_folder;
+  break;
+ case 2:
+  return $menu_add;
+  break;
+ case 3:
+  return $menu_edit;
+  break;
+ case 4:
+  return $menu_del;
+  break;
+ case 5:
+  return $menu_list;
+  break;
+ case 6:
+  return $menu_stop;
+  break;
+ case 7:
+  return $menu_page;
+  break;
+ case 8:
+  return $menu_printer;
+  break;
+ case 9:
+  return $menu_db;
+  break;
+ default:
+  return $menu_help;
+ endswitch;
+
+}
 
 ?>

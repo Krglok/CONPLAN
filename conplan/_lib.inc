@@ -40,66 +40,58 @@ function tumb_copy($bild_url,$zieldir,$max_x,$max_y,$type)
 
 include_once '_config.inc';
 
+/**
+ * Ausgabe eines Menu_icon anhand des default style
+ * Fehlerbehandlung, [X] wird ausgegeben 
+ * @param unknown $typ
+ * @param string $info
+ */
 function print_menu_icon ($typ,$info = " ")
-/*
- Ausgabe eines Menu_icon anhand einer Indexnummer
-*/
 {
-	if ($typ != "") 
-	{
-		echo "\t<IMG $GLOBALS[style_status_menu] SRC=\"$GLOBALS[layoutButton_path].$typ\"  ALT=\"$info\" TITLE=\"$info\">";
-	} else {
-		echo "\t[X]"; // Leerzeile
-	}
+  // convert int to string of icon type  
+  $typ = index2menutyp($typ);
+  $style = $GLOBALS['style_menu_list_img'];
+  $typ = $GLOBALS['layoutButton_path'].$typ;
+  if ($typ != "") 
+  {
+  	echo "\t<IMG $style SRC=\"$typ\"  ALT=\"$info\" TITLE=\"$info\">";
+  } else {
+  	echo "\t[X]"; // Leerzeile
+  }
 };
 
-
-function print_header_icon ($typ)
-/*
- Ausgabe eines Menu_icon anhand einer Indexnummer
-*/
+/**
+ * Ausgabe des Logo image anhand des default style 
+ * @param unknown $typ
+ */
+function print_header_icon ($typ,$style)
 {
-	
+	$typ = $GLOBALS['layoutImages_path'].$typ;
+	//$style = $GLOBALS['style_header1left_img'];
 	if($typ != "") 
 	{
-		echo "\t<IMG $GLOBALS[style_header1left_img] SRC=\"$GLOBALS[layoutImages_path]. $typ\" >";
+		echo "\t<IMG $style SRC=\"$typ\" >";
 	} else{
 		
 	}
 };
 
+/**
+ * Setzt den Style Background, unnoetig, da im css enthalten
+ * @param unknown $typ
+ */
 function print_background ($typ)
-/*
- Ausgabe eines Menu_icon anhand einer Indexnummer
-*/
 {
-	switch ($typ) :
-	case 1:
-		echo "BACKGROUND=\"$layout_path$layoutBack_pathpapermiddlecenter.jpg\"";
-	break;
-	case 2:
-		echo "BACKGROUND=\"$layout_path$layoutBack_pathbackmarble.jpg\"";
-		break;
-	case 3:
-		echo "BACKGROUND=\"$layout_path$layoutBack_pathpaper.jpg\"";
-		break;
-	case 4:
-		echo "BACKGROUND=\"$layout_path$layoutBack_pathbackbraun.jpg\"";
-		break;
-	case 5:
-		echo "BACKGROUND=\"$layout_path$layoutBack_pathbground_karte.jpg\"";
-		break;
-
-	default:
-		echo "BACKGROUND=\"$layout_path$layoutBack_pathback.jpg\"";
-		endswitch;
+  //echo "BACKGROUND=\"$layoutBack_path.$typ\"";
 };
 
-
+/**
+ * DB funktion, gibt die Spieler_id zu einer User_id zurück
+ * gibt es mehrere relationen, wird die erste genommen
+ * @param unknown $user_id
+ * @return int
+ */
 function get_spieler_id($user_id)
-/*
- Gibt die Spieler_id zu einer User_id zurück
-*/
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $PHP_SELF;
@@ -107,8 +99,8 @@ function get_spieler_id($user_id)
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
 
 	mysql_select_db($DB_NAME);
-
-	$q = "select spieler_id from user_liste where id=\"$user_id\"";
+    $table = $GLOBALS['TBL_USER'];
+	$q = 'select spieler_id from $table where id=\"$user_id\"';
 	$result = mysql_query($q) or die("select Fehler....$q.");
 	$row1 = mysql_fetch_row($result);
 	$user_id=$row1[0];
@@ -116,10 +108,12 @@ function get_spieler_id($user_id)
 
 };
 
+/**
+ * DB-Funktion, Gibt die Spieler_id zu einem UserNAme zurück 
+ * @param unknown $user
+ * @return unknown
+ */
 function get_user_id($user)
-/*
- Gibt die Spieler_id zu einem UserNAme zurück
-*/
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $PHP_SELF;
@@ -127,8 +121,8 @@ function get_user_id($user)
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
 
 	mysql_select_db($DB_NAME);
-
-	$q = "select spieler_id,id,username from user_liste where username=\"$user\"";
+    $table = $GLOBALS['TBL_USER'];
+	$q = "select spieler_id,id,username from $table where username=\"$user\"";
 	$result = mysql_query($q) or die("select Fehler....$q.");
 	$row1 = mysql_fetch_row($result);
 	$user_id=$row1[0];
@@ -136,10 +130,13 @@ function get_user_id($user)
 
 };
 
+/**
+ * DB Funktion
+ * Gibt den Realnamen (Vorname + Name zu einer spieler_id zurück 
+ * @param unknown $user_id
+ * @return string
+ */
 function get_author($user_id)
-/*
- Gibt den Realnamen (Vorname + Name zu einer spieler_id zurück
- 		*/
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $PHP_SELF;
@@ -155,10 +152,12 @@ function get_author($user_id)
 	return $author;
 };
 
+/**
+ * DB-Funktion, Gibt die Mail-adresse zu einer Spieler_id zurück
+ * @param unknown $user_id
+ * @return Ambigous <>
+ */
 function get_mail($user_id)
-/*
- Gibt die Mail-adresse zu einer Spieler_id zurück
-*/
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $PHP_SELF;
@@ -173,11 +172,12 @@ function get_mail($user_id)
 	return  $row[4];
 };
 
-
+/**
+ * DB-Funktion, Gibt den Charakternamen zu einer Spieler_id zurück 
+ * @param unknown $user_id
+ * @return Ambigous <>
+ */
 function get_charname($user_id)
-/*
- Gibt den Charakternamen zu einer Spieler_id zurück
-*/
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $PHP_SELF;
@@ -192,11 +192,12 @@ function get_charname($user_id)
 	return  $row[3];
 };
 
+/**
+ * DB-Funktion, Gibt den Namen des Spielers zu einer spieler_id zurück 
+ * @param unknown $user_id
+ * @return string
+ */
 function get_spieler($user_id)
-/*
- Gibt den Namen des Spielers zu einer spieler_id zurück
-
-*/
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $PHP_SELF;
@@ -213,11 +214,11 @@ function get_spieler($user_id)
 };
 
 
-
+/**
+ * Gibt den aktuellen Contag zurück 
+ * @return int
+ */
 function get_akttag()
-/*
- Gibt den aktuellen Contag zurück
-*/
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $PHP_SELF;
@@ -232,13 +233,16 @@ function get_akttag()
 	return  $row[1];
 };
 
-
+/**
+ * DB-Funktion
+ * Prüft , ob der user auf den Tag Zugrifsberechtigt ist
+ * Holt die User_id angand des User
+ * Sucht die User_id in der
+ * @param String $user
+ * @param int $tag
+ * @return Boolean (TRUE/FALSE)
+ */
 function get_sltag($user,$tag)
-/*
- Prüft , ob der user auf den Tag Zugrifsberechtigt ist
-Holt die User_id angand des User
-Sucht die User_id in der
-*/
 {
 	global $DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$TBL_USER;
 	global $PHP_SELF;
@@ -275,7 +279,11 @@ Sucht die User_id in der
 };
 
 
-
+/**
+ * Sucht einen Referenz in der Help Tabelle
+ * @param unknown $item
+ * @return resource (MySQL resultset)
+ */
 function get_hilfe($item)
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
@@ -289,6 +297,12 @@ function get_hilfe($item)
 	return  $result;
 }
 
+/**
+ * Sucht eine Referenz (item) und im BEreich (id)
+ * @param unknown $item
+ * @param unknown $id
+ * @return resource  (MySQL resultset)
+ */
 function get_hilfe_item($item,$id)
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
@@ -302,82 +316,85 @@ function get_hilfe_item($item,$id)
 	return  $result;
 }
 
+/**
+ * Sucht ein Hilfe Referenz (item) 
+ * Zeigt eine Hilfeseite an im default style fuer html
+ * @param unknown $ID
+ * @param unknown $item
+ * @param unknown $id
+ */
 function  print_hilfe($ID,$item,$id)
 {
 	if ($id=='')
 	{
 		$result = get_hilfe($item);
-
-		echo "  <TD\n>";
-		echo "<table border=0 BGCOLOR="."  >\n";
-
-		echo "<tr>\n";
-		echo "<td>\n";
+        $style = $GLOBALS['style_datatab'];
+		echo "<div $style \n>";
 		print_menu_icon (10);
-		echo "</td>\n";
-		echo "<td>\n";
-		echo "<b>Hilfeindex : $item\n";
-		echo "</td>\n";
-		echo "</tr>\n";
+		echo "\t<p> <b>Hilfeindex : $item </b> </p>\n";
 		//Daten
 		$field_num = mysql_num_fields($result);
+		echo "\t<div>";
 		while ($row = mysql_fetch_row($result))
 		{
-			echo "<tr>";
 			for ($i=0; $i<$field_num-1; $i++)
 			{
 				// aufruf der Deateildaten
 				if ($i==0)
 				{
-					echo "\t<td><a href=\"$PHP_SELF?md=10&ID=$ID&id=$row[$i]&item=$item\">\n";
-					print_menu_icon (7);
-					echo "\t</a></td>\n";
+//					echo "\t<td><a href=\"$PHP_SELF?md=10&ID=$ID&id=$row[$i]&item=$item\">\n";
+                    $style = $GLOBALS['style_balken_menu_r'];
+                    echo "\t\t<div $style > \n";
+					print_menu_icon ($GLOBALS['menu_stop']);
+					echo "\t\t</div> \n";
 				} else
 				{
-					echo "\t<td>".$row[$i]."&nbsp;</td>\n";
+					echo "\t".$row[$i]."&nbsp; \n";
 				}
 			}
 		}
-		echo "</table>";
-		echo "  </TD\n>";
+		echo "\t</div>";
+		echo "</div\n>";
 	} else
 	{
 		$result = get_hilfe_item($item,$id);
-
-		echo "  <TD\n>";
-		echo "<table border=0 BGCOLOR=\"\"  >\n";
-
+        $style = $GLOBALS['style_datatab'];
+		echo "<div $style \n>";
+		print_menu_icon (10);
+		echo "\t<p> <b>Hilfeindex : $item </b> </p>\n";
 		//Daten
 		$field_num = mysql_num_fields($result);
+		echo "\t<div>";
 		while ($row = mysql_fetch_row($result))
 		{
-			echo "<tr>";
-			echo "\t<td width=\"5\"><a href=\"$PHP_SELF?md=10&ID=$ID&item=$item\">\n";
-			echo "\t<IMG SRC=\"../larp/images/back.gif\" BORDER=\"0\"  HEIGHT=\"25\" WIDTH=\"25\"  ALT=\"Vorige Seite\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>\n";
-			echo "\t</a></td>\n";
-			echo "\t<td width=\"150\"><b>$row[3]&nbsp;</td>\n";
-			echo "\t<td>&nbsp;</td>\n";
-
-			//      echo "\t<td>".$row[4]."&nbsp;</td>\n";
-			echo "</tr>";
-			echo "<tr>";
-			$zeile=explode("\n",$row[4]);
-			$anz  = count($zeile);
-			echo "\t<td colspan=3>\n";
-			for ($ii=0; $ii<$anz; $ii++)
+			for ($i=0; $i<$field_num-1; $i++)
 			{
-				echo "\t$zeile[$ii]&nbsp;<br>\n";
+				// aufruf der Deateildaten
+				if ($i==0)
+				{
+//					echo "\t<td><a href=\"$PHP_SELF?md=10&ID=$ID&id=$row[$i]&item=$item\">\n";
+                    $style = $GLOBALS['style_balken_menu_r'];
+                    echo "\t\t<div $style > \n";
+                    $img = $GLOBALS['menu_stop']; 
+					print_menu_icon ($img);
+					echo "\t\t</div> \n";
+				} else
+				{
+					echo "\t".$row[$i]."&nbsp; \n";
+				}
 			}
-			echo "</td>\n";
-
-			echo "</tr>";
 		}
-		echo "</table>";
-		echo "  </TD\n>";
-
+		echo "\t</div>";
+		echo "</div\n>";
 	}
 }
 
+/**
+ * Gibt den Kurznamen des Montas zurück
+ * Wird im Kalender verwendet
+ * @param int $m  Monat (1..12)
+ * @return string
+ */
 function get_monat_name($m)
 {
 	switch($m):
@@ -425,7 +442,13 @@ function get_monat_name($m)
 		return $str;
 }
 
-
+/**
+ * Gibt die Hintergrundfarbe zurück anhand eines Eintragstyp
+ * im Kalender
+ * 	['contag','aufbau',"orange",'basteln',"orange", 'vv',default]
+ * @param unknown $typ
+ * @return string colorName or colorHex 
+ */
 function get_typ_color($typ)
 {
 	switch($typ):
@@ -449,12 +472,18 @@ function get_typ_color($typ)
 		return $color;
 }
 
+/**
+ *  erstellt einen Kalender als Tabelle
+ *  kann direkt in die Datentab geschrieben werden
+ */
 function print_kalender()
 {
 	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
 
-
-	echo "    <TD>\n";
+	$style = $GLOBALS['style_datatab'];
+	echo "<div $style >";
+	echo "<!---  DATEN Spalte   --->\n";
+	
 	echo "<TABLE  WIDTH=\"600\" HEIGHT=\"40\" BORDER=\"1\" CELLPADDING=\"1\" BGCOLOR=\"silver\" BORDERCOLOR=\"#808080\" BORDERCOLORDARK=\"gray\" BORDERCOLORLIGHT=\"#C0C0C0\"\n";
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
 	or die("Fehler beim verbinden!");
@@ -544,19 +573,19 @@ function print_kalender()
 
 	mysql_close($db);
 	echo '      </TABLE>';
-	echo "    </TD>\n";
-	echo "    <TD>\n";
-	echo "    .\n";
-	echo "    </TD>\n";
+	echo '  </div>';
 	//=========== print_kalender_end ========================
 };
 
 
+/**
+ *  erstellt eine Spielerliste als Tabelle
+ *  kann direkt in das Datatab geschrieben werden 
+ */
 function print_sc_liste()
 {
 	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
 
-	echo "    <TD ALIGN=\"CENTER\">\n";
 	echo "<table border=0 WIDTH=\"600\">\n";
 
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
@@ -596,9 +625,16 @@ function print_sc_liste()
 	echo "    </TD>\n";
 
 	echo "</table>\n";
-	echo "    </TD>\n";
 }
 
+/**
+ * 
+ * @param unknown $bild_url
+ * @param unknown $zieldir
+ * @param unknown $max_x
+ * @param unknown $max_y
+ * @param unknown $type
+ */
 function tumb_erzeugen($bild_url,$zieldir,$max_x,$max_y,$type)
 //==========================================================================
 // Function     :  insert
@@ -612,23 +648,20 @@ function tumb_erzeugen($bild_url,$zieldir,$max_x,$max_y,$type)
 //                 gespeichert
 //                 ./thumb
 //
-//> Kann mir jemand sagen wie ich dennoch die Bilder ohne Farbverlust
-//> verkleinern kann
-//> oder hat evtl. einen Codeschnippsel dafür parat...
-//Ich hatte das Problem auch mal und in einem Forum diese Funktion
-//Gefunden:
+// Kann mir jemand sagen wie ich dennoch die Bilder ohne Farbverlust
+// verkleinern kann
+// oder hat evtl. einen Codeschnippsel dafür parat...
+// Ich hatte das Problem auch mal und in einem Forum diese Funktion
+// Gefunden:
 //
-// Argumente    :  $bild_url = Name des Bildes
-//                 $zieldir = Verzeichnis des Bildes
-//
-// Returns      :  --
 //==========================================================================
 
 {
 
 	$PicPathIn=$zieldir; // Dein Verzeichnis des Original Bildes z.B.bilder/
-	$PicPathOut=realpath($zieldir."thumb")."/"; // Dein Tumb Ziel Verzeichnis
-
+//	$PicPathOut=realpath($zieldir."thumb")."/"; // Dein Tumb Ziel Verzeichnis
+	$PicPathOut=realpath($GLOBALS['path_thumbnail']); // Dein Tumb Ziel Verzeichnis
+	
 	if ($max_x == 0) {
 		$max_x = 100;
 	}
@@ -717,6 +750,15 @@ function tumb_erzeugen($bild_url,$zieldir,$max_x,$max_y,$type)
 
 }
 
+/**
+ * Speichert ein hochgeladenes Bild in der Gallerie (Verzeichnis)
+ * Der Bildtyp wird anhand der fileendung erkannt, gif, jpg, png, swf, bmp 
+ * (hmm... unbefriedigende Loesung)
+ * Es wird ein thunmbnail erzeugt
+ * @param unknown $bild   Bildaten
+ * @param unknown $name   Bildname wurde automatisch erzeugt
+ * @param unknown $imagepath  Bildpfad
+ */
 function bild_speichern($bild,$name,$imagepath)
 {
 	$info = getimagesize($bild);
@@ -760,6 +802,15 @@ function bild_speichern($bild,$name,$imagepath)
 
 }
 
+/**
+ * Erzeugt ein Thumbnail
+ * 
+ * @param unknown $bild_url
+ * @param unknown $zieldir
+ * @param unknown $max_x
+ * @param unknown $max_y
+ * @param unknown $type
+ */
 function tumb_copy($bild_url,$zieldir,$max_x,$max_y,$type)
 //==========================================================================
 // Function     :  insert
@@ -773,22 +824,18 @@ function tumb_copy($bild_url,$zieldir,$max_x,$max_y,$type)
 //                 gespeichert
 //                 ./thumb
 //
-//> Kann mir jemand sagen wie ich dennoch die Bilder ohne Farbverlust
-//> verkleinern kann
-//> oder hat evtl. einen Codeschnippsel dafür parat...
-//Ich hatte das Problem auch mal und in einem Forum diese Funktion
-//Gefunden:
+// Kann mir jemand sagen wie ich dennoch die Bilder ohne Farbverlust
+// verkleinern kann
+// oder hat evtl. einen Codeschnippsel dafür parat...
+// Ich hatte das Problem auch mal und in einem Forum diese Funktion
+// Gefunden
 //
-// Argumente    :  $bild_url = Name des Bildes
-//                 $zieldir = Verzeichnis des Bildes
-//
-// Returns      :  --
 //==========================================================================
 
 {
 
 	$PicPathIn=$zieldir; // Dein Verzeichnis des Original Bildes z.B.bilder/
-	$PicPathOut=realpath($zieldir."thumb")."/"; // Dein Tumb Ziel Verzeichnis
+	$PicPathOut=realpath($GLOBALS['path_thumbnail']); // Dein Tumb Ziel Verzeichnis
 
 	if ($max_x == 0) {
 		$max_x = 100;
