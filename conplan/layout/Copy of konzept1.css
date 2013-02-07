@@ -35,41 +35,50 @@ p {
 }
 #page_1
 {
+    position:absolute;
+	width: 900px;
+	height: auto;
 	align: center;
-	width: 990;
 	border-color: green;
 	border-width: 1px;
 	border-style: solid;
+	left: 105px;
 	background-color: transparent;
 }
 
 }
 #header1
 {
+    position:absolute;
 	color: black;
-	height: 150px;
+	height: 102px;
 	top: 15px;
-	border-color: red;
-	border-width: 1px;
-	border-style: solid;
+	left: 5px;
+	width: 880px;
 	background-color: transparent;
 }
 #header1left
 {
-	float: left;
-	background-color: transparent;
+	position: absolute;
+	background-color: transparent
 	height: 100px;
+	left: 1px;
 	width: 124px;
 	color: black;
 }
 #header1left_img
 {
+	position: absolute;
+	top: 12px; 
+	left: 21px; 
 	width: 119px; 
 	height: 98px;"
 }
 #header1main
 {
-	float: left;
+	position: absolute;
+	top: 15px; 
+	left: 130px;
 	width: 600px;
 	height: 100px;
 	background-color: transparent;
@@ -84,10 +93,11 @@ p {
 
 #header1right
 {
-	float: left;
-	background-color: transparent;;
+	position: absolute;
+	background-color: transparent;
 	color: black;
 	height: 100px;
+	right: 0px;
 	width: 180px;
 	top: 15px; 
 	margin-top: 2px;
@@ -103,7 +113,10 @@ p {
 }
 #status1
 {
+	position: absolute;
 	height: 25px;
+	top: 130px;
+	left: 5px;
 	width: 880px;
 	background-color: transparent;
 	border-width: 1;
@@ -111,7 +124,7 @@ p {
 	border-bottom-style: solid;
 	border-top-style:solid;
 	border-left-style:solid;
-	border-right-style: solid;
+	border-right-style: solid
 	margin-top: 2;
 	margin-bottom: 2;
 	margin-left: 0px;
@@ -120,6 +133,7 @@ p {
 }
 #status_menu
 {
+	position: relative;
 	margin-left: 2px;
 	border-style: solid;
 	border-width: 1px;
@@ -132,6 +146,7 @@ p {
 {
 	font-size: smaller;
 	vertical-align: middle;
+	position: relative;
 	height: 24px;
 	vertical-align: texttop;
 	background-color: transparent;
@@ -155,7 +170,6 @@ p {
 
 #menu_tab1
 {
-	float: left;
 	border-top-width: 1px;
 	border-right-width: 1px;
 	border-bottom-width: 1px;
@@ -169,7 +183,11 @@ p {
 	border-bottom-color: silver;
 	border-left-color: silver;
 	color: black;
+	position:absolute;
+	top: 170px;
+	left: 5px;
 	margin_left: 5px;
+	/*  height: 642px; */
 	width: 160px;
 	background-color: transparent;
 }
@@ -270,10 +288,11 @@ p {
 }
 #menu_zurueck_img
 {
+	left: 3px;
 	vertical-align: middle;
 	margin-left-ltr-source: physical;
 	margin-left-rtl-source: physical;
-	margin-right: 5px;
+	margin-right: 5;
 	width: 20px;
 	height: 20px;
 }
@@ -287,7 +306,6 @@ p {
 }
 #datatab
 {
-	float: left;
 	border-top-width: 1px;
 	border-right-width: 1px;
 	border-bottom-width: 1px;
@@ -300,8 +318,11 @@ p {
 	border-left-color: silver;
 	border-right-color: silver;
 	border-bottom-color: silver;
+	position:absolute;
+	top: 170px;
 	background-color: transparent;
-	width: 820px;
+	width: 720px;
+	left: 180px;
 }
 
 #datatable
@@ -318,6 +339,10 @@ p {
 	border-left-color: silver;
 	border-right-color: silver;
 	border-bottom-color: silver;
+	position:absolute;
+	top: 1px;
 	background-color: transparent;
+	width: 720px;
+	left: 1px;
 }
 

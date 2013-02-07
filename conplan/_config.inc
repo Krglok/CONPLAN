@@ -136,6 +136,8 @@ $style_datatab = "id=\"datatab\"";		// default layout fuer Datenbereich
 $css_datalist = "datalist.css";
 // Datenbereich fuer Datensatzliste
 $style_datatab = "id=\"datatab\"";
+$style_datatable = "id=\"datatable\"";
+
 $style_datalist = "id=\"datalist\"";
 // Datensatz counter ??
 $style_data_list_count  = "id=\"data_list_count\"";
@@ -238,5 +240,29 @@ function index2menutyp ($typ ) {
  endswitch;
 
 }
+
+function print_status($wert)
+{
+  global $style_status1;
+  echo "<p $style_status1>$wert </p> \n";
+}
+
+$PHP_SELF = $_SERVER['PHP_SELF'];
+
+
+$menu_item_ich = array ("icon" => "7","caption" => "Ich","link" => "$PHP_SELF?md=2&daten=ich.html");
+$menu_item_imp = array ("icon" => "10","caption" => "Impressum","link" => "$PHP_SELF?md=7&daten=impressum.html");
+
+$menu_item_header = array("icon" => "99","caption" => "<B>Hauptseite</B>","link" => "");
+$menu_item_default = array("icon" => "","caption" => "??","link" => "??");
+
+
+$menu_default = array (
+    0=>$menu_item_header,
+    1=>$menu_item_default,
+    10=>$menu_item_imp,
+    11=>$menu_item_ich
+);
+
 
 ?>

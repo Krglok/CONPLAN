@@ -476,7 +476,7 @@ function get_typ_color($typ)
  *  erstellt einen Kalender als Tabelle
  *  kann direkt in die Datentab geschrieben werden
  */
-function print_kalender()
+function print_kalender($datum)
 {
 	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
 
@@ -489,7 +489,7 @@ function print_kalender()
 	or die("Fehler beim verbinden!");
 
 	mysql_select_db($DB_NAME);
-
+    
 	// aktuelles Datum ermitteln fr STartwoche
 	$t = date("j");
 	$m = date("n");
@@ -519,12 +519,12 @@ function print_kalender()
 	$row = mysql_fetch_row($result);
 	echo "<TR HEIGHT=\"40\" >";
 	echo "\t<TD colspan=10  bgcolor=\"#A0A0C0\" ><FONT COLOR=\"black\">";
-	echo "<FONT FACE=\"Comic Sans MS\" SIZE=\"3\">\n";
+//	echo "<FONT FACE=\"Comic Sans MS\" SIZE=\"3\">\n";
 	echo "<CENTER>Drachenhorst Kalender ".$j;
 	echo "\t</TD>\n";
 	echo "</TR>\n";
-	echo "<TR  HEIGHT=\"30\" >";
-	echo "<FONT FACE=\"Comic Sans MS\" SIZE=\"2\">\n";
+	echo "<TR  HEIGHT=\"25\" >";
+//	echo "<FONT FACE=\"Comic Sans MS\" SIZE=\"2\">\n";
 	echo "\t<td width=\"15\" bgcolor=\"#A0A0C0\" ><FONT COLOR=\"black\">Monat&nbsp;<BR>";
 	echo "</td>\n";
 	echo "\t<td width=\"15\" bgcolor=\"#A0A0C0\" ><FONT COLOR=\"black\">KW </td>\n";
@@ -538,7 +538,7 @@ function print_kalender()
 	echo "\t<td bgcolor=\"".get_typ_color('0')."\" ><FONT COLOR=\"black\">Bemerkung </td>\n";
 	echo "";
 	echo "</TR>";
-	echo "<TR  HEIGHT=\"40\" >";
+	echo "<TR  HEIGHT=\"25\" >";
 	echo "<FONT FACE=\"Comic Sans MS\" SIZE=\"2\">\n";
 	echo "\t<td width=\"15\" bgcolor=\"#A0A0C0\" ><FONT COLOR=\"black\">".get_monat_name($row[3])."</td>\n";
 	echo "\t<td bgcolor=\"#A0A0C0\" > <FONT COLOR=\"black\">$row[2] </td>\n";
@@ -554,8 +554,8 @@ function print_kalender()
 	echo "</TR>";
 	while ($row = mysql_fetch_row($result))
 	{
-		echo "<TR  HEIGHT=\"40\" >";
-		echo "<FONT FACE=\"Comic Sans MS\" SIZE=\"2\">\n";
+		echo "<TR  HEIGHT=\"25\" >";
+		//echo "<FONT FACE=\"Comic Sans MS\" SIZE=\"2\">\n";
 		echo "\t<td width=\"15\" bgcolor=\"#A0A0C0\" ><FONT COLOR=\"black\">".get_monat_name($row[3])."&nbsp;<BR>";
 		echo "</td>\n";
 		echo "\t<td bgcolor=\"#A0A0C0\" > <FONT COLOR=\"black\">$row[2] </td>\n";

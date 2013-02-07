@@ -155,9 +155,9 @@ function print_menu ($menu)
   echo "<div $style >\n";
   
   //  separate div pro Menu item
-  $style = $GLOBALS['style_menu_head'];
-  echo "\t<div  ><!-- Row:1, Col:1 -->\n";
-  echo "\t</div >\n";
+//   $style = $GLOBALS['style_menu_head'];
+//   echo "\t<div  ><!-- Row:1, Col:1 -->\n";
+//   echo "\t</div >\n";
   
   reset ($menu);
   while (list($key, $item) = each ($menu))
@@ -166,24 +166,39 @@ function print_menu ($menu)
   	{
   		if ($key!=98)  // User Menu
   		{
-  		    $style = $GLOBALS['style_menu_list'];
-  			echo "\t<div $style ><!-- Row:1, Col:1 -->\n";
-  			$item = $menu[$key];
+   		  $item = $menu[$key];
   			$item["caption"] = substr($item["caption"],0,16);
   			if ($key!=0) 
   			{
-  			 print_menu_icon($item["icon"]);
-  			 print_menu_ref($item["caption"],$item["link"]);
+  			  if ($item["icon"] != "0") {
+    		      $style = $GLOBALS['style_menu_list'];
+    			  echo "\t<div $style ><!-- Row:1, Col:1 -->\n";
+  			      print_menu_icon($item["icon"]);
+    			  print_menu_ref($item["caption"],$item["link"]);
+                  echo "\t</div >\n";
+  			  } else
+  			  {
+//  		        $style = $GLOBALS['style_menu_space'];
+//  			    echo "\t<div $style ><!-- Row:1, Col:1 -->\n";
+  			    echo "\t\t<hr>";
+//                echo "\t</div >\n";
+  			  }
+  			} else 
+  			{
+  			  $caption = $item["caption"]; 
+  		      $style = $GLOBALS['style_menu_head'];
+  			  echo "\t <div $style >\n";
+  		      echo "$caption";
+              echo "\t </div >\n";
   			};
-            echo "\t</div >\n";
   		} else     // SL - menu
   		{  
-  		    $style = $GLOBALS['style_menu_list'];
   			$l1 = (int) $user_lvl;
   			$l2 = (int) $lvl_sl[14];
   			if ($l1 <= $l2)
   			{
-              echo "\t<div $style ><!-- Row:1, Col:1 -->\n";
+  		      $style = $GLOBALS['style_menu_list'];
+  			  echo "\t<div $style ><!-- Row:1, Col:1 -->\n";
   			  $item = $menu[$key];
               if ($key!=0) 
               {
@@ -195,11 +210,11 @@ function print_menu ($menu)
   		}
   	} else // admin menu
   	{
-  	  $style = $GLOBALS['style_menu_list'];
       $l1 = (int) $user_lvl;
       $l2 = (int) $lvl_admin[14];
       if ($l1 <= $l2)
       {
+  	    $style = $GLOBALS['style_menu_list'];
         echo "\t<div $style ><!-- Row:1, Col:1 -->\n";
         $item = $menu[$key];
         if ($key!=0) 
@@ -211,8 +226,8 @@ function print_menu ($menu)
       };
   	}
   }
+  echo "\t</div >\n";
   
-  echo "</div>\n";
   echo "<!---  Menu Spalte ENDE   --->\n\n";
 };
 
@@ -222,61 +237,81 @@ function print_menu ($menu)
  */
 function print_data($html_file)
 {
-	$ishead = 'true';
-	$html_file = $GLOBALS['path_html'].$html_file;
-	$file = fopen ($html_file, "r");
-	if (!$file)
-	{
-		echo "<p>Datei konnte nicht ge&uuml;ffnet werden.\n";
-		exit;
-	};
-	$style = $GLOBALS['style_datatab'];
-	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+  // keine leere seite anzeigen
+  if (sizeof($html_file) == 0 ) { return; }
+  	
+  $ishead = 'true';
+  $html_file = $GLOBALS['path_html'].$html_file;
+  try {
+    $file = fopen ($html_file, "r");
+    
+  } catch (Exception $e) {
+    $style = $GLOBALS['style_status1'];
+    echo '<p $style> Caught exception: ',  $e->getMessage()," </p>\n";
+  	return;
+  }
+  if (!$file)
+  {
+    $style = $GLOBALS['style_status1'];
+    echo "<p $style>Datei konnte nicht ge&ouml;ffnet werden.</p>\n";
+    return;
+  };
+  $style = $GLOBALS['style_datatab'];
+  echo "<div $style >";
+  echo "<!---  DATEN Spalte   --->\n";
+  
+  $style = $GLOBALS['style_datatable'];
+  echo "<table $style >"; //width=\"920\" border-width=\"1\" border-style=\"solid\" border-color=\"red\">";
+  echo "<tr>";
+  echo "<td>";
+  
+  while (!feof ($file))
+  {
+  	$line = fgets ($file, 1024);
+  	/* Funktioniert nur, wenn Titel und title-Tags in einer Zeile stehen */
+  	if ($ishead!='true')
+  	{
+  		if (preg_match ("</head>", $line, $out, PREG_OFFSET_CAPTURE))
+  		{
+  			$ishead = 'false';
+  		} else
+  		{
+  			if (preg_match ("</body>", $line, $out, PREG_OFFSET_CAPTURE))
+  			{
+  				$ishead = 'false';
+  			} else
+  			{
+  				if (preg_match ("<body>", $line, $out, PREG_OFFSET_CAPTURE))
+  				{
+  					$ishead = 'false';
+  				} else
+  				{
+  					echo $line;
+  				};
+  			};
+  		};
+  	} else
+  	{  //preg_match($pattern, substr($subject,3), $matches, PREG_OFFSET_CAPTURE);
+  	  
+  		if (preg_match("</head>", $line, $out, PREG_OFFSET_CAPTURE))
+  		{
+  			$ishead = 'false';
+  		};
+  		if (preg_match ("</body>", $line, $out))
+  		{
+  			$ishead = 'false';
+  		};
+  	}
+  	//echo $line;
+  
+  };
+  fclose($file);
 
-	while (!feof ($file))
-	{
-		$line = fgets ($file, 1024);
-		/* Funktioniert nur, wenn Titel und title-Tags in einer Zeile stehen */
-		if ($ishead!='true')
-		{
-			if (preg_match ("</head>", $line, $out, PREG_OFFSET_CAPTURE))
-			{
-				$ishead = 'false';
-			} else
-			{
-				if (preg_match ("</body>", $line, $out, PREG_OFFSET_CAPTURE))
-				{
-					$ishead = 'false';
-				} else
-				{
-					if (preg_match ("<body>", $line, $out, PREG_OFFSET_CAPTURE))
-					{
-						$ishead = 'false';
-					} else
-					{
-						echo $line;
-					};
-				};
-			};
-		} else
-		{  //preg_match($pattern, substr($subject,3), $matches, PREG_OFFSET_CAPTURE);
-		  
-			if (preg_match("</head>", $line, $out, PREG_OFFSET_CAPTURE))
-			{
-				$ishead = 'false';
-			};
-			if (preg_match ("</body>", $line, $out))
-			{
-				$ishead = 'false';
-			};
-		}
-		//echo $line;
-
-	};
-	fclose($file);
-	echo "</div>\n";
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+  echo "</td>";
+  echo "</tr>";
+  echo "</table>";
+  echo "</div>\n";
+  echo "<!---  ENDE DATEN Spalte   --->\n";
 };
 
 

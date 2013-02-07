@@ -125,12 +125,21 @@ $PHP_SELF = $_SERVER['PHP_SELF'];
 // Steuerparameter und steuerdaten
 //$c_md   = $_COOKIE['md'];
 //$p_md   = $_POST['md'];
-$md     = $_GET['md'];
-$daten  = $_GET['daten'];
+$md=0;
+$daten="";
+if (isset($_GET['md'])==true) 
+{
+  $md     = $_GET['md'];
+}
+if (isset($_GET['daten'])==true) 
+{
+  $daten  = $_GET['daten'];
+}
 
 //echo "POST : $p_md / GET : $md / THEMEN :$THEMEN ";
+global $menu_default;
 
-$menu = array (0=>array("icon" => "99","caption" => "<B>Hauptseite</B>","link" => ""),
+$menu = array (0=>array("icon" => "99","caption" => "Hauptseite","link" => "ss"),
 		1=>array ("icon" => "7","caption" => "Übersicht","link" => "$PHP_SELF?md=0&daten=main.html"),
 		2=>array ("icon" => "5","caption" => "News","link" => "$PHP_SELF?md=1&daten=news.php"),
 		3=>array ("icon" => "5","caption" => "Termine","link" => "$PHP_SELF?md=4"),
@@ -151,7 +160,7 @@ $menu = array (0=>array("icon" => "99","caption" => "<B>Hauptseite</B>","link" =
 		31=>array ("icon" => "1","caption" => "Draskoria","link" => "http://draskoria.game-host.org:8090/\"target=_blank\""),
 		32=>array ("icon" => "1","caption" => "Download","link" => "main_download.php","daten"=>""),
 		33=>array ("icon" => "5","caption" => "Links","link" => "$PHP_SELF?md=2&daten=links.html"),
-		34=>array ("icon" => "7","caption" => "Ich","link" => "$PHP_SELF?md=2&daten=spieler/olaf.html"),
+		34=>array ("icon" => "7","caption" => "Ich","link" => "$PHP_SELF?md=2&daten=ich.html"),
 		35=>array ("icon" => "10","caption" => "Impressum","link" => "$PHP_SELF?md=7&daten=Impressum.html")
 );
 
@@ -159,13 +168,13 @@ $menu = array (0=>array("icon" => "99","caption" => "<B>Hauptseite</B>","link" =
 print_md();
 // Erstellt aus linke Mnue
 print_menu($menu);
-// Auswahlder Aktion durch $md
+// Auswahl der Aktion durch $md
 // und erstellen das Datenbereiches
 switch ($md):
 case 0: // MAIN MENU
 	$daten='main.html';
     print_data($daten);
-break;
+    break;
 case 1:
 	print_news();
 	break;
@@ -176,7 +185,9 @@ case 3: // MAIN MENU
 	print_sc_liste();
 	break;
 case 4: // MAIN MENU
-	print_kalender();
+    //CurDate()
+    $datum = strtotime('01/01/2009');
+	print_kalender($datum);
 	break;
 case 6: // MAIN MENU
 	print_data($daten);
@@ -187,7 +198,7 @@ case 7: // ??? zeigt was ?
 default: // MAIN MENU    
 	print_news();
 	break;
-	endswitch;
+endswitch;
 
 	// Abschluss der Tabelle fuer Bereich Menue / Daten
 	print_md_ende();
