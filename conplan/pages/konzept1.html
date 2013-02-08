@@ -11,8 +11,17 @@
   <link rel="stylesheet" type="text/css" href="../Layout/konzept1.css">
 
   <style type="text/css">
-/* div { border:1px solid #888; } */
   </style>
+<script type="text/javascript">
+function Fenstername () {
+	Fenster = window.open("main.html", "KleinesFenster", "width=400,height=200");
+  alert("Name des kleinen Fensters: " + Fenster.name);
+  neu = prompt("Vergeben Sie einen neuen Fensternamen", "Name");
+  Fenster.name = neu;
+  alert("Der Name des Fensters lautet jetzt: " + Fenster.name);
+}
+</script>
+  
 </head>
 
 <body id="div_1">
@@ -35,7 +44,8 @@
 				
 				<div id="menu_status_r">
 					<img id="menu_zurueck_img" alt="LOGO" src="../layout/button/_key.gif">
-					<a id="menu_link" href="login.html">Login2</a>
+					<a href="javascript:Fenstername()">Login2</a>
+					<a id="menu_link" href="login.html"></a>
 				</div>
 
 			</div>
