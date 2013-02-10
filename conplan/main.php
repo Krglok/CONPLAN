@@ -57,7 +57,7 @@ einen veraenderte Konfiguration eingestellt
 - LOGO Mitte
 - Text1, Text2  fuer rechte Seite
 
-Ver 3.0
+Ver 3.0 / 04.02.2013
 Es werden CSS-Dateien verwendert. 
 Es wird eine strikte Trennung von Content und Layout durchgefuehrt.
 Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues 
@@ -82,7 +82,7 @@ function print_news()
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
 	echo "<!---  DATEN Spalte   --->\n";
-	echo "<TABLE WIDTH=\"500\"  BORDER=\"0\" BGCOLOR=\"\" >";
+	echo "<TABLE >";
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
 	or die("Fehler beim verbinden!");
 
@@ -94,7 +94,7 @@ function print_news()
 	while ($row = mysql_fetch_row($result))
 	{
 		echo "<TR>";
-		echo "<td width=\"95\">$row[0]&nbsp;<BR><BR><BR>";
+		echo "<td>$row[0]&nbsp;<BR><BR><BR>";
 		echo "</td>\n";
 		echo "<td>$row[1]<BR>$row[2]<BR>$row[3]<BR>";
 		echo "</td>\n";
@@ -104,7 +104,8 @@ function print_news()
 	mysql_close($db);
 	echo '</TABLE>';
 	echo '</div>';
-};
+	echo "<!---  ENDE DATEN Spalte   --->\n";
+	};
 
 
 
@@ -119,7 +120,6 @@ function print_news()
 
 print_header("Hauptseite");
 print_body(2);
-print_kopf($logo_typ,$header_typ,"Öffentlich","Sei gegrüsst Freund ",$loginRef);
 
 $PHP_SELF = $_SERVER['PHP_SELF'];
 // Steuerparameter und steuerdaten
@@ -136,23 +136,26 @@ if (isset($_GET['daten'])==true)
   $daten  = $_GET['daten'];
 }
 
+$menu_item = array("icon" => $menu_help, "caption" => "Help","link" => "javascript:openHelp()");
+print_kopf($logo_typ,$header_typ,"Öffentlich","Sei gegrüsst Freund ",$menu_item);
+
 //echo "POST : $p_md / GET : $md / THEMEN :$THEMEN ";
 global $menu_default;
 
 $menu = array (0=>array("icon" => "99","caption" => "Hauptseite","link" => "ss"),
 		1=>array ("icon" => "7","caption" => "Übersicht","link" => "$PHP_SELF?md=0&daten=main.html"),
-		2=>array ("icon" => "5","caption" => "News","link" => "$PHP_SELF?md=1&daten=news.php"),
+		2=>array ("icon" => "5","caption" => "News","link" => "$PHP_SELF?md=5"),
 		3=>array ("icon" => "5","caption" => "Termine","link" => "$PHP_SELF?md=4"),
 		4=>array ("icon" => "5","caption" => "Liberi Effera","link" => "http://www.liberi-effera.de/"),
 		5=>array ("icon" => "13","caption" => "Innerer Zirkel","link" => "$PHP_SELF?md=2&daten=slogin.html"),
 		6=>array ("icon" => "0","caption" => "","link" => ""),
-		10=>array ("icon" => "7","caption" => "Kurzdarstellung","link" => "$PHP_SELF?md=6&daten=kurzdars.html"),
-		11=>array ("icon" => "7","caption" => "LPD","link" => "$PHP_SELF?md=7&daten=lpd.html"),
+		10=>array ("icon" => "7","caption" => "Kurzdarstellung","link" => "$PHP_SELF?md=&2&daten=kurzdars.html"),
+		11=>array ("icon" => "7","caption" => "LPD","link" => "$PHP_SELF?md=2&daten=lpd.html"),
 		12=>array ("icon" => "1","caption" => "Unsere Regeln","link" => "main_regeln.php?md=0"),
 		13=>array ("icon" => "7","caption" => "Unser Spielgebiet","link" => "$PHP_SELF?md=2&daten=weg_viet.html"),
 		14=>array ("icon" => "1","caption" => "Unsere Spieler","link" => "main_spieler.php?md=0"),
 		20=>array ("icon" => "0","caption" => "","link" => ""),
-		21=>array ("icon" => "1","caption" => "Das Land","link" => "main_land.php?md=0&daten=land/land.html"),
+		21=>array ("icon" => "1","caption" => "Das Land","link" => "main_pages.php?md=0"),
 		22=>array ("icon" => "1","caption" => "Neue Chronik","link" => "main_chronik.php"),
 		23=>array ("icon" => "1","caption" => "Ausrüstung","link" => "main_ausruestung.php"),
 		24=>array ("icon" => "1","caption" => "Bilder","link" => "main_bilder.php?md=0"),
@@ -161,7 +164,7 @@ $menu = array (0=>array("icon" => "99","caption" => "Hauptseite","link" => "ss")
 		32=>array ("icon" => "1","caption" => "Download","link" => "main_download.php","daten"=>""),
 		33=>array ("icon" => "5","caption" => "Links","link" => "$PHP_SELF?md=2&daten=links.html"),
 		34=>array ("icon" => "7","caption" => "Ich","link" => "$PHP_SELF?md=2&daten=ich.html"),
-		35=>array ("icon" => "10","caption" => "Impressum","link" => "$PHP_SELF?md=7&daten=Impressum.html")
+		35=>array ("icon" => "10","caption" => "Impressum","link" => "$PHP_SELF?md=2&daten=Impressum.html")
 );
 
 // Erstellt den Tabellenkopf fuer den Bereich Menue / Daten
@@ -173,27 +176,22 @@ print_menu($menu);
 switch ($md):
 case 0: // MAIN MENU
 	$daten='main.html';
+    print_pages($daten);
+    break;
+case 1: // html die in pages liegen
     print_data($daten);
     break;
-case 1:
-	print_news();
-	break;
-case 2: // MAIN MENU
-	print_data($daten);
+case 2: // html der nicht in pages liegt
+	print_pages($daten);
 	break;
 case 3: // MAIN MENU
 	print_sc_liste();
 	break;
 case 4: // MAIN MENU
-    //CurDate()
-    $datum = strtotime('01/01/2009');
-	print_kalender($datum);
+	print_kalender();
 	break;
-case 6: // MAIN MENU
-	print_data($daten);
-	break;
-case 7: // ??? zeigt was ?
-	print_data($daten);
+case 5:
+	print_news();
 	break;
 default: // MAIN MENU    
 	print_news();

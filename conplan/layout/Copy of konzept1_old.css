@@ -1,0 +1,348 @@
+/*
+Datum   :  $date$  / 03.02.2013
+
+Rev.    :  $rev$   / 3.0
+
+Author  :  $author$  / krglok
+
+*/
+@CHARSET "ISO-8859-1";
+
+p {
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: silver;
+	border-right-color: silver;
+	border-bottom-color: silver;
+	border-left-color: silver;
+	margin-top: 1px;
+	margin-bottom: 1px;
+}
+
+#div_1
+{
+	/* fuer den body */
+	background-color: rgb(200, 200, 200);
+	font-family: Calibri;
+	font-size: medium;
+	background-image: url(back/back.jpg);
+}
+#page_1
+{
+    position:absolute;
+	width: 900px;
+	height: auto;
+	align: center;
+	border-color: green;
+	border-width: 1px;
+	border-style: solid;
+	left: 105px;
+	background-color: transparent;
+}
+
+}
+#header1
+{
+    position:absolute;
+	color: black;
+	height: 102px;
+	top: 15px;
+	left: 5px;
+	width: 880px;
+	background-color: transparent;
+}
+#header1left
+{
+	position: absolute;
+	background-color: transparent
+	height: 100px;
+	left: 1px;
+	width: 124px;
+	color: black;
+}
+#header1left_img
+{
+	position: absolute;
+	top: 12px; 
+	left: 21px; 
+	width: 119px; 
+	height: 98px;"
+}
+#header1main
+{
+	position: absolute;
+	top: 15px; 
+	left: 130px;
+	width: 600px;
+	height: 100px;
+	background-color: transparent;
+	text-align: center;
+	font-size: 200%;
+}
+#header1main_img
+{
+	width: 448px; 
+	height: 96px;	
+}
+
+#header1right
+{
+	position: absolute;
+	background-color: transparent;
+	color: black;
+	height: 100px;
+	right: 0px;
+	width: 180px;
+	top: 15px; 
+	margin-top: 2px;
+	margin-bottom: 2px;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+#bereich_head
+{
+	text-align: center;
+	vertical-align: texttop;
+	background-color: white;
+}
+#status1
+{
+	position: absolute;
+	height: 25px;
+	top: 130px;
+	left: 5px;
+	width: 880px;
+	background-color: transparent;
+	border-width: 1;
+	border-color: silver;
+	border-bottom-style: solid;
+	border-top-style:solid;
+	border-left-style:solid;
+	border-right-style: solid
+	margin-top: 2;
+	margin-bottom: 2;
+	margin-left: 0px;
+	margin-right: 0px;
+	padding-left: 5px;
+}
+#status_menu
+{
+	position: relative;
+	margin-left: 2px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: silver;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+#status_menu_r
+{
+	font-size: smaller;
+	vertical-align: middle;
+	position: relative;
+	height: 24px;
+	vertical-align: texttop;
+	background-color: transparent;
+	border-width: 1px;
+	border-style: solid;
+	border-top-color: silver;
+	border-right-color: silver;
+	border-bottom-color: gray;
+	border-left-color: gray;
+}
+#status_zurueck
+{
+	font-size: smaller;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	vertical-align: middle;
+	position: absolute;
+	height: 20px;
+	left: 175px;
+}
+
+#menu_tab1
+{
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: silver;
+	border-right-color: silver;
+	border-bottom-color: silver;
+	border-left-color: silver;
+	color: black;
+	position:absolute;
+	top: 170px;
+	left: 5px;
+	margin_left: 5px;
+	/*  height: 642px; */
+	width: 160px;
+	background-color: transparent;
+}
+#menu_head
+{
+	text-align: center;
+	font-size: larg;
+	font-weight: bold;
+	margin-top: 1px;
+	margin-bottom: 5px;
+	color: gray;
+}
+#menu_space
+{
+	text-align: center;
+	font-size: medium;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	color: darkgray;
+}
+#menu_folder
+{
+	font-weight: normal;
+	text-align: left;
+	margin-top: 2px;
+	margin-left: 5;
+	margin-bottom: 2px;
+	vertical-align: middle;
+	height: 26px;
+}
+#menu_list
+{
+	font-weight: normal;
+	font-size: medium;
+	text-align: left;
+	margin-top: 2px;
+	margin-left: 3;
+	margin-bottom: 2px;
+	vertical-align: middle;
+	height: 26px;
+}
+#menu_page
+{
+	font-weight: normal;
+	font-size: medium;
+	text-align: left;
+	margin-top: 2px;
+	margin-left: 5;
+	margin-bottom: 2px;
+	vertical-align: middle;
+	height: 26px;
+}
+#menu_zurueck
+{
+	font-weight: normal;
+	font-size: medium;
+	text-align: left;
+	margin-top: 2px;
+	margin-left: 3px;
+	margin-bottom: 2px;
+	vertical-align: middle;
+	height: 26px;
+}
+#menu_folder_img
+{
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: -moz-use-text-color;
+	border-right-color: -moz-use-text-color;
+	border-bottom-color: -moz-use-text-color;
+	border-left-color: -moz-use-text-color;
+	left: 5px;
+	vertical-align: middle;
+	width: 24px;
+	height: 24px;
+}
+#menu_list_img
+{
+	left: 3px;
+	vertical-align: middle;
+	margin-left-ltr-source: physical;
+	margin-left-rtl-source: physical;
+	width: 24px;
+	height: 24px;
+}
+#menu_page_img
+{
+	left: 3px;
+	vertical-align: middle;
+	width: 22px;
+	height: 22px;
+}
+#menu_zurueck_img
+{
+	left: 3px;
+	vertical-align: middle;
+	margin-left-ltr-source: physical;
+	margin-left-rtl-source: physical;
+	margin-right: 5;
+	width: 20px;
+	height: 20px;
+}
+#menu_link
+{
+	background-color: rgb(245, 234, 228);
+	vertical-align: middle;
+	margin-left-value: 5px;
+	margin-left-ltr-source: physical;
+	margin-left-rtl-source: physical;
+}
+#datatab
+{
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: silver;
+	border-left-color: silver;
+	border-right-color: silver;
+	border-bottom-color: silver;
+	position:absolute;
+	top: 170px;
+	background-color: transparent;
+	width: 720px;
+	left: 180px;
+}
+
+#datatable
+{
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: silver;
+	border-left-color: silver;
+	border-right-color: silver;
+	border-bottom-color: silver;
+	position:absolute;
+	top: 1px;
+	background-color: transparent;
+	width: 720px;
+	left: 1px;
+}
+

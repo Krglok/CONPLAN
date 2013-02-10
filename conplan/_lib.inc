@@ -46,33 +46,162 @@ include_once '_config.inc';
  * @param unknown $typ
  * @param string $info
  */
-function print_menu_icon ($typ,$info = " ")
+function print_menu_icon ($typ,$info = "??")
 {
   // convert int to string of icon type  
-  $typ = index2menutyp($typ);
-  $style = $GLOBALS['style_menu_list_img'];
-  $typ = $GLOBALS['layoutButton_path'].$typ;
+  //$typ = index2menutyp($typ);
+  $icon = $GLOBALS['layoutButton_path'].$typ.".gif";
+//  echo $icon;
   if ($typ != "") 
   {
-  	echo "\t<IMG $style SRC=\"$typ\"  ALT=\"$info\" TITLE=\"$info\">";
+  	echo "\t<IMG SRC=\"$icon\"  ALT=\"$info\" TITLE=\"$info\">";
   } else {
   	echo "\t[X]"; // Leerzeile
   }
 };
 
 /**
+ * Erzeugt einen Linkentrag mit default style
+ * @param unknown $caption  sichtbarer text
+ * @param unknown $ref  linkdaten, voll qualifiziert
+ */
+function print_menu_ref($caption, $ref)
+{
+  echo "            <A HREF=\"$ref\" > ";
+  echo "            $caption ";
+  echo "            </A>\n";
+};
+
+function print_menu_item($item)
+{
+  global $PHP_SELF;
+  $caption = $item["caption"];
+  $link=$item["link"];
+  $ref = $link;
+  // Reftyp zusammenbauen
+  $itemtyp = $item['itemtyp'];
+  if ($item['itemtyp'] == "1")
+  {
+    $ref = "$PHP_SELF?md=1&daten=$link";
+  }
+  if ($item['itemtyp'] == "2")
+  {
+    $ref = "$PHP_SELF?md=2&daten=$link";
+  }
+  if ($item['itemtyp'] = "100")
+  {
+    $ref = "$PHP_SELF?md=$itemtyp&daten=$link";
+  }
+  if ($item['itemtyp'] = "101")
+  {
+    $ref = "$PHP_SELF?md=$itemtyp&daten=$link";
+  }
+  
+  echo "          <p>  \n";
+  echo "            <a HREF=\"$ref\" > ";
+  print_menu_icon($item["icon"]);
+  echo "            $caption ";
+  echo "            </a>\n";
+  echo "          </p>  \n";
+
+}
+
+/**
+ * Erzeugt ein Menu mit default style
+ * @param unknown $menu  array mit menu daten
+ */
+function print_menu ($menu)
+{
+  global $user_lvl, $lvl_admin,$lvl_sl;
+
+  //   menü spalte
+  echo "<!---  Menu Spalte   --->\n";
+  //  stellt die breite der Menüspalte ein !!!
+  $style = $GLOBALS['style_menu_tab1'];
+  echo "<div $style >\n";
+
+  //  separate div pro Menu item
+  //   $style = $GLOBALS['style_menu_head'];
+  //   echo "\t<div  ><!-- Row:1, Col:1 -->\n";
+  //   echo "\t</div >\n";
+  $item = $menu["0"];
+  $caption = $item["caption"];
+  $style = $GLOBALS['style_menu_head'];
+  echo "\t <div $style >\n";
+  echo "$caption \n";
+  echo "\t </div >\n";
+
+  $style = $GLOBALS['style_menu_item'];
+  echo "\t\t<div $style ><!-- Row:1, Col:1 -->\n";
+
+  reset ($menu);
+  while (list($key, $item) = each ($menu))
+  {
+    if ($key!=99)  // sl oder user menu
+    {
+      if ($key!=98)  // User Menu
+      {
+        $item = $menu[$key];
+        $item["caption"] = substr($item["caption"],0,19);
+        if ($key!=0)
+        {
+          if ($item["icon"] != "0") {
+            print_menu_item($item);
+          } else
+          {
+            //  		        $style = $GLOBALS['style_menu_space'];
+            //  			    echo "\t<div $style ><!-- Row:1, Col:1 -->\n";
+            echo "\t\t<hr> \n";
+            //                echo "\t</div >\n";
+          }
+        } else
+        {
+          // 0 wird nicht gedruckt, ist der header
+        };
+      } else     // SL - menu
+      {
+        $l1 = (int) $user_lvl;
+        $l2 = (int) $lvl_sl[14];
+        if ($l1 <= $l2)
+        {
+          $item = $menu[$key];
+          if ($key!=0)
+          {
+            print_menu_item($item);
+          };
+        };
+      }
+    } else // admin menu
+    {
+      $l1 = (int) $user_lvl;
+      $l2 = (int) $lvl_admin[14];
+      if ($l1 <= $l2)
+      {
+        $item = $menu[$key];
+        if ($key!=0)
+        {
+          print_menu_item($item);
+        };
+      };
+    }
+  }
+  echo "\t\t</div >\n";
+  echo "\t</div >\n";
+  echo "<!---  Menu Spalte ENDE   --->\n\n";
+};
+
+/**
  * Ausgabe des Logo image anhand des default style 
  * @param unknown $typ
  */
-function print_header_icon ($typ,$style)
+function print_header_icon ($typ)
 {
 	$typ = $GLOBALS['layoutImages_path'].$typ;
-	//$style = $GLOBALS['style_header1left_img'];
 	if($typ != "") 
 	{
-		echo "\t<IMG $style SRC=\"$typ\" >";
+		echo "\t<IMG SRC=\"$typ\" >";
 	} else{
-		
+		echo "<p> HIER FEHLT EIN BILD   </p>";
 	}
 };
 
@@ -476,7 +605,7 @@ function get_typ_color($typ)
  *  erstellt einen Kalender als Tabelle
  *  kann direkt in die Datentab geschrieben werden
  */
-function print_kalender($datum)
+function print_kalender()
 {
 	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
 
@@ -573,7 +702,8 @@ function print_kalender($datum)
 
 	mysql_close($db);
 	echo '      </TABLE>';
-	echo '  </div>';
+	echo '</div>';
+	echo "<!---  ENDE DATEN Spalte   --->\n";
 	//=========== print_kalender_end ========================
 };
 
@@ -586,6 +716,9 @@ function print_sc_liste()
 {
 	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
 
+	$style = $GLOBALS['style_datatab'];
+	echo "<div $style >";
+	echo "<!---  DATEN Spalte   --->\n";
 	echo "<table border=0 WIDTH=\"600\">\n";
 
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
@@ -625,6 +758,8 @@ function print_sc_liste()
 	echo "    </TD>\n";
 
 	echo "</table>\n";
+	echo '</div>';
+	echo "<!---  ENDE DATEN Spalte   --->\n";
 }
 
 /**

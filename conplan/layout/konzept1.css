@@ -1,49 +1,221 @@
+/*
+Datum   :  $date$  / 09.02.2013
+
+Rev.    :  $rev$   / 3.0
+
+Author  :  $author$  / krglok
+
+*/
+@CHARSET "ISO-8859-1";
+
 body {
-      margin-left: 20 auto;
-      margin-right: 20 auto;
-      background-color: transparent;
-      font-family: helvetica, arial, tahoma, sans-serif;
-      font-size: 100.1%;
-      color: #000000;}
+    background-color: transparent;
+	font-family: Calibri;
+	font-size: normal;
+    color: #000000;
+   	background-image:url("back/back.jpg");
+/*	background-image: url("back/paper.jpg");    /*url("back/bground_karte.jpg");*/
+}
       
       
 #page {
-      margin-left: 5px;
-      margin-right: 5px;
-      margin-top: 5px;
-      margin-bottom: 5px; 
-      width: 1000px;
-      background-image:url("back/back.jpg");
+	width: 1000px;
+  	margin: 0 auto;
+   	width: 1000px;
+   	height: 100%;
+/*   	background-image:url("back/back.jpg");*/
+}
+
+#headertab {
+	width: 100%;
+	height: 100px;
+	padding: 20px;
+    border: solid 0px silver;
+}
+
+#headertableft {
+	float: left;
+}
+
+#headertableft img {
+	width: 119px; 
+	height: 98px; 
+}
+
+#headertabmidle {
+	float: left;
+	margin-top: 12px; 
+	margin-left: 50px; 
+	margin-right: 50px; 
+	width: 500px;
+}
+
+#headertabmidle img {
+	width: 480; 
+	height: 98px; 
+	border: solid 0px silver;
+}
+
+#headertabright {
+	float: right;
+	width: 250px;
+	border: solid 1px silver;
+}
+
+#headertabright p {
+	text-align: center;
+	height: 21px;
+	margin-top: 3px; 
+	margin-left: 3px; 
+	margin-right: 3px;
+	margin-bottom: 1px; 
+}
+	
+#headertabright div {
+	height: 25px;
+	width: 100%;
+	margin-top: 3px; 
+	margin-left: 3px; 
+	margin-right: 3px;
+	margin-bottom: 1px; 
+}
+
+#headertabright div a {color: gray;
+         text-decoration: none;
+         font-weight: normal;
+         display: block;
+         border: solid 0px silver;
+}
+
+/*  will not do in ie9, so disabled
+#headertabright div:hover {
+	background-color: silver;
+	}
+*/	
+#headertabright div a:hover {
+	color: black;
+    border: solid 1px black;
+}
+
+#headertabright img {
+	width: 16px;
+	height: 16px;
+	vertical-align: middle;
+    border: solid 0px silver;
+    padding-right: 5px;
+    margin-right: 0px;
+}
+
+#status {
+	width: 100%;
+	border: solid 1px silver;
+	padding-left: 10px;
 }
 
 #menu {
-      border: solid 1px silver;
-      width:11em;
-	
+    float: left;
+    width:190px;
+    padding: 5px;
+	float: left;
+	border: solid 1px silver;
 }
 
-#menu p {
-	margin-left: 10px;
+#menuheader {
+	border: solid 1px silver;
+    width:100%;
+	font-size: medium;
+    text-align: center;
+}
+
+#menuheader p {
+	text-align: center;
+	font-weight: bold;
+}
+
+
+#menuitem {
+	color: black;
+	border: solid 1px silver;
+    width:100%;
+}
+
+#menuitem p {
+	margin-top: 1px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-bottom: 1px;
+	text-align: left;
+	font-weight: normal;
+}
+
+#menuitem p a {
+		color: gray;
+        text-decoration: none;
+        font-weight: normal;
+        display: block;
+        border: solid 1px silver;
+}
+
+/*  will not do in ie9, so disabled */
+#menuitem p:hover {
+/*	background-color: silver; */
+    border: solid 1px black;
+}
+#menuitem p a:hover {
+	color: black;
+    border: solid 1px black;
+}
+
+#menuitem img {
+	width: 25px;
+	height: 25px;
+	vertical-align: middle;
+    border: solid 0px silver;
+    margin-right: 1px;
 }
 
 #menu ul {
-         margin-left: 3px;
+	margin-left: 0px;
+	margin-right: 0px;
+	width: 0px;
 }
 
 #menu li{list-style-type: none;
          background-color: transparent;
          border: solid 0px silver;
          width: 10em;
-         padding: 2px;
+         padding: 1px;
          text-align: left;
          margin-left: 0px;
          }
 
 #menu li a {color: gray;
          text-decoration: none;
-         font-weight: bold;
+         font-weight: normal;
          display: block;
          border: solid 0px silver;
 }
 #menu li:hover {background-color: silver;}
 #menu li a:hover {color: black;}
+
+#datatab {
+    margin-left: 252px;
+  	padding: 20px;
+/*	font-family: inherit; /* monospace; /* cursive; /*  serif; /*   sans-serif;*/*/
+	font-weight: normal;
+	font-size: normal;
+}
+#datatab p{
+	font-family: "Comic Sans MS"";
+}
+
+#datatab td{
+	vertical-align: text-top;	
+}
+
+#help_1 {
+      	margin-top: 5px;
+      	margin-bottom: 5px; 
+      	background-image:url("back/paper.jpg");
+	
+}

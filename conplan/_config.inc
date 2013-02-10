@@ -46,6 +46,7 @@ $session_id ="FFFF";
 // allgemeine Konfigurationsparameter
 $version = "3.0.0";
 $grp_name="Drachenhorst";			// Refrenzname fuer Homepage
+$main_php="main.php";
 
 // Pfade die automatisch verwendet werden  ------------
 $path_img 		= "./images";		// Dies sind die Content Bilder
@@ -80,55 +81,41 @@ $text_color  = "black";             // default Textfarbe sollte mit BG_pic abges
 $logo_typ = "logo.gif";
 $header_typ = "drachenhorst.gif";
 
-// Menu Icons
-$menu_add 		= "_add.gif";		// Insert Datensatz
-$menu_db 		= "_db.gif";		// db zugriff
-$menu_del 		= "_del.gif";   	// delete Datensatz
-$menu_edit 		= "_edit.gif";		// edit Datensatz
-$menu_folder	= "_folder.gif";	// Weitere Menupage
-$menu_help 		= "_help.gif";		// help page oder function
-$menu_kalender 	= "_kalender.gif";	// kalender funktion
-$menu_key 		= "_key.gif";		// login logo
-$menu_list 		= "_list.gif";		// list page
-$menu_page 		= "_page.gif";		// html seite oder einzal page
-$menu_point 	= "_point.gif";		// einfacher punkt
-$menu_printer 	= "_printer.gif";	// drucken
-$menu_stop 		= "_stop.gif";		// zurück / back
-$menu_text 		= "_text.gif";		// text page
-$menu_tool 		= "_tool.GIF";		// tools
-$menu_zip 		= "_zip.gif";		// download
+// Menu Icons, die Icons muesse GIF sein !!!!
+$menu_add 		= "_add";		// Insert Datensatz
+$menu_db 		= "_db";		// db zugriff
+$menu_del 		= "_del";   	// delete Datensatz
+$menu_edit 		= "_edit";		// edit Datensatz
+$menu_folder	= "_folder";	// Weitere Menupage
+$menu_help 		= "_help";		// help page oder function
+$menu_kalender 	= "_kalender";	// kalender funktion
+$menu_key 		= "_key";		// login logo
+$menu_list 		= "_list";		// list page
+$menu_page 		= "_page";		// html seite oder einzal page
+$menu_point 	= "_point";		// einfacher punkt
+$menu_printer 	= "_printer";	// drucken
+$menu_stop 		= "_stop";		// zurück / back
+$menu_text 		= "_text";		// text page
+$menu_tool 		= "_tool";		// tools
+$menu_zip 		= "_zip";		// download
 
 //class, id Namen Basis Page
 $css_konzept1 = "konzept1.css";
 
-$style_div_1 = "id=\"div_1\"";
-$style_page_1 = "id=\"page_1\"";
+$style_page_1 = "id=\"page\"";
 // horizontaler header oben in der seite
-$style_header_1 = "id=\"header1\"";
-$style_headerleft = "id=\"header1left\"";
-$style_header1left_img = "id=\"header1left_img\"";
-$style_header1main = "id=\"header1main\"";
-$style_header1main_img = "id=\"header1main_img\"";
-$style_header1right = "id=\"header1right\"";
-$style_bereich_head = "id=\"#bereich_head\"";
-// horizontale Statuszeuile unterhalb des Headers
-$style_status1 = "id=\"status1\"";
-$style_status_menu = "id=\"status_menu\"";
-$style_status_menu_r = "id=\"status_menu_r\"";
-$style_status_zurueck = "id=\"status_zurueck\"";
+$style_header_1 = "id=\"headertab\"";
+$style_headerleft = "id=\"headertableft\"";
+$style_headermain = "id=\"headertabmidle\"";
+$style_headerright = "id=\"headertabright\"";
+// horizontale Statuszeile unterhalb des Headers
+$style_status1 = "id=\"status\"";
+$style_status_menu = "id=\"statusmenu\"";
+$style_status_menu_r = "id=\"statusmenur\"";
 // vertikales Menu in eigenem div unterhalb des Headers und Status
-$style_menu_tab1 = "id=\"menu_tab1\"";
-$style_menu_head = "id=\"menu_head\"";
-$style_menu_space = "id=\"menu_space\"";
-$style_menu_folder = "id=\"menu_folder\"";
-$style_menu_list = "id=\"menu_list\"";
-$style_menu_page = "id=\"menu_page\"";
-$style_menu_zurueck = "id=\"menu_zurueck\"";
-$style_menu_folder_img = "id=\"menu_folder_img\"";
-$style_menu_list_img = "id=\"menu_list_img\"";
-$style_menu_page_img = "id=\"menu_page_img\"";
-$style_menu_zurueck_img = "id=\"menu_zurueck_img\"";
-$style_menu_link = "id=\"menu_link\"";
+$style_menu_tab1 = "id=\"menu\"";
+$style_menu_head = "id=\"menuheader\"";
+$style_menu_item = "id=\"menuitem\"";
 // datenbereich neben Menu , unterhalb des Headers
 $style_datatab = "id=\"datatab\"";		// default layout fuer Datenbereich
 
@@ -137,27 +124,14 @@ $css_datalist = "datalist.css";
 // Datenbereich fuer Datensatzliste
 $style_datatab = "id=\"datatab\"";
 $style_datatable = "id=\"datatable\"";
-
-$style_datalist = "id=\"datalist\"";
 // Datensatz counter ??
 $style_data_list_count  = "id=\"data_list_count\"";
-// Datensatz zeile
-$style_datalist_tr = "id=\"datalist.tr\"";
-//datensatz Headerzeile
-$style_data_table_header  = "id=\"data_table_header\"";
-// Edit spalte , link zur Detailseite
-$style_data_table_edit = "id=\"data_table_edit\"";
-// freie spalte zum ausgleich der festen breiten
-$style_data_table_rest = "id=\"data_table_rest\"";
-// Datensatz Zeile fuer Daten
-$style_data_table_row = "id=\"data_table_row\"";
+//Datensatzliste
+$style_datalist = "id=\"datalist\"";
 // Eingabe fuer Detailmaske, variable breite
 $style_data_detail = "id=\"data_detail\"";
-// Zeile fuer Detailmaske, pro Zeile ein datenfeld
-$style_data_detail_row = "id=\"data_detail_row\"";
 // textspalte ohne fuer Detailmaske, feste breite
 $style_data_text = "id=\"data_text\"";
-
 
 //class , id name Balkemnenu
 $css_balkenmenu = "balkenmenu.css";
@@ -165,11 +139,8 @@ $style_balken_tab = "id=\"balken_tab\"";
 $style_balken_menu1 = "id=\"balken_menu1\"";
 $style_balken_menu2 = "id=\"balken_menu2\"";
 $style_balken_menu_r = "id=\"balken_menu_r\"";
-$style_balken_menu_img = "id=\"balken_menu_img\"";
 $style_balken_data = "id=\"balken_data\"";
 $style_balken_page = "id=\"balken_page\"";
-$style_balken_page_h1 = "id=\"balken_page h1\"";
-$style_balken_page_p = "id=\"balken_page p\"";
 
 
 // Zugriffsrechte -------------------------------------
@@ -203,8 +174,8 @@ function index2menutyp ($typ ) {
   $menu_text, 	
   $menu_tool, 	
   $menu_zip;
-  
- switch ($typ) :
+ $i = (int)$typ;
+ switch ($i) :
  case 99:
   return "_none";
   break;
@@ -254,7 +225,7 @@ $menu_item_ich = array ("icon" => "7","caption" => "Ich","link" => "$PHP_SELF?md
 $menu_item_imp = array ("icon" => "10","caption" => "Impressum","link" => "$PHP_SELF?md=7&daten=impressum.html");
 
 $menu_item_header = array("icon" => "99","caption" => "<B>Hauptseite</B>","link" => "");
-$menu_item_default = array("icon" => "","caption" => "??","link" => "??");
+$menu_item_default = array("icon" => $menu_stop,"caption" => "??","link" => "$main_php?md=0");
 
 
 $menu_default = array (
@@ -263,6 +234,284 @@ $menu_default = array (
     10=>$menu_item_imp,
     11=>$menu_item_ich
 );
+
+$menu_bereich = array("PK"=>0, "bereich"=>"","titel"=>"","lvl"=>0);
+$menu_bereiche = array("PUBLIC"=>$menu_bereich, "SL"=>$menu_bereich, "AUTHOR"=>$menu_bereich, "ADMIN"=>$menu_bereich);
+
+function get_menu_bereiche()
+{
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $menu_bereich;
+  global $menu_bereiche;
+  
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+  
+  mysql_select_db($DB_NAME);
+  $table = 'menu_bereich';
+  $q = "select ID, bereich,bereich_titel, bereich_lvl from $table ";
+  $result = mysql_query($q) or die("select Fehler....$q.");
+  $i = 0;
+  while ($row = mysql_fetch_row($result))  
+  {
+    $i++;
+    $menu_bereich["PK"]=$row[0];
+    $menu_bereich["bereich"]=$row[1];
+    $menu_bereich["titel"]=$row[2];
+    $menu_bereich["lvl"]=$row[3];
+
+	if (preg_match ("public", $menu_bereich["bereich"], $out, PREG_OFFSET_CAPTURE))
+	{
+	  $menu_bereiche["PUBLIC"]=$menu_bereich;
+    } elseif (preg_match ("sl", $menu_bereich["bereich"], $out, PREG_OFFSET_CAPTURE))
+	{
+	  $menu_bereiche["SL"]=$menu_bereich;
+	}elseif (preg_match ("author", $menu_bereich["bereich"], $out, PREG_OFFSET_CAPTURE))
+	{
+	  $menu_bereiche["AUTHOR"]=$menu_bereich;
+	}elseif (preg_match ("admin", $menu_bereich["bereich"], $out, PREG_OFFSET_CAPTURE))
+	{
+	  $menu_bereiche["ADMIN"]=$menu_bereich;
+	}else
+	{
+	  $menu_bereiche[$i]=$menu_bereich;
+	}
+  }
+  return $menu_bereiche;
+}
+
+function get_menu_bereich($bereich)
+{
+  global $menu_bereiche;
+  
+  $menu_bereiche = get_menu_bereiche();
+  
+  foreach ($menu_bereiche as $menu_bereich)
+  {
+    if (preg_match ($menu_bereich, $bereich, $out, PREG_OFFSET_CAPTURE))
+    {
+       return $menu_bereich;
+    }
+  }
+  return null;
+}
+
+
+$menu_sub = array("ID"=>0, "ref_bereich"=>0, "sub"=>"", "titel"=>"", "html"=>"", "images"=>"");
+$menu_sub_bereich = array(0=>$menu_sub);
+
+function get_sub_bereich($bereich)
+{
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $menu_sub ;
+  global $menu_sub_bereich;
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+  
+  mysql_select_db($DB_NAME);
+  $table = 'menu_sub';
+  $q = "select ID, ref_bereich, sub, sub_titel, sub_html, sub_images from $table where sub = $bereich ";
+  $result = mysql_query($q) or die("select Fehler....$q.");
+  
+  $i = 0;
+  while ($row = mysql_fetch_row($result))  
+    {
+    $i++;
+    $menu_sub["ID"] = $row[0];  
+    $menu_sub["ref_bereich"] = $row[1];  
+    $menu_sub["sub"] = $row[2];  
+    $menu_sub["titel"] = $row[3];  
+    $menu_sub["html"] = $row[4];  
+    $menu_sub["images"] = $row[5];
+      
+    $menu_sub_bereich[$i] = $menu_sub;
+  }
+  return $menu_sub_bereich;
+}
+
+function get_sub($bereich,$sub)
+{
+  global $menu_sub ;
+  global $menu_sub_bereich;
+  
+  $menu_sub_bereich = get_sub_bereich($bereich);
+
+  $i =0;
+  foreach ($menu_sub_bereich as $menu_sub)
+  {
+    if (preg_match ($menu_sub["sub"], $sub, $out, PREG_OFFSET_CAPTURE))
+    {
+      return $menu_sub;
+    }
+  }
+  return null;
+}
+
+$menu_item = array("icon" => "","caption" => "??","link" => "??","itemtyp"=>0);
+$menu_items = array(0=>$menu_item);
+
+function get_menu_items($bereich, $sub)
+{
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $menu_item;
+  global $menu_items;
+
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+ 
+  mysql_select_db($DB_NAME);
+  $table = 'menu_item';
+  
+  $q = "SELECT item,item_titel,item_typ,item_icon,item_link,item_sort FROM menu_bereich  
+  join menu_sub on menu_sub.ref_bereich = menu_bereich.ID
+ join menu_item on menu_item.ref_sub=menu_sub.ID
+ where bereich = \"$bereich\" and sub= \"$sub\"  order by item_sort";
+  
+  $result = mysql_query($q) ;
+  if (!$result) {
+    $message  = 'Invalid query: ' . mysql_error() . "\n";
+    $message .= 'Whole query: ' . $q;
+    die($message);
+  
+  } else
+  {
+  
+    // Reihenfolge der menu_item nach spalte item_sort
+    while ($row = mysql_fetch_row($result))  
+    {
+      $menu_item['caption']=$row[1];
+      $menu_item['icon']=$row[3];
+      $menu_item['link']=$row[4];
+      $menu_item['itemtyp']=$row[2];
+      if ($row[2] == "0") 
+      {
+        $menu_items["0"]=$menu_item;
+      } else
+      {
+        $menu_items[$row[5]]=$menu_item;
+      }
+    }
+  }
+  return $menu_items;
+}
+
+
+$mfd_list = array("mfd"=>"", "table"=>"","tite"=>"","fields"=>"","join"=>"","where"=>"", "order"=>"");
+
+
+function get_mfm_list($name)
+{
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $mfd_list;
+  
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+  
+  mysql_select_db($DB_NAME);
+  $table = "mfd_list";
+  $fields = "ID, mfd_name, mfd_table, mfd_titel, mfd_fields, mfd_join, mfd_where, mfd_order ";
+  $join = "";
+  $where =" mfd_name = \"$name\" ";
+  $order = "ID";
+  
+  $q = "SELECT $fields FROM $table  $join where $where  order by $order";
+  
+  $result = mysql_query($q) ;
+  if (!$result) {
+    $message  = 'Invalid query: ' . mysql_error() . "\n";
+    $message .= 'Whole query: ' . $q;
+    die($message);
+    
+  } else 
+  {
+    $row = mysql_fetch_row($result);
+    // Reihenfolge der menu_item nach spalte item_sort
+//    $mfd_list['ID'] = $row[0];
+    $mfd_list['mfd'] = $row[1];
+    $mfd_list['table'] = $row[2];
+    $mfd_list['titel'] = $row[3];
+    $mfd_list['fields'] = $row[4];
+    $mfd_list['join'] = $row[5];
+    $mfd_list['where'] = $row[6];
+    $mfd_list['order'] = $row[7];
+    return $mfd_list;
+  }
+  
+}
+
+
+function mfd_data_result($name)
+{
+  
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $mfd_list;
+  
+  $mfd_list = get_mfm_list($name);
+  
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+  
+  mysql_select_db($DB_NAME);
+  $table = $mfd_list["table"];
+  $fields = $mfd_list["fields"];
+  $join = $mfd_list["join"];
+  $where = $mfd_list["where"];
+  $order = $mfd_list["order"];
+  
+  $q = "SELECT $fields FROM $table  $join where $where  order by $order";
+  
+  $result = mysql_query($q) ;
+  if (!$result) 
+  {
+    $message  = 'Invalid query: ' . mysql_error() . "\n";
+    $message .= 'Whole query: ' . $q."\n";
+    die($message);
+  } else
+  {
+    return $result;
+  }
+  
+}
+
+$mfd_col = array("mfd_name"=>"", "mfd_titel"=>"", "mfd_pos"=>"", "mfd_field"=>"", "mfd_field_titel"=>"", "mfd_width"=>"");
+$mfd_cols = array("0"=>$mfd_col);
+
+function mfd_data_cols($name)
+{
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $mfd_col;
+  global $mfd_cols;
+  
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+  
+  mysql_select_db($DB_NAME);
+  $table = "mfd_list";
+  $fields ="mfd_name, mfd_titel, mfd_pos, mfd_field, mfd_field_titel, mfd_width ";
+  $join = "join mfd_cols on mfd_cols.ref_mfm=mfd_list.ID";
+  $where ="mfd_name=\"$name\"";
+  $order = "mfd_pos";
+  
+  $q = "SELECT $fields FROM $table  $join where $where order by $order";
+  
+  $result = mysql_query($q) ;
+  if (!$result) {
+    $message  = 'Invalid query: ' . mysql_error() . "\n";
+    $message .= 'Whole query: ' . $q;
+    die($message);
+  
+  } else
+  {
+    $i=0;
+    while ($row = mysql_fetch_row($result))
+    {
+      $i++;
+      // Reihenfolge der menu_item nach spalte item_sort
+      $mfd_col['mfd_name'] = $row[0];
+      $mfd_col['mfd_titel'] = $row[1];
+      $mfd_col['mfd_pos'] = $row[2];
+      $mfd_col['mfd_field'] = $row[3];
+      $mfd_col['mfd_field_titel'] = $row[4];
+      $mfd_col['mfd_width'] = $row[5];
+      $mfd_cols[$i] = $mfd_col;
+    }
+  }
+  return $mfd_cols;
+}
 
 
 ?>

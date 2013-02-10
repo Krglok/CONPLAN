@@ -47,9 +47,9 @@ function print_header ($NAME)
 	echo "<META NAME=\"Description\" CONTENT=\"$grp_name \">\n";
 	echo "<META NAME=\"Keywords\" CONTENT=\"LARP $NAME\">\n";
 	echo "<META NAME=\"Author\" CONTENT=\"Dipl. Ing. Olaf Duda\">\n";
-	echo"  <title>$grp_name $NAME </title>";
-	echo"  <link rel=\"stylesheet\" type=\"text/css\" href=\"$layout_path/konzept1.css\">";
-	echo"  <style>  </style>\n";
+	echo"  <title>$grp_name $NAME </title> \n";
+	echo"  <link rel=\"stylesheet\" type=\"text/css\" href=\"$layout_path/konzept1.css\">  \n";
+	echo"  <script src=\"js/test1.js\" type=\"text/javascript\"></script>  \n";
 	echo "</HEAD>\n";
 	echo "\n";
 }
@@ -60,10 +60,12 @@ function print_header ($NAME)
  */
 function print_body()
 {
-
-	echo "<BODY id=\"div_1\" ";
+  $style = $GLOBALS['style_page_1'];
+  echo "<body  ";
 	//print_background ($back_typ);  //background ist m layout enthalten
-	echo " >\n";
+  echo " >\n";
+  // anfang seiten definition
+  echo "<div $style >\n";
 }
 
 /**
@@ -71,40 +73,45 @@ function print_body()
  */
 function print_body_ende()
 {
+  // ende der Seiten div
   echo "</div>\n";
 //  echo "</div>\n";
-  echo "</BODY>\n";
-  echo "</HTML>\n";
+  echo "</body>\n";
+  echo "</html>\n";
 };
 
-function print_kopf ($logo_typ, $header_typ,$bereich,$anrede, $ref)
+function print_kopf ($logo_typ, $header_typ,$bereich,$anrede, $menu_item)
 {
-  $typ = $GLOBALS['menu_key'];
+ 
   $info = "Login aufrufen";
   
 //  echo "<div id=\"div_1\">\n";
-  echo "<div id=\"page_1\">\n";
-    echo "  <div id=\"header1\">\n";
-      echo "    <div id=\"header1left\">\n";
-      print_header_icon($GLOBALS["logo_typ"],$GLOBALS['style_header1left_img']);
+      $style = $GLOBALS["style_header_1"];
+      echo "  <div $style >\n";
+      $style = $GLOBALS["style_headerleft"];
+      echo "    <div $style >\n";
+      print_header_icon($GLOBALS["logo_typ"]);
       echo "    </div>\n";
-
-      echo "    <div id=\"header1main\">\n";
-      print_header_icon($GLOBALS["header_typ"],$GLOBALS['style_header1main_img']);
+      $style = $GLOBALS['style_headermain'];
+      echo "    <div $style >\n";
+      print_header_icon($GLOBALS["header_typ"]);
       echo "    </div>\n";
-      
-      echo "    <div id=\"header1right\">\n";
+      $style = $GLOBALS['style_headerright'];
+      echo "    <div $style >\n";
       echo "      <p>$bereich</p>\n";
       echo "      <p>$anrede</p>\n";
-        if ($typ != "")
+        if ($menu_item['icon'] != "0")
         {
-          echo "      <div id=\"menu_status_r\">\n";
-          print_menu_icon($typ,$info);
-          print_menu_ref("Login", $ref);
+          $style = $GLOBALS['style_menu_item'];
+          echo "      <div $style >\n";
+            print_menu_item($menu_item);
+//           print_menu_icon($typ,$info);
+//           print_menu_ref("Login", $ref);
           echo "    	</div>\n";
         } else
         {
-          echo "      <p>$ref</p>\n";
+          $caption = $menu_item['caption'];
+          echo "      <p>$caption</p>\n";
         }
       echo "    </div>\n";
     echo "  </div>\n";
@@ -129,119 +136,39 @@ function print_md_ende()
 };
 
 
-/**
- * Erzeugt einen Linkentrag mit default style
- * @param unknown $caption  sichtbarer text
- * @param unknown $ref  linkdaten, voll qualifiziert
- */
-function print_menu_ref($caption, $ref)
-{
-  echo "            <A HREF=\"$ref\" > $caption </A>\n";
-};
-
 
 /**
- * Erzeugt ein Menu mit default style
- * @param unknown $menu  array mit menu daten
+ * Bindet einen html file in den Dtabereich ein
+ * der pfa ist der defaultpfad ./pages
+ * @param unknown $html_file
  */
-function print_menu ($menu)
+function print_pages($html_file)
 {
-  global $user_lvl, $lvl_admin,$lvl_sl;
-  
-  //   menü spalte
-  echo "<!---  Menu Spalte   --->\n";
-  //  stellt die breite der Menüspalte ein !!!
-  $style = $GLOBALS['style_menu_tab1'];
-  echo "<div $style >\n";
-  
-  //  separate div pro Menu item
-//   $style = $GLOBALS['style_menu_head'];
-//   echo "\t<div  ><!-- Row:1, Col:1 -->\n";
-//   echo "\t</div >\n";
-  
-  reset ($menu);
-  while (list($key, $item) = each ($menu))
-  {
-  	if ($key!=99)  // sl oder user menu
-  	{
-  		if ($key!=98)  // User Menu
-  		{
-   		  $item = $menu[$key];
-  			$item["caption"] = substr($item["caption"],0,16);
-  			if ($key!=0) 
-  			{
-  			  if ($item["icon"] != "0") {
-    		      $style = $GLOBALS['style_menu_list'];
-    			  echo "\t<div $style ><!-- Row:1, Col:1 -->\n";
-  			      print_menu_icon($item["icon"]);
-    			  print_menu_ref($item["caption"],$item["link"]);
-                  echo "\t</div >\n";
-  			  } else
-  			  {
-//  		        $style = $GLOBALS['style_menu_space'];
-//  			    echo "\t<div $style ><!-- Row:1, Col:1 -->\n";
-  			    echo "\t\t<hr>";
-//                echo "\t</div >\n";
-  			  }
-  			} else 
-  			{
-  			  $caption = $item["caption"]; 
-  		      $style = $GLOBALS['style_menu_head'];
-  			  echo "\t <div $style >\n";
-  		      echo "$caption";
-              echo "\t </div >\n";
-  			};
-  		} else     // SL - menu
-  		{  
-  			$l1 = (int) $user_lvl;
-  			$l2 = (int) $lvl_sl[14];
-  			if ($l1 <= $l2)
-  			{
-  		      $style = $GLOBALS['style_menu_list'];
-  			  echo "\t<div $style ><!-- Row:1, Col:1 -->\n";
-  			  $item = $menu[$key];
-              if ($key!=0) 
-              {
-                print_menu_icon($item["icon"]);
-                print_menu_ref($item["caption"],$item["link"]);
-              };
-              echo "\t</div >\n";
-  			};
-  		}
-  	} else // admin menu
-  	{
-      $l1 = (int) $user_lvl;
-      $l2 = (int) $lvl_admin[14];
-      if ($l1 <= $l2)
-      {
-  	    $style = $GLOBALS['style_menu_list'];
-        echo "\t<div $style ><!-- Row:1, Col:1 -->\n";
-        $item = $menu[$key];
-        if ($key!=0) 
-        {
-          print_menu_icon($item["icon"]);
-          print_menu_ref($item["caption"],$item["link"]);
-        };
-        echo "\t</div >\n";
-      };
-  	}
-  }
-  echo "\t</div >\n";
-  
-  echo "<!---  Menu Spalte ENDE   --->\n\n";
-};
-
+  // keine leere seite anzeigen
+  if (sizeof($html_file) == 0 ) { return; }
+   
+  $path_file = $GLOBALS['path_html'].$html_file;
+  print_data($path_file);
+}
 /**
  * Gibt eine Htnl Datei im Datentab aus, default style
  * @param unknown $html_file
  */
 function print_data($html_file)
 {
+  // pruefe ob File vorhanden
+  try {
+    $file = fopen ($html_file, "r");
+
+  } catch (Exception $e) {
+    $style = $GLOBALS['style_status1'];
+    echo '<p $style> Caught exception: ',  $e->getMessage()," </p>\n";
+    return;
+  }
   // keine leere seite anzeigen
   if (sizeof($html_file) == 0 ) { return; }
   	
   $ishead = 'true';
-  $html_file = $GLOBALS['path_html'].$html_file;
   try {
     $file = fopen ($html_file, "r");
     
@@ -253,17 +180,19 @@ function print_data($html_file)
   if (!$file)
   {
     $style = $GLOBALS['style_status1'];
+    echo "<p $style > n";
     echo "<p $style>Datei konnte nicht ge&ouml;ffnet werden.</p>\n";
+    echo "</p> \n";
     return;
   };
   $style = $GLOBALS['style_datatab'];
-  echo "<div $style >";
+  echo "<div $style >  \n";
   echo "<!---  DATEN Spalte   --->\n";
   
-  $style = $GLOBALS['style_datatable'];
-  echo "<table $style >"; //width=\"920\" border-width=\"1\" border-style=\"solid\" border-color=\"red\">";
-  echo "<tr>";
-  echo "<td>";
+//   $style = $GLOBALS['style_datatable'];
+//   echo "<table $style >"; //width=\"920\" border-width=\"1\" border-style=\"solid\" border-color=\"red\">";
+//   echo "<tr>";
+//   echo "<td>";
   
   while (!feof ($file))
   {
@@ -285,8 +214,14 @@ function print_data($html_file)
   				{
   					$ishead = 'false';
   				} else
-  				{
+  				{   
+  				  if (preg_match ("<table>", $line, $out, PREG_OFFSET_CAPTURE))
+  				  {
+  				    echo"<table> ";
+  				  } else
+  				  {
   					echo $line;
+  				  }
   				};
   			};
   		};
@@ -307,9 +242,9 @@ function print_data($html_file)
   };
   fclose($file);
 
-  echo "</td>";
-  echo "</tr>";
-  echo "</table>";
+//   echo "</td>";
+//   echo "</tr>";
+//   echo "</table>";
   echo "</div>\n";
   echo "<!---  ENDE DATEN Spalte   --->\n";
 };
