@@ -117,65 +117,63 @@ function print_news()
 // ----------------------------------------------------------------
 // Prüfung ob User  berechtigt ist
 // keine user pruefung, da es eine public seite ist
-
+$BEREICH = 'PUBLIC';
 print_header("Hauptseite");
 print_body(2);
 
 $PHP_SELF = $_SERVER['PHP_SELF'];
 // Steuerparameter und steuerdaten
-//$c_md   = $_COOKIE['md'];
-//$p_md   = $_POST['md'];
-$md=0;
-$daten="";
-if (isset($_GET['md'])==true) 
-{
-  $md     = $_GET['md'];
-}
-if (isset($_GET['daten'])==true) 
-{
-  $daten  = $_GET['daten'];
-}
+$md=GET_md(0);
+$daten=GET_daten("");
+$menu=GET_menu("");
+$sub=GET_sub("main");
 
 $menu_item = array("icon" => $menu_help, "caption" => "Help","link" => "javascript:openHelp()");
 print_kopf($logo_typ,$header_typ,"Öffentlich","Sei gegrüsst Freund ",$menu_item);
 
 //echo "POST : $p_md / GET : $md / THEMEN :$THEMEN ";
-global $menu_default;
 
-$menu = array (0=>array("icon" => "99","caption" => "Hauptseite","link" => "ss"),
-		1=>array ("icon" => "7","caption" => "Übersicht","link" => "$PHP_SELF?md=0&daten=main.html"),
-		2=>array ("icon" => "5","caption" => "News","link" => "$PHP_SELF?md=5"),
-		3=>array ("icon" => "5","caption" => "Termine","link" => "$PHP_SELF?md=4"),
-		4=>array ("icon" => "5","caption" => "Liberi Effera","link" => "http://www.liberi-effera.de/"),
-		5=>array ("icon" => "13","caption" => "Innerer Zirkel","link" => "$PHP_SELF?md=2&daten=slogin.html"),
-		6=>array ("icon" => "0","caption" => "","link" => ""),
-		10=>array ("icon" => "7","caption" => "Kurzdarstellung","link" => "$PHP_SELF?md=&2&daten=kurzdars.html"),
-		11=>array ("icon" => "7","caption" => "LPD","link" => "$PHP_SELF?md=2&daten=lpd.html"),
-		12=>array ("icon" => "1","caption" => "Unsere Regeln","link" => "main_regeln.php?md=0"),
-		13=>array ("icon" => "7","caption" => "Unser Spielgebiet","link" => "$PHP_SELF?md=2&daten=weg_viet.html"),
-		14=>array ("icon" => "1","caption" => "Unsere Spieler","link" => "main_spieler.php?md=0"),
-		20=>array ("icon" => "0","caption" => "","link" => ""),
-		21=>array ("icon" => "1","caption" => "Das Land","link" => "main_pages.php?md=0"),
-		22=>array ("icon" => "1","caption" => "Neue Chronik","link" => "main_chronik.php"),
-		23=>array ("icon" => "1","caption" => "Ausrüstung","link" => "main_ausruestung.php"),
-		24=>array ("icon" => "1","caption" => "Bilder","link" => "main_bilder.php?md=0"),
-		30=>array ("icon" => "0","caption" => "","link" => ""),
-		31=>array ("icon" => "1","caption" => "Draskoria","link" => "http://draskoria.game-host.org:8090/\"target=_blank\""),
-		32=>array ("icon" => "1","caption" => "Download","link" => "main_download.php","daten"=>""),
-		33=>array ("icon" => "5","caption" => "Links","link" => "$PHP_SELF?md=2&daten=links.html"),
-		34=>array ("icon" => "7","caption" => "Ich","link" => "$PHP_SELF?md=2&daten=ich.html"),
-		35=>array ("icon" => "10","caption" => "Impressum","link" => "$PHP_SELF?md=2&daten=Impressum.html")
-);
 
-// Erstellt den Tabellenkopf fuer den Bereich Menue / Daten
-print_md();
-// Erstellt aus linke Mnue
-print_menu($menu);
+// $menu = array (0=>array("icon" => "99","caption" => "Hauptseite","link" => "ss"),
+// 		1=>array ("icon" => "7","caption" => "Übersicht","link" => "$PHP_SELF?md=0&daten=main.html"),
+// 		2=>array ("icon" => "5","caption" => "News","link" => "$PHP_SELF?md=5"),
+// 		3=>array ("icon" => "5","caption" => "Termine","link" => "$PHP_SELF?md=4"),
+// 		4=>array ("icon" => "5","caption" => "Liberi Effera","link" => "http://www.liberi-effera.de/"),
+// 		5=>array ("icon" => "13","caption" => "Innerer Zirkel","link" => "$PHP_SELF?md=2&daten=slogin.html"),
+// 		6=>array ("icon" => "0","caption" => "","link" => ""),
+// 		10=>array ("icon" => "7","caption" => "Kurzdarstellung","link" => "$PHP_SELF?md=&2&daten=kurzdars.html"),
+// 		11=>array ("icon" => "7","caption" => "LPD","link" => "$PHP_SELF?md=2&daten=lpd.html"),
+// 		12=>array ("icon" => "1","caption" => "Unsere Regeln","link" => "main_regeln.php?md=0"),
+// 		13=>array ("icon" => "7","caption" => "Unser Spielgebiet","link" => "$PHP_SELF?md=2&daten=weg_viet.html"),
+// 		14=>array ("icon" => "1","caption" => "Unsere Spieler","link" => "main_spieler.php?md=0"),
+// 		20=>array ("icon" => "0","caption" => "","link" => ""),
+// 		21=>array ("icon" => "1","caption" => "Das Land","link" => "main_pages.php?md=0"),
+// 		22=>array ("icon" => "1","caption" => "Neue Chronik","link" => "main_chronik.php"),
+// 		23=>array ("icon" => "1","caption" => "Ausrüstung","link" => "main_ausruestung.php"),
+// 		24=>array ("icon" => "1","caption" => "Bilder","link" => "main_bilder.php?md=0"),
+// 		30=>array ("icon" => "0","caption" => "","link" => ""),
+// 		31=>array ("icon" => "1","caption" => "Draskoria","link" => "http://draskoria.game-host.org:8090/\"target=_blank\""),
+// 		32=>array ("icon" => "1","caption" => "Download","link" => "main_download.php","daten"=>""),
+// 		33=>array ("icon" => "5","caption" => "Links","link" => "$PHP_SELF?md=2&daten=links.html"),
+// 		34=>array ("icon" => "7","caption" => "Ich","link" => "$PHP_SELF?md=2&daten=ich.html"),
+// 		35=>array ("icon" => "10","caption" => "Impressum","link" => "$PHP_SELF?md=2&daten=Impressum.html")
+// );
+
+if ($menu == '')
+{
+	print_menu($menu_default);
+} else
+{
+	// Erstellt ein dynamisches Menu
+	print_menu(get_menu_items($BEREICH, $sub));
+	
+}
+
 // Auswahl der Aktion durch $md
 // und erstellen das Datenbereiches
 switch ($md):
 case 0: // MAIN MENU
-	$daten='main.html';
+  	$daten='main.html';
     print_pages($daten);
     break;
 case 1: // html die in pages liegen

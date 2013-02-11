@@ -87,16 +87,10 @@ print_body(2);
 
 //$c_md = $_COOKIE['md'];
 //$p_md = $_POST['md'];
-$md=0;
-$daten="";
-if (isset($_GET['md'])==true) 
-{
-  $md     = $_GET['md'];
-}
-if (isset($_GET['daten'])==true) 
-{
-  $daten  = $_GET['daten'];
-}
+$md = GET_md(0);					// aktuelle Funktion
+$daten=GET_daten("");			// daten referenz fuer html etc
+$sub = GET_sub("");
+$item = GET_item("");
 
 $menu_item = array("icon" => $menu_help, "caption" => "Help","link" => "javascript:openHelp()");
 print_kopf($logo_typ,$header_typ,"Öffentlich","Sei gegrüsst Freund ",$menu_item);

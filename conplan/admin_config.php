@@ -39,13 +39,20 @@ einen veraenderte Konfiguration eingestellt
 - LOGO Mitte
 - Text1, Text2  fuer rechte Seite
 
+Ver 3.0  / 06.02.2013
+Es werden CSS-Dateien verwendert. 
+Es wird eine strikte Trennung von Content und Layout durchgefuehrt.
+Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues 
+Layoutpfades in der config.inc
+Ansonsten bleibt der Inhalt der Seiten identisch.
+
 */
 
-include "config.inc";
-include "login.inc";
-include "lib.inc";
-include "head.inc";
-include "bib_lib.inc";
+include_once "login.inc";
+include_once "_config.inc";
+include_once "_lib.inc";
+include_once "_head.inc";
+include_once "bib_lib.inc";
 
 
 //-----------------------------------------------------------------------------
@@ -469,6 +476,7 @@ function print_maske($id,$ID,$next,$erf)
 //
 // keinerlei Ausgabe vor  der header() Zeile !!!!!!!!!!!!!!!!!!!!!
 // Prüfung ob User  berechtigt ist
+$BEREICH = 'ADMIN';
 
 $c_md = $_COOKIE['md'];
 
@@ -477,10 +485,12 @@ $p_row 	= row_POST(0);		// primary id for table function
 $p_sub 	= sub_POST("");		// subBereich des Menus
 $p_item = item_POST("");	// item des Menubereiches
 
-$ID = ID_GET('');					// Session ID
-$md = md_GET(0);					// aktuelle Funktion
-$id = id_GET(0);					// reference Value , z.B. pk
-$daten=date-GET("");			// daten referenz fuer html etc
+$ID = GET_ID('');					// Session ID
+$md = GET_md(0);					// aktuelle Funktion
+$id = GET_id(0);					// reference Value , z.B. pk
+$daten=GET_daten("");			// daten referenz fuer html etc
+$sub = GET_sub("");
+$item = GET_item("");
 
 session_start ($ID);
 $user       = $_SESSION[user];

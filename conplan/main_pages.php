@@ -73,9 +73,9 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 
 */
 
-include "_config.inc";
-include "_lib.inc";
-include "_head.inc";
+include_once "_config.inc";
+include_once "_lib.inc";
+include_once "_head.inc";
 
 
 
@@ -204,22 +204,19 @@ function print_tab_list($mfd, $daten)
 // ---------------------------------------------------------------
 // ---------    MAIN ---------------------------------------------
 // ----------------------------------------------------------------
+// dies ist ein Modul fuer den PUBLC Bereich, keine User pruefung , kein passwort
+$BEREICH = 'PUBLIC';
 
 print_header("Land");
 print_body(2);
 
-//print_kopf(1,2,"Öffentlich","Sei gegrüsst Freund ");
-//    echo "<CENTER><B> Sei gegrsst Auserwï¿½lter </B></CENTER> \n";
+$md=GET_md(0);
+$daten=GET_daten("");
+$sub=GET_sub("main");
+$menu=GET_item("regeln");
 
-
-//$c_md = $_COOKIE['md'];
-//$p_md = $_POST['md'];
-$md=md_GET(0);
-$daten=date-GET("");
-
-
-global $menu_help;
-$menu_item = array("icon" => $menu_help, "caption" => "Help","link" => "javascript:openHelp()","itemtyp"=>"0");
+// Helpmenu im Header
+$menu_item = $menu_item_help; 
 print_kopf($logo_typ,$header_typ,"Öffentlich","Sei gegrüsst Freund ",$menu_item);
 
 //echo "POST : $p_md / GET : $md / THEMEN :$THEMEN ";
@@ -235,19 +232,26 @@ $menu = array (0=>array("icon" => "99","caption" => "PAGES","link" => "","target
     1=>array("icon" => "6","caption" => "Zurück","link" => "main.php?md=0")
 );
 
-$menu = get_menu_items("PUBLIC", "main");
 
-print_md();
-print_menu($menu);
+if ($menu == '')
+{
+	print_menu($menu_default);
+} else
+{
+	// Erstellt ein dynamisches Menu
+	print_menu(get_menu_items($BEREICH, $sub));
+	
+}
+
 switch ($md):
-case 0: // MAIN MENÜ
-  $daten='land.html';
-  print_pages($daten);
-break;
 case 1:
-  print_data($daten);
+	// html seiten als link
+	// $daten entaelt den dateinamen mit vollstaendigem pfad
+	print_data($daten);
   break;
 case 2:
+	// html seiten aus verzeichnis pages
+	// $daten entaelt den dateinamen
   print_pages($daten);
   break;
 case 100:
@@ -262,7 +266,7 @@ case 101:
   print_tab_list($daten,$sub);
   break;
 default: // MAIN MENÜ
-    $daten='land.html';
+    $daten='main.html';
     print_pages($daten);
     break;
 endswitch;

@@ -151,7 +151,7 @@ $lvl_sl      = array(0=>16,1=>32,14=>240);
 $lvl_admin   = array(0=>1,1=>2,14=>15);
 $user_lvl = 3840;  // dies ist der Gastlevel
 
-function md_GET ($value = 0) 
+function GET_md ($value = 0) 
 {
 	if (isset($_GET['md'])==true)
 	{
@@ -160,7 +160,7 @@ function md_GET ($value = 0)
 	return $value;
 }
 
-function daten_GET($value = "")
+function GET_daten($value = "")
 {
 	if (isset($_GET['daten'])==true)
 	{
@@ -169,7 +169,7 @@ function daten_GET($value = "")
 	return $value;
 }
 
-function id_GET($value = -1)
+function GET_id($value = -1)
 {
 	if (isset($_GET['id'])==true)
 	{
@@ -178,7 +178,25 @@ function id_GET($value = -1)
 	return $value;
 }
 
-function ID_GET($value = "")
+function GET_item($value = "")
+{
+	if (isset($_GET['item'])==true)
+	{
+		return $_GET['item'];
+	}
+	return $value;
+}
+
+function GET_sub($value = "main")
+{
+	if (isset($_GET['main'])==true)
+	{
+		return $_GET['main'];
+	}
+	return $value;
+}
+
+function GET_ID($value = "")
 {
 	if (isset($_GET['ID'])==true)
 	{
@@ -187,7 +205,7 @@ function ID_GET($value = "")
 	return $value;
 }
 
-function md_POST($value=0)
+function POST_md($value=0)
 {
 	if (isset($_POST['md'])==true)
 	{
@@ -196,7 +214,7 @@ function md_POST($value=0)
 	return $value;
 }
 
-function id_POST($value=0)
+function POST_id($value=0)
 {
 	if (isset($_POST['id'])==true)
 	{
@@ -205,7 +223,7 @@ function id_POST($value=0)
 	return $value;
 }
 
-function row_POST($value=0)
+function POST_row($value=0)
 {
 	if (isset($_POST['row'])==true)
 	{
@@ -285,17 +303,20 @@ function print_status($wert)
 
 $PHP_SELF = $_SERVER['PHP_SELF'];
 
-
-$menu_item_ich = array ("icon" => "7","caption" => "Ich","link" => "$PHP_SELF?md=2&daten=ich.html");
-$menu_item_imp = array ("icon" => "10","caption" => "Impressum","link" => "$PHP_SELF?md=7&daten=impressum.html");
-
-$menu_item_header = array("icon" => "99","caption" => "<B>Hauptseite</B>","link" => "");
-$menu_item_default = array("icon" => $menu_stop,"caption" => "??","link" => "$main_php?md=0");
-
+$menu_item_help = array ("icon" => $menu_help, "caption" => "Help","link" => "javascript:openHelp()","itemtyp"=>"0");
+$menu_item_sl 	= array ("icon" => "$menu_page","caption" => "SL","link" => "con_main.php?md=0&ID=$ID","itemtyp"=>"98");
+$menu_item_admin= array ("icon" => "$menu_page","caption" => "Admin","link" => "admin_main.php?md=0&ID=$ID","itemtyp"=>"99");
+$menu_item_ich 	= array ("icon" => "$menu_page","caption" => "Ich","link" => "$PHP_SELF?md=2&daten=ich.html","itemtyp"=>"2");
+$menu_item_imp 	= array ("icon" => "$menu_help","caption" => "Impressum","link" => "$PHP_SELF?md=7&daten=impressum.html","itemtyp"=>"2");
+$menu_item_login= array ("icon" => "$menu_key","caption" => "Innerer Zirkel","link" => "$PHP_SELF?md=7&daten=slogin.html","itemtyp"=>"2");
+$menu_item_default = array("icon" => $menu_stop,"caption" => "??","link" => "$main_php?md=0","itemtyp"=>"0");
+$menu_item = array("icon" => "","caption" => "??","link" => "??","itemtyp"=>0);
+$menu_items = array(0=>$menu_item);
 
 $menu_default = array (
     0=>$menu_item_header,
     1=>$menu_item_default,
+		2=>$menu_item_login,
     10=>$menu_item_imp,
     11=>$menu_item_ich
 );
@@ -410,12 +431,15 @@ function get_sub($bereich,$sub)
   return null;
 }
 
-$menu_item = array("icon" => "","caption" => "??","link" => "??","itemtyp"=>0);
-$menu_items = array(0=>$menu_item);
 
 function get_menu_items($bereich, $sub)
 {
-  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  if ($bereich == "")
+  {
+  	$bereich = 'PUBLIC';
+  }
+	
+	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
   global $menu_item;
   global $menu_items;
 
