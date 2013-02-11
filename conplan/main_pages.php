@@ -214,16 +214,9 @@ print_body(2);
 
 //$c_md = $_COOKIE['md'];
 //$p_md = $_POST['md'];
-$md=0;
-$daten="";
-if (isset($_GET['md'])==true)
-{
-  $md     = $_GET['md'];
-}
-if (isset($_GET['daten'])==true)
-{
-  $daten  = $_GET['daten'];
-}
+$md=md_GET(0);
+$daten=date-GET("");
+
 
 global $menu_help;
 $menu_item = array("icon" => $menu_help, "caption" => "Help","link" => "javascript:openHelp()","itemtyp"=>"0");

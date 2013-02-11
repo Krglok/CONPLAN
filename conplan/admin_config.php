@@ -322,81 +322,7 @@ function insert($row)
 };
 
 
-function update($row)
-//==========================================================================
-// Function     : update
-//--------------------------------------------------------------------------
-// Beschreibung : Update eines Datensatzes in einer Tabelle
-//                 Die Daten liegen als Array vor
-//                 die Spalten sind identisch mit
-//                 den Feldern der Tabelle.
-//                 Ebenso die Reihemfolge der Felder !
-//                 Die Recordnummer liegt in $row[0]
-//
-// Argumente    : $row = die zu speichernde Daten
-//
-// Returns      : --
-//==========================================================================
-{
-	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
-	global $TABLE;
 
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-	or die("Fehler beim verbinden!");
-	$result = mysql_list_fields($DB_NAME,$TABLE)  or die("Query ERF...");
-	$field_num = mysql_num_fields($result);
-	for ($i=0; $i<$field_num; $i++)
-	{
-		$field_name[$i] =  mysql_field_name ($result, $i);
-	}
-	$q ="update $TABLE  SET ";
-	$q = $q."$field_name[1]=\"$row[1]\" ";
-	for ($i=2; $i<$field_num; $i++)
-	{
-		$q = $q.",$field_name[$i]=\"$row[$i]\" ";
-	};
-	$q = $q."where id=\"$row[0]\" ";
-
-	//  echo $q;
-	if (mysql_select_db($DB_NAME) != TRUE) {
-		echo "Fehler DB";
-	};
-	/**/
-	$result = mysql_query($q) or die("update Fehler....$q.");
-	/**/
-	mysql_close($db);
-
-};
-
-
-function loeschen($id)
-//==========================================================================
-// Function     :  loeschen
-//--------------------------------------------------------------------------
-// Beschreibun  :  Loescht einen Datensatz aus einer Tabelle
-//
-// Argumente    :  $id = Recordnummer (PRIMARY)
-//                 $ID = Sessionmanagnet
-//
-// Returns      : --
-//==========================================================================
-{
-	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
-	global $TABLE;
-
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)     or die("Fehler beim verbinden!");
-
-	if (mysql_select_db($DB_NAME) != TRUE) {
-		echo "Fehler DB";
-	};
-	/**/
-	$q = "delete from $TABLE where id=\"$id\" ";
-	//  echo $q;
-	$result = mysql_query($q) or die("Delete Fehler....$q.");
-	/**/
-	mysql_close($db);
-
-};
 
 function print_maske($id,$ID,$next,$erf)
 {
@@ -543,18 +469,18 @@ function print_maske($id,$ID,$next,$erf)
 //
 // keinerlei Ausgabe vor  der header() Zeile !!!!!!!!!!!!!!!!!!!!!
 // Prüfung ob User  berechtigt ist
-$bereich = 'ADMIN';		// festlegen des Bereiches fuer aktionen
 
 $c_md = $_COOKIE['md'];
 
-$p_md 	= $_POST['md'];
-$p_id 	= $_POST['id'];
-$p_row 	= $_POST['row'];
+$p_md 	= md_POST(0);			// next function after post
+$p_row 	= row_POST(0);		// primary id for table function
+$p_sub 	= sub_POST("");		// subBereich des Menus
+$p_item = item_POST("");	// item des Menubereiches
 
-$md = $_GET['md'];
-$id = $_GET['id'];
-$ID = $_GET['ID'];
-
+$ID = ID_GET('');					// Session ID
+$md = md_GET(0);					// aktuelle Funktion
+$id = id_GET(0);					// reference Value , z.B. pk
+$daten=date-GET("");			// daten referenz fuer html etc
 
 session_start ($ID);
 $user       = $_SESSION[user];

@@ -17,8 +17,11 @@ SL
 ADMIN
 
 function print_menu_icon ($typ)
+function print_menu_ref($caption, $ref)
+function print_menu_item($item)
+function print_menu ($menu)
+
 function print_head_icon ($typ)
-function print_background ($typ)
 
 function get_spieler_id($user_id)
 function get_user_id($user)
@@ -196,23 +199,16 @@ function print_menu ($menu)
  */
 function print_header_icon ($typ)
 {
+	global $home;
 	$typ = $GLOBALS['layoutImages_path'].$typ;
 	if($typ != "") 
 	{
-		echo "\t<IMG SRC=\"$typ\" >";
+		echo "\t<a href=\"$home\">  <IMG SRC=\"$typ\" title=\"Zur Startseite\"> </a>  ";
 	} else{
-		echo "<p> HIER FEHLT EIN BILD   </p>";
+		echo "<p><a href=\"$home\"> HIER FEHLT EIN BILD </a>  </p>";
 	}
 };
 
-/**
- * Setzt den Style Background, unnoetig, da im css enthalten
- * @param unknown $typ
- */
-function print_background ($typ)
-{
-  //echo "BACKGROUND=\"$layoutBack_path.$typ\"";
-};
 
 /**
  * DB funktion, gibt die Spieler_id zu einer User_id zurück

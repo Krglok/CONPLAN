@@ -47,6 +47,7 @@ $session_id ="FFFF";
 $version = "3.0.0";
 $grp_name="Drachenhorst";			// Refrenzname fuer Homepage
 $main_php="main.php";
+$home = $path_conplan.$main_php;
 
 // Pfade die automatisch verwendet werden  ------------
 $path_img 		= "./images";		// Dies sind die Content Bilder
@@ -149,6 +150,70 @@ $lvl_spieler = array(0=>256,1=>512,14=>3840);
 $lvl_sl      = array(0=>16,1=>32,14=>240);
 $lvl_admin   = array(0=>1,1=>2,14=>15);
 $user_lvl = 3840;  // dies ist der Gastlevel
+
+function md_GET ($value = 0) 
+{
+	if (isset($_GET['md'])==true)
+	{
+		return $_GET['md'];
+	}
+	return $value;
+}
+
+function daten_GET($value = "")
+{
+	if (isset($_GET['daten'])==true)
+	{
+		return $_GET['daten'];
+	}
+	return $value;
+}
+
+function id_GET($value = -1)
+{
+	if (isset($_GET['id'])==true)
+	{
+		return $_GET['id'];
+	}
+	return $value;
+}
+
+function ID_GET($value = "")
+{
+	if (isset($_GET['ID'])==true)
+	{
+		return $_GET['ID'];
+	}
+	return $value;
+}
+
+function md_POST($value=0)
+{
+	if (isset($_POST['md'])==true)
+	{
+		return $_POST['md'];
+	}
+	return $value;
+}
+
+function id_POST($value=0)
+{
+	if (isset($_POST['id'])==true)
+	{
+		return $_POST['id'];
+	}
+	return $value;
+}
+
+function row_POST($value=0)
+{
+	if (isset($_POST['row'])==true)
+	{
+		return $_POST['row'];
+	}
+	return $value;
+}
+
 
 /**
  * Setzt die alten menutyp nummern in die neuen Menutyptexte um
@@ -395,7 +460,11 @@ function get_menu_items($bereich, $sub)
 
 $mfd_list = array("mfd"=>"", "table"=>"","tite"=>"","fields"=>"","join"=>"","where"=>"", "order"=>"");
 
-
+/**
+ * Holt die mfd Daten zu einer mfd referenz ($name)
+ * @param unknown $name		// referenz des mfd
+ * @return array mit mfd daten ($mfd_list)
+ */
 function get_mfm_list($name)
 {
   global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
@@ -435,7 +504,11 @@ function get_mfm_list($name)
   
 }
 
-
+/**
+ * Holt ein SQL resultset fuer ein mfd 
+ * @param $name			// refenrenz des mfd
+ * @return array mit SQL resultset
+ */
 function mfd_data_result($name)
 {
   
@@ -471,6 +544,11 @@ function mfd_data_result($name)
 $mfd_col = array("mfd_name"=>"", "mfd_titel"=>"", "mfd_pos"=>"", "mfd_field"=>"", "mfd_field_titel"=>"", "mfd_width"=>"");
 $mfd_cols = array("0"=>$mfd_col);
 
+/**
+ * Holt die Spaltendefinition fuer ein mfd 
+ * @param unknown $name			// Referenz auf mfd
+ * @return Array mit Spaltendefinitionen ($mfd_cols)
+ */
 function mfd_data_cols($name)
 {
   global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
@@ -512,6 +590,129 @@ function mfd_data_cols($name)
   }
   return $mfd_cols;
 }
+
+/**
+ * Hole fuer ein mfd den Datensatz mit dem PK $id
+ * @param unknown $name   // mfd referenz
+ * @param unknown $id			// pk des gesuchten Datensatz
+ * @return resource				// Resultset des SQL
+ */
+function mfd_detail_result($name, $id)
+{
+	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+	global $mfd_list;
+	
+	$mfd_list = get_mfm_list($name);
+	
+	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+	
+	mysql_select_db($DB_NAME);
+	$table = $mfd_list["table"];
+	$fields =$mfd_list["fields"];
+	$join = ""; //$mfd_list["join"];
+	$where ="id = $id";
+	$order = "";
+	
+	$q = "SELECT $fields FROM $table $join where $where order by $order";
+	
+	$result = mysql_query($q) ;
+	if (!$result) {
+		$message  = 'Invalid query: ' . mysql_error() . "\n";
+		$message .= 'Whole query: ' . $q;
+		die($message);
+	
+	} else
+	{
+		return $result;
+	}
+}
+
+/**
+ * Loescht einne Datensatz in einer mfd Tabelle
+ * @param unknown $name		// referenz auf mfd
+ * @param unknown $id			// zu löschender PK (ID)
+ */
+function mfd_delete($name, $id)
+{
+	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
+	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+	global $mfd_list;
+	
+	$mfd_list = get_mfm_list($name);
+	
+	$table = $mfd_list["table"];
+	$fields =""; //$mfd_list["fields"];
+	$join = ""; //$mfd_list["join"];
+	$where ="id = $id";
+	$order = "";
+	
+	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+	
+	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)     or die("Fehler beim verbinden!");
+
+	if (mysql_select_db($DB_NAME) != TRUE) {
+		echo "Fehler DB";
+	};
+	/**/
+	$q = "delete from $table where $where ";
+	//  echo $q;
+	$result = mysql_query($q) ;
+	if (!$result) {
+		$message  = 'Invalid query: ' . mysql_error() . "\n";
+		$message .= 'Whole query: ' . $q;
+		die($message);
+	}
+	/**/
+	mysql_close($db);
+
+};
+
+
+/**
+ * Macht ein Tabellen update auf mfd Tabelle
+ * @param unknown $name 	// referenz auf mfd
+ * @param unknown $row		// Datensatz Row mit Datenfelder
+ */
+function mfd_update($name, $row)
+{
+	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
+	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+	global $mfd_list;
+	
+	$mfd_list = get_mfm_list($name);
+	$id = $row['ID'];
+	$table = $mfd_list["table"];
+	$fields =$mfd_list["fields"];
+	$join = ""; //$mfd_list["join"];
+	$where ="id = $id";
+	$order = "";
+	$field_name = split(',',$fields);
+	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+	or die("Fehler beim verbinden!");
+	
+	$field_num = count($field_name);
+	// der PK (ID) muss in der Fieldmenge enthalten sein, als erster!!
+	$q ="update $table  SET ";
+	$q = $q."$field_name[1]=\"$row[1]\" ";
+	for ($i=2; $i<$field_num; $i++)
+	{
+		$q = $q.",$field_name[$i]=\"$row[$i]\" ";
+	};
+	$q = $q."where id=\"$row[0]\" ";
+
+	//  echo $q;
+	if (mysql_select_db($DB_NAME) != TRUE) 
+	{
+		$message  = 'Invalid query: ' . mysql_error() . "\n";
+		$message .= 'Whole query: ' . $q;
+		die($message);
+	};
+	/**/
+	$result = mysql_query($q) or die("update Fehler....$q.");
+	/**/
+	mysql_close($db);
+
+};
 
 
 ?>
