@@ -49,7 +49,7 @@ function tumb_copy($bild_url,$zieldir,$max_x,$max_y,$type)
  * @param unknown $typ
  * @param string $info
  */
-function print_menu_icon ($typ,$info = "??")
+function print_menu_icon ($typ,$info = "xx")
 {
   // convert int to string of icon type  
   //$typ = index2menutyp($typ);
@@ -92,7 +92,7 @@ function print_menu_item($item)
     
   } elseif ($itemtyp == "1")
   {
-    $ref = "$PHP_SELF?md=1&daten=$link";
+    $ref = "main_pages.php?md=0&daten=$link";
     
   } elseif ($itemtyp == "2")
   {
@@ -146,7 +146,7 @@ function print_menu ($menu)
   //   $style = $GLOBALS['style_menu_head'];
   //   echo "\t<div  ><!-- Row:1, Col:1 -->\n";
   //   echo "\t</div >\n";
-  $item = $menu["0"];
+  $item = $menu[0];
   $caption = $item["caption"];
   $style = $GLOBALS['style_menu_head'];
   echo "\t <div $style >\n";

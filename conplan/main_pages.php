@@ -210,10 +210,11 @@ $BEREICH = 'PUBLIC';
 print_header("Land");
 print_body(2);
 
-$md=GET_md(0);
-$daten=GET_daten("");
-$sub=GET_sub("main");
-$menu=GET_item("regeln");
+$md   = GET_md(0);
+$daten= GET_daten("");
+$sub  = GET_sub("main");
+$item = GET_item("");
+$menu =GET_item("regeln");
 
 // Helpmenu im Header
 $menu_item = $menu_item_help; 
@@ -228,18 +229,13 @@ print_kopf($logo_typ,$header_typ,"Öffentlich","Sei gegrüsst Freund ",$menu_item)
     5=>array ("icon" => "15","caption" => "Online Welt","link" => "$PHP_SELF?md=1&daten=DraskoriaOnline.html"),
  */
 
-$menu = array (0=>array("icon" => "99","caption" => "PAGES","link" => "","target"=>""),
-    1=>array("icon" => "6","caption" => "Zurück","link" => "main.php?md=0")
-);
-
-
-if ($menu == '')
+if ($item == '')
 {
 	print_menu($menu_default);
 } else
 {
 	// Erstellt ein dynamisches Menu
-	print_menu(get_menu_items($BEREICH, $sub));
+	print_menu(get_menu_items($BEREICH, $sub, $item));
 	
 }
 

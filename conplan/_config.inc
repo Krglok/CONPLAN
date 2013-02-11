@@ -48,7 +48,7 @@ $version = "3.0.0";
 $grp_name="Drachenhorst";			// Refrenzname fuer Homepage
 $path_conplan	= "./conplan/";     // Hier werden die Bilder der Conplanung abgelegt
 $main_php="main.php";
-$home = $path_conplan.$main_php;
+$home = $main_php;
 
 // Pfade die automatisch verwendet werden  ------------
 $path_img 		= "./images";		// Dies sind die Content Bilder
@@ -303,7 +303,7 @@ function print_status($wert)
 
 $PHP_SELF = $_SERVER['PHP_SELF'];
 $ID="";
-$menu_item_header = array ("icon" => "", "caption" => "Hauptmenü","link" => "","itemtyp"=>"0");
+$menu_item_header = array ("icon" => "", "caption" => "Default","link" => "","itemtyp"=>"0");
 $menu_item_help = array ("icon" => $menu_help, "caption" => "Help","link" => "javascript:openHelp()","itemtyp"=>"0");
 $menu_item_sl 	= array ("icon" => "$menu_page","caption" => "SL","link" => "con_main.php?md=0&ID=$ID","itemtyp"=>"98");
 $menu_item_admin= array ("icon" => "$menu_page","caption" => "Admin","link" => "admin_main.php?md=0&ID=$ID","itemtyp"=>"99");
@@ -311,15 +311,15 @@ $menu_item_ich 	= array ("icon" => "$menu_page","caption" => "Ich","link" => "ic
 $menu_item_imp 	= array ("icon" => "$menu_help","caption" => "Impressum","link" => "impressum.html","itemtyp"=>"2");
 $menu_item_login= array ("icon" => "$menu_key","caption" => "Innerer Zirkel","link" => "slogin.html","itemtyp"=>"2");
 $menu_item_default = array("icon" => $menu_stop,"caption" => "??","link" => "$main_php?md=0","itemtyp"=>"0");
-$menu_item = array("icon" => "","caption" => "??","link" => "??","itemtyp"=>0);
-$menu_items = array(0=>$menu_item);
+//$menu_item = array("icon" => "","caption" => "??","link" => "??","itemtyp"=>0);
+$menu_items = array(99=>$menu_item_default);
 
 $menu_default = array (
-    "0"=>$menu_item_header,
-    "1"=>$menu_item_default,
-	"2"=>$menu_item_login,
-    "10"=>$menu_item_imp,
-    "11"=>$menu_item_ich
+    0=>$menu_item_header,
+    1=>$menu_item_default,
+	2=>$menu_item_login,
+    35=>$menu_item_imp,
+    36=>$menu_item_ich
 );
 
 $menu_bereich = array("PK"=>0, "bereich"=>"","titel"=>"","lvl"=>0);
@@ -436,7 +436,7 @@ function check_sub_item($bereich,$sub,$item)
   $result = mysql_query($q);
   if (!$result) 
   {
-    $item = "??";
+    $item = "";
   } else 
   {
     $row = mysql_fetch_row($result); 
@@ -485,11 +485,17 @@ where bereich = \"$bereich\" and sub= \"$sub\" and item=\"$item\" order by item_
     {
       $menu_item['caption']=$row[1];
       $menu_item['icon']=$row[3];
-      $menu_item['link']=$row[4];
+      if ($row[2] == 2)
+      {
+        $menu_item['link']=$row[4]."&sub=".$sub."&item=".$item;
+      } else
+      {
+        $menu_item['link']=$row[4];
+      }
       $menu_item['itemtyp']=$row[2];
       if ($row[5] == 0) 
       {
-        $menu_items["0"]=$menu_item;
+        $menu_items[0]=$menu_item;
       } else
       {
         $menu_items[$i]=$menu_item;

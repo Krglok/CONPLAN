@@ -97,19 +97,19 @@ print_kopf($logo_typ,$header_typ,"Öffentlich","Sei gegrüsst Freund ",$menu_item)
 //echo "POST : $p_md / GET : $md / THEMEN :$THEMEN ";
 
 
-$menu_main = array (0=>array("icon" => "99","caption" => "Hauptseite","link" => "ss"),
-		1=>array ("icon" => "_page","caption" => "Übersicht","link" => "$PHP_SELF?md=0&daten=main.html","itemtyp"=>"2"),
+$menu_main = array (0=>array("icon" => "0","caption" => "Hauptseite","link" => "ss","itemtyp"=>"0"),
+		1=>array ("icon" => "_page","caption" => "Übersicht","link" => "main.html","itemtyp"=>"2"),
 		2=>array ("icon" => "_list","caption" => "News","link" => "$PHP_SELF?md=5","itemtyp"=>"0"),
 		3=>array ("icon" => "_list","caption" => "Termine","link" => "$PHP_SELF?md=4","itemtyp"=>"0"),
-		5=>array ("icon" => "_key","caption" => "Innerer Zirkel","link" => "$PHP_SELF?md=2&daten=slogin.html","itemtyp"=>"2"),
+		5=>array ("icon" => "_key","caption" => "Innerer Zirkel","link" => "slogin.html","itemtyp"=>"2"),
 		6=>array ("icon" => "0","caption" => "","link" => "","itemtyp"=>"0"),
-		10=>array ("icon" => "_page","caption" => "Kurzdarstellung","link" => "$PHP_SELF?md=&2&daten=kurzdars.html","itemtyp"=>"2"),
-		11=>array ("icon" => "_page","caption" => "LPD","link" => "$PHP_SELF?md=2&daten=lpd.html","itemtyp"=>"2"),
+		10=>array ("icon" => "_page","caption" => "Kurzdarstellung","link" => "kurzdars.html","itemtyp"=>"2"),
+		11=>array ("icon" => "_page","caption" => "LPD","link" => "lpd.html","itemtyp"=>"2"),
 		12=>array ("icon" => "_page","caption" => "Unsere Regeln","link" => "main_regeln.php?md=0","itemtyp"=>"0"),
-		13=>array ("icon" => "_page","caption" => "Unser Spielgebiet","link" => "$PHP_SELF?md=2&daten=weg_viet.html","itemtyp"=>"2"),
+		13=>array ("icon" => "_page","caption" => "Unser Spielgebiet","link" => "weg_viet.html","itemtyp"=>"2"),
 		14=>array ("icon" => "_list","caption" => "Unsere Spieler","link" => "main_spieler.php?md=0","itemtyp"=>"0"),
 		20=>array ("icon" => "0","caption" => "","link" => "","itemtyp"=>"0"),
-		21=>array ("icon" => "_page","caption" => "Das Land","link" => "main_pages.php?md=0","itemtyp"=>"0"),
+		21=>array ("icon" => "_page","caption" => "Das Land","link" => "main_pages.php?md=0&sub=land&item=land","itemtyp"=>"0"),
 		22=>array ("icon" => "_page","caption" => "Neue Chronik","link" => "main_chronik.php","itemtyp"=>"0"),
 		23=>array ("icon" => "_page","caption" => "Ausrüstung","link" => "main_ausruestung.php","itemtyp"=>"0"),
 		24=>array ("icon" => "_page","caption" => "Bilder","link" => "main_bilder.php?md=0","itemtyp"=>"0"),
@@ -117,9 +117,9 @@ $menu_main = array (0=>array("icon" => "99","caption" => "Hauptseite","link" => 
 		31=>array ("icon" => "_link","caption" => "Liberi Effera","link" => "http://www.liberi-effera.de/","itemtyp"=>"0"),
 		32=>array ("icon" => "_link","caption" => "Draskoria","link" => "http://draskoria.game-host.org:8090/\"target=_blank\"","itemtyp"=>"0"),
 		33=>array ("icon" => "_zip","caption" => "Download","link" => "main_download.php","daten"=>"","itemtyp"=>"0"),
-		34=>array ("icon" => "_list","caption" => "Links","link" => "$PHP_SELF?md=2&daten=links.html","itemtyp"=>"2"),
-		50=>array ("icon" => "_help","caption" => "Ich","link" => "$PHP_SELF?md=2&daten=ich.html","itemtyp"=>"2"),
-		51=>array ("icon" => "_help","caption" => "Impressum","link" => "$PHP_SELF?md=2&daten=Impressum.html","itemtyp"=>"2")
+		34=>array ("icon" => "_list","caption" => "Links","link" => "links.html","itemtyp"=>"2"),
+		50=>array ("icon" => "_help","caption" => "Ich","link" => "ich.html","itemtyp"=>"2"),
+		51=>array ("icon" => "_help","caption" => "Impressum","link" => "Impressum.html","itemtyp"=>"2")
 );
 $item = check_sub_item($BEREICH,"main","main");
 
@@ -145,7 +145,6 @@ case 1: // html die in pages liegen
     print_data($daten);
     break;
 case 2: // html der nicht in pages liegt
-  echo "2";
 	print_pages($daten);
 	break;
 case 3: // MAIN MENU
