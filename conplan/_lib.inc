@@ -41,7 +41,7 @@ function tumb_copy($bild_url,$zieldir,$max_x,$max_y,$type)
 
 */
 
-include_once '_config.inc';
+//include_once '_config.inc';
 
 /**
  * Ausgabe eines Menu_icon anhand des default style
@@ -78,34 +78,53 @@ function print_menu_ref($caption, $ref)
 function print_menu_item($item)
 {
   global $PHP_SELF;
+  
   $caption = $item["caption"];
   $link=$item["link"];
-  $ref = $link;
+//  $ref = $link;
   // Reftyp zusammenbauen
-  $itemtyp = $item['itemtyp'];
-  if ($item['itemtyp'] == "1")
+  
+  $itemtyp = $item["itemtyp"];
+  //echo "$itemtyp";
+  if ($itemtyp == "0")
+  {
+    $ref = $link;
+    
+  } elseif ($itemtyp == "1")
   {
     $ref = "$PHP_SELF?md=1&daten=$link";
-  }
-  if ($item['itemtyp'] == "2")
+    
+  } elseif ($itemtyp == "2")
   {
     $ref = "$PHP_SELF?md=2&daten=$link";
-  }
-  if ($item['itemtyp'] = "100")
+    
+  }  elseif ($itemtyp = "100")
   {
     $ref = "$PHP_SELF?md=$itemtyp&daten=$link";
-  }
-  if ($item['itemtyp'] = "101")
+    
+  } elseif ($itemtyp = "101")
   {
     $ref = "$PHP_SELF?md=$itemtyp&daten=$link";
+    
+  } else 
+  {
+    $ref="";
+//    echo "$ref";
   }
-  
-  echo "          <p>  \n";
-  echo "            <a HREF=\"$ref\" > ";
-  print_menu_icon($item["icon"]);
-  echo "            $caption ";
-  echo "            </a>\n";
-  echo "          </p>  \n";
+  if ($item["icon"] != "0")
+  {
+    echo "          <p>  \n";
+    echo "            <a HREF=\"$ref\" > ";
+    print_menu_icon($item["icon"]);
+    echo "            $caption ";
+    echo "            </a>\n";
+    echo "          </p>  \n";
+  } else 
+  {
+    echo "          <p>  \n";
+    echo "\t\t<hr> \n";
+    echo "          </p>  \n";
+  }
 
 }
 
@@ -116,7 +135,7 @@ function print_menu_item($item)
 function print_menu ($menu)
 {
   global $user_lvl, $lvl_admin,$lvl_sl;
-
+  
   //   menü spalte
   echo "<!---  Menu Spalte   --->\n";
   //  stellt die breite der Menüspalte ein !!!
@@ -138,56 +157,68 @@ function print_menu ($menu)
   echo "\t\t<div $style ><!-- Row:1, Col:1 -->\n";
 
   reset ($menu);
-  while (list($key, $item) = each ($menu))
+  $i = 0;
+  foreach ($menu as $item)
   {
-    if ($key!=99)  // sl oder user menu
+    // das erste Ellement ist der Header !!
+    if ($i > 0)
     {
-      if ($key!=98)  // User Menu
-      {
-        $item = $menu[$key];
-        $item["caption"] = substr($item["caption"],0,19);
-        if ($key!=0)
-        {
-          if ($item["icon"] != "0") {
-            print_menu_item($item);
-          } else
-          {
-            //  		        $style = $GLOBALS['style_menu_space'];
-            //  			    echo "\t<div $style ><!-- Row:1, Col:1 -->\n";
-            echo "\t\t<hr> \n";
-            //                echo "\t</div >\n";
-          }
-        } else
-        {
-          // 0 wird nicht gedruckt, ist der header
-        };
-      } else     // SL - menu
-      {
-        $l1 = (int) $user_lvl;
-        $l2 = (int) $lvl_sl[14];
-        if ($l1 <= $l2)
-        {
-          $item = $menu[$key];
-          if ($key!=0)
-          {
-            print_menu_item($item);
-          };
-        };
-      }
-    } else // admin menu
-    {
-      $l1 = (int) $user_lvl;
-      $l2 = (int) $lvl_admin[14];
-      if ($l1 <= $l2)
-      {
-        $item = $menu[$key];
-        if ($key!=0)
-        {
-          print_menu_item($item);
-        };
-      };
+//      echo $i;
+      print_menu_item($item);
     }
+    $i++;
   }
+    
+//   while (list($key, $item) = each ($menu))
+//   {
+//     if ($key!="99")  // sl oder user menu
+//     {
+//       if ($key!="98")  // User Menu
+//       {
+//         $item = $menu[$key];
+//         $item["caption"] = substr($item["caption"],0,19);
+//         if ($key!="0")
+//         {
+//           if ($item["icon"] != "0") {
+//             print_menu_item($item);
+//           } else
+//           {
+//             //  		        $style = $GLOBALS['style_menu_space'];
+//             //  			    echo "\t<div $style ><!-- Row:1, Col:1 -->\n";
+//             echo "\t\t<hr> \n";
+//             //                echo "\t</div >\n";
+//           }
+//         } else
+//         {
+//           // 0 wird nicht gedruckt, ist der header
+//         };
+//       } else     // SL - menu
+//       {
+//         $l1 = (int) $user_lvl;
+//         $l2 = (int) $lvl_sl[14];
+//         if ($l1 <= $l2)
+//         {
+//           $item = $menu[$key];
+//           if ($key!=0)
+//           {
+//             print_menu_item($item);
+//           };
+//         };
+//       }
+//     } else // admin menu
+//     {
+//       $l1 = (int) $user_lvl;
+//       $l2 = (int) $lvl_admin[14];
+//       if ($l1 <= $l2)
+//       {
+//         $item = $menu[$key];
+//         if ($key!=0)
+//         {
+//           print_menu_item($item);
+//         };
+//       };
+//     }
+//   }
   echo "\t\t</div >\n";
   echo "\t</div >\n";
   echo "<!---  Menu Spalte ENDE   --->\n\n";
@@ -596,6 +627,43 @@ function get_typ_color($typ)
 
 		return $color;
 }
+
+/**
+ * erzeugt eine Liste der news im Datenbereich
+ */
+function print_news()
+{
+  global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
+
+  echo "    <TD>\n";
+  echo "      <TABLE WIDTH=\"500\"  BORDER=\"0\" BGCOLOR=\"\" >";
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+  or die("Fehler beim verbinden!");
+
+  mysql_select_db($DB_NAME);
+
+  $result = mysql_query("SELECT datum,text_1,text_2,Text_3 from news order by id DESC LIMIT 10")
+  or die("Query Fehler...");
+
+  while ($row = mysql_fetch_row($result))
+  {
+    echo "        <TR>";
+    echo "        <FONT FACE=\"Comic Sans MS\" SIZE=\"2\">\n";
+    echo "\t<td width=\"95\">".$row[0]."&nbsp;<BR>";
+    echo "</td>\n";
+    echo "\t<td>$row[1]<BR>$row[2]<BR>$row[3]<BR>";
+    //      echo "<HR>";
+    echo "</td>\n";
+    echo '        </TR>';
+}
+
+mysql_close($db);
+echo '      </TABLE>';
+echo "    </TD>\n";
+echo "    <TD>\n";
+echo "    .\n";
+echo "    </TD>\n";
+};
 
 /**
  *  erstellt einen Kalender als Tabelle

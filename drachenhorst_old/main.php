@@ -71,39 +71,6 @@ include "lib.inc";
 include "head.inc";
 
 
-function print_news()
-{
-	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
-
-	echo "    <TD>\n";
-	echo "      <TABLE WIDTH=\"500\"  BORDER=\"0\" BGCOLOR=\"\" >";
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-	or die("Fehler beim verbinden!");
-
-	mysql_select_db($DB_NAME);
-
-	$result = mysql_query("SELECT datum,text_1,text_2,Text_3 from news order by id DESC LIMIT 10")
-	or die("Query Fehler...");
-
-	while ($row = mysql_fetch_row($result))
-	{
-		echo "        <TR>";
-		echo "        <FONT FACE=\"Comic Sans MS\" SIZE=\"2\">\n";
-		echo "\t<td width=\"95\">".$row[0]."&nbsp;<BR>";
-		echo "</td>\n";
-		echo "\t<td>$row[1]<BR>$row[2]<BR>$row[3]<BR>";
-		//      echo "<HR>";
-		echo "</td>\n";
-		echo '        </TR>';
-	}
-
-	mysql_close($db);
-	echo '      </TABLE>';
-	echo "    </TD>\n";
-	echo "    <TD>\n";
-	echo "    .\n";
-	echo "    </TD>\n";
-};
 
 
 

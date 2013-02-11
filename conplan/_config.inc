@@ -46,6 +46,7 @@ $session_id ="FFFF";
 // allgemeine Konfigurationsparameter
 $version = "3.0.0";
 $grp_name="Drachenhorst";			// Refrenzname fuer Homepage
+$path_conplan	= "./conplan/";     // Hier werden die Bilder der Conplanung abgelegt
 $main_php="main.php";
 $home = $path_conplan.$main_php;
 
@@ -58,7 +59,6 @@ $path_base		= "./BILDER/BASE/";	// Dies sind die Gruppenbilder der Bildgallerie
 $path_download 	= "./download/";	// Hier sind die Downloads abgelegt
 $path_char		= "./chars/";		// Hier werden charakter Bilder abgelegt, fuer Charakterverwaltung
 $path_land		= "./land/";		// hier werden die Bilder fuer Laender und Karten abgelegt
-$path_conplan	= "./conplan/";     // Hier werden die Bilder der Conplanung abgelegt
 $path_html		= "./pages/";		// Hier werden die embeded html.pages abgelegt
 $path_regeln	= "./regeln/";      // Hier werden ide regeln.html, regeln.images abgelegt
 
@@ -196,7 +196,7 @@ function GET_sub($value = "main")
 	return $value;
 }
 
-function GET_ID($value = "")
+function GET_SESSIONID($value = "")
 {
 	if (isset($_GET['ID'])==true)
 	{
@@ -302,23 +302,24 @@ function print_status($wert)
 }
 
 $PHP_SELF = $_SERVER['PHP_SELF'];
-
+$ID="";
+$menu_item_header = array ("icon" => "", "caption" => "Hauptmenü","link" => "","itemtyp"=>"0");
 $menu_item_help = array ("icon" => $menu_help, "caption" => "Help","link" => "javascript:openHelp()","itemtyp"=>"0");
 $menu_item_sl 	= array ("icon" => "$menu_page","caption" => "SL","link" => "con_main.php?md=0&ID=$ID","itemtyp"=>"98");
 $menu_item_admin= array ("icon" => "$menu_page","caption" => "Admin","link" => "admin_main.php?md=0&ID=$ID","itemtyp"=>"99");
-$menu_item_ich 	= array ("icon" => "$menu_page","caption" => "Ich","link" => "$PHP_SELF?md=2&daten=ich.html","itemtyp"=>"2");
-$menu_item_imp 	= array ("icon" => "$menu_help","caption" => "Impressum","link" => "$PHP_SELF?md=7&daten=impressum.html","itemtyp"=>"2");
-$menu_item_login= array ("icon" => "$menu_key","caption" => "Innerer Zirkel","link" => "$PHP_SELF?md=7&daten=slogin.html","itemtyp"=>"2");
+$menu_item_ich 	= array ("icon" => "$menu_page","caption" => "Ich","link" => "ich.html","itemtyp"=>"2");
+$menu_item_imp 	= array ("icon" => "$menu_help","caption" => "Impressum","link" => "impressum.html","itemtyp"=>"2");
+$menu_item_login= array ("icon" => "$menu_key","caption" => "Innerer Zirkel","link" => "slogin.html","itemtyp"=>"2");
 $menu_item_default = array("icon" => $menu_stop,"caption" => "??","link" => "$main_php?md=0","itemtyp"=>"0");
 $menu_item = array("icon" => "","caption" => "??","link" => "??","itemtyp"=>0);
 $menu_items = array(0=>$menu_item);
 
 $menu_default = array (
-    0=>$menu_item_header,
-    1=>$menu_item_default,
-		2=>$menu_item_login,
-    10=>$menu_item_imp,
-    11=>$menu_item_ich
+    "0"=>$menu_item_header,
+    "1"=>$menu_item_default,
+	"2"=>$menu_item_login,
+    "10"=>$menu_item_imp,
+    "11"=>$menu_item_ich
 );
 
 $menu_bereich = array("PK"=>0, "bereich"=>"","titel"=>"","lvl"=>0);
@@ -413,33 +414,46 @@ function get_sub_bereich($bereich)
   return $menu_sub_bereich;
 }
 
-function get_sub($bereich,$sub)
+/**
+ * Prueft ob das menu zu $item vorhanden ist und gibt es zuruck
+ * oder ein leerstring
+ * @param unknown $bereich
+ * @param unknown $sub
+ * @param unknown $item
+ * @return , das gefundene item als string
+ */
+function check_sub_item($bereich,$sub,$item)
 {
-  global $menu_sub ;
-  global $menu_sub_bereich;
-  
-  $menu_sub_bereich = get_sub_bereich($bereich);
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+  mysql_select_db($DB_NAME);
 
-  $i =0;
-  foreach ($menu_sub_bereich as $menu_sub)
+  $table = 'menu_sub';
+  $q = "SELECT item FROM menu_bereich  
+ join menu_sub on menu_sub.ref_bereich = menu_bereich.ID
+ join menu_item on menu_item.ref_sub=menu_sub.ID
+ where bereich = \"$bereich\" and sub= \"$sub\"  and item=\"$item\" ";
+  $result = mysql_query($q);
+  if (!$result) 
   {
-    if (preg_match ($menu_sub["sub"], $sub, $out, PREG_OFFSET_CAPTURE))
-    {
-      return $menu_sub;
-    }
+    $item = "??";
+  } else 
+  {
+    $row = mysql_fetch_row($result); 
+    return $row[0];
   }
-  return null;
 }
 
 
-function get_menu_items($bereich, $sub)
+
+function get_menu_items($bereich, $sub,$item)
 {
   if ($bereich == "")
   {
   	$bereich = 'PUBLIC';
   }
 	
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
   global $menu_item;
   global $menu_items;
 
@@ -448,20 +462,24 @@ function get_menu_items($bereich, $sub)
   mysql_select_db($DB_NAME);
   $table = 'menu_item';
   
-  $q = "SELECT item,item_titel,item_typ,item_icon,item_link,item_sort FROM menu_bereich  
-  join menu_sub on menu_sub.ref_bereich = menu_bereich.ID
- join menu_item on menu_item.ref_sub=menu_sub.ID
- where bereich = \"$bereich\" and sub= \"$sub\"  order by item_sort";
+//   $q = "SELECT item,item_titel,item_typ,item_icon,item_link,item_sort,sub FROM menu_bereich  
+//   join menu_sub on menu_sub.ref_bereich = menu_bereich.ID
+//  join menu_item on menu_item.ref_sub=menu_sub.ID
+//  where bereich = \"$bereich\" and sub= \"$sub\"  and item=\"$item\" order by item_sort";
+  $q="SELECT item,item_titel,item_typ,item_icon,item_link,item_sort FROM menu_bereich 
+join menu_sub on menu_sub.ref_bereich = menu_bereich.ID
+join menu_item on menu_item.ref_sub=menu_sub.ID
+where bereich = \"$bereich\" and sub= \"$sub\" and item=\"$item\" order by item_sort";
   
   $result = mysql_query($q) ;
   if (!$result) {
-    $message  = 'Invalid query: ' . mysql_error() . "\n";
+    $message  = 'Invalid get_menu_items: ' . mysql_error() . "\n";
     $message .= 'Whole query: ' . $q;
     die($message);
   
   } else
   {
-  
+    $i=0;
     // Reihenfolge der menu_item nach spalte item_sort
     while ($row = mysql_fetch_row($result))  
     {
@@ -469,13 +487,14 @@ function get_menu_items($bereich, $sub)
       $menu_item['icon']=$row[3];
       $menu_item['link']=$row[4];
       $menu_item['itemtyp']=$row[2];
-      if ($row[2] == "0") 
+      if ($row[5] == 0) 
       {
         $menu_items["0"]=$menu_item;
       } else
       {
-        $menu_items[$row[5]]=$menu_item;
+        $menu_items[$i]=$menu_item;
       }
+      $i++;
     }
   }
   return $menu_items;
@@ -669,8 +688,7 @@ function mfd_delete($name, $id)
 	$join = ""; //$mfd_list["join"];
 	$where ="id = $id";
 	$order = "";
-	
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+
 	
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)     or die("Fehler beim verbinden!");
 

@@ -49,11 +49,9 @@ include_once "_login.inc";
 // ----------------------------------------------------------------
 // Prüfung ob User  berechtigt ist
 
-$c_md = $_COOKIE['md'];
-$p_md = $_POST['md'];
 
-$user   = $_POST[user];
-$pw     = $_POST[pw];
+$user   = POST_user("user");
+$pw     = POST_pw();
 
 $md=GET_md(0);
 $daten=GET_daten("");
@@ -71,7 +69,7 @@ if (checkuser($user,$pw) == "TRUE")
 else
 {
 
-	header ("Location: main.php?md=0&sub=$sub&menu=$menu");
+	header ("Location: main.php?md=2&daten=slogin.html&sub=$sub&item=$item");
 	/* Umleitung des Browsers
 	 zur PHP-Web-Seite. */
 	exit;  /* Sicher stellen, das nicht trotz Umleitung nachfolgender

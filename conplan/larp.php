@@ -72,9 +72,9 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 
 */
 
-include_once ''; "_config.inc";
-include_once ''; "_lib.inc";
-include_once ''; "_head.inc";
+include_once "_config.inc";
+include_once "_lib.inc";
+include_once "_head.inc";
 //include_once ''; "_login.inc";
 
 
@@ -90,17 +90,17 @@ include_once ''; "_head.inc";
 
 $BEREICH = 'INTERN';
 
-$md=GET_md(0);
-$daten=GET_daten("");
-$sub=GET_sub("main");
-$menu=GET_menu("regeln");
+$md     = GET_md(0);
+$daten  = GET_daten("");
+$sub    = GET_sub("main");
+$item   = GET_item("");
+$ID     = GET_SESSIONID("");
 
-
-session_start ($ID);
-$user       = $_SESSION[user];
-$user_lvl   = $_SESSION[user_lvl];
-$spieler_id = $_SESSION[spieler_id];
-$user_id 		= $_SESSION[user_id];
+session_start($ID);
+$user       = $_SESSION["user"];
+$user_lvl   = $_SESSION["user_lvl"];
+$spieler_id = $_SESSION["spieler_id"];
+$user_id 	= $_SESSION["user_id"];
 
 if ($ID == "")
 {
@@ -110,22 +110,22 @@ if ($ID == "")
 	// Code ausgeführt wird.
 }
 
-if (getuser($user,$pw) != "TRUE")
-{
-	header ("Location: main.php");  // Umleitung des Browsers
-	//       zur PHP-Web-Seite.
-	exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
-	// Code ausgeführt wird.
-}
+// if (getuser($user,$pw) != "TRUE")
+// {
+// 	header ("Location: main.php");  // Umleitung des Browsers
+// 	//       zur PHP-Web-Seite.
+// 	exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
+// 	// Code ausgeführt wird.
+// }
 
-if ($md == 99)
-{
-	session_destroy();
-	header ("Location: main.php");  /* Umleitung des Browsers
-	zur PHP-Web-Seite. */
-	exit;  /* Sicher stellen, das nicht trotz Umleitung nachfolgender
-	Code ausgeführt wird. */
-};
+// if ($md == 99)
+// {
+// 	session_destroy();
+// 	header ("Location: main.php");  /* Umleitung des Browsers
+// 	zur PHP-Web-Seite. */
+// 	exit;  /* Sicher stellen, das nicht trotz Umleitung nachfolgender
+// 	Code ausgeführt wird. */
+// };
 
 print_header("Interner Bereich");
 print_body(2);
@@ -135,39 +135,39 @@ $spieler_name = get_spieler($spieler_id); //Auserwählter\n";
 $menu_item = $menu_item_help;
 print_kopf($logo_typ,$header_typ,"Intern","Sei gegrüsst $spieler_name ",$menu_item);
 
-print_kopf(1,2,"Interner Bereich","Sei gegrüsst $spieler_name ");
 
-if ($menu == '')
+if ($item == '')
 {
-	$menu = array (0=>array("icon" => "99","caption" => "INTERN","link" => "$PHP_SELF?md=0&ID=$ID"),
-	1=>array ("icon" => "1","caption" => "Spieler","link" => "larp_sc_liste.php?md=1&ID=$ID"),
-	2=>array ("icon" => "1","caption" => "Forum Intern","link" => "larp_forum_1.php?md=1&ID=$ID"),
-	3=>array ("icon" => "1","caption" => "Forum MC","link" => "larp_forum_2.php?md=1&ID=$ID"),
-	4=>array ("icon" => "5","caption" => "Anmeldung","link" => "larp_anmelde_liste.php?md=0&ID=$ID"),
-	5=>array ("icon" => "5","caption" => "Bilder","link" => "larp_bild_liste.php?md=0&ID=$ID"),
-	6=>array ("icon" => "5","caption" => "Neue Bilder","link" => "larp_bild_liste1.php?md=0&ID=$ID"),
-	7=>array ("icon" => "5","caption" => "Termine","link" => "$PHP_SELF?md=1&ID=$ID"),
-	8=>array ("icon" => "5","caption" => "Download","link" => "larp_download.php?md=0&ID=$ID"),
-	9=>array ("icon" => "1","caption" => "Regelwerk","link" => "larp_regeln_liste.php?md=0&ID=$ID"),
-	10=>array ("icon" => "1","caption" => "GdW","link" => "/gdw_bib/  \"target=_blank\""),
-	11=>array ("icon" => "5","caption" => "Liberi Effera","link" => "http://www.liberi-effera.de/ \"target=_blank\""),
-	20=>array ("icon" => "0","caption" => "","link" => ""),
-	21=>array ("icon" => "1","caption" => "Charakter","link" => "char_liste.php?md=0&ID=$ID"),
-	23=>array ("icon" => "5","caption" => "Legenden","link" => "larp_leg_liste.php?md=0&ID=$ID"),
-	24=>array ("icon" => "5","caption" => "Sprueche","link" => "larp_mag_liste.php?md=0&ID=$ID"),
-	25=>array ("icon" => "5","caption" => "Traenke","link" => "larp_trank_liste.php?md=0&ID=$ID"),
-	26=>array ("icon" => "1","caption" => "Bibliothek","link" => "larp_gdw_liste.php?md=0&ID=$ID"),
-	27=>array ("icon" => "1","caption" => "Bibliothekar","link" => "larp_gdw.php?md=0&ID=$ID"),
-	29=>array ("icon" => "6","caption" => "ENDE","link" => "larp.php?md=99&ID=$ID"),
-	30=>array ("icon" => "1","caption" => "Draskoria","link" => "http://draskoria.game-host.org:8090/ \"target=_blank\""),
-	98=>array ("icon" => "1","caption" => "SL ","link" => "conmain.php?md=0&ID=$ID"),
-	99=>array ("icon" => "1","caption" => "Admin","link" => "admin_con.php?md=0&ID=$ID")
+	$menu = array (
+	"0"=>array("icon" => "0","caption" => "INTERN","link" => "","itemtyp"=>"0"),
+	"1"=>array ("icon" => "$menu_list","caption" => "Spieler","link" => "larp_sc_liste.php?md=1&ID=$ID","itemtyp"=>"0"),
+	"2"=>array ("icon" => "$menu_folder","caption" => "Forum Intern","link" => "larp_forum_1.php?md=1&ID=$ID","itemtyp"=>"0"),
+	"3"=>array ("icon" => "$menu_list","caption" => "Forum MC","link" => "larp_forum_2.php?md=1&ID=$ID","itemtyp"=>"0"),
+	"4"=>array ("icon" => "$menu_folder","caption" => "Anmeldung","link" => "larp_anmelde_liste.php?md=0&ID=$ID","itemtyp"=>"0"),
+	"5"=>array ("icon" => "$menu_folder","caption" => "Bilder","link" => "larp_bild_liste.php?md=0&ID=$ID","itemtyp"=>"0"),
+	"6"=>array ("icon" => "$menu_folder","caption" => "Neue Bilder","link" => "larp_bild_liste1.php?md=0&ID=$ID","itemtyp"=>"0"),
+	"7"=>array ("icon" => "$menu_folder","caption" => "Termine","link" => "$PHP_SELF?md=1&ID=$ID","itemtyp"=>"0"),
+	"8"=>array ("icon" => "$menu_zip","caption" => "Download","link" => "larp_download.php?md=0&ID=$ID","itemtyp"=>"0"),
+	"9"=>array ("icon" => "$menu_list","caption" => "Regelwerk","link" => "larp_regeln_liste.php?md=0&ID=$ID","itemtyp"=>"0"),
+	"20"=>array ("icon" => "0","caption" => "","link" => "","itemtyp"=>"0"),
+	"21"=>array ("icon" => "$menu_folder","caption" => "Charakter","link" => "char_liste.php?md=0&ID=$ID","itemtyp"=>"0"),
+	"23"=>array ("icon" => "$menu_list","caption" => "Legenden","link" => "larp_leg_liste.php?md=0&ID=$ID","itemtyp"=>"0"),
+	"24"=>array ("icon" => "$menu_folder","caption" => "Sprueche","link" => "larp_mag_liste.php?md=0&ID=$ID","itemtyp"=>"0"),
+	"25"=>array ("icon" => "$menu_folder","caption" => "Traenke","link" => "larp_trank_liste.php?md=0&ID=$ID","itemtyp"=>"0"),
+	"26"=>array ("icon" => "$menu_folder","caption" => "Bibliothek","link" => "larp_gdw_liste.php?md=0&ID=$ID","itemtyp"=>"0"),
+	"27"=>array ("icon" => "$menu_folder","caption" => "Bibliothekar","link" => "larp_gdw.php?md=0&ID=$ID","itemtyp"=>"0"),
+	"29"=>array ("icon" => "$menu_stop","caption" => "ENDE","link" => "main.php?md=99&ID=$ID&sub=main&item=regeln","itemtyp"=>"0"),
+	"30"=>array ("icon" => "_link","caption" => "Draskoria","link" => "http://draskoria.game-host.org:8090/ \"target=_blank\"","itemtyp"=>"0"),
+	"31"=>array ("icon" => "_link","caption" => "GdW","link" => "/gdw_bib/  \"target=_blank\"","itemtyp"=>"0"),
+	"32"=>array ("icon" => "_link","caption" => "Liberi Effera","link" => "http://www.liberi-effera.de/ \"target=_blank\"","itemtyp"=>"0"),
+	"98"=>array ("icon" => "$menu_folder","caption" => "SL ","link" => "conmain.php?md=0&ID=$ID","itemtyp"=>"0"),
+	"99"=>array ("icon" => "$menu_folder","caption" => "Admin","link" => "admin_con.php?md=0&ID=$ID","itemtyp"=>"0")
 	);
 	print_menu($menu);
 } else
 {
 	// Erstellt ein dynamisches Menu
-	print_menu(get_menu_items($BEREICH, $sub));
+	print_menu(get_menu_items($BEREICH, $sub, $item));
 
 }
 

@@ -71,43 +71,6 @@ include_once "_lib.inc";
 include_once "_head.inc";
 
 
-/**
- * Erstellt eine Liste von News , max 10, als Tabelle
- * Kann direkt in die Datatab geschrieben werden.
- */
-function print_news()
-{
-	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
-
-	$style = $GLOBALS['style_datatab'];
-	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
-	echo "<TABLE >";
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-	or die("Fehler beim verbinden!");
-
-	mysql_select_db($DB_NAME);
-
-	$result = mysql_query("SELECT datum,text_1,text_2,Text_3 from news order by id DESC LIMIT 10")
-	or die("Query Fehler...");
-
-	while ($row = mysql_fetch_row($result))
-	{
-		echo "<TR>";
-		echo "<td>$row[0]&nbsp;<BR><BR><BR>";
-		echo "</td>\n";
-		echo "<td>$row[1]<BR>$row[2]<BR>$row[3]<BR>";
-		echo "</td>\n";
-		echo '</TR>';
-	}
-
-	mysql_close($db);
-	echo '</TABLE>';
-	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
-	};
-
-
 
 // ---------------------------------------------------------------
 // ---------    MAIN ---------------------------------------------
@@ -125,47 +88,49 @@ $PHP_SELF = $_SERVER['PHP_SELF'];
 // Steuerparameter und steuerdaten
 $md=GET_md(0);
 $daten=GET_daten("");
-$menu=GET_menu("");
-$sub=GET_sub("main");
+$item=GET_item("main");
+$sub=GET_sub("");
 
-$menu_item = array("icon" => $menu_help, "caption" => "Help","link" => "javascript:openHelp()");
+$menu_item = $menu_item_help;
 print_kopf($logo_typ,$header_typ,"Öffentlich","Sei gegrüsst Freund ",$menu_item);
 
 //echo "POST : $p_md / GET : $md / THEMEN :$THEMEN ";
 
 
-// $menu = array (0=>array("icon" => "99","caption" => "Hauptseite","link" => "ss"),
-// 		1=>array ("icon" => "7","caption" => "Übersicht","link" => "$PHP_SELF?md=0&daten=main.html"),
-// 		2=>array ("icon" => "5","caption" => "News","link" => "$PHP_SELF?md=5"),
-// 		3=>array ("icon" => "5","caption" => "Termine","link" => "$PHP_SELF?md=4"),
-// 		4=>array ("icon" => "5","caption" => "Liberi Effera","link" => "http://www.liberi-effera.de/"),
-// 		5=>array ("icon" => "13","caption" => "Innerer Zirkel","link" => "$PHP_SELF?md=2&daten=slogin.html"),
-// 		6=>array ("icon" => "0","caption" => "","link" => ""),
-// 		10=>array ("icon" => "7","caption" => "Kurzdarstellung","link" => "$PHP_SELF?md=&2&daten=kurzdars.html"),
-// 		11=>array ("icon" => "7","caption" => "LPD","link" => "$PHP_SELF?md=2&daten=lpd.html"),
-// 		12=>array ("icon" => "1","caption" => "Unsere Regeln","link" => "main_regeln.php?md=0"),
-// 		13=>array ("icon" => "7","caption" => "Unser Spielgebiet","link" => "$PHP_SELF?md=2&daten=weg_viet.html"),
-// 		14=>array ("icon" => "1","caption" => "Unsere Spieler","link" => "main_spieler.php?md=0"),
-// 		20=>array ("icon" => "0","caption" => "","link" => ""),
-// 		21=>array ("icon" => "1","caption" => "Das Land","link" => "main_pages.php?md=0"),
-// 		22=>array ("icon" => "1","caption" => "Neue Chronik","link" => "main_chronik.php"),
-// 		23=>array ("icon" => "1","caption" => "Ausrüstung","link" => "main_ausruestung.php"),
-// 		24=>array ("icon" => "1","caption" => "Bilder","link" => "main_bilder.php?md=0"),
-// 		30=>array ("icon" => "0","caption" => "","link" => ""),
-// 		31=>array ("icon" => "1","caption" => "Draskoria","link" => "http://draskoria.game-host.org:8090/\"target=_blank\""),
-// 		32=>array ("icon" => "1","caption" => "Download","link" => "main_download.php","daten"=>""),
-// 		33=>array ("icon" => "5","caption" => "Links","link" => "$PHP_SELF?md=2&daten=links.html"),
-// 		34=>array ("icon" => "7","caption" => "Ich","link" => "$PHP_SELF?md=2&daten=ich.html"),
-// 		35=>array ("icon" => "10","caption" => "Impressum","link" => "$PHP_SELF?md=2&daten=Impressum.html")
-// );
+$menu_main = array (0=>array("icon" => "99","caption" => "Hauptseite","link" => "ss"),
+		1=>array ("icon" => "_page","caption" => "Übersicht","link" => "$PHP_SELF?md=0&daten=main.html","itemtyp"=>"2"),
+		2=>array ("icon" => "_list","caption" => "News","link" => "$PHP_SELF?md=5","itemtyp"=>"0"),
+		3=>array ("icon" => "_list","caption" => "Termine","link" => "$PHP_SELF?md=4","itemtyp"=>"0"),
+		5=>array ("icon" => "_key","caption" => "Innerer Zirkel","link" => "$PHP_SELF?md=2&daten=slogin.html","itemtyp"=>"2"),
+		6=>array ("icon" => "0","caption" => "","link" => "","itemtyp"=>"0"),
+		10=>array ("icon" => "_page","caption" => "Kurzdarstellung","link" => "$PHP_SELF?md=&2&daten=kurzdars.html","itemtyp"=>"2"),
+		11=>array ("icon" => "_page","caption" => "LPD","link" => "$PHP_SELF?md=2&daten=lpd.html","itemtyp"=>"2"),
+		12=>array ("icon" => "_page","caption" => "Unsere Regeln","link" => "main_regeln.php?md=0","itemtyp"=>"0"),
+		13=>array ("icon" => "_page","caption" => "Unser Spielgebiet","link" => "$PHP_SELF?md=2&daten=weg_viet.html","itemtyp"=>"2"),
+		14=>array ("icon" => "_list","caption" => "Unsere Spieler","link" => "main_spieler.php?md=0","itemtyp"=>"0"),
+		20=>array ("icon" => "0","caption" => "","link" => "","itemtyp"=>"0"),
+		21=>array ("icon" => "_page","caption" => "Das Land","link" => "main_pages.php?md=0","itemtyp"=>"0"),
+		22=>array ("icon" => "_page","caption" => "Neue Chronik","link" => "main_chronik.php","itemtyp"=>"0"),
+		23=>array ("icon" => "_page","caption" => "Ausrüstung","link" => "main_ausruestung.php","itemtyp"=>"0"),
+		24=>array ("icon" => "_page","caption" => "Bilder","link" => "main_bilder.php?md=0","itemtyp"=>"0"),
+		30=>array ("icon" => "0","caption" => "","link" => "","itemtyp"=>"0"),
+		31=>array ("icon" => "_link","caption" => "Liberi Effera","link" => "http://www.liberi-effera.de/","itemtyp"=>"0"),
+		32=>array ("icon" => "_link","caption" => "Draskoria","link" => "http://draskoria.game-host.org:8090/\"target=_blank\"","itemtyp"=>"0"),
+		33=>array ("icon" => "_zip","caption" => "Download","link" => "main_download.php","daten"=>"","itemtyp"=>"0"),
+		34=>array ("icon" => "_list","caption" => "Links","link" => "$PHP_SELF?md=2&daten=links.html","itemtyp"=>"2"),
+		50=>array ("icon" => "_help","caption" => "Ich","link" => "$PHP_SELF?md=2&daten=ich.html","itemtyp"=>"2"),
+		51=>array ("icon" => "_help","caption" => "Impressum","link" => "$PHP_SELF?md=2&daten=Impressum.html","itemtyp"=>"2")
+);
+$item = check_sub_item($BEREICH,"main","main");
 
-if ($menu == '')
+if ($item == '')
 {
 	print_menu($menu_default);
 } else
 {
 	// Erstellt ein dynamisches Menu
-	print_menu(get_menu_items($BEREICH, $sub));
+	$menu = get_menu_items($BEREICH, $sub, $item) + $menu_main;
+	print_menu($menu);
 	
 }
 
@@ -180,6 +145,7 @@ case 1: // html die in pages liegen
     print_data($daten);
     break;
 case 2: // html der nicht in pages liegt
+  echo "2";
 	print_pages($daten);
 	break;
 case 3: // MAIN MENU

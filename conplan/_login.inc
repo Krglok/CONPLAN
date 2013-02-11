@@ -25,7 +25,6 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 *
 */
 
-//include "config.inc";
 
 /**
  *  Die Funktion liest den User und sezt den Zugrifflevel
@@ -39,16 +38,16 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
  */
 function getuser($user)
 {
-	global $DB_HOST,$DB_USER,$DB_PASS,$DB_INTERN,$TBL_USER;
+	global $DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$TBL_USER;
 	global $user_lvl;      // Globale Userstatus für Zugriff
 	global $spieler_id;    // Globale Spieler_id zum Identifizieren
 
 	if ($user!='')  // kein Zugriff ohne User
 	{
-		$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+	    $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
 		or die( "Fehler beim Verbinden".$DB_HOST."-".$DB_USER."-".$DB_PASS);
 
-		mysql_select_db($DB_INTERN);
+		mysql_select_db($DB_NAME);
 		$Q = "select username,pword,lvl,spieler_id from $TBL_USER where username=\"$user\"";
 		$result = mysql_query($Q)
 		or die( "Fehler ".$DB_NAME." query ".$Q);
@@ -85,55 +84,80 @@ function getuser($user)
  */
 function checkuser($user, $pw)
 {
-	/*
-	*/
-	global $DB_HOST,$DB_USER,$DB_PASS,$DB_INTERN,$TBL_USER;
+	global $DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$TBL_USER;
 
 	if ($user!='')
 	{
-		$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+	    $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
 		or die( "Fehler beim Verbinden".$DB_HOST."-".$DB_USER."-".$DB_PASS);
-
-		mysql_select_db($DB_INTERN);
+		mysql_select_db($DB_NAME);
 		$Q = "select username,pword,lvl,spieler_id,id from $TBL_USER where username=\"$user\"";
-		$result = mysql_query($Q)
-		or die( "Fehler ".$DB_NAME." query ".$Q);
-		$row = mysql_fetch_row($result);
-		$check      = $row[1];
-		$user_lvl   = $row[2];
-		$spieler_id = $row[3];
-		$user_id    = $row[4];
-
-		if ($row[0] == $user)
+		$result = mysql_query($Q);
+		if (!$result) {
+ 		  $message  = 'Invalid checkuser: ' . mysql_error() . "\n";
+ 		  $message .= 'Whole query: ' . $Q;
+ 		  die($message);
+          
+		  return "FALSE";
+		} else
 		{
-			$q = "select old_password(\"$pw\");";
-			$result = mysql_query($q) or die("PW: $q");
-			$row = mysql_fetch_row($result) ;
-			//     echo ">$row[0] / $check";
-			if ($row[0] == $check)
-			{
-				session_start ($ID);
-
-				$_SESSION[user]         = $user;
-				$_SESSION[user_id]      = $user_id;
-				$_SESSION[user_lvl]     = $user_lvl;     // Setzen globale Userstatus
-				$_SESSION[spieler_id]   = $spieler_id;   // Setzen globale Spieler_ID
-				return "TRUE";
-			} else
-			{
-				return "FALSE";
-			};
-		}
-		else
-		{
-			return "FALSE";
-		}
-	}
-	else
-	{
-		return "FALSE";
+    		//or die( "Fehler checkUser ".$Q);
+    		$row = mysql_fetch_row($result);
+    		$check      = $row[1];
+    		$user_lvl   = $row[2];
+    		$spieler_id = $row[3];
+    		$user_id    = $row[4];
+    
+    		if ($row[0] == $user)
+    		{
+    			$q = "select old_password(\"$pw\");";
+    			echo "$q";
+    			$result = mysql_query($q) or die("PW: $q");
+    			$row = mysql_fetch_row($result) ;
+    			//     echo ">$row[0] / $check";
+    			if ($row[0] == $check)
+    			{
+    				session_start ($ID);
+    
+    				$_SESSION["user"]         = $user;
+    				$_SESSION["user_id"]      = $user_id;
+    				$_SESSION["user_lvl"]     = $user_lvl;     // Setzen globale Userstatus
+    				$_SESSION["spieler_id"]   = $spieler_id;   // Setzen globale Spieler_ID
+    				session_write_close();
+    				return "TRUE";
+    			} else
+    			{
+    				return "FALSE";
+    			};
+    		}
+    		else
+    		{
+    			return "FALSE";
+    		}
+    	}
 	}
 }
+
+function POST_user($fieldname)
+{
+  if (isset($_POST['user'])==true)
+  {
+    return $_POST['user'];
+  }
+  return "";
+  
+}
+
+function POST_pw()
+{
+  if (isset($_POST['pw'])==true)
+  {
+    return $_POST['pw'];
+  }
+  return "";
+  
+}
+
 
 
 ?>
