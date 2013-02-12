@@ -1,9 +1,9 @@
 <?php
 
 /*
- Projekt :  MAIN
+ Projekt : MAIN
 
-Datei   :  main_land.php
+Datei   :  main_regeln.php
 
 Datum   :  2002/06/12
 
@@ -12,17 +12,14 @@ Rev.    :  2.0
 Author  :  Olaf Duda
 
 beschreibung :
-Ueber das Script wird die Subseite fuer den Bereich Land
+Ueber das Script wird die Subseite fuer den Bereich Regeln
 abgewickelt.
 Es gibt keine Zugriffsverwaltung und keine Rechte !
-Es werden HTML Seiten angezeigt,
+Im wesentlichen werden HTML Sieten angezeigt,
 die folgenden Subdir  werden werden relativ benutzt
 
-./land  2)
-
-Die images kommen ebenfalls aus dem Verzeichnis
-
-./land
+./regeln  2)
+./images
 
 Die HTML Seiten werden mit der Funktion
 
@@ -46,6 +43,8 @@ Diese ist zwar etwas umstaendlich bei der Erstellun, aber ohne
 Unterverzeichnisse findet man seinen HTML Seiten fuer einen Bereich
 nicht wieder zusammen.
 
+1.1  2004/01/27   Länge des Kalenders geaendert, kw1, kw2 nicht LIMIT des SELECT
+
 REVISION
 #2  09.06.2008    Die Page wurde auf ein geaendertes Session Managment und
 einen veraenderte Konfiguration eingestellt
@@ -57,8 +56,7 @@ einen veraenderte Konfiguration eingestellt
 - LOGO Mitte
 - Text1, Text2  fuer rechte Seite
 
-
-Ver 3.0  / 06.02.2013
+Ver 3.0 / 04.02.2013
 Es werden CSS-Dateien verwendert. 
 Es wird eine strikte Trennung von Content und Layout durchgefuehrt.
 Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues 
@@ -72,55 +70,48 @@ include "_lib.inc";
 include "_head.inc";
 
 
-
-
 // ---------------------------------------------------------------
 // ---------    MAIN ---------------------------------------------
 // ----------------------------------------------------------------
 
-print_header("Land");
+print_header("Regeln");
+
 print_body(2);
 
-//print_kopf(1,2,"Öffentlich","Sei gegrüsst Freund ");
-//    echo "<CENTER><B> Sei gegrsst Auserwï¿½lter </B></CENTER> \n";
+$PHP_SELF = $_SERVER['PHP_SELF'];
+// Steuerparameter und steuerdaten
+$md=GET_md(0);
+$daten=GET_daten("");
+$item=GET_item("main");
+$sub=GET_sub("");
 
-
-//$c_md = $_COOKIE['md'];
-//$p_md = $_POST['md'];
-$md = GET_md(0);					// aktuelle Funktion
-$daten=GET_daten("");			// daten referenz fuer html etc
-$sub = GET_sub("");
-$item = GET_item("");
-
-$menu_item = array("icon" => $menu_help, "caption" => "Help","link" => "javascript:openHelp()");
+$menu_item = $menu_item_help;
 print_kopf($logo_typ,$header_typ,"Öffentlich","Sei gegrüsst Freund ",$menu_item);
 
-//echo "POST : $p_md / GET : $md / THEMEN :$THEMEN ";
+//echo "POST : $p_md / GET : $md / THEMEN :$daten ";
 
-$menu = array (0=>array("icon" => "99","caption" => "DAS LAND","link" => "land.html","target"=>""),
-		1=>array ("icon" => "_page","caption" => "bekannte Länder","link" => "$PHP_SELF?md=1&daten=land/land.html"),
-		2=>array ("icon" => "_page","caption" => "Kaarborg","link" => "$PHP_SELF?md=1&daten=land/land_1.html"),
-		3=>array ("icon" => "_page","caption" => "Whurola","link" => "$PHP_SELF?md=1&daten=land/land_2.html"),
-		4=>array ("icon" => "_page","caption" => "Kaer","link" => "$PHP_SELF?md=1&daten=land/land_3.html"),
-		5=>array ("icon" => "_page","caption" => "Online Welt","link" => "$PHP_SELF?md=1&daten=land/DraskoriaOnline.html"),
+$menu = array (0=>array("icon" => "99","caption" => "Usere Regeln","link" => "$PHP_SELF?md=1&daten=regeln/regeln.html"),
+		1=>array ("icon" => "_page","caption" => "Interne Regeln","link" => "$PHP_SELF?md=1&daten=regeln/regeln_erw.html"),
+		2=>array ("icon" => "_page","caption" => "Silbermond","link" => "$PHP_SELF?md=1&daten=regeln/regeln_kurz.html"),
+		3=>array ("icon" => "_page","caption" => "Con-Planung","link" => "$PHP_SELF?md=1&daten=regeln/regeln_con.html"),
+		4=>array ("icon" => "_page","caption" => "NSC-Klassen","link" => "$PHP_SELF?md=1&daten=regeln/regeln_nsc1.html"),
+		5=>array ("icon" => "_page","caption" => "Capture the Flag","link" => "$PHP_SELF?md=1&daten=regeln/regeln_cf1.html"),
+		//               98=>array("icon" => "0","caption" => "","link" => "","target"=>""),
 		19=>array("icon" => "_stop","caption" => "Zurück","link" => "main.php?md=0")
 );
 
-print_md();
 print_menu($menu);
 switch ($md):
-case 1:
-	print_data($daten);
-	break;
+case 0: // MAIN MENÜ
+  $daten='regeln/regeln.html';
+  print_data($daten);
+break;
 
 default: // MAIN MENÜ
-	$daten='land/land.html';
-	print_data($daten);
-	break;
+  print_data($daten);
+  break;
 endswitch;
+print_md_ende();
+print_body_ende();
 
-	print_md_ende();
-
-	print_body_ende();
-
-	?>
+?>

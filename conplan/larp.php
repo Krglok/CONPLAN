@@ -89,6 +89,7 @@ include_once "_head.inc";
 // Prüfung ob User  berechtigt ist
 
 $BEREICH = 'INTERN';
+$PHP_SELF = $_SERVER['PHP_SELF'];
 
 $md     = GET_md(0);
 $daten  = GET_daten("");
@@ -110,22 +111,6 @@ if ($ID == "")
 	// Code ausgeführt wird.
 }
 
-// if (getuser($user,$pw) != "TRUE")
-// {
-// 	header ("Location: main.php");  // Umleitung des Browsers
-// 	//       zur PHP-Web-Seite.
-// 	exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
-// 	// Code ausgeführt wird.
-// }
-
-// if ($md == 99)
-// {
-// 	session_destroy();
-// 	header ("Location: main.php");  /* Umleitung des Browsers
-// 	zur PHP-Web-Seite. */
-// 	exit;  /* Sicher stellen, das nicht trotz Umleitung nachfolgender
-// 	Code ausgeführt wird. */
-// };
 
 print_header("Interner Bereich");
 print_body(2);
@@ -142,17 +127,17 @@ if ($item == '')
 	"0"=>array("icon" => "0","caption" => "INTERN","link" => "","itemtyp"=>"0"),
 	"1"=>array ("icon" => "$menu_list","caption" => "Spieler","link" => "larp_sc_liste.php?md=1&ID=$ID","itemtyp"=>"0"),
 	"2"=>array ("icon" => "$menu_folder","caption" => "Forum Intern","link" => "larp_forum_1.php?md=1&ID=$ID","itemtyp"=>"0"),
-	"3"=>array ("icon" => "$menu_list","caption" => "Forum MC","link" => "larp_forum_2.php?md=1&ID=$ID","itemtyp"=>"0"),
+	"3"=>array ("icon" => "$menu_folder","caption" => "Forum MC","link" => "larp_forum_2.php?md=1&ID=$ID","itemtyp"=>"0"),
 	"4"=>array ("icon" => "$menu_folder","caption" => "Anmeldung","link" => "larp_anmelde_liste.php?md=0&ID=$ID","itemtyp"=>"0"),
-	"5"=>array ("icon" => "$menu_folder","caption" => "Bilder","link" => "larp_bild_liste.php?md=0&ID=$ID","itemtyp"=>"0"),
-	"6"=>array ("icon" => "$menu_folder","caption" => "Neue Bilder","link" => "larp_bild_liste1.php?md=0&ID=$ID","itemtyp"=>"0"),
+	"5"=>array ("icon" => "$menu_folder","caption" => "Bilder","link" => "larp_bilder.php?md=0&ID=$ID","itemtyp"=>"0"),
+	"6"=>array ("icon" => "$menu_folder","caption" => "Neue Bilder","link" => "larp_bilder1.php?md=0&ID=$ID","itemtyp"=>"0"),
 	"7"=>array ("icon" => "$menu_folder","caption" => "Termine","link" => "$PHP_SELF?md=1&ID=$ID","itemtyp"=>"0"),
-	"8"=>array ("icon" => "$menu_zip","caption" => "Download","link" => "larp_download.php?md=0&ID=$ID","itemtyp"=>"0"),
-	"9"=>array ("icon" => "$menu_list","caption" => "Regelwerk","link" => "larp_regeln_liste.php?md=0&ID=$ID","itemtyp"=>"0"),
+//	"8"=>array ("icon" => "$menu_zip","caption" => "Download","link" => "larp_download.php?md=0&ID=$ID","itemtyp"=>"0"),
+	"9"=>array ("icon" => "$menu_list","caption" => "Regelwerk","link" => "larp_regeln.php?md=0&ID=$ID","itemtyp"=>"0"),
 	"20"=>array ("icon" => "0","caption" => "","link" => "","itemtyp"=>"0"),
 	"21"=>array ("icon" => "$menu_folder","caption" => "Charakter","link" => "char_liste.php?md=0&ID=$ID","itemtyp"=>"0"),
-	"23"=>array ("icon" => "$menu_list","caption" => "Legenden","link" => "larp_leg_liste.php?md=0&ID=$ID","itemtyp"=>"0"),
-	"24"=>array ("icon" => "$menu_folder","caption" => "Sprueche","link" => "larp_mag_liste.php?md=0&ID=$ID","itemtyp"=>"0"),
+	"23"=>array ("icon" => "$menu_list","caption" => "Legenden","link" => "larp_legende.php?md=0&ID=$ID","itemtyp"=>"0"),
+	"24"=>array ("icon" => "$menu_folder","caption" => "Sprueche","link" => "larp_magie.php?md=0&ID=$ID","itemtyp"=>"0"),
 	"25"=>array ("icon" => "$menu_folder","caption" => "Traenke","link" => "larp_trank_liste.php?md=0&ID=$ID","itemtyp"=>"0"),
 	"26"=>array ("icon" => "$menu_folder","caption" => "Bibliothek","link" => "larp_gdw_liste.php?md=0&ID=$ID","itemtyp"=>"0"),
 	"27"=>array ("icon" => "$menu_folder","caption" => "Bibliothekar","link" => "larp_gdw.php?md=0&ID=$ID","itemtyp"=>"0"),

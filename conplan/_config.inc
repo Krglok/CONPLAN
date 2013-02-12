@@ -196,6 +196,95 @@ function GET_sub($value = "main")
 	return $value;
 }
 
+function GET_TAG($value = "0")
+{
+  if (isset($_GET['TAG'])==true)
+  {
+    return $_GET['TAG'];
+  }
+  return $value;
+}
+
+function GET_LISTE($value = "0")
+{
+  if (isset($_GET['LISTE'])==true)
+  {
+    return $_GET['LISTE'];
+  }
+  return $value;
+}
+
+
+
+function GET_post_id($value = "0")
+{
+  if (isset($_GET['post_id'])==true)
+  {
+    return $_GET['post_id'];
+  }
+  return $value;
+}
+
+// function GET_author($value="gast")
+// {
+//   if (isset($_GET['author'])==true)
+//   {
+//     return $_GET['author'];
+//   }
+//   return $value;
+// }
+
+
+function GET_datum($value="0")
+{
+  if (isset($_GET['datum'])==true)
+  {
+    return $_GET['datum'];
+  }
+  $today = getdate();
+  $value = $today["year"]."-".$today["mon"]."-".$today["mday"];
+  return $value;
+}
+
+function GET_betreff($value="")
+{
+  if (isset($_GET['betreff'])==true)
+  {
+    return $_GET['betreff'];
+  }
+  return $value;
+}
+
+function GET_text($value="")
+{
+  if (isset($_GET['text'])==true)
+  {
+    return $_GET['text'];
+  }
+  return $value;
+}
+
+
+function GET_KAP($value="")
+{
+  if (isset($_GET['KAP'])==true)
+  {
+    return $_GET['KAP'];
+  }
+  return $value;
+}
+
+
+function GET_grp($value="")
+{
+  if (isset($_GET['grp'])==true)
+  {
+    return $_GET['grp'];
+  }
+  return $value;
+}
+
+
 function GET_SESSIONID($value = "")
 {
 	if (isset($_GET['ID'])==true)
@@ -230,6 +319,71 @@ function POST_row($value=0)
 		return $_POST['row'];
 	}
 	return $value;
+}
+
+function POST_top_id($value = "0")
+{  if (isset($_POST['top_id'])==true)
+{
+  return $_POST['top_id'];
+}
+return $value;
+}
+
+function POST_post_id($value="0")
+{
+  if (isset($_POST['post_id'])==true)
+  {
+    return $_POST['post_id'];
+  }
+  return $value;
+}
+
+function POST_author($value="gast")
+{
+  if (isset($_POST['author'])==true)
+  {
+    return $_POST['author'];
+  }
+  return $value;
+}
+
+
+function POST_datum($value="0")
+{
+  if (isset($_POST['datum'])==true)
+  {
+    return $_POST['datum'];
+  }
+  $today = getdate();
+  $value = $today["year"]."-".$today["mon"]."-".$today["mday"];
+  return $value;
+}
+
+function POST_betreff($value="")
+{
+  if (isset($_POST['betreff'])==true)
+  {
+    return $_POST['betreff'];
+  }
+  return $value;
+}
+
+function POST_text($value="")
+{
+  if (isset($_POST['text'])==true)
+  {
+    return $_POST['text'];
+  }
+  return $value;
+}
+
+function POST_user_id($value="")
+{
+  if (isset($_POST['user_id'])==true)
+  {
+    return $_POST['user_id'];
+  }
+  return $value;
 }
 
 

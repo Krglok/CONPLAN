@@ -43,6 +43,26 @@ function tumb_copy($bild_url,$zieldir,$max_x,$max_y,$type)
 
 //include_once '_config.inc';
 
+function print_textblock($text)
+{
+  
+  $line = explode('\n', $text);
+  foreach ($line as $s)
+  {
+    echo $s."\n"; 
+  } 
+}
+
+/**
+ * Macht einen normale Datumsanzeige
+ * @param unknown $datum
+ */
+function print_datum($datum)
+{
+  $test = new DateTime($datum);
+  return date_format($test, 'd-m-Y');
+}
+
 /**
  * Ausgabe eines Menu_icon anhand des default style
  * Fehlerbehandlung, [X] wird ausgegeben 
@@ -83,7 +103,10 @@ function print_menu_item($item)
   $link=$item["link"];
 //  $ref = $link;
   // Reftyp zusammenbauen
-  
+  if (isset($item["itemtyp"])==false)
+  {
+    $item["itemtyp"] = "0";
+  }
   $itemtyp = $item["itemtyp"];
   //echo "$itemtyp";
   if ($itemtyp == "0")
@@ -163,62 +186,12 @@ function print_menu ($menu)
     // das erste Ellement ist der Header !!
     if ($i > 0)
     {
-//      echo $i;
+      //echo $i;
       print_menu_item($item);
     }
     $i++;
   }
     
-//   while (list($key, $item) = each ($menu))
-//   {
-//     if ($key!="99")  // sl oder user menu
-//     {
-//       if ($key!="98")  // User Menu
-//       {
-//         $item = $menu[$key];
-//         $item["caption"] = substr($item["caption"],0,19);
-//         if ($key!="0")
-//         {
-//           if ($item["icon"] != "0") {
-//             print_menu_item($item);
-//           } else
-//           {
-//             //  		        $style = $GLOBALS['style_menu_space'];
-//             //  			    echo "\t<div $style ><!-- Row:1, Col:1 -->\n";
-//             echo "\t\t<hr> \n";
-//             //                echo "\t</div >\n";
-//           }
-//         } else
-//         {
-//           // 0 wird nicht gedruckt, ist der header
-//         };
-//       } else     // SL - menu
-//       {
-//         $l1 = (int) $user_lvl;
-//         $l2 = (int) $lvl_sl[14];
-//         if ($l1 <= $l2)
-//         {
-//           $item = $menu[$key];
-//           if ($key!=0)
-//           {
-//             print_menu_item($item);
-//           };
-//         };
-//       }
-//     } else // admin menu
-//     {
-//       $l1 = (int) $user_lvl;
-//       $l2 = (int) $lvl_admin[14];
-//       if ($l1 <= $l2)
-//       {
-//         $item = $menu[$key];
-//         if ($key!=0)
-//         {
-//           print_menu_item($item);
-//         };
-//       };
-//     }
-//   }
   echo "\t\t</div >\n";
   echo "\t</div >\n";
   echo "<!---  Menu Spalte ENDE   --->\n\n";

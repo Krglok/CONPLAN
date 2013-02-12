@@ -3,26 +3,27 @@
 /*
  Projekt :  MAIN
 
-Datei   :  main_land.php
+Datei   :  main_spieler
 
-Datum   :  2002/06/12
+Datum   :  2002/06/12 17:39:02
 
 Rev.    :  2.0
 
-Author  :  Olaf Duda
+Author  :  OlafDuda
 
 beschreibung :
-Ueber das Script wird die Subseite fuer den Bereich Land
+Ueber das Script wird die Subseite fuer den Bereich Spieler
 abgewickelt.
 Es gibt keine Zugriffsverwaltung und keine Rechte !
+Es werden Datenbank liste generiert.
 Es werden HTML Seiten angezeigt,
 die folgenden Subdir  werden werden relativ benutzt
 
-./land  2)
+./spieler  2)
 
 Die images kommen ebenfalls aus dem Verzeichnis
 
-./land
+./spieler
 
 Die HTML Seiten werden mit der Funktion
 
@@ -46,6 +47,8 @@ Diese ist zwar etwas umstaendlich bei der Erstellun, aber ohne
 Unterverzeichnisse findet man seinen HTML Seiten fuer einen Bereich
 nicht wieder zusammen.
 
+1.1  2004/01/27   Länge des Kalenders geaendert, kw1, kw2 nicht LIMIT des SELECT
+
 REVISION
 #2  09.06.2008    Die Page wurde auf ein geaendertes Session Managment und
 einen veraenderte Konfiguration eingestellt
@@ -58,18 +61,12 @@ einen veraenderte Konfiguration eingestellt
 - Text1, Text2  fuer rechte Seite
 
 
-Ver 3.0  / 06.02.2013
-Es werden CSS-Dateien verwendert. 
-Es wird eine strikte Trennung von Content und Layout durchgefuehrt.
-Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues 
-Layoutpfades in der config.inc
-Ansonsten bleibt der Inhalt der Seiten identisch.
-
 */
 
-include "_config.inc";
-include "_lib.inc";
-include "_head.inc";
+include "config.inc";
+include "lib.inc";
+include "head.inc";
+
 
 
 
@@ -78,46 +75,48 @@ include "_head.inc";
 // ---------    MAIN ---------------------------------------------
 // ----------------------------------------------------------------
 
-print_header("Land");
+print_header("Spieler");
+
 print_body(2);
 
-//print_kopf(1,2,"Öffentlich","Sei gegrüsst Freund ");
+print_kopf(1,2,"Öffentlich","Sei gegrüsst Freund ");
 //    echo "<CENTER><B> Sei gegrsst Auserwï¿½lter </B></CENTER> \n";
 
 
-//$c_md = $_COOKIE['md'];
-//$p_md = $_POST['md'];
-$md = GET_md(0);					// aktuelle Funktion
-$daten=GET_daten("");			// daten referenz fuer html etc
-$sub = GET_sub("");
-$item = GET_item("");
-
-$menu_item = array("icon" => $menu_help, "caption" => "Help","link" => "javascript:openHelp()");
-print_kopf($logo_typ,$header_typ,"Öffentlich","Sei gegrüsst Freund ",$menu_item);
+$c_md = $_COOKIE['md'];
+$p_md = $_POST['md'];
+$md = $_GET['md'];
+$daten = $_GET['daten'];
 
 //echo "POST : $p_md / GET : $md / THEMEN :$THEMEN ";
 
-$menu = array (0=>array("icon" => "99","caption" => "DAS LAND","link" => "land.html","target"=>""),
-		1=>array ("icon" => "_page","caption" => "bekannte Länder","link" => "$PHP_SELF?md=1&daten=land/land.html"),
-		2=>array ("icon" => "_page","caption" => "Kaarborg","link" => "$PHP_SELF?md=1&daten=land/land_1.html"),
-		3=>array ("icon" => "_page","caption" => "Whurola","link" => "$PHP_SELF?md=1&daten=land/land_2.html"),
-		4=>array ("icon" => "_page","caption" => "Kaer","link" => "$PHP_SELF?md=1&daten=land/land_3.html"),
-		5=>array ("icon" => "_page","caption" => "Online Welt","link" => "$PHP_SELF?md=1&daten=land/DraskoriaOnline.html"),
-		19=>array("icon" => "_stop","caption" => "Zurück","link" => "main.php?md=0")
+$menu = array (0=>array("icon" => "99","caption" => "SPIELER","link" => ""),
+		1=>array ("icon" => "5","caption" => "Unsere Spieler","link" => "$PHP_SELF?md=0"),
+		2=>array ("icon" => "7","caption" => "SL-Liste","link" => "$PHP_SELF?md=2&daten=spieler/sl_liste.html"),
+		3=>array ("icon" => "7","caption" => "Veranstalter","link" => "$PHP_SELF?md=2&daten=spieler/olaf.html"),
+		9=>array ("icon" => "5","caption" => "Charaktere","link" => "$PHP_SELF?md=1&daten=spieler/charliste.html"),
+		30=>array("icon" => "6","caption" => "Zurück","link" => "main.php?md=1")
 );
 
 print_md();
+
 print_menu($menu);
+
 switch ($md):
-case 1:
+case 0: // MAIN MENÜ
+	print_sc_liste();
+break;
+case 2: // MAIN MENÜ
 	print_data($daten);
+	break;
+case 3: // MAIN MENÜ
+	print_sc_liste();
 	break;
 
 default: // MAIN MENÜ
-	$daten='land/land.html';
 	print_data($daten);
 	break;
-endswitch;
+	endswitch;
 
 	print_md_ende();
 

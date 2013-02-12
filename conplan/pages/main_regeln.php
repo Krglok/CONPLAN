@@ -1,29 +1,25 @@
 <?php
 
 /*
- Projekt :  MAIN
+ Projekt : MAIN
 
-Datei   :  main_spieler
+Datei   :  main_regeln.php
 
-Datum   :  2002/06/12 17:39:02
+Datum   :  2002/06/12
 
-Rev.    :  3.0
+Rev.    :  2.0
 
-Author  :  OlafDuda
+Author  :  Olaf Duda
 
 beschreibung :
-Ueber das Script wird die Subseite fuer den Bereich Spieler
+Ueber das Script wird die Subseite fuer den Bereich Regeln
 abgewickelt.
 Es gibt keine Zugriffsverwaltung und keine Rechte !
-Es werden Datenbank liste generiert.
-Es werden HTML Seiten angezeigt,
+Im wesentlichen werden HTML Sieten angezeigt,
 die folgenden Subdir  werden werden relativ benutzt
 
-./spieler  2)
-
-Die images kommen ebenfalls aus dem Verzeichnis
-
-./spieler
+./regeln  2)
+./images
 
 Die HTML Seiten werden mit der Funktion
 
@@ -60,71 +56,57 @@ einen veraenderte Konfiguration eingestellt
 - LOGO Mitte
 - Text1, Text2  fuer rechte Seite
 
-Ver 3.0 / 09.022013
-Es werden CSS-Dateien verwendert. 
-Es wird eine strikte Trennung von Content und Layout durchgefuehrt.
-Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues 
-Layoutpfades in der config.inc
-Ansonsten bleibt der Inhalt der Seiten identisch.
-
 
 */
 
-include "_config.inc";
-include "_lib.inc";
-include "_head.inc";
-
-
-
+include "config.inc";
+include "lib.inc";
+include "head.inc";
 
 
 // ---------------------------------------------------------------
 // ---------    MAIN ---------------------------------------------
 // ----------------------------------------------------------------
 
-print_header("Spieler");
+print_header("Regeln");
 
 print_body(2);
 
-
-$md=GET_md(0);
-$daten=GET_daten("");
-
-//echo "POST : $p_md / GET : $md / THEMEN :$THEMEN ";
-$menu_item = $menu_item_help;
-print_kopf($logo_typ,$header_typ,"Öffentlich","Sei gegrüsst Freund ",$menu_item);
-
-
-$menu = array (0=>array("icon" => "99","caption" => "SPIELER","link" => ""),
-		1=>array ("icon" => "_list","caption" => "Unsere Spieler","link" => "$PHP_SELF?md=0"),
-		2=>array ("icon" => "_list","caption" => "SL-Liste","link" => "$PHP_SELF?md=2&daten=spieler/sl_liste.html"),
-		3=>array ("icon" => "_page","caption" => "Veranstalter","link" => "$PHP_SELF?md=2&daten=spieler/olaf.html","itemtyp"=>"0"),
-		9=>array ("icon" => "_list","caption" => "Charaktere","link" => "$PHP_SELF?md=1&daten=spieler/charliste.html"),
-		30=>array("icon" => "_stop","caption" => "Zurück","link" => "main.php?md=0")
-);
+print_kopf(1,2,"Öffentlich","Sei gegrüsst Freund ");
 
 print_md();
 
-print_menu($menu);
+$c_md = $_COOKIE['md'];
+$p_md = $_POST['md'];
+$md = $_GET['md'];
+$daten = $_GET['daten'];
 
+//echo "POST : $p_md / GET : $md / THEMEN :$daten ";
+
+$menu = array (0=>array("icon" => "99","caption" => "Usere Regeln","link" => "$PHP_SELF?md=1&daten=regeln.html"),
+		1=>array ("icon" => "7","caption" => "Interne Regeln","link" => "$PHP_SELF?md=1&daten=regeln/regeln_erw.html"),
+		2=>array ("icon" => "7","caption" => "Silbermond","link" => "$PHP_SELF?md=1&daten=regeln/regeln_kurz.html"),
+		3=>array ("icon" => "7","caption" => "Con-Planung","link" => "$PHP_SELF?md=1&daten=regeln/regeln_con.html"),
+		4=>array ("icon" => "7","caption" => "NSC-Klassen","link" => "$PHP_SELF?md=1&daten=regeln/regeln_nsc1.html"),
+		5=>array ("icon" => "7","caption" => "Capture the Flag","link" => "$PHP_SELF?md=1&daten=regeln/regeln_cf1.html"),
+		//               98=>array("icon" => "0","caption" => "","link" => "","target"=>""),
+		19=>array("icon" => "6","caption" => "Zurück","link" => "main.php?md=1")
+);
+
+print_menu($menu);
 switch ($md):
 case 0: // MAIN MENÜ
-	print_sc_liste();
+	$daten='regeln/regeln.html';
+print_data($daten);
 break;
-case 2: // MAIN MENÜ
-	print_data($daten);
-	break;
-case 3: // MAIN MENÜ
-	print_sc_liste();
-	break;
 
 default: // MAIN MENÜ
 	print_data($daten);
 	break;
 	endswitch;
-
 	print_md_ende();
-
 	print_body_ende();
+
+
 
 	?>
