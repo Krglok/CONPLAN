@@ -86,7 +86,7 @@ $item=GET_item("main");
 $sub=GET_sub("");
 
 $menu_item = $menu_item_help;
-print_kopf($logo_typ,$header_typ,"Öffentlich","Sei gegrüsst Freund ",$menu_item);
+print_kopf($logo_typ,$header_typ,"Öffentlich",$anrede,$menu_item);
 
 //echo "POST : $p_md / GET : $md / THEMEN :$daten ";
 

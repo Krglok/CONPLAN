@@ -550,7 +550,7 @@ $TAG = GET_TAG("1");
 $LISTE = GET_LISTE("");
 
 $menu_item = $menu_item_help;
-print_kopf($logo_typ,$header_typ,"Öffentlich","Sei gegrüsst Freund ",$menu_item);
+print_kopf($logo_typ,$header_typ,"Öffentlich",$anrede,$menu_item);
 
 $TABLE = "bilder";
 $TABLE1 = "bilder_topic";

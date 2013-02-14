@@ -37,11 +37,18 @@ function print_kalender()
 function tumb_erzeugen($bild_url,$zieldir,$max_x,$max_y,$type)
 function tumb_copy($bild_url,$zieldir,$max_x,$max_y,$type)
 
+	$style = $GLOBALS['style_datatab'];
+	echo "<div $style >";
+	echo "<!---  DATEN Spalte   --->\n";
+
+	echo '</div>';
+	echo "<!---  ENDE DATEN Spalte   --->\n";
 
 
 */
 
 //include_once '_config.inc';
+
 
 function print_textblock($text)
 {
@@ -157,8 +164,11 @@ function print_menu_item($item)
  */
 function print_menu ($menu)
 {
-  global $user_lvl, $lvl_admin,$lvl_sl;
-  
+  global $ID;
+  $menu_item_subsl= array ("icon" => "_tool","caption" => "Planung","link" => "con_plan.php?md=0&ID=$ID","itemtyp"=>"0");
+  $menu_item_sl 	= array ("icon" => "_tool","caption" => "SL","link" => "con_main.php?md=0&ID=$ID","itemtyp"=>"0");
+  $menu_item_admin= array ("icon" => "_tool","caption" => "Admin","link" => "admin_main.php?md=0&ID=$ID","itemtyp"=>"0");
+    
   //   menü spalte
   echo "<!---  Menu Spalte   --->\n";
   //  stellt die breite der Menüspalte ein !!!
@@ -170,6 +180,7 @@ function print_menu ($menu)
   //   echo "\t<div  ><!-- Row:1, Col:1 -->\n";
   //   echo "\t</div >\n";
   $item = $menu[0];
+  $is_sub = $item["icon"];
   $caption = $item["caption"];
   $style = $GLOBALS['style_menu_head'];
   echo "\t <div $style >\n";
@@ -191,7 +202,21 @@ function print_menu ($menu)
     }
     $i++;
   }
-    
+  if ($is_sub == "0")
+  {
+    if (is_subsl()==TRUE)
+    {
+      print_menu_item($menu_item_subsl);
+    }
+    if (is_sl()==TRUE)
+    {
+      print_menu_item($menu_item_sl);
+    }
+    if (is_admin()==TRUE)
+    {
+      print_menu_item($menu_item_admin);
+    }
+  }
   echo "\t\t</div >\n";
   echo "\t</div >\n";
   echo "<!---  Menu Spalte ENDE   --->\n\n";
@@ -212,6 +237,150 @@ function print_header_icon ($typ)
 		echo "<p><a href=\"$home\"> HIER FEHLT EIN BILD </a>  </p>";
 	}
 };
+
+/**
+ * prueft ob user Lvl den entsprechenden Wert hat
+ * 1-3    = admin
+ * 4-15   = sl
+ * 16-63  = sub_sl
+ * 64-255 = author
+ * 256-511  = user
+ * 512....  = public  
+ * @return boolean
+ */
+function is_admin()
+{
+  global $user_lvl;
+  if (!isset($_SESSION["user_lvl"])) { return FALSE; }
+  $user_lvl   = $_SESSION["user_lvl"];
+  if ($user_lvl < 1) return FALSE;
+  if ($user_lvl < 4)
+  {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * prueft ob user Lvl den entsprechenden Wert hat
+ * 1-3    = admin
+ * 4-15   = sl
+ * 16-63  = sub_sl
+ * 64-255 = author
+ * 256-511  = user
+ * 512....  = public  
+ * 
+ * @return boolean
+ */
+function is_sl()
+{
+  global $user_lvl;
+  if (!isset($_SESSION["user_lvl"])) { return FALSE; }
+  
+  $user_lvl   = $_SESSION["user_lvl"];
+  if ($user_lvl < 1) return FALSE;
+    if ($user_lvl < 16)
+  {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * prueft ob user Lvl den entsprechenden Wert hat
+ * 1-3    = admin
+ * 4-15   = sl
+ * 16-63  = sub_sl
+ * 64-255 = author
+ * 256-511  = user
+ * 512....  = public  
+ * 
+ * @return boolean
+ */
+function is_subsl()
+{
+  global $user_lvl;
+  if (!isset($_SESSION["user_lvl"])) { return FALSE; }
+  $user_lvl   = $_SESSION["user_lvl"];
+  if ($user_lvl < 1) return FALSE;
+  if ($user_lvl < 64)
+  {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * prueft ob user Lvl den entsprechenden Wert hat
+ * 1-3    = admin
+ * 4-15   = sl
+ * 16-63  = sub_sl
+ * 64-255 = author
+ * 256-511  = user
+ * 512....  = public  
+ * 
+ * @return boolean
+ */
+function is_author()
+{
+  global $user_lvl;
+  if (!isset($_SESSION["user_lvl"])) { return FALSE; }
+  $user_lvl   = $_SESSION["user_lvl"];
+  if ($user_lvl < 1) return FALSE;
+  if ($user_lvl < 256)
+  {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+  * prueft ob user Lvl den entsprechenden Wert hat
+ * 1-3    = admin
+ * 4-15   = sl
+ * 16-63  = sub_sl
+ * 64-255 = author
+ * 256-511  = user
+ * 512....  = public  
+* 
+ * @return boolean
+ */
+function is_user()
+{
+  global $user_lvl;
+  if (!isset($_SESSION["user_lvl"])) { return FALSE; }
+  $user_lvl   = $_SESSION["user_lvl"];
+  if ($user_lvl < 1) return FALSE;
+  if ($user_lvl < 512)
+  {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * prueft ob user Lvl den entsprechenden Wert hat
+ * 1-3    = admin
+ * 4-15   = sl
+ * 16-63  = sub_sl
+ * 64-255 = author
+ * 256-511  = user
+ * 512....  = public  
+ * 
+ * @return boolean
+ */
+function is_public()
+{
+  global $user_lvl;
+  if (!isset($_SESSION["user_lvl"])) { return FALSE; }
+  if ($user_lvl < 1) return FALSE;
+  
+  if ($user_lvl > 511)
+  {
+    return TRUE;
+  }
+  return FALSE;
+}
 
 
 /**
@@ -608,7 +777,11 @@ function print_news()
 {
   global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
 
-  echo "    <TD>\n";
+  $style = $GLOBALS['style_datatab'];
+  echo "<div $style >";
+  echo "<!---  DATEN Spalte   --->\n";
+  echo "<CENTER>";
+  
   echo "      <TABLE WIDTH=\"500\"  BORDER=\"0\" BGCOLOR=\"\" >";
   $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
   or die("Fehler beim verbinden!");
@@ -622,10 +795,10 @@ function print_news()
   {
     echo "        <TR>";
     echo "        <FONT FACE=\"Comic Sans MS\" SIZE=\"2\">\n";
-    echo "\t<td width=\"95\">".$row[0]."&nbsp;<BR>";
+    echo "\t<td width=\"95\">".$row[0]."<br><br><br><br>";
     echo "</td>\n";
     echo "\t<td>$row[1]<BR>$row[2]<BR>$row[3]<BR>";
-    //      echo "<HR>";
+          echo "<HR>";
     echo "</td>\n";
     echo '        </TR>';
 }
@@ -635,7 +808,10 @@ echo '      </TABLE>';
 echo "    </TD>\n";
 echo "    <TD>\n";
 echo "    .\n";
-echo "    </TD>\n";
+echo "</CENTER>";
+echo '</div>';
+echo "<!---  ENDE DATEN Spalte   --->\n";
+
 };
 
 /**
@@ -649,6 +825,7 @@ function print_kalender()
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
 	echo "<!---  DATEN Spalte   --->\n";
+    echo "<CENTER>";
 	
 	echo "<TABLE  WIDTH=\"600\" HEIGHT=\"40\" BORDER=\"1\" CELLPADDING=\"1\" BGCOLOR=\"silver\" BORDERCOLOR=\"#808080\" BORDERCOLORDARK=\"gray\" BORDERCOLORLIGHT=\"#C0C0C0\"\n";
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
@@ -739,6 +916,7 @@ function print_kalender()
 
 	mysql_close($db);
 	echo '      </TABLE>';
+    echo "</CENTER>";
 	echo '</div>';
 	echo "<!---  ENDE DATEN Spalte   --->\n";
 	//=========== print_kalender_end ========================

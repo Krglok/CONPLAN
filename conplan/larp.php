@@ -70,6 +70,13 @@ Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues
 Layoutpfades in der config.inc
 Ansonsten bleibt der Inhalt der Seiten identisch.
 
+	$style = $GLOBALS['style_datatab'];
+	echo "<div $style >";
+	echo "<!---  DATEN Spalte   --->\n";
+
+	echo '</div>';
+	echo "<!---  ENDE DATEN Spalte   --->\n";
+
 */
 
 include_once "_config.inc";
@@ -118,7 +125,8 @@ print_body(2);
 $spieler_name = get_spieler($spieler_id); //Auserwählter\n";
 
 $menu_item = $menu_item_help;
-print_kopf($logo_typ,$header_typ,"Intern","Sei gegrüsst $spieler_name ",$menu_item);
+$anrede["name"] = $spieler_name;
+print_kopf($logo_typ,$header_typ,"Intern",$anrede,$menu_item);
 
 
 if ($item == '')
@@ -145,8 +153,6 @@ if ($item == '')
 	"30"=>array ("icon" => "_link","caption" => "Draskoria","link" => "http://draskoria.game-host.org:8090/ \"target=_blank\"","itemtyp"=>"0"),
 	"31"=>array ("icon" => "_link","caption" => "GdW","link" => "/gdw_bib/  \"target=_blank\"","itemtyp"=>"0"),
 	"32"=>array ("icon" => "_link","caption" => "Liberi Effera","link" => "http://www.liberi-effera.de/ \"target=_blank\"","itemtyp"=>"0"),
-	"98"=>array ("icon" => "$menu_folder","caption" => "SL ","link" => "conmain.php?md=0&ID=$ID","itemtyp"=>"0"),
-	"99"=>array ("icon" => "$menu_folder","caption" => "Admin","link" => "admin_con.php?md=0&ID=$ID","itemtyp"=>"0")
 	);
 	print_menu($menu);
 } else

@@ -34,9 +34,15 @@ $LOG$
 
 // DB-Verbindung
 $DB_HOST='192.168.5.173';	// dies ist WICHTIG !!!!
-$DB_NAME='db42039950';		//
-$DB_USER='admin';			// Achtung user muss vorhanden sein und die rechte auf die DB haben
-$DB_PASS='';				// !!
+$DB_NAME='db451197603';		//
+$DB_USER='dbo451197603';			// Achtung user muss vorhanden sein und die rechte auf die DB haben
+$DB_PASS='dbo451197603';				// !!
+// $DB_HOST='db451197603.db.1and1.com';
+// $DB_NAME='db451197603';
+// $DB_USER='dbo451197603';
+// $DB_PASS='db42039950';
+
+
 $TBL_USER='user_liste';		// Tabellname fuer die Userliste m, muss bestimmte Felder beinhalten
 //$DB_INTERN='db42039950';	// Alternative DB not used !!!
 
@@ -81,6 +87,9 @@ $text_color  = "black";             // default Textfarbe sollte mit BG_pic abges
 // Header images
 $logo_typ = "logo.gif";
 $header_typ = "drachenhorst.gif";
+$admin_typ = "mag_drag_s.gif";
+
+$anrede = array("formel"=>"Sei gegrüsst Freund","name"=>"Gast");
 
 // Menu Icons, die Icons muesse GIF sein !!!!
 $menu_add 		= "_add";		// Insert Datensatz
@@ -458,9 +467,7 @@ function print_status($wert)
 $PHP_SELF = $_SERVER['PHP_SELF'];
 $ID="";
 $menu_item_header = array ("icon" => "", "caption" => "Default","link" => "","itemtyp"=>"0");
-$menu_item_help = array ("icon" => $menu_help, "caption" => "Help","link" => "javascript:openHelp()","itemtyp"=>"0");
-$menu_item_sl 	= array ("icon" => "$menu_page","caption" => "SL","link" => "con_main.php?md=0&ID=$ID","itemtyp"=>"98");
-$menu_item_admin= array ("icon" => "$menu_page","caption" => "Admin","link" => "admin_main.php?md=0&ID=$ID","itemtyp"=>"99");
+$menu_item_help = array ("icon" => $menu_help, "caption" => "Hilfe","link" => "javascript:openHelp()","itemtyp"=>"0");
 $menu_item_ich 	= array ("icon" => "$menu_page","caption" => "Ich","link" => "ich.html","itemtyp"=>"2");
 $menu_item_imp 	= array ("icon" => "$menu_help","caption" => "Impressum","link" => "impressum.html","itemtyp"=>"2");
 $menu_item_login= array ("icon" => "$menu_key","caption" => "Innerer Zirkel","link" => "slogin.html","itemtyp"=>"2");

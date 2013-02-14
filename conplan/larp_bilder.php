@@ -78,6 +78,14 @@ Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues
 Layoutpfades in der config.inc
 Ansonsten bleibt der Inhalt der Seiten identisch.
 
+	$style = $GLOBALS['style_datatab'];
+	echo "<div $style >";
+	echo "<!---  DATEN Spalte   --->\n";
+
+	echo '</div>';
+	echo "<!---  ENDE DATEN Spalte   --->\n";
+
+
 */
 
 include "_config.inc";
@@ -552,7 +560,8 @@ print_body(2);
 $spieler_name = get_spieler($spieler_id); //Auserwählter\n";
 
 $menu_item = $menu_item_help;
-print_kopf($logo_typ,$header_typ,"Intern","Sei gegrüsst $spieler_name ",$menu_item);
+$anrede["name"] = $spieler_name;
+print_kopf($logo_typ,$header_typ,"Intern",$anrede,$menu_item);
 
 $TABLE = "bilder";
 $TABLE1 = "bilder_topic";

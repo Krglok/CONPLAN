@@ -93,7 +93,7 @@ $sub = GET_sub("");
 $item = GET_item("");
 
 $menu_item = array("icon" => $menu_help, "caption" => "Help","link" => "javascript:openHelp()");
-print_kopf($logo_typ,$header_typ,"Öffentlich","Sei gegrüsst Freund ",$menu_item);
+print_kopf($logo_typ,$header_typ,"Öffentlich",$anrede,$menu_item);
 
 //echo "POST : $p_md / GET : $md / THEMEN :$THEMEN ";
 

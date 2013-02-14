@@ -361,7 +361,8 @@ print_body(2);
 $spieler_name = get_spieler($spieler_id); //Auserwählter\n";
 
 $menu_item = $menu_item_help;
-print_kopf($logo_typ,$header_typ,"Regelwerk","Sei gegrüsst $spieler_name ",$menu_item);
+$anrede["name"] = $spieler_name;
+print_kopf($logo_typ,$header_typ,"Regelwerk",$anrede,$menu_item);
 
 
 //echo "POST : $p_md / GET : $md / ID :$ID / Spieler = $spieler_id";

@@ -92,7 +92,8 @@ $item=GET_item("main");
 $sub=GET_sub("");
 
 $menu_item = $menu_item_help;
-print_kopf($logo_typ,$header_typ,"Öffentlich","Sei gegrüsst Freund ",$menu_item);
+
+print_kopf($logo_typ,$header_typ,"Öffentlich",$anrede,$menu_item);
 
 //echo "POST : $p_md / GET : $md / THEMEN :$THEMEN ";
 
@@ -119,13 +120,13 @@ $menu_main = array (0=>array("icon" => "0","caption" => "Hauptseite","link" => "
 //		33=>array ("icon" => "_zip","caption" => "Download","link" => "main_download.php","daten"=>"","itemtyp"=>"0"),
 		34=>array ("icon" => "_list","caption" => "Links","link" => "links.html","itemtyp"=>"2"),
 		50=>array ("icon" => "_help","caption" => "Ich","link" => "ich.html","itemtyp"=>"2"),
-		51=>array ("icon" => "_help","caption" => "Impressum","link" => "Impressum.html","itemtyp"=>"2")
+		51=>array ("icon" => "_help","caption" => "Impressum","link" => "impressum.html","itemtyp"=>"2")
 );
 $item = check_sub_item($BEREICH,"main","main");
 
 if ($item == '')
 {
-	print_menu($menu_default);
+	print_menu($menu_main);
 } else
 {
 	// Erstellt ein dynamisches Menu

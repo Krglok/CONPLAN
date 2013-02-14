@@ -90,7 +90,8 @@ function print_kopf ($logo_typ, $header_typ,$bereich,$anrede, $menu_item)
 {
  
   $info = "Login aufrufen";
-  
+  $formel = $anrede["formel"];
+  $name   = $anrede["name"];
 //  echo "<div id=\"div_1\">\n";
       $style = $GLOBALS["style_header_1"];
       echo "  <div $style >\n";
@@ -105,10 +106,11 @@ function print_kopf ($logo_typ, $header_typ,$bereich,$anrede, $menu_item)
       $style = $GLOBALS['style_headerright'];
       echo "    <div $style >\n";
       echo "      <p>$bereich</p>\n";
-      echo "      <p>$anrede</p>\n";
-        if ($menu_item['icon'] != "0")
+      echo "      <p>$formel</p>\n";
+      echo "      <p>$name</p>\n";
+      if ($menu_item['icon'] != "0")
         {
-          $style = $GLOBALS['style_menu_item'];
+          $style = "id=\"headermenuitem\""; //$GLOBALS['style_menu_item'];
           echo "      <div $style >\n";
             print_menu_item($menu_item);
 //           print_menu_icon($typ,$info);
@@ -163,26 +165,21 @@ function print_pages($html_file)
 function print_data($html_file)
 {
   // pruefe ob File vorhanden
-  try {
     $file = fopen ($html_file, "r");
 
-  } catch (Exception $e) {
-    $style = $GLOBALS['style_status1'];
-    echo '<p $style> Caught exception: ',  $e->getMessage()," </p>\n";
-    return;
-  }
+//     $style = $GLOBALS['style_status1'];
+//     echo '<p $style> Caught exception: ',  $e->getMessage()," </p>\n";
+//     return;
   // keine leere seite anzeigen
   if (sizeof($html_file) == 0 ) { return; }
   	
   $ishead = 'true';
-  try {
-    $file = fopen ($html_file, "r");
-    
-  } catch (Exception $e) {
-    $style = $GLOBALS['style_status1'];
-    echo '<p $style> Caught exception: ',  $e->getMessage()," </p>\n";
-  	return;
-  }
+  $file = fopen ($html_file, "r");
+   
+//     $style = $GLOBALS['style_status1'];
+//     echo '<p $style> Caught exception: ',  $e->getMessage()," </p>\n";
+//   	return;
+
   if (!$file)
   {
     $style = $GLOBALS['style_status1'];

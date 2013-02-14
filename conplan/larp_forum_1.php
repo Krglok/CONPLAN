@@ -435,7 +435,7 @@ $g_betreff  = GET_betreff("");
 $g_text     = GET_text("");
 $g_next     = "";
 
-$p_md = POST_md()['md'];
+$p_md = POST_md("");
 $p_top_id   = POST_top_id("0");
 $p_post_id  = POST_post_id("0");
 $p_author   = POST_author("gast");
@@ -465,7 +465,8 @@ if ($ID == "")
 	// Code ausgeführt wird.
 }
 
-
+print_header("Interner Bereich");
+print_body(2);
 
 $foren_id = 2;   // Internes Forum
 
@@ -515,13 +516,11 @@ default:
 	break;
 	endswitch;
 
-print_header("Interner Bereich");
-print_body(2);
-
 $spieler_name = get_spieler($spieler_id); //Auserwählter\n";
 
 $menu_item = $menu_item_help;
-print_kopf($logo_typ,$header_typ,"Intern","Sei gegrüsst $spieler_name ",$menu_item);
+$anrede["name"] = $spieler_name;
+print_kopf($logo_typ,$header_typ,"Intern",$anrede,$menu_item);
 	
 print_menu($menu);
 

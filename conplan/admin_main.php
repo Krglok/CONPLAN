@@ -81,12 +81,25 @@ Korrekturen und Aufteilung in LIB.INC
 Revision 1.3  2002/02/26 18:42:40  windu
 keyword aktiviert
 
+Ver 3.0  / 06.02.2013
+Es werden CSS-Dateien verwendert. 
+Es wird eine strikte Trennung von Content und Layout durchgefuehrt.
+Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues 
+Layoutpfades in der config.inc
+Ansonsten bleibt der Inhalt der Seiten identisch.
+
+	$style = $GLOBALS['style_datatab'];
+	echo "<div $style >";
+	echo "<!---  DATEN Spalte   --->\n";
+
+	echo '</div>';
+	echo "<!---  ENDE DATEN Spalte   --->\n";
+
 */
 
-include "config.inc";
-include "login.inc";
-include "lib.inc";
-include "head.inc";
+include_once "_config.inc";
+include_once "_lib.inc";
+include_once "_head.inc";
 
 
 function print_main_data()
@@ -130,65 +143,53 @@ function print_main_data()
 // keinerlei Ausgabe vor  der header() Zeile !!!!!!!!!!!!!!!!!!!!!
 // ----------------------------------------------------------------
 // Prüfung ob User  berechtigt ist
+$BEREICH = 'INTERN';
+$PHP_SELF = $_SERVER['PHP_SELF'];
 
-$c_md = $_COOKIE['md'];
-$p_md = $_POST['md'];
-$md = $_GET['md'];
-$ID = $_GET['ID'];
+$md     = GET_md(0);
+$daten  = GET_daten("");
+$sub    = GET_sub("main");
+$item   = GET_item("");
+$ID     = GET_SESSIONID("");
 
-
-session_start ($ID);
-$user       = $_SESSION[user];
-$user_lvl   = $_SESSION[user_lvl];
-$spieler_id = $_SESSION[spieler_id];
-$user_id 		= $_SESSION[user_id];
+session_start($ID);
+$user       = $_SESSION["user"];
+$user_lvl   = $_SESSION["user_lvl"];
+$spieler_id = $_SESSION["spieler_id"];
+$user_id 	= $_SESSION["user_id"];
 
 if ($ID == "")
 {
-	$session_id = 'FFFF';
-	header ("Location: main.php");  // Umleitung des Browsers
-	exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
-	// Code ausgeführt wird.
+  $session_id = 'FFFF';
+  header ("Location: main.php");  // Umleitung des Browsers
+  exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
+  // Code ausgeführt wird.
 }
 
-if (getuser($user,$pw) != "TRUE")
+if (is_admin()==FALSE)
 {
-	header ("Location: main.php");  // Umleitung des Browsers
-	//       zur PHP-Web-Seite.
-	exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
-	// Code ausgeführt wird.
+  $session_id = 'FFFF';
+  header ("Location: main.php");  // Umleitung des Browsers
+  exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
+  // Code ausgeführt wird.
 }
-else
-{
-	$l1 = (int) $user_lvl;
-	$l2 = (int) $lvl_admin[14];
-	if ($l1 >= $l2)
-	{
-		header ("Location: main.php?md=0");  /* Umleitung des Browsers
-		zur HTML-StartSeite. */
-		exit;  /* Sicher stellen, das nicht trotz Umleitung nachfolgender
-		Code ausgeführt wird. */
-	};
-};
-if ($md == 99)
-{
-	session_destroy();
-	header ("Location: main.php?md=0");  /* Umleitung des Browsers
-	zur PHP-Web-Seite. */
-	exit;  /* Sicher stellen, das nicht trotz Umleitung nachfolgender
-	Code ausgeführt wird. */
-};
-
+  
+  
 print_header("Admin Bereich");
 
 print_body(2);
 
 $spieler_name = get_spieler($spieler_id); //Auserwählter\n";
 
-print_kopf(8,2,"Admin Bereich","Sei gegrüsst Meister ");
 
+$spieler_name = get_spieler($spieler_id); //Auserwählter\n";
 
-echo "POST : $p_md / GET : $md / ID :$ID / Spieler = $spieler_id";
+$menu_item = $menu_item_help;
+$anrede["name"] = $spieler_name;
+$anrede["formel"] = "Sei gegrüsst Meister ";
+
+print_kopf($admin_typ,$header_typ,"<b>Admin Bereich</b>",$anrede,$menu_item);
+
 
 print_md();
 
@@ -202,21 +203,21 @@ case 2:
 	break;
 default:
 	$menu = array (0=>array("icon" => "7","caption" => "ADMIN","link" => ""),
-	1=>array ("icon" => "1","caption" => "Spieler","link" => "admin_sc.php?md=0&ID=$ID"),
-	2=>array ("icon" => "1","caption" => "News","link" => "admin_news.php?md=1&ID=$ID"),
-	3=>array ("icon" => "1","caption" => "Anmeldung","link" => "admin_anmelde.php?md=0&ID=$ID"),
-	4=>array ("icon" => "1","caption" => "Hilfe","link" => "admin_hilfe.php?md=0&ID=$ID"),
-	5=>array ("icon" => "5","caption" => "CON-SL","link" => "admin_sl.php?md=0&ID=$ID"),
-	6=>array ("icon" => "5","caption" => "Bilder","link" => "admin_bilder.php?md=0&ID=$ID"),
-	8=>array ("icon" => "1","caption" => "Charakter","link" => "admin_char.php?md=0&ID=$ID"),
-	9=>array ("icon" => "5","caption" => "Download","link" => "admin_down.php?md=0&ID=$ID"),
-	10=>array ("icon" => "1","caption" => "Kalender","link" => "admin_kal.php?md=0&ID=$ID"),
-	11=>array ("icon" => "1","caption" => "Bibliothek","link" => "admin_bib.php?md=0&ID=$ID"),
-	12=>array ("icon" => "1","caption" => "Bib-Zugriff","link" => "admin_bib_zugriff.php?md=0&ID=$ID"),
-	13=>array ("icon" => "1","caption" => "Bib-Bereich","link" => "admin_bib_bereich.php?md=0&ID=$ID"),
-	14=>array ("icon" => "1","caption" => "Bib-Thema","link" => "admin_bib_thema.php?md=0&ID=$ID"),
-	15=>array ("icon" => "1","caption" => "Bib-Item","link" => "admin_bib_item.php?md=0&ID=$ID"),
-	20=>array ("icon" => "6","caption" => "Zurück","link" => "larp.php?md=0&ID=$ID")
+	1=>array ("icon" => "_list","caption" => "Spieler","link" => "admin_sc.php?md=0&ID=$ID"),
+	2=>array ("icon" => "_list","caption" => "News","link" => "admin_news.php?md=1&ID=$ID"),
+	3=>array ("icon" => "_list","caption" => "Anmeldung","link" => "admin_anmelde.php?md=0&ID=$ID"),
+	4=>array ("icon" => "_list","caption" => "Hilfe","link" => "admin_hilfe.php?md=0&ID=$ID"),
+	5=>array ("icon" => "_list","caption" => "CON-SL","link" => "admin_con.php?md=0&ID=$ID"),
+	6=>array ("icon" => "_list","caption" => "Bilder","link" => "admin_bilder.php?md=0&ID=$ID"),
+	8=>array ("icon" => "_list","caption" => "Charakter","link" => "admin_char.php?md=0&ID=$ID"),
+	9=>array ("icon" => "_list","caption" => "Download","link" => "admin_down.php?md=0&ID=$ID"),
+	10=>array ("icon" => "_list","caption" => "Kalender","link" => "admin_kal.php?md=0&ID=$ID"),
+	11=>array ("icon" => "_list","caption" => "Bibliothek","link" => "admin_bib.php?md=0&ID=$ID"),
+	12=>array ("icon" => "_list","caption" => "Bib-Zugriff","link" => "admin_bib_zugriff.php?md=0&ID=$ID"),
+	13=>array ("icon" => "_list","caption" => "Bib-Bereich","link" => "admin_bib_bereich.php?md=0&ID=$ID"),
+	14=>array ("icon" => "_list","caption" => "Bib-Thema","link" => "admin_bib_thema.php?md=0&ID=$ID"),
+	15=>array ("icon" => "_list","caption" => "Bib-Item","link" => "admin_bib_item.php?md=0&ID=$ID"),
+	20=>array ("icon" => "_stop","caption" => "Zurück","link" => "larp.php?md=0&ID=$ID")
 
 	);
 
@@ -226,10 +227,10 @@ default:
 
 	switch ($md):
 case 1:
-		print_data("main.html");
+		print_pages("main.html");
 	break;
 default:
-	print_data("admin_logo.html");
+	print_pages("admin_logo.html");
 	break;
 	endswitch;
 

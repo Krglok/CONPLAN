@@ -304,7 +304,8 @@ print_body(2);
 $spieler_name = get_spieler($spieler_id); //Auserwählter\n";
 
 $menu_item = $menu_item_help;
-print_kopf($logo_typ,$header_typ,"Intern","Sei gegrüsst $spieler_name ",$menu_item);
+$anrede["name"] = $spieler_name;
+print_kopf($logo_typ,$header_typ,"Intern",$anrede,$menu_item);
 
 switch ($md):
 case 2: // Ansehen des Datesatzes als Form

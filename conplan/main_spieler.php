@@ -92,7 +92,7 @@ $daten=GET_daten("");
 
 //echo "POST : $p_md / GET : $md / THEMEN :$THEMEN ";
 $menu_item = $menu_item_help;
-print_kopf($logo_typ,$header_typ,"Öffentlich","Sei gegrüsst Freund ",$menu_item);
+print_kopf($logo_typ,$header_typ,"Öffentlich",$anrede,$menu_item);
 
 
 $menu = array (0=>array("icon" => "99","caption" => "SPIELER","link" => ""),
