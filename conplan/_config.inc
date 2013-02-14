@@ -607,66 +607,6 @@ function check_sub_item($bereich,$sub,$item)
 
 
 
-function get_menu_items($bereich, $sub,$item)
-{
-  if ($bereich == "")
-  {
-  	$bereich = 'PUBLIC';
-  }
-	
-  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-  global $menu_item;
-  global $menu_items;
-
-  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
- 
-  mysql_select_db($DB_NAME);
-  $table = 'menu_item';
-  
-//   $q = "SELECT item,item_titel,item_typ,item_icon,item_link,item_sort,sub FROM menu_bereich  
-//   join menu_sub on menu_sub.ref_bereich = menu_bereich.ID
-//  join menu_item on menu_item.ref_sub=menu_sub.ID
-//  where bereich = \"$bereich\" and sub= \"$sub\"  and item=\"$item\" order by item_sort";
-  $q="SELECT item,item_titel,item_typ,item_icon,item_link,item_sort FROM menu_bereich 
-join menu_sub on menu_sub.ref_bereich = menu_bereich.ID
-join menu_item on menu_item.ref_sub=menu_sub.ID
-where bereich = \"$bereich\" and sub= \"$sub\" and item=\"$item\" order by item_sort";
-  
-  $result = mysql_query($q) ;
-  if (!$result) {
-    $message  = 'Invalid get_menu_items: ' . mysql_error() . "\n";
-    $message .= 'Whole query: ' . $q;
-    die($message);
-  
-  } else
-  {
-    $i=0;
-    // Reihenfolge der menu_item nach spalte item_sort
-    while ($row = mysql_fetch_row($result))  
-    {
-      $menu_item['caption']=$row[1];
-      $menu_item['icon']=$row[3];
-      if ($row[2] == 2)
-      {
-        $menu_item['link']=$row[4]."&sub=".$sub."&item=".$item;
-      } else
-      {
-        $menu_item['link']=$row[4];
-      }
-      $menu_item['itemtyp']=$row[2];
-      if ($row[5] == 0) 
-      {
-        $menu_items[0]=$menu_item;
-      } else
-      {
-        $menu_items[$i]=$menu_item;
-      }
-      $i++;
-    }
-  }
-  return $menu_items;
-}
-
 
 $mfd_list = array("mfd"=>"", "table"=>"","tite"=>"","fields"=>"","join"=>"","where"=>"", "order"=>"");
 

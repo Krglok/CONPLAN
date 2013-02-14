@@ -223,6 +223,137 @@ function print_menu ($menu)
 };
 
 /**
+ * Wird fuer die pages verwaltung benutzt
+ * Zerlegt einen Pfad_Datei in Sub Item elemente
+ * Bis zu 3 elemente werden ausgewertet.
+ * Sind mehr elemente enthalten wird nichts zurueckgegeben 
+ * @param unknown $daten
+ * @return multitype:string unknown Ambigous <>
+ */
+
+function get_sub_item_name($daten)
+{
+	$sub_item_name = array("sub"=>"", "item"=>"", "name"=>"");
+	$sub_item = explode("/", $daten);
+	if (count($sub_item)==1)
+	{
+		$sub_item_name["name"] = $sub_item[0]; 
+	}
+	if (count($sub_item)==2)
+	{
+		$sub_item_name["sub"] = $sub_item[0];
+		$sub_item_name["name"] = $sub_item[1];
+	}
+	if (count($sub_item)==3)
+	{
+		$sub_item_name["sub"] = $sub_item[0];
+		$sub_item_name["item"] = $sub_item[1];
+		$sub_item_name["name"] = $sub_item[2];
+	}
+	
+	return  $sub_item_name;
+}
+
+/**
+ * Wird fuer die pages verwaltung benutzt
+ * Baut einen Pfad Datei aus den 3 elemente zusammen.
+ * 
+ * @param unknown $sub
+ * @param unknown $item
+ * @param unknown $name
+ * @return string|unknown
+ */
+function set_sub_item_name($sub, $item, $name)
+{
+	if ($sub != "")
+	{
+		if ($item == "")
+			{
+				return $sub."/".$name;
+			} else
+			{
+				return $sub."/".$item."/".$name;
+			}
+	} else
+	{
+		return $name;
+	}
+}
+
+/**
+ * Erstellt aus der Datenbank ein $menu
+ * Es wird $itemtyp ausgewertet um den link zu erstellen
+ * @param unknown $bereich
+ * @param unknown $sub
+ * @param unknown $item
+ * @return Ambigous <unknown, multitype:multitype:string  , multitype:string >
+ */
+function get_menu_items($bereich, $sub,$item)
+{
+	if ($bereich == "")
+	{
+		$bereich = 'PUBLIC';
+	}
+
+	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+	global $menu_item;
+	global $menu_items;
+
+	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+
+	mysql_select_db($DB_NAME);
+	$table = 'menu_item';
+
+	//   $q = "SELECT item,item_titel,item_typ,item_icon,item_link,item_sort,sub FROM menu_bereich
+	//   join menu_sub on menu_sub.ref_bereich = menu_bereich.ID
+	//  join menu_item on menu_item.ref_sub=menu_sub.ID
+	//  where bereich = \"$bereich\" and sub= \"$sub\"  and item=\"$item\" order by item_sort";
+	$q="SELECT item,item_titel,item_typ,item_icon,item_link,item_sort FROM menu_bereich
+	join menu_sub on menu_sub.ref_bereich = menu_bereich.ID
+	join menu_item on menu_item.ref_sub=menu_sub.ID
+	where bereich = \"$bereich\" and sub= \"$sub\" and item=\"$item\" order by item_sort";
+
+	$result = mysql_query($q) ;
+	if (!$result) {
+		$message  = 'Invalid get_menu_items: ' . mysql_error() . "\n";
+		$message .= 'Whole query: ' . $q;
+		die($message);
+
+	} else
+	{
+		$i=0;
+		// Reihenfolge der menu_item nach spalte item_sort
+		while ($row = mysql_fetch_row($result))
+		{
+			$menu_item['caption']=$row[1];
+			$menu_item['icon']=$row[3];
+			if ($row[2] == 1)
+			{	// ergaenze pfad durch sub / item  als pfad
+				$menu_item['link']= "&daten=".set_sub_item_name($sub, $item, $row[4]);
+			} elseif ($row[2] == 2)
+			{	// ergaenze pfad durch standard pages_pfad
+				$menu_item['link']="&daten=pages/".$row[4];
+			} else
+			{
+				$menu_item['link']=$row[4];
+			}
+			$menu_item['itemtyp']=$row[2];
+			if ($row[5] == 0)
+			{
+				$menu_items[0]=$menu_item;
+			} else
+			{
+				$menu_items[$i]=$menu_item;
+			}
+			$i++;
+		}
+	}
+	return $menu_items;
+}
+
+
+
+/**
  * Ausgabe des Logo image anhand des default style 
  * @param unknown $typ
  */
