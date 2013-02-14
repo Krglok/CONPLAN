@@ -212,8 +212,8 @@ print_body(2);
 
 $md   = GET_md(0);
 $daten= GET_daten("");
-$sub  = GET_sub("main");
-$item = GET_item("");
+//$sub  = GET_sub("main");
+//$item = GET_item("");
 $menu =GET_item("regeln");
 
 // Helpmenu im Header
@@ -228,14 +228,16 @@ print_kopf($logo_typ,$header_typ,"Öffentlich","Sei gegrüsst Freund ",$menu_item)
     4=>array ("icon" => "7","caption" => "Kaer","link" => "$PHP_SELF?md=1&daten=land_3.html"),
     5=>array ("icon" => "15","caption" => "Online Welt","link" => "$PHP_SELF?md=1&daten=DraskoriaOnline.html"),
  */
-
-if ($item == '')
+$sub_item_name = get_sub_item_name($daten);
+if ($sub_item_name["sub"] == "")
 {
-	print_menu($menu_default);
+	//erstellt ein default menu
+	print_menu($menu_default_pages);
 } else
 {
 	// Erstellt ein dynamisches Menu
-	print_menu(get_menu_items($BEREICH, $sub, $item));
+	$menu =get_menu_items($BEREICH, $sub_item_name["sub"], $sub_item_name["item"]) + $menu_default_pages ;
+	print_menu($menu);
 	
 }
 

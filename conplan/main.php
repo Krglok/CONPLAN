@@ -88,8 +88,8 @@ $PHP_SELF = $_SERVER['PHP_SELF'];
 // Steuerparameter und steuerdaten
 $md=GET_md(0);
 $daten=GET_daten("");
-$item=GET_item("main");
-$sub=GET_sub("");
+$item=GET_item("");
+$sub=GET_sub("main");
 
 $menu_item = $menu_item_help;
 
@@ -97,7 +97,7 @@ print_kopf($logo_typ,$header_typ,"Öffentlich",$anrede,$menu_item);
 
 //echo "POST : $p_md / GET : $md / THEMEN :$THEMEN ";
 
-
+// manuelles main menu
 $menu_main = array (0=>array("icon" => "0","caption" => "Hauptseite","link" => "ss","itemtyp"=>"0"),
 		1=>array ("icon" => "_page","caption" => "Übersicht","link" => "main.html","itemtyp"=>"2"),
 		2=>array ("icon" => "_list","caption" => "News","link" => "$PHP_SELF?md=5","itemtyp"=>"0"),
@@ -122,7 +122,8 @@ $menu_main = array (0=>array("icon" => "0","caption" => "Hauptseite","link" => "
 		50=>array ("icon" => "_help","caption" => "Ich","link" => "ich.html","itemtyp"=>"2"),
 		51=>array ("icon" => "_help","caption" => "Impressum","link" => "impressum.html","itemtyp"=>"2")
 );
-$item = check_sub_item($BEREICH,"main","main");
+//prueft ob ein dynamisches menu vorhanden ist
+$sub = check_sub_item($BEREICH,"main","");
 
 if ($item == '')
 {
@@ -130,7 +131,7 @@ if ($item == '')
 } else
 {
 	// Erstellt ein dynamisches Menu
-	$menu = get_menu_items($BEREICH, $sub, $item) + $menu_main;
+	$menu = get_menu_items($BEREICH, $sub, $item) + $menu_main + $menu_default_main;
 	print_menu($menu);
 	
 }

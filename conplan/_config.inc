@@ -466,7 +466,8 @@ function print_status($wert)
 
 $PHP_SELF = $_SERVER['PHP_SELF'];
 $ID="";
-$menu_item_header = array ("icon" => "", "caption" => "Default","link" => "","itemtyp"=>"0");
+$menu_item_header = array ("icon" => "1", "caption" => "Default","link" => "","itemtyp"=>"0");
+$menu_item_pages = array ("icon" => "1", "caption" => "Pages","link" => "","itemtyp"=>"0");
 $menu_item_help = array ("icon" => $menu_help, "caption" => "Hilfe","link" => "javascript:openHelp()","itemtyp"=>"0");
 $menu_item_ich 	= array ("icon" => "$menu_page","caption" => "Ich","link" => "ich.html","itemtyp"=>"2");
 $menu_item_imp 	= array ("icon" => "$menu_help","caption" => "Impressum","link" => "impressum.html","itemtyp"=>"2");
@@ -475,393 +476,42 @@ $menu_item_default = array("icon" => $menu_stop,"caption" => "??","link" => "$ma
 //$menu_item = array("icon" => "","caption" => "??","link" => "??","itemtyp"=>0);
 $menu_items = array(99=>$menu_item_default);
 
+/**
+   default menu fuer main bereich
+ */
 $menu_default = array (
+		0=>$menu_item_header,
+		34=>$menu_item_default
+);
+
+
+/**
+	Default Menu fuer die main.php
+ */
+$menu_default_main = array (
     0=>$menu_item_header,
-    1=>$menu_item_default,
-	2=>$menu_item_login,
     35=>$menu_item_imp,
     36=>$menu_item_ich
+);
+
+/**
+	Default Menu fuer main_pages, wird benutzt wenn kein Menue in der Menutabelle vorhanden ist
+ */
+$menu_default_pages = array (
+		0=>$menu_item_pages,
+		34=>$menu_item_default
 );
 
 $menu_bereich = array("PK"=>0, "bereich"=>"","titel"=>"","lvl"=>0);
 $menu_bereiche = array("PUBLIC"=>$menu_bereich, "SL"=>$menu_bereich, "AUTHOR"=>$menu_bereich, "ADMIN"=>$menu_bereich);
 
-function get_menu_bereiche()
-{
-  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-  global $menu_bereich;
-  global $menu_bereiche;
-  
-  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
-  
-  mysql_select_db($DB_NAME);
-  $table = 'menu_bereich';
-  $q = "select ID, bereich,bereich_titel, bereich_lvl from $table ";
-  $result = mysql_query($q) or die("select Fehler....$q.");
-  $i = 0;
-  while ($row = mysql_fetch_row($result))  
-  {
-    $i++;
-    $menu_bereich["PK"]=$row[0];
-    $menu_bereich["bereich"]=$row[1];
-    $menu_bereich["titel"]=$row[2];
-    $menu_bereich["lvl"]=$row[3];
-
-	if (preg_match ("public", $menu_bereich["bereich"], $out, PREG_OFFSET_CAPTURE))
-	{
-	  $menu_bereiche["PUBLIC"]=$menu_bereich;
-    } elseif (preg_match ("sl", $menu_bereich["bereich"], $out, PREG_OFFSET_CAPTURE))
-	{
-	  $menu_bereiche["SL"]=$menu_bereich;
-	}elseif (preg_match ("author", $menu_bereich["bereich"], $out, PREG_OFFSET_CAPTURE))
-	{
-	  $menu_bereiche["AUTHOR"]=$menu_bereich;
-	}elseif (preg_match ("admin", $menu_bereich["bereich"], $out, PREG_OFFSET_CAPTURE))
-	{
-	  $menu_bereiche["ADMIN"]=$menu_bereich;
-	}else
-	{
-	  $menu_bereiche[$i]=$menu_bereich;
-	}
-  }
-  return $menu_bereiche;
-}
-
-function get_menu_bereich($bereich)
-{
-  global $menu_bereiche;
-  
-  $menu_bereiche = get_menu_bereiche();
-  
-  foreach ($menu_bereiche as $menu_bereich)
-  {
-    if (preg_match ($menu_bereich, $bereich, $out, PREG_OFFSET_CAPTURE))
-    {
-       return $menu_bereich;
-    }
-  }
-  return null;
-}
-
-
 $menu_sub = array("ID"=>0, "ref_bereich"=>0, "sub"=>"", "titel"=>"", "html"=>"", "images"=>"");
 $menu_sub_bereich = array(0=>$menu_sub);
 
-function get_sub_bereich($bereich)
-{
-  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-  global $menu_sub ;
-  global $menu_sub_bereich;
-  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
-  
-  mysql_select_db($DB_NAME);
-  $table = 'menu_sub';
-  $q = "select ID, ref_bereich, sub, sub_titel, sub_html, sub_images from $table where sub = $bereich ";
-  $result = mysql_query($q) or die("select Fehler....$q.");
-  
-  $i = 0;
-  while ($row = mysql_fetch_row($result))  
-    {
-    $i++;
-    $menu_sub["ID"] = $row[0];  
-    $menu_sub["ref_bereich"] = $row[1];  
-    $menu_sub["sub"] = $row[2];  
-    $menu_sub["titel"] = $row[3];  
-    $menu_sub["html"] = $row[4];  
-    $menu_sub["images"] = $row[5];
-      
-    $menu_sub_bereich[$i] = $menu_sub;
-  }
-  return $menu_sub_bereich;
-}
-
-/**
- * Prueft ob das menu zu $item vorhanden ist und gibt es zuruck
- * oder ein leerstring
- * @param unknown $bereich
- * @param unknown $sub
- * @param unknown $item
- * @return , das gefundene item als string
- */
-function check_sub_item($bereich,$sub,$item)
-{
-  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
-  mysql_select_db($DB_NAME);
-
-  $table = 'menu_sub';
-  $q = "SELECT item FROM menu_bereich  
- join menu_sub on menu_sub.ref_bereich = menu_bereich.ID
- join menu_item on menu_item.ref_sub=menu_sub.ID
- where bereich = \"$bereich\" and sub= \"$sub\"  and item=\"$item\" ";
-  $result = mysql_query($q);
-  if (!$result) 
-  {
-    $item = "";
-  } else 
-  {
-    $row = mysql_fetch_row($result); 
-    return $row[0];
-  }
-}
-
-
-
-
 $mfd_list = array("mfd"=>"", "table"=>"","tite"=>"","fields"=>"","join"=>"","where"=>"", "order"=>"");
-
-/**
- * Holt die mfd Daten zu einer mfd referenz ($name)
- * @param unknown $name		// referenz des mfd
- * @return array mit mfd daten ($mfd_list)
- */
-function get_mfm_list($name)
-{
-  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-  global $mfd_list;
-  
-  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
-  
-  mysql_select_db($DB_NAME);
-  $table = "mfd_list";
-  $fields = "ID, mfd_name, mfd_table, mfd_titel, mfd_fields, mfd_join, mfd_where, mfd_order ";
-  $join = "";
-  $where =" mfd_name = \"$name\" ";
-  $order = "ID";
-  
-  $q = "SELECT $fields FROM $table  $join where $where  order by $order";
-  
-  $result = mysql_query($q) ;
-  if (!$result) {
-    $message  = 'Invalid query: ' . mysql_error() . "\n";
-    $message .= 'Whole query: ' . $q;
-    die($message);
-    
-  } else 
-  {
-    $row = mysql_fetch_row($result);
-    // Reihenfolge der menu_item nach spalte item_sort
-//    $mfd_list['ID'] = $row[0];
-    $mfd_list['mfd'] = $row[1];
-    $mfd_list['table'] = $row[2];
-    $mfd_list['titel'] = $row[3];
-    $mfd_list['fields'] = $row[4];
-    $mfd_list['join'] = $row[5];
-    $mfd_list['where'] = $row[6];
-    $mfd_list['order'] = $row[7];
-    return $mfd_list;
-  }
-  
-}
-
-/**
- * Holt ein SQL resultset fuer ein mfd 
- * @param $name			// refenrenz des mfd
- * @return array mit SQL resultset
- */
-function mfd_data_result($name)
-{
-  
-  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-  global $mfd_list;
-  
-  $mfd_list = get_mfm_list($name);
-  
-  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
-  
-  mysql_select_db($DB_NAME);
-  $table = $mfd_list["table"];
-  $fields = $mfd_list["fields"];
-  $join = $mfd_list["join"];
-  $where = $mfd_list["where"];
-  $order = $mfd_list["order"];
-  
-  $q = "SELECT $fields FROM $table  $join where $where  order by $order";
-  
-  $result = mysql_query($q) ;
-  if (!$result) 
-  {
-    $message  = 'Invalid query: ' . mysql_error() . "\n";
-    $message .= 'Whole query: ' . $q."\n";
-    die($message);
-  } else
-  {
-    return $result;
-  }
-  
-}
-
 $mfd_col = array("mfd_name"=>"", "mfd_titel"=>"", "mfd_pos"=>"", "mfd_field"=>"", "mfd_field_titel"=>"", "mfd_width"=>"");
 $mfd_cols = array("0"=>$mfd_col);
 
-/**
- * Holt die Spaltendefinition fuer ein mfd 
- * @param unknown $name			// Referenz auf mfd
- * @return Array mit Spaltendefinitionen ($mfd_cols)
- */
-function mfd_data_cols($name)
-{
-  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-  global $mfd_col;
-  global $mfd_cols;
-  
-  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
-  
-  mysql_select_db($DB_NAME);
-  $table = "mfd_list";
-  $fields ="mfd_name, mfd_titel, mfd_pos, mfd_field, mfd_field_titel, mfd_width ";
-  $join = "join mfd_cols on mfd_cols.ref_mfm=mfd_list.ID";
-  $where ="mfd_name=\"$name\"";
-  $order = "mfd_pos";
-  
-  $q = "SELECT $fields FROM $table  $join where $where order by $order";
-  
-  $result = mysql_query($q) ;
-  if (!$result) {
-    $message  = 'Invalid query: ' . mysql_error() . "\n";
-    $message .= 'Whole query: ' . $q;
-    die($message);
-  
-  } else
-  {
-    $i=0;
-    while ($row = mysql_fetch_row($result))
-    {
-      $i++;
-      // Reihenfolge der menu_item nach spalte item_sort
-      $mfd_col['mfd_name'] = $row[0];
-      $mfd_col['mfd_titel'] = $row[1];
-      $mfd_col['mfd_pos'] = $row[2];
-      $mfd_col['mfd_field'] = $row[3];
-      $mfd_col['mfd_field_titel'] = $row[4];
-      $mfd_col['mfd_width'] = $row[5];
-      $mfd_cols[$i] = $mfd_col;
-    }
-  }
-  return $mfd_cols;
-}
-
-/**
- * Hole fuer ein mfd den Datensatz mit dem PK $id
- * @param unknown $name   // mfd referenz
- * @param unknown $id			// pk des gesuchten Datensatz
- * @return resource				// Resultset des SQL
- */
-function mfd_detail_result($name, $id)
-{
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $mfd_list;
-	
-	$mfd_list = get_mfm_list($name);
-	
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
-	
-	mysql_select_db($DB_NAME);
-	$table = $mfd_list["table"];
-	$fields =$mfd_list["fields"];
-	$join = ""; //$mfd_list["join"];
-	$where ="id = $id";
-	$order = "";
-	
-	$q = "SELECT $fields FROM $table $join where $where order by $order";
-	
-	$result = mysql_query($q) ;
-	if (!$result) {
-		$message  = 'Invalid query: ' . mysql_error() . "\n";
-		$message .= 'Whole query: ' . $q;
-		die($message);
-	
-	} else
-	{
-		return $result;
-	}
-}
-
-/**
- * Loescht einne Datensatz in einer mfd Tabelle
- * @param unknown $name		// referenz auf mfd
- * @param unknown $id			// zu löschender PK (ID)
- */
-function mfd_delete($name, $id)
-{
-	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $mfd_list;
-	
-	$mfd_list = get_mfm_list($name);
-	
-	$table = $mfd_list["table"];
-	$fields =""; //$mfd_list["fields"];
-	$join = ""; //$mfd_list["join"];
-	$where ="id = $id";
-	$order = "";
-
-	
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)     or die("Fehler beim verbinden!");
-
-	if (mysql_select_db($DB_NAME) != TRUE) {
-		echo "Fehler DB";
-	};
-	/**/
-	$q = "delete from $table where $where ";
-	//  echo $q;
-	$result = mysql_query($q) ;
-	if (!$result) {
-		$message  = 'Invalid query: ' . mysql_error() . "\n";
-		$message .= 'Whole query: ' . $q;
-		die($message);
-	}
-	/**/
-	mysql_close($db);
-
-};
-
-
-/**
- * Macht ein Tabellen update auf mfd Tabelle
- * @param unknown $name 	// referenz auf mfd
- * @param unknown $row		// Datensatz Row mit Datenfelder
- */
-function mfd_update($name, $row)
-{
-	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $mfd_list;
-	
-	$mfd_list = get_mfm_list($name);
-	$id = $row['ID'];
-	$table = $mfd_list["table"];
-	$fields =$mfd_list["fields"];
-	$join = ""; //$mfd_list["join"];
-	$where ="id = $id";
-	$order = "";
-	$field_name = split(',',$fields);
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-	or die("Fehler beim verbinden!");
-	
-	$field_num = count($field_name);
-	// der PK (ID) muss in der Fieldmenge enthalten sein, als erster!!
-	$q ="update $table  SET ";
-	$q = $q."$field_name[1]=\"$row[1]\" ";
-	for ($i=2; $i<$field_num; $i++)
-	{
-		$q = $q.",$field_name[$i]=\"$row[$i]\" ";
-	};
-	$q = $q."where id=\"$row[0]\" ";
-
-	//  echo $q;
-	if (mysql_select_db($DB_NAME) != TRUE) 
-	{
-		$message  = 'Invalid query: ' . mysql_error() . "\n";
-		$message .= 'Whole query: ' . $q;
-		die($message);
-	};
-	/**/
-	$result = mysql_query($q) or die("update Fehler....$q.");
-	/**/
-	mysql_close($db);
-
-};
 
 
 ?>
