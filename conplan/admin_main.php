@@ -218,7 +218,7 @@ default:
 	14=>array ("icon" => "_list","caption" => "Bib-Thema","link" => "admin_bib_thema.php?md=0&ID=$ID"),
 	15=>array ("icon" => "_list","caption" => "Bib-Item","link" => "admin_bib_item.php?md=0&ID=$ID"),
 	16=>array ("icon" => "_list","caption" => "Menu-Item","link" => "admin_menu.php?md=0&ID=$ID"),
-	17=>array ("icon" => "_list","caption" => "CK Editor","link" => "admin_edit.php?md=0&ID=$ID"),
+	17=>array ("icon" => "_list","caption" => "CK Editor","link" => "author_pages.php?md=0&ID=$ID"),
 	20=>array ("icon" => "_stop","caption" => "Zurück","link" => "larp.php?md=0&ID=$ID")
 
 	);

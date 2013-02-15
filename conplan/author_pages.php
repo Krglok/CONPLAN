@@ -51,21 +51,18 @@ function get_pagesdir($dir,$file_extend)
 		$dir_entry[$i] = $dir;
 		while (false !== ($entry = readdir($handle))) 
 		{
-			if ($file_extend != "")
+		    if ($file_extend != "..")
 			{
-				if (preg_match ($file_extend, $entry)) //, $out, PREG_OFFSET_CAPTURE))
-		  	{
-					$i++;
-		  		$dir_entry[$i] = $entry;
-		  		echo "$entry\n";
-		  	}
+   					$i++;
+    		  		$dir_entry[$i] = $entry;
+//    		  		echo "$entry <br>\n";
 			} else
 			{
-				if (preg_match (".", $entry))  //, $out, PREG_OFFSET_CAPTURE))
+			if (preg_match (".", $entry))  //, $out, PREG_OFFSET_CAPTURE))
 		  	{
 		  		continue;
 		  	}
-				if (preg_match ("..", $entry, $out) ) //, PREG_OFFSET_CAPTURE))
+			if (preg_match ("..", $entry, $out) ) //, PREG_OFFSET_CAPTURE))
 		  	{
 		  		continue;
 		  	}
@@ -83,8 +80,9 @@ function get_pagesdir($dir,$file_extend)
 function get_pages_list($path)
 {
 //	$dir = './pages';
-	$file_extend = ".hmtl";
+	$file_extend = "hmt";
 	$pages =  get_pagesdir($path,$file_extend);
+	return $pages;
 }
 
 function get_images_list()
@@ -92,6 +90,7 @@ function get_images_list()
 	$dir = './images';
 	$file_extend = "";
 	$images =  get_pagesdir($dir,$file_extend);
+	return $images;
 }
 
 function print_pages_list()
@@ -99,38 +98,39 @@ function print_pages_list()
 	global $PHP_SELF;
 	
 	$path = './pages';
-	$pages = get_pages_list($path);
+	$pages = get_pages_list($path,".html");
 	
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
 	echo "<!---  DATEN Spalte   --->\n";
-	echo "<table>\n";
-	echo "<tbody>";
+	echo "<table width=\"100%\" border=\"1\"> \n";
+	echo "<tbody >";
 	
-	foreach ($pages as $name)
+	for($i=0; $i<count($pages); $i++)
 	{
+	    $name = $pages[$i];
 		echo "\t<tr> \n";
 		echo "\t\t<td> \n";
 		echo "<a href=\"$PHP_SELF?md=2&daten=$name\" ";
-		print_menu_icon("_db","Edit Html Datei");
+		print_menu_icon_mfd("_add","Edit Html Datei");
 		echo "</a>";
 		echo "\t\t</td> \n";
 		echo "\t\t<td> \n";
 		echo "$name";
 		echo "";
 		echo "\t\t</td> \n";
-		echo "\t</tr> \n";
 		echo "\t\t<td> \n";
 		echo "<a href=\"$PHP_SELF?md=2&daten=$name\" ";
-		print_menu_icon("_text","Preview Html Datei in separatem Fenster");
+		print_menu_icon_mfd("_text","Preview Html Datei in separatem Fenster");
 		echo "</a>";
 		echo "Preview";
 		echo "";
 		echo "\t\t</td> \n";
+		echo "\t</tr> \n";
 	}
 	
-	echo "<table>\n";
-	echo "<tbody>";
+	echo "</tbody>";
+	echo "</table>\n";
 	echo '</div>';
 	echo "<!---  ENDE DATEN Spalte   --->\n";
 	
@@ -295,7 +295,7 @@ case 2:  //Bearbeiten
 	break;
 default: // main
 	$menu = array (0=>array("icon" => "7","caption" => "HTML Pages","link" => ""),
-	1=>array ("icon" => "_plus","caption" => "Neue Html Seite","link" => "$PHP_SELF?md=1&ID=$ID"),
+	1=>array ("icon" => "_plus","caption" => "Neue Page","link" => "$PHP_SELF?md=1&ID=$ID"),
 	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_main.php?md=0&ID=$ID")
 	);
 	break;
