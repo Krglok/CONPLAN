@@ -72,6 +72,27 @@ function print_datum($datum)
 
 /**
  * Ausgabe eines Menu_icon anhand des default style
+ * Fehlerbehandlung, [X] wird ausgegeben
+ * @param unknown $typ
+ * @param string $info
+ */
+function print_menu_icon_mfd ($typ,$info)
+{
+  // convert int to string of icon type
+  //$typ = index2menutyp($typ);
+  $icon = $GLOBALS['layoutButton_path'].$typ.".gif";
+  $style = "style=\" width:21; height:21 \"";
+  //  echo $icon;
+  if ($typ != "")
+  {
+    echo "\t<IMG $style SRC=\"$icon\"  ALT=\"$info\" TITLE=\"$info\">";
+  } else {
+    echo "\t[X]"; // Leerzeile
+  }
+};
+
+/**
+ * Ausgabe eines Menu_icon anhand des default style
  * Fehlerbehandlung, [X] wird ausgegeben 
  * @param unknown $typ
  * @param string $info
@@ -218,6 +239,81 @@ function print_menu ($menu)
     }
   }
   echo "\t\t</div >\n";
+  echo "\t</div >\n";
+  echo "<!---  Menu Spalte ENDE   --->\n\n";
+};
+
+function print_menue_header($caption, $style)
+{
+  echo "\t <div $style >\n";
+  echo "$caption \n";
+  echo "\t </div >\n";
+}
+
+/**
+ * Erzeugt ein Menu mit default style
+ * @param unknown $menu  array mit menu daten
+ */
+function print_menu_status ($menu)
+{
+  global $ID;
+  $menu_item_subsl= array ("icon" => "_tool","caption" => "Planung","link" => "con_plan.php?md=0&ID=$ID","itemtyp"=>"0");
+  $menu_item_sl 	= array ("icon" => "_tool","caption" => "SL","link" => "con_main.php?md=0&ID=$ID","itemtyp"=>"0");
+  $menu_item_admin= array ("icon" => "_tool","caption" => "Admin","link" => "admin_main.php?md=0&ID=$ID","itemtyp"=>"0");
+
+  //   menü spalte
+  echo "<!---  Menu Spalte   --->\n";
+  //  stellt die breite der Menüspalte ein !!!
+  $style = "id=status";
+  echo "<div $style >\n";
+
+  //  separate div pro Menu item
+  //   $style = $GLOBALS['style_menu_head'];
+  //   echo "\t<div  ><!-- Row:1, Col:1 -->\n";
+  //   echo "\t</div >\n";
+  $item = $menu[0];
+  $is_sub = $item["icon"];
+  $caption = $item["caption"];
+  $styleheader = "id=statusheader";
+  print_menue_header($caption, $styleheader);
+  
+  $style = "id=statusitem";
+
+  reset ($menu);
+  $i = 0;
+  foreach ($menu as $item)
+  {
+    echo "\t\t<div $style ><!-- Row:1, Col:1 -->\n";
+    // das erste Ellement ist der Header !!
+    if ($i > 0)
+    {
+      //echo $i;
+      if ($item["icon"] == "1")
+      {
+        print_menue_header($item["caption"], $styleheader);
+      } else {
+        print_menu_item($item);
+      }
+    }
+    echo "\t\t</div >\n";
+    $i++;
+  }
+  if ($is_sub == "0")
+  {
+    if (is_subsl()==TRUE)
+    {
+      print_menu_item($menu_item_subsl);
+    }
+    if (is_sl()==TRUE)
+    {
+      print_menu_item($menu_item_sl);
+    }
+    if (is_admin()==TRUE)
+    {
+      print_menu_item($menu_item_admin);
+    }
+  }
+//  echo "\t\t</div >\n";
   echo "\t</div >\n";
   echo "<!---  Menu Spalte ENDE   --->\n\n";
 };

@@ -139,9 +139,68 @@ body {
 
 #status {
 	width: 100%;
-	border: solid 1px silver;
+	height:25px;
+	border: solid 0px silver;
 	padding-left: 10px;
 }
+
+#statusheader {
+	float: left;
+	border: solid 1px silver;
+    width:100px;
+	height:25px;
+	font-size: medium;
+    text-align: center;
+}
+
+#statusheader p {
+	text-align: center;
+	font-weight: bold;
+}
+
+
+#statusitem {
+	float: left;
+	color: black;
+	border: solid 0px silver;
+    width:100px;
+}
+
+#statusitem p {
+	margin-top: 1px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-bottom: 1px;
+	text-align: left;
+	font-weight: normal;
+}
+
+#statusitem p a {
+		color: gray;
+        text-decoration: none;
+        font-weight: normal;
+        display: block;
+        border: solid 0px silver;
+}
+
+/*  will not do in ie9, so disabled */
+#statusitem p:hover {
+/*	background-color: silver; */
+    border: solid 1px black;
+}
+#statusitem p a:hover {
+	color: black;
+    border: solid 1px black;
+}
+
+#statusitem img {
+	width: 21px;
+	height: 21px;
+	vertical-align: middle;
+    border: solid 0px silver;
+    margin-right: 1px;
+}
+
 
 #menu {
     float: left;
@@ -238,10 +297,12 @@ body {
 }
 #datatab p{
 	font-family: "Comic Sans MS"";
+    text-align: left;
 }
 
 #datatab td{
 	vertical-align: text-top;	
+    text-align: left;
 }
 
 #help_1 {

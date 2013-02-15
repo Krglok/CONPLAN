@@ -111,7 +111,6 @@ function checkuser($user, $pw)
     		if ($row[0] == $user)
     		{
     			$q = "select old_password(\"$pw\");";
-    			echo "$q";
     			$result = mysql_query($q) or die("PW: $q");
     			$row = mysql_fetch_row($result) ;
     			//     echo ">$row[0] / $check";

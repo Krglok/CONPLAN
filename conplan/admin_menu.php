@@ -41,10 +41,11 @@ include_once "_lib.inc";
 include_once "_head.inc";
 
 
-function print_mfd_liste($mfd_list, $ID, $mfd_cols)
+function print_mfd_liste( $ID, $mfd_list, $mfd_cols)
 {
 // 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $PHP_SELF;
+	global $mfd_col;
 
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
@@ -54,22 +55,34 @@ function print_mfd_liste($mfd_list, $ID, $mfd_cols)
 // 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
 // 	or die("Fehler beim verbinden!");
 
-	mysql_select_db($DB_NAME);
+//	mysql_select_db($DB_NAME);
 
 	$result = mfd_data_result($mfd_list)
 	or die("Query Fehler...");
 
-	while ($row = mysql_fetch_row($result))
+    echo "\t<TR>";
+	foreach ($mfd_cols as $mfd_col)
+    { 
+      echo "\t\t<TD>";
+      echo $mfd_col["mfd_field_titel"];
+      echo "\t\t</TD>";
+    }
+    echo "\t</TR>";
+    while ($row = mysql_fetch_row($result))
 	{
-		echo "\t<TR>";
-		echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=$row[0]\">\n";
-		print_menu_icon ("_db");
+	    echo "\t<TR>";
+		echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=".$row[0]."\">\n"; //
+		print_menu_icon_mfd ("_db","Datensatz bearbeiten");
 		echo "\t</a></td>\n";
-		echo "\t<td width=\"85\">".$row[1]."&nbsp;<br><br><br><br></td>\n";
-		echo "\t<td>".$row[2]."<BR>".$row[3]."<BR>".$row[4];
-		echo "<HR>";
-		echo "</td>\n";
-		echo '        </TR>';
+		for ($i = 1; $i < count($mfd_cols); $i++) 
+		{
+		  echo "\t<td width=\"".$mfd_cols[$i]["mfd_field_titel"]."\">".$row[$i]."\n";
+		  echo "</td>\n";
+		}
+		echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=".$row[0]."\">\n"; //
+		print_menu_icon_mfd ("_del","Datensatz löschen");
+		echo "\t</a></td>\n";
+		echo "\t</TR>";
 	}
 
 // 	mysql_close($db);
@@ -83,40 +96,34 @@ function print_mfd_liste($mfd_list, $ID, $mfd_cols)
 };
 
 
-function mfd_erf($id, $ID, $mfd_cols)
+function mfd_erf($id, $ID, $mfd_list, $mfd_cols)
 //
 // $id   beinhaltet den zu bearbeitenden Datensatz
 //
 {
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $PHP_SELF;
-	//  Daten
-	//
-		$d = getdate();
-		$row[0] = 0;
-		$row[1] = $d[year]."-".$d[mon]."-".$d[mday];
-		$row[2] = "";
-		$row[3] = "";
-		$row[4] = "";
-		
-		$next = 5;	// Datenfunktion Insert
-		
-		print_mfd_maske($mfd_list,$row, $id,$next,$erf,$ID);
-	
+  for ($i=1; $i<count($mfd_cols); $i++)
+  {
+    $row[$i] = "";
+  }	    	
+  $row[0] = 0;
+  $next = 5;	// Datenfunktion Insert
+  
+  print_mfd_maske($mfd_list,$row, $id,$next,$ID, $mfd_cols );
 }
 
-function mfd_edit($id, $ID, $mfd_cols)
+function mfd_edit($id, $ID, $mfd_list, $mfd_cols)
 //
 //  $id   beinhaltet den zu bearbeitenden Datensatz
 //
 {
 	//  Daten
 	//
-		$next = 6;	// Datenfunktion Update
-	  $result = mfd_detail_result($mfd_list, $id);
-		$row = mysql_fetch_row($result);
-		
-		print_mfd_maske($mfd_list,$row, $id,$next,$erf,$ID);
+  $next = 6;	// Datenfunktion Update
+    $result = mfd_detail_result($mfd_list, $id);
+  $row = mysql_fetch_row($result);
+  
+  
+  print_mfd_maske($mfd_list,$row, $id,$next,$ID, $mfd_cols );
 
 }
 
@@ -130,10 +137,10 @@ function mfd_edit($id, $ID, $mfd_cols)
  * @param unknown $erf
  * @param unknown $ID
  */
-function print_mfd_maske($mfd_list, $row, $id,$next,$erf,$ID, $mfd_cols )
+function print_mfd_maske($mfd_list, $row, $id,$next,$ID, $mfd_cols )
 {
 	//  Fielddefs holen  bzw. defaultwerte erzeugen
-	
+	global $PHP_SELF;
 	
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
@@ -148,29 +155,34 @@ function print_mfd_maske($mfd_list, $row, $id,$next,$erf,$ID, $mfd_cols )
 	echo "\t <TABLE WIDTH=\"100%\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"2\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\" BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
 
 	echo "<tr>\n";
-
-	echo "\t<td WIDTH=\"75\"><b>ID</b></td>\n";
+	echo "\t<td WIDTH=\"75\"><b>".$mfd_cols[0]["mfd_field_titel"]."</b></td>\n";
 	echo "<td>\"$row[0]\"&nbsp;</td>\n";
 	echo "</tr>\n";
-	echo "<tr>\n";
-	echo "\t<td><b>Datum</b></td>\n";
-	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[1]\" SIZE=12 MAXLENGTH=12 VALUE=\"$row[1]\">&nbsp;</td>\n";
-	echo "</tr>\n";
-	echo "<tr>\n";
-	echo "\t<td><b>Zeile 1</b></td>\n";
-
-	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[2]\" SIZE=50 MAXLENGTH=50 VALUE=\"$row[2]\">&nbsp;</td>\n";
-	echo "</tr>\n";
-	echo "<tr>\n";
-	echo "\t<td><b>Zeile 2</b></td>\n";
-	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[3]\" SIZE=50 MAXLENGTH=50 VALUE=\"$row[3]\">&nbsp;</td>\n";
-	echo "</tr>\n";
-	echo "<tr>\n";
-	echo "\t<td><b>Zeile 3</b></td>\n";
-	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[4]\" SIZE=50 MAXLENGTH=50 VALUE=\"$row[4]\">&nbsp;</td>\n";
-	echo "</tr>\n";
-	echo "<tr>\n";
-	echo "</tr>\n";
+	
+	for ($i = 1; $i < count($mfd_cols); $i++) 
+	{
+    	echo "<tr>\n";
+    	echo "\t<td><b>".$mfd_cols[$i]["mfd_field_titel"]."</b></td>\n";
+    	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[1]\" SIZE=".$mfd_cols[$i]["mfd_width"]." MAXLENGTH=".$mfd_cols[$i]["mfd_width"]." VALUE=\"$row[$i]\">&nbsp;</td>\n";
+    	echo "</tr>\n";
+	}
+	
+// 	echo "<tr>\n";
+// 	echo "\t<td><b>".$mfd_cols[2]["mfd_field_titel"]."</b></td>\n";
+// 	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[2]\" SIZE=".$mfd_cols[2]["mfd_width"]." MAXLENGTH=".$mfd_cols[2]["mfd_width"]." VALUE=\"$row[2]\">&nbsp;</td>\n";
+// 	echo "</tr>\n";
+// 	echo "<tr>\n";
+// 	echo "\t<td><b>".$mfd_cols[3]["mfd_field_titel"]."</b></td>\n";
+// 	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[3]\" SIZE=".$mfd_cols[3]["mfd_width"]." MAXLENGTH=".$mfd_cols[3]["mfd_width"]." VALUE=\"$row[3]\">&nbsp;</td>\n";
+// 	echo "</tr>\n";
+// 	echo "<tr>\n";
+// 	echo "\t<td><b>".$mfd_cols[4]["mfd_field_titel"]."</b></td>\n";
+// 	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[4]\" SIZE=".$mfd_cols[4]["mfd_width"]." MAXLENGTH=".$mfd_cols[4]["mfd_width"]." VALUE=\"$row[4]\">&nbsp;</td>\n";
+// 	echo "</tr>\n";
+// 	echo "<tr>\n";
+// 	echo "\t<td><b>".$mfd_cols[5]["mfd_field_titel"]."</b></td>\n";
+// 	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[4]\" SIZE=".$mfd_cols[5]["mfd_width"]." MAXLENGTH=".$mfd_cols[5]["mfd_width"]." VALUE=\"$row[5]\">&nbsp;</td>\n";
+// 	echo "</tr>\n";
 	echo "<tr>\n";
 	echo "</tr>\n";
 	echo "<tr>\n";
@@ -179,7 +191,7 @@ function print_mfd_maske($mfd_list, $row, $id,$next,$erf,$ID, $mfd_cols )
 			&nbsp;&nbsp;&nbsp;&nbsp;
 			<INPUT TYPE=\"RESET\" VALUE=\"ABBRECHEN\">
 			</td>\n";
-	echo "</tr>\n";
+    echo "</tr>\n";
 	echo "</table>\n";
 	echo "</FORM>\n";
 
@@ -225,9 +237,9 @@ function make_mfd_list($bereich, $sub, $item)
 			"mfd"=>"menu_item", 
 			"table"=>"menu_item",
 			"tite"=>"MenuItems",
-			"fields"=>"item,item_titel,item_typ,item_icon,item_link,item_sort",
-			"join"=>"join menu_sub on menu_sub.ref_bereich = menu_bereich.ID join menu_bereich on bereich = \"$bereich\"  ",
-			"where"=>"where menu_item.ref_sub=menu_sub.ID and sub= \"$sub\" and item=\"$item\" order by item_sort", 
+			"fields"=>"menu_item.ID,ref_sub,item,item_titel,item_typ,item_icon,item_link,item_sort",
+			"join"=>"join menu_bereich on bereich = \"$bereich\" join menu_sub on menu_sub.ref_bereich = menu_bereich.ID  ",
+			"where"=>"menu_item.ref_sub=menu_sub.ID and sub= \"$sub\" and item=\"$item\" ", 
 			"order"=>"item_sort");
 	return $mfd_list;
 }
@@ -243,50 +255,66 @@ function make_mfd_cols($mfd_list)
 		$mfd_col['mfd_titel'] = "MenuItem";
 		$mfd_col['mfd_pos'] = $i;
 		$mfd_col['mfd_field'] = $fields[$i];
-		$mfd_col['mfd_field_titel'] = $fields[$i];
-		$mfd_col['mfd_width'] = 25;
+		$mfd_col['mfd_field_titel'] = "ID";
+		$mfd_col['mfd_width'] = 5;
 		$mfd_cols[$i] = $mfd_col;
-		$i++;
+	$i=1;
+		// Reihenfolge der menu_item nach spalte item_sort
+		$mfd_col['mfd_name'] = $mfd_list["mfd"];
+		$mfd_col['mfd_titel'] = "MenuItem";
+		$mfd_col['mfd_pos'] = $i;
+		$mfd_col['mfd_field'] = $fields[$i];
+		$mfd_col['mfd_field_titel'] = "Ref";
+		$mfd_col['mfd_width'] = 5;
+		$mfd_cols[$i] = $mfd_col;
+	$i=2;
 		$mfd_col['mfd_name'] = $mfd_list["mfd"];
 		$mfd_col['mfd_titel'] = "MenuItem";
 		$mfd_col['mfd_pos'] = $i;
 		$mfd_col['mfd_field'] = $fields[$i];
 		$mfd_col['mfd_field_titel'] = $fields[$i];
-		$mfd_col['mfd_width'] = 25;
+		$mfd_col['mfd_width'] = 15;
 		$mfd_cols[$i] = $mfd_col;
-		$i++;
+	$i=3;
 		$mfd_col['mfd_name'] = $mfd_list["mfd"];
 		$mfd_col['mfd_titel'] = "MenuItem";
 		$mfd_col['mfd_pos'] = $i;
 		$mfd_col['mfd_field'] = $fields[$i];
 		$mfd_col['mfd_field_titel'] = $fields[$i];
-		$mfd_col['mfd_width'] = 25;
+		$mfd_col['mfd_width'] = 35;
 		$mfd_cols[$i] = $mfd_col;
-		$i++;
+	$i=4;
 		$mfd_col['mfd_name'] = $mfd_list["mfd"];
 		$mfd_col['mfd_titel'] = "MenuItem";
 		$mfd_col['mfd_pos'] = $i;
 		$mfd_col['mfd_field'] = $fields[$i];
 		$mfd_col['mfd_field_titel'] = $fields[$i];
-		$mfd_col['mfd_width'] = 25;
+		$mfd_col['mfd_width'] = 5;
 		$mfd_cols[$i] = $mfd_col;
-		$i++;
+	$i=5;
 		$mfd_col['mfd_name'] = $mfd_list["mfd"];
 		$mfd_col['mfd_titel'] = "MenuItem";
 		$mfd_col['mfd_pos'] = $i;
 		$mfd_col['mfd_field'] = $fields[$i];
 		$mfd_col['mfd_field_titel'] = $fields[$i];
-		$mfd_col['mfd_width'] = 25;
+		$mfd_col['mfd_width'] = 15;
 		$mfd_cols[$i] = $mfd_col;
-		$i++;
+	$i=6;
 		$mfd_col['mfd_name'] = $mfd_list["mfd"];
 		$mfd_col['mfd_titel'] = "MenuItem";
 		$mfd_col['mfd_pos'] = $i;
 		$mfd_col['mfd_field'] = $fields[$i];
 		$mfd_col['mfd_field_titel'] = $fields[$i];
-		$mfd_col['mfd_width'] = 25;
+		$mfd_col['mfd_width'] = 55;
 		$mfd_cols[$i] = $mfd_col;
-		$i++;
+	$i=7;
+		$mfd_col['mfd_name'] = $mfd_list["mfd"];
+		$mfd_col['mfd_titel'] = "MenuItem";
+		$mfd_col['mfd_pos'] = $i;
+		$mfd_col['mfd_field'] = $fields[$i];
+		$mfd_col['mfd_field_titel'] = $fields[$i];
+		$mfd_col['mfd_width'] = 5;
+		$mfd_cols[$i] = $mfd_col;
 		
 	return $mfd_cols;
 
@@ -301,7 +329,7 @@ function make_mfd_cols($mfd_list)
 // Prüfung ob User  berechtigt ist
 
 
-$BEREICH = 'INTERN';
+$BEREICH = 'ADMIN';
 $PHP_SELF = $_SERVER['PHP_SELF'];
 
 $md     = GET_md(0);
@@ -374,44 +402,43 @@ case 6: // Insert -> Erfassen
 	switch ($md):
 case 2: // erfassen
 		$menu = array (0=>array("icon" => "7","caption" => "MENUITEMS","link" => "$PHP_SELF?md=1&ID=$ID"),
-				1=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
+		        1=>array("icon" => "1","caption" => "NEU","link" => ""),
+				2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
 		);
 		break;
 case 4:  //Bearbeiten
 	$menu = array (0=>array("icon" => "7","caption" => "MENUITEMS","link" => "$PHP_SELF?md=1&ID=$ID"),
-	1=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=1&ID=$ID")
+		        1=>array("icon" => "1","caption" => "ÄNDERN","link" => ""),
+	            2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=1&ID=$ID")
 	);
 	break;
 case 10: // main
 	$menu = array (0=>array("icon" => "7","caption" => "MENUITEMS","link" => "$PHP_SELF?md=1&ID=$ID"),
-	1=>array ("icon" => "_add","caption" => "Erfassen","link" => "$PHP_SELF?md=2&ID=$ID"),
-	2=>array ("icon" => "_list","caption" => "Letzten 10 News","link" => "$PHP_SELF?md=1&ID=$ID"),
+	1=>array ("icon" => "_plus","caption" => "Erfassen","link" => "$PHP_SELF?md=2&ID=$ID"),
 	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_main.php?md=0&ID=$ID")
 	);
 	break;
 default: // main
 	$menu = array (0=>array("icon" => "7","caption" => "MENUITEMS","link" => "$PHP_SELF?md=1&ID=$ID"),
-	1=>array ("icon" => "_add","caption" => "Erfassen","link" => "$PHP_SELF?md=2&ID=$ID"),
-	2=>array ("icon" => "_list","caption" => "Alle News","link" => "$PHP_SELF?md=10&ID=$ID"),
+	1=>array ("icon" => "_plus","caption" => "Erfassen","link" => "$PHP_SELF?md=2&ID=$ID"),
 	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_main.php?md=0&ID=$ID")
 	);
 	break;
 	endswitch;
 
-	print_menu($menu);
+	print_menu_status($menu);
 
 switch ($md):
 case 2:
-	mfd_erf($id,$ID);
+	mfd_erf($id,$ID,$mfd_list,$mfd_cols);
 	break;
 case 4:
-	mfd_edit($id,$ID);
+	mfd_edit($id,$ID,$mfd_list,$mfd_cols);
 	break;
 case 10:
-	print_news_liste($ID,1000);
 	break;
 default:
-	print_mfd_liste($ID,$mfd_list);
+	print_mfd_liste($ID,$mfd_list,$mfd_cols);
 	break;
 endswitch;
 

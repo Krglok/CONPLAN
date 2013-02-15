@@ -143,7 +143,7 @@ function print_main_data()
 // keinerlei Ausgabe vor  der header() Zeile !!!!!!!!!!!!!!!!!!!!!
 // ----------------------------------------------------------------
 // Prüfung ob User  berechtigt ist
-$BEREICH = 'INTERN';
+$BEREICH = 'ADMIN';
 $PHP_SELF = $_SERVER['PHP_SELF'];
 
 $md     = GET_md(0);
@@ -217,6 +217,8 @@ default:
 	13=>array ("icon" => "_list","caption" => "Bib-Bereich","link" => "admin_bib_bereich.php?md=0&ID=$ID"),
 	14=>array ("icon" => "_list","caption" => "Bib-Thema","link" => "admin_bib_thema.php?md=0&ID=$ID"),
 	15=>array ("icon" => "_list","caption" => "Bib-Item","link" => "admin_bib_item.php?md=0&ID=$ID"),
+	16=>array ("icon" => "_list","caption" => "Menu-Item","link" => "admin_menu.php?md=0&ID=$ID"),
+	17=>array ("icon" => "_list","caption" => "CK Editor","link" => "admin_edit.php?md=0&ID=$ID"),
 	20=>array ("icon" => "_stop","caption" => "Zurück","link" => "larp.php?md=0&ID=$ID")
 
 	);

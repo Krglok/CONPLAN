@@ -48,11 +48,9 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 
 */
 
-include_once "login.inc";
 include_once "_config.inc";
 include_once "_lib.inc";
 include_once "_head.inc";
-include_once "bib_lib.inc";
 
 
 //-----------------------------------------------------------------------------
