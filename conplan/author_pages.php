@@ -3,17 +3,22 @@
 /*
  Projekt :  ADMIN
 
-Datei   :  admin_edit.php
+Datei   :  author_pages.php
 
-Datum   :  2013/02/14
+Datum   :  2013/02/15
 
 Rev.    :  2.0
 
 Author  :  Olaf Duda
 
 beschreibung : realisiert die Bearbeitungsfunktionen für die Datei <menu_item>
+- Liste der Datensätze
+- Efassen neuer Datensätze
+- Bearbeiten vorhandener Datensätze
+- Löschen  eines Datensatzes
 
 Es wird eine Session Verwaltung benutzt, die den User prueft.
+Es werden Subseiten mit eigenen PHP-scripten aufgerufen.
 
 Ver 3.0  / 06.02.2013
 Es werden CSS-Dateien verwendert. 
@@ -36,15 +41,122 @@ include_once "_lib.inc";
 include_once "_head.inc";
 include_once '_edit.inc';
 
-function new_edit ()
+
+function get_pagesdir($dir,$file_extend)
 {
-  $style = $GLOBALS['style_datatab'];
+	if ($handle = opendir($dir)) 
+	{
+		/* This is the correct way to loop over the directory. */
+		$i = 0;
+		$dir_entry[$i] = $dir;
+		while (false !== ($entry = readdir($handle))) 
+		{
+			if ($file_extend != "")
+			{
+				if (preg_match ($file_extend, $entry)) //, $out, PREG_OFFSET_CAPTURE))
+		  	{
+					$i++;
+		  		$dir_entry[$i] = $entry;
+		  		echo "$entry\n";
+		  	}
+			} else
+			{
+				if (preg_match (".", $entry))  //, $out, PREG_OFFSET_CAPTURE))
+		  	{
+		  		continue;
+		  	}
+				if (preg_match ("..", $entry, $out) ) //, PREG_OFFSET_CAPTURE))
+		  	{
+		  		continue;
+		  	}
+		  	$i++;
+				$dir_entry[$i] = $entry;
+				echo "$entry\n";
+			}
+		}
+		closedir($handle);
+	}
+	return $dir_entry;
+}
+
+
+function get_pages_list($path)
+{
+//	$dir = './pages';
+	$file_extend = ".hmtl";
+	$pages =  get_pagesdir($path,$file_extend);
+}
+
+function get_images_list()
+{
+	$dir = './images';
+	$file_extend = "";
+	$images =  get_pagesdir($dir,$file_extend);
+}
+
+function print_pages_list()
+{
+	global $PHP_SELF;
+	
+	$path = './pages';
+	$pages = get_pages_list($path);
+	
+	$style = $GLOBALS['style_datatab'];
+	echo "<div $style >";
+	echo "<!---  DATEN Spalte   --->\n";
+	echo "<table>\n";
+	echo "<tbody>";
+	
+	foreach ($pages as $name)
+	{
+		echo "\t<tr> \n";
+		echo "\t\t<td> \n";
+		echo "<a href=\"$PHP_SELF?md=2&daten=$name\" ";
+		print_menu_icon("_db","Edit Html Datei");
+		echo "</a>";
+		echo "\t\t</td> \n";
+		echo "\t\t<td> \n";
+		echo "$name";
+		echo "";
+		echo "\t\t</td> \n";
+		echo "\t</tr> \n";
+		echo "\t\t<td> \n";
+		echo "<a href=\"$PHP_SELF?md=2&daten=$name\" ";
+		print_menu_icon("_text","Preview Html Datei in separatem Fenster");
+		echo "</a>";
+		echo "Preview";
+		echo "";
+		echo "\t\t</td> \n";
+	}
+	
+	echo "<table>\n";
+	echo "<tbody>";
+	echo '</div>';
+	echo "<!---  ENDE DATEN Spalte   --->\n";
+	
+}
+
+
+function new_edit ($name)
+{
+	$path = "./pages";
+	$lines = lese_html_lines ($path,$name);
+  $next  = 6;
+	
+	$style = $GLOBALS['style_datatab'];
   echo "<div $style >";
+  echo "Dateiname: ".$name;
+  
   echo "<!---  DATEN Spalte   --->\n";
   echo "Editor";
   echo "<p>";
-  echo "<form method=\"post\">";
-  echo "<textarea name=\"editor1\">&lt;p&gt;Initial value.&lt;/p&gt;</textarea>";
+	echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST>\n";
+	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
+	echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$name\">\n";
+	echo "<INPUT TYPE=\"hidden\" NAME=\"ID\"   VALUE=\"$ID\">\n";
+  
+	echo "<textarea name=\"editor1\">$lines</textarea>";
+  
 echo "<!--  Text editor Konfiguration-->";  
 echo "  <script type=\"text/javascript\">";
 echo "  CKEDITOR.replace( 'editor1' ,"; 
@@ -67,13 +179,20 @@ echo "  );";
 echo "  </script>";
   echo "</p>";
   echo "<p>";
-  echo "<input type=\"submit\">";
-  echo "</p>";
-  echo "</script>";
+	echo "<INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">";
+	echo "&nbsp;&nbsp;&nbsp;&nbsp;";
+	echo "<INPUT TYPE=\"RESET\" VALUE=\"ABBRECHEN\">";
+    echo "</p>";
   echo '</div>';
   echo "<!---  ENDE DATEN Spalte   --->\n";
   
 } 
+
+function print_preview($name)
+{
+	$lines = lese_html_lines ($path,$name);
+	print_pages($html_file);	
+}
 
 // ---------------------------------------------------------------
 // ---------    MAIN ---------------------------------------------
@@ -115,7 +234,7 @@ if ($ID == "")
   // Code ausgeführt wird.
 }
 
-if (is_admin()==FALSE)
+if (is_author()==FALSE)
 {
   $session_id = 'FFFF';
   header ("Location: main.php");  // Umleitung des Browsers
@@ -124,7 +243,7 @@ if (is_admin()==FALSE)
 }
 
 
-print_header("Admin Bereich");
+print_header("Authoren Bereich");
 
 print_body(2);
 
@@ -135,50 +254,48 @@ $spieler_name = get_spieler($spieler_id); //Auserwählter\n";
 
 $menu_item = $menu_item_help;
 $anrede["name"] = $spieler_name;
-$anrede["formel"] = "Sei gegrüsst Meister ";
+$anrede["formel"] = "Sei gegrüsst Author ";
 
-print_kopf($admin_typ,$header_typ,"Menu Konfigurator",$anrede,$menu_item);
+print_kopf($admin_typ,$header_typ,"HTML Pages",$anrede,$menu_item);
 
 $bereich = "PUBLIC";
 $sub     = "main";
 $item		 = "regeln";
 
+$path ="./pages";
 
 switch($p_md):
 case 5: // Insert -> Erfassen
 //	insert($p_row);
+echo $path."/".$p_id;
+//	schreibe_hmtl_lines($path,$p_id,$p_row);
 	$md = 0;
 break;
 case 6: // Insert -> Erfassen
 //	update($p_row);
+//	schreibe_hmtl_lines($path,$p_id,$p_row);
 	$md = 0;
 	break;
 	endswitch;
 
 
-
-	switch ($md):
-case 2: // erfassen
-		$menu = array (0=>array("icon" => "7","caption" => "MENUITEMS","link" => "$PHP_SELF?md=1&ID=$ID"),
+//mneu aufbereitung 
+switch ($md):
+case 1: // erfassen
+		$menu = array (0=>array("icon" => "7","caption" => "HTML Pages","link" => "$PHP_SELF?md=1&ID=$ID"),
 		        1=>array("icon" => "1","caption" => "NEU","link" => ""),
 				2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
 		);
 		break;
-case 4:  //Bearbeiten
-	$menu = array (0=>array("icon" => "7","caption" => "MENUITEMS","link" => "$PHP_SELF?md=1&ID=$ID"),
+case 2:  //Bearbeiten
+	$menu = array (0=>array("icon" => "7","caption" => "HTML Pages","link" => "$PHP_SELF?md=1&ID=$ID"),
 		        1=>array("icon" => "1","caption" => "ÄNDERN","link" => ""),
 	            2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=1&ID=$ID")
 	);
 	break;
-case 10: // main
-	$menu = array (0=>array("icon" => "7","caption" => "MENUITEMS","link" => "$PHP_SELF?md=1&ID=$ID"),
-	1=>array ("icon" => "_plus","caption" => "Erfassen","link" => "$PHP_SELF?md=2&ID=$ID"),
-	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_main.php?md=0&ID=$ID")
-	);
-	break;
 default: // main
-	$menu = array (0=>array("icon" => "7","caption" => "MENUITEMS","link" => "$PHP_SELF?md=1&ID=$ID"),
-	1=>array ("icon" => "_plus","caption" => "Editor","link" => "$PHP_SELF?md=2&ID=$ID"),
+	$menu = array (0=>array("icon" => "7","caption" => "HTML Pages","link" => ""),
+	1=>array ("icon" => "_plus","caption" => "Neue Html Seite","link" => "$PHP_SELF?md=1&ID=$ID"),
 	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_main.php?md=0&ID=$ID")
 	);
 	break;
@@ -187,20 +304,18 @@ default: // main
 	print_menu_status($menu);
 
 switch ($md):
+case 1:
+	pages_new($daten);
+	break;
 case 2:
-	new_edit();
+	pages_edit($daten);
 	break;
-case 4:
+case 2:
+		print_preview($name);
+		break;
 	
-	break;
-case 10:
-	break;
 default:
-	if (!$p_editor1)
-	{
-	echo $p_editor1;  
-	
-	}
+	print_pages_list();
 	break;
 endswitch;
 

@@ -5,82 +5,186 @@
   <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
   <title>konzept1</title>
 
+
   <link rel="stylesheet" type="text/css" href="./Layout/konzept1.css">
 
   <style type="text/css">
   </style>
-<script src="js/test1.js" type="text/javascript"></script>
-  
-<script type="text/javascript">
-</script>
-  
+  <script src="js/test1.js" type="text/javascript"></script>
+  <script src="ckeditor/ckeditor.js"></script> 
 </head>
 
-<body >
-<!-- PAGE definition -->
-<div id="page">
 
-<!--  HeaderTab -->
-	 <div id="headertab">
-	 	<div id="headertableft">
-			<img   title="goto Home" alt="LOGO" src="./layout/images/drache.gif">
-		</div>
-		<div id="headertabmidle">
-			<img  title="Drachenhorst"	src="./layout/images/drachenhorst.gif"  alt="Titel Logo">
-		</div>
-		<div id="headertabright">
-			<div title="Bereich" > <p>PUBLIC</p></div>
-			<div ><p title="Spielername" >GAST</p></div>
-			<div title="Login Fenster aufrufen">
-				<a href="javascript:opwin()">
-				<img  alt="LOGO" title="Login Fenster aufrufen" src="./layout/button/_key.gif">
-				Login Spieler</a>
-			</div>
-			<div title="Hilfefenster aufrufen. Es kommt ein Popup-Fenster mit einem Hilfetext">      
-			  <a href="javascript:openHelp()">
-			  <img alt="Help" title="Hilfefenster aufrufen. Es kommt ein Popup-Fenster mit einem Hilfetext" src="./layout/button/_help.gif">
-			  Help
-			  </a>
-			</div>
-		</div>  
-	</div>
-<!-- Statuszeile -->		
-	<div id="status" >
-	    <p> Status: No Login </p>
-	</div>
+<body>
+
+<!-- PAGE definition -->
+<div id="page"><!-- HeaderTab -->
+<div id="headertab">
+<div id="headertableft"> <img title="goto Home" alt="LOGO" src="./layout/images/drache.gif"> </div>
+
+<div id="headertabmidle"> <img title="Drachenhorst" src="./layout/images/drachenhorst.gif" alt="Titel Logo">
+</div>
+
+<div id="headertabright">
+<div title="Bereich">
+<p>PUBLIC</p>
+
+</div>
+
+<div>
+<p title="Spielername">GAST</p>
+
+</div>
+
+<div title="Login Fenster aufrufen"> <a href="javascript:opwin()"> <img alt="LOGO" title="Login Fenster aufrufen" src="./layout/button/_key.gif">
+Login Spieler</a> </div>
+
+<div title="Hilfefenster aufrufen. Es kommt ein Popup-Fenster mit einem Hilfetext">
+<a href="javascript:openHelp()"> <img alt="Help" title="Hilfefenster aufrufen. Es kommt ein Popup-Fenster mit einem Hilfetext" src="./layout/button/_help.gif"> Help </a> </div>
+
+</div>
+
+</div>
+
+<!-- Statuszeile -->
+<div id="status">
+<p> Status: No Login </p>
+
+</div>
 
 <!-- MenueTab -->
 <div id="menu">
-	<div id="menuheader">
-	  <p >Menu</p>
-	</div>  
-	<div id="menuitem">
-      <p><a href="#" title="Seite 1"><img alt="LIST"  title="Seite mit Listeneintrag oder Subpage"  src="./layout/button/_list.gif">Seite 1</a></p>
-      <p><a href="#" title="Seite 2"><img alt="LIST"  title="Seite mit Listeneintrag oder Subpage"  src="./layout/button/_list.gif">Seite 2</a></p>
-	  <p><a href="#" title="Seite 3"><img alt="LIST"  title="Seite mit Listeneintrag oder Subpage"  src="./layout/button/_list.gif">Seite 3</a></p>
-	  <p><a href="#" title="Seite 4"><img alt="LIST"  title="Seite mit Listeneintrag oder Subpage"  src="./layout/button/_list.gif">Seite 4</a></p>
-	</div>
-</div>	  	
-<!-- Daten Tab -->	
-	<div id="datatab">
-	  <p>
-		  |--
-		  <br>
-		  <br>
-		  Data<a href="./pages/main.html">Main HTML</a>  usw.
-		  <br>
-		  hier stehen die verschiedenen Daten der Homepage
-		  <br>
-		  Listen (News, Termine, etc.)
-		  <br>
-		  	<font	face="Comic Sans MS">
-		 	HTML-Seiten, oder besser deren Content wird hier eingebunden
-		 	</font>
-		 	Leider funktionieren die Schriften nicht überall gleich 
-		  <br>
-		  <br>
-	  </p>
-  </div>
-</div>  	  
+<div id="menuheader">
+<p>Menu</p>
+
+</div>
+
+<div id="menuitem">
+<p><a href="#" title="Seite 1"><img alt="LIST" title="Seite mit Listeneintrag oder Subpage" src="./layout/button/_list.gif">Seite 1</a></p>
+
+<p><a href="#" title="Seite 2"><img alt="LIST" title="Seite mit Listeneintrag oder Subpage" src="./layout/button/_list.gif">Seite 2</a></p>
+
+<p><a href="#" title="Seite 3"><img alt="LIST" title="Seite mit Listeneintrag oder Subpage" src="./layout/button/_list.gif">Seite 3</a></p>
+
+<p><a href="#" title="Seite 4"><img alt="LIST" title="Seite mit Listeneintrag oder Subpage" src="./layout/button/_list.gif">Seite 4</a></p>
+
+</div>
+
+</div>
+
+<!-- Daten Tab -->
+<div id="datatab">
+
+<FORM>
+<!--textarea class="ckeditor" name="editor1"> lt;p&gt;Initial value.&lt;/p&gt; </textarea -->
+<textarea class="editor1" name="editor1"> 
+  <p align="center">
+    <a name="Head"> ESEL&nbsp; des Drachenhorst </a>
+  </p>
+
+  <p>
+    <a name="Head"> </a><a href="#OLAF">OLAF </a>&nbsp; <a href="#KERSTIN">
+      KERSTIN </a> &nbsp; <a href="#MARTIN"> MARTIN </a> &nbsp; <a
+      href="#CHRISTIN"> CHRISTIN </a> &nbsp; <a href="#SVEN"> SVEN
+      </a> &nbsp;
+  </p>
+
+  <p align="left">
+    Die Spielleitung f&uuml;r die Drachenhorst Cons ist in mehrere
+    Bereiche aufgeteilt worden. Um die Arbeit und Verantwortung zu
+    verteilen. Jeder SL hat seine Schwerpunkte. <br> Ein
+    Hauptspielleiter entwirft die Handlung und ist in die Definition der
+    Geheimnisse und R&auml;tsel eingebunden. Daher darf ein
+    Hautspielleiter nur bedingt in die Handlung eingreifen. <br> Ein
+    Subspielleiter ist f&uuml;r einen bestimmten Aspekt der Regeln
+    zust&auml;ndig und kennt nur einzelne Details. Er ist z.B. f&uuml;r
+    die &Uuml;berwachung der K&auml;mpfe oder das Ausspielen der
+    Verletzungen zust&auml;ndig. <br> <br>
+
+  </p>
+
+  <hr color="#008040" size="2" width="100%">
+  <img style="border: 0px solid; width: 14px; height: 14px;" alt=""
+    src="images/button_orange.gif">
+  <a name="OLAF"> Olaf <img alt="" src="./spieler/olaf_sl.jpg"
+    style="border: 0px solid; width: 85px; height: 85px;" align="top"
+    hspace="0" vspace="0"> ist der Hauptspieleiter.<br> 
+    Er schreibt die Handlung und verteilt die Aufgaben zusammen mit den Sub-Spieleitern. <br>
+    Schwerpunkte sind <br> * Regelwerke <br> * Magie <br> *
+    Handlung <br> <br>
+
+  </a>
+  <hr color="#008040" size="2" width="100%">
+  <a name="KERSTIN"> <img src="images/button_orange.gif" border="0">
+  </a>
+  <a name="KERSTIN">Kerstin <img src="spieler/kerstin.jpg" alt=""
+    align="top" border="0" height="86" hspace="0" vspace="0" width="74">
+    ist Hauptspielleiterin. <br> Schwerpunkte sind <br> *
+    Heilung <br> * Verletzungen <br> <br>
+
+  </a>
+  <hr color="#008040" size="2" width="100%">
+  <a name="CHRISTIN"> <img src="images/button_orange.gif" border="0">
+  </a>
+  <a name="CHRISTIN">Christin <img src="spieler/christin.jpg" alt=""
+    align="top" border="0" height="86" hspace="0" vspace="0" width="74">
+    ist Spielleiterin. <br> Schwerpunkte sind <br> * Alchemie <br>
+
+    * Handlung <br> * Charaktere <br>
+
+  </a>
+  <hr color="#008040" size="2" width="100%">
+  <a name="SVEN"> <img src="images/button_orange.gif" border="0">
+  </a>
+  <a name="SVEN">Sven <img src="spieler/sven.jpg" alt="" align="top"
+    border="0" height="95" hspace="0" vspace="0" width="94"> ist
+    Spielleiter. <br> Schwerpunkte sind <br> * Aufbau <br>
+
+    * Planung <br> * Charaktere <br> <br> <br>
+
+  </a>
+  <hr color="#008040" size="2" width="100%">
+  <a name="MARTIN"> <img src="images/button_orange.gif" border="0"> </a>
+  Martin     ist Spielleiter<br>
+  * Handlung<br>
+  * Waffen-SL <br>
+  * Aufbau <br>
+  * Planung<br>
+  </a>
+  <p></p>
+
+  <p></p>
+
+ </textarea>
+  <script type="text/javascript">
+  CKEDITOR.replace( 'editor1' , 
+	{
+	  toolbar: [
+	            { name: 'document', items: [ 'Source', '-', 'NewPage', 'Preview', '-', 'Templates' ] }, 
+	            // Defines toolbar group with name (used to create voice label) and items in 3 subgroups.
+	            [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ],      
+	            // Defines toolbar group without name.
+	            '/',                                          
+	            // Line break - next group will be placed in new line.
+	            { name: 'basicstyles', items: [ 'Bold', 'Italic' ] },
+	            { name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule', 'SpecialChar' ] },
+	            { name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+	            { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align' ], items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] }
+ 
+	          ]	  
+    ,uiColor : '#9AB8F3'    
+	  ,	language: 'de'
+  }
+  );
+  </script>
+
+</FORM>
+
+
+
+</div>
+
+</div>
+
 </body>
 </html>

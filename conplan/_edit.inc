@@ -83,4 +83,101 @@ function POST_editor1($value = "")
   return false;
   }
 
+/**
+ * Liefert die Textzeilen fuer einen Pages Header
+ * @return string
+ */  
+function get_template_header()
+{
+	$template[0] = "<HTML>\n";
+	$template[1] = "<!-- PHP ".phpversion()." / Drachenhorst Framework $version / 2013-->\n";
+	$template[2] = "<HEAD>\n";
+	$template[3] = "<TITLE></TITLE>\n";
+	$template[4] = "<META NAME=\"Description\" CONTENT=\"$grp_name \">\n";
+	$template[5] = "<META NAME=\"Keywords\" CONTENT=\"Pages Template\">\n";
+	$template[6] = "<META NAME=\"Author\" CONTENT=\"Dipl. Ing. Olaf Duda\">\n";
+	$template[7] = "<title>Pages Template</title> \n";
+	$template[8] = "<link rel=\"stylesheet\" type=\"text/css\" href=\"$layout_path/konzept1.css\">  \n";
+	$template[9] = "</HEAD>\n";
+	$template[10] = "\n";
+	return $template;
+}  
+
+function get_template_bodystart()
+{
+	$template[0] =  "<body>\n  ";
+	return $template;
+	
+}
+
+function get_template_end()
+{
+	$template[0] =  "</body>\n  ";
+	$template[1] =  "</html>\n>\n  ";
+	return $template;
+	
+}
+
+function make_html_page($lines)
+{
+	$header = get_template_header();
+	$body   = get_template_bodystart();
+	$end		= get_template_end();
+	$page = array_merge($header,$body,$lines,$end);
+	return $page;
+}
+
+function lese_html_lines ($path,$name)
+{
+	$html_file = $path."/".$name;
+	$page = read_html_page($html_file);
+	$lines = get_htmlbody($page);
+	return $lines;
+}
+
+/**
+ * Schreibt die Textzeilen ($page) in den file ($filename)
+ * ACHTUNG, es wird gnadenlos ueberschrieben !!! 
+ * @param unknown $filename
+ * @param unknown $page
+ */
+function write_html_file($filename, $page)
+{
+	if (is_writable($filename)) 
+	{
+		// In our example we're opening $filename in append mode.
+		// The file pointer is at the bottom of the file hence
+		// that's where $somecontent will go when we fwrite() it.
+		if (!$handle = fopen($filename, 'w')) 
+		{
+			echo "Cannot open file ($filename)";
+			return FALSE;
+		}
+		foreach ($page as $line)
+		{	
+			// Write $somecontent to our opened file.
+			if (fwrite($handle, $line) === FALSE) 
+			{
+			echo "Cannot write to file ($filename)";
+			exit;
+			}
+		}
+		fclose($handle);
+		return TRUE;
+	} else 
+	{
+		echo "The file $filename is not writable";
+		return FALSE;
+	}
+	
+}
+
+function schreibe_hmtl_lines($path,$name,$lines)
+{
+	$html_file = $path."/".$name;
+	$page =	make_html_page($lines);
+	write_html_file($html_file, $page);
+}
+
+
 ?>

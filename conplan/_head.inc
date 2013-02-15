@@ -143,6 +143,99 @@ function print_md_ende()
   echo "<!---  ENDE Menu und Daten   --->\n";
 };
 
+/**
+ * Entfernt  <head> und <body> 
+ * @param unknown $lines
+ * @return Ambigous <string, unknown>
+ */
+function get_htmlbody($lines)
+{
+	
+	$ishead = 'true';
+	for($i=0, $i<count($lines); $i++;)
+	{
+		$line = $lines[$i];
+		/* Funktioniert nur, wenn Titel und title-Tags in einer Zeile stehen */
+		if ($ishead!='true')
+		{
+			if (preg_match ("</head>", $line, $out, PREG_OFFSET_CAPTURE))
+			{
+				$ishead = 'false';
+			} else
+			{
+				if (preg_match ("</body>", $line, $out, PREG_OFFSET_CAPTURE))
+				{
+					$ishead = 'false';
+				} else
+				{
+					if (preg_match ("<body>", $line, $out, PREG_OFFSET_CAPTURE))
+					{
+						$ishead = 'false';
+					} else
+					{
+						if (preg_match ("<table>", $line, $out, PREG_OFFSET_CAPTURE))
+						{
+							$out[$i] = "<table> ";
+						} else
+						{
+							$out[$i] =  $line;
+						}
+					};
+				};
+			};
+		} else
+		{  //preg_match($pattern, substr($subject,3), $matches, PREG_OFFSET_CAPTURE);
+			
+			if (preg_match("</head>", $line, $out, PREG_OFFSET_CAPTURE))
+			{
+				$ishead = 'false';
+			};
+			if (preg_match ("</body>", $line, $out))
+			{
+				$ishead = 'false';
+			};
+		}
+	}
+	//echo $line;
+	return $out;
+}
+
+/**
+ * Lese html file und erzeugt array of textlines
+ * @param unknown $html_file
+ * @return boolean|string
+ */
+function read_html_page($html_file)
+{
+	// pruefe ob File vorhanden
+	$file = fopen ($html_file, "r");
+	// keine leere seite anzeigen
+	if (sizeof($html_file) == 0 ) { return false; }
+
+	$file = fopen ($html_file, "r");
+
+	//     $style = $GLOBALS['style_status1'];
+	//     echo '<p $style> Caught exception: ',  $e->getMessage()," </p>\n";
+	//   	return;
+
+	if (!$file)
+	{
+		$style = $GLOBALS['style_status1'];
+		echo "<p $style > n";
+		echo "<p $style>Datei konnte nicht ge&ouml;ffnet werden.</p>\n";
+		echo "</p> \n";
+		return false;
+	};
+	$i=0;
+	while (!feof ($file))
+	{
+		$lines[$i] = fgets ($file, 1024);
+		$i++;
+	};
+	fclose($file);
+
+	return lines;
+}
 
 
 /**
@@ -173,78 +266,16 @@ function print_data($html_file)
   // keine leere seite anzeigen
   if (sizeof($html_file) == 0 ) { return; }
   	
-  $ishead = 'true';
-  $file = fopen ($html_file, "r");
-   
-//     $style = $GLOBALS['style_status1'];
-//     echo '<p $style> Caught exception: ',  $e->getMessage()," </p>\n";
-//   	return;
-
-  if (!$file)
+  $lines = read_html_page($html_file);
+  
+  if($lines == false) { return; }
+  // header und body entfernen
+  $out = get_htmlbody($lines);
+  // Zeilen ausgeben
+  foreach ($out as $line)
   {
-    $style = $GLOBALS['style_status1'];
-    echo "<p $style > n";
-    echo "<p $style>Datei konnte nicht ge&ouml;ffnet werden.</p>\n";
-    echo "</p> \n";
-    return;
-  };
-  $style = $GLOBALS['style_datatab'];
-  echo "<div $style >  \n";
-  echo "<!---  DATEN Spalte   --->\n";
-  
-//   $style = $GLOBALS['style_datatable'];
-//   echo "<table $style >"; //width=\"920\" border-width=\"1\" border-style=\"solid\" border-color=\"red\">";
-//   echo "<tr>";
-//   echo "<td>";
-  
-  while (!feof ($file))
-  {
-  	$line = fgets ($file, 1024);
-  	/* Funktioniert nur, wenn Titel und title-Tags in einer Zeile stehen */
-  	if ($ishead!='true')
-  	{
-  		if (preg_match ("</head>", $line, $out, PREG_OFFSET_CAPTURE))
-  		{
-  			$ishead = 'false';
-  		} else
-  		{
-  			if (preg_match ("</body>", $line, $out, PREG_OFFSET_CAPTURE))
-  			{
-  				$ishead = 'false';
-  			} else
-  			{
-  				if (preg_match ("<body>", $line, $out, PREG_OFFSET_CAPTURE))
-  				{
-  					$ishead = 'false';
-  				} else
-  				{   
-  				  if (preg_match ("<table>", $line, $out, PREG_OFFSET_CAPTURE))
-  				  {
-  				    echo"<table> ";
-  				  } else
-  				  {
-  					echo $line;
-  				  }
-  				};
-  			};
-  		};
-  	} else
-  	{  //preg_match($pattern, substr($subject,3), $matches, PREG_OFFSET_CAPTURE);
-  	  
-  		if (preg_match("</head>", $line, $out, PREG_OFFSET_CAPTURE))
-  		{
-  			$ishead = 'false';
-  		};
-  		if (preg_match ("</body>", $line, $out))
-  		{
-  			$ishead = 'false';
-  		};
-  	}
-  	//echo $line;
-  
-  };
-  fclose($file);
-
+  	echo $line;
+  }
 //   echo "</td>";
 //   echo "</tr>";
 //   echo "</table>";

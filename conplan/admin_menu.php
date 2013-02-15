@@ -167,22 +167,6 @@ function print_mfd_maske($mfd_list, $row, $id,$next,$ID, $mfd_cols )
     	echo "</tr>\n";
 	}
 	
-// 	echo "<tr>\n";
-// 	echo "\t<td><b>".$mfd_cols[2]["mfd_field_titel"]."</b></td>\n";
-// 	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[2]\" SIZE=".$mfd_cols[2]["mfd_width"]." MAXLENGTH=".$mfd_cols[2]["mfd_width"]." VALUE=\"$row[2]\">&nbsp;</td>\n";
-// 	echo "</tr>\n";
-// 	echo "<tr>\n";
-// 	echo "\t<td><b>".$mfd_cols[3]["mfd_field_titel"]."</b></td>\n";
-// 	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[3]\" SIZE=".$mfd_cols[3]["mfd_width"]." MAXLENGTH=".$mfd_cols[3]["mfd_width"]." VALUE=\"$row[3]\">&nbsp;</td>\n";
-// 	echo "</tr>\n";
-// 	echo "<tr>\n";
-// 	echo "\t<td><b>".$mfd_cols[4]["mfd_field_titel"]."</b></td>\n";
-// 	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[4]\" SIZE=".$mfd_cols[4]["mfd_width"]." MAXLENGTH=".$mfd_cols[4]["mfd_width"]." VALUE=\"$row[4]\">&nbsp;</td>\n";
-// 	echo "</tr>\n";
-// 	echo "<tr>\n";
-// 	echo "\t<td><b>".$mfd_cols[5]["mfd_field_titel"]."</b></td>\n";
-// 	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[4]\" SIZE=".$mfd_cols[5]["mfd_width"]." MAXLENGTH=".$mfd_cols[5]["mfd_width"]." VALUE=\"$row[5]\">&nbsp;</td>\n";
-// 	echo "</tr>\n";
 	echo "<tr>\n";
 	echo "</tr>\n";
 	echo "<tr>\n";
@@ -391,7 +375,7 @@ case 5: // Insert -> Erfassen
 	insert($p_row);
 	$md = 0;
 break;
-case 6: // Insert -> Erfassen
+case 6: // Update -> Edit
 	update($p_row);
 	$md = 0;
 	break;

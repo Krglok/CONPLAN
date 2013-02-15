@@ -2,42 +2,24 @@
 /*
  Projekt :  ADMIN
 
-Datei   :  admin_bib_bereich.php
+Datei   :  admin_config.php
 
-Datum   :  2008/07/11
+Datum   :  2013/02/14
 
-Rev.    :  2.0
+Rev.    :  1.0
 
 Author  :  Olaf Duda
 
-beschreibung : realisiert die Bearbeitungsfunktionen für die Datei <$TABLE>
-- Liste der Datensätze
-- Efassen neuer Datensätze
-- Bearbeiten vorhandener Datensätze
-- Anzeige der Details ohne Bearbeitung
-- Löschen  eines Datensatzes
+beschreibung : Menu Modul fuer Konfigurationsmodule
+
+ - Menu Konfigurator
+ 
+ - MFD Konfigurator
+ 
+ - 
 
 Es wird eine Session Verwaltung benutzt, die den User prueft.
 Es werden Subseiten mit eigenen PHP-scripten aufgerufen.
-
-Alle PHP-Scripte sind in einem Verzeichnis. siehe 1)
-
-Die Uebergabe Parameter werden aus den $_GET, $_POST
-Variablen geholt.
-
-1) Anmerkung: Alle Scripe muessen in einem Verzeichnis sein, da sonst
-eine Wiederverwendung nicht moeglich ist.
-Die Include zeigen dann auf ein falsches Verzeichnis !
-
-#2  09.06.2008    Die Page wurde auf ein geaendertes Session Managment und
-einen veraenderte Konfiguration eingestellt
-- einheitliches Layout
-- funktionen fuer Bilder und Icon im Kopf
-- print_body(typ) mit dem Hintergrundbild der Seite
-- print_kopf  mit
-- LOGO links
-- LOGO Mitte
-- Text1, Text2  fuer rechte Seite
 
 Ver 3.0  / 06.02.2013
 Es werden CSS-Dateien verwendert. 

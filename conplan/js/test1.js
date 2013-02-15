@@ -10,7 +10,7 @@ function openHelp () {
 	var xpos=  window.pageXOffset + 1000 /*(xsize-breite-30)*/
 	var ypos=0 /*(ysize-hoehe-50) */
 /*	Fenster = window.open("pages/slogin.html", helpText, "width=600,height=300,left=100, top=100");*/
-	Fenster=window.open("pages/help.html","HilfeSystem","scrollbars=no,status=no,toolbar=no,location=no,directories=no,resizable=no,menubar=no,width="+breite+",height="+hoehe+",screenX="+xpos+",screenY="+ypos+",top="+ypos+",left="+xpos)
+	Fenster=window.open("help/help.html","HilfeSystem","scrollbars=no,status=no,toolbar=no,location=no,directories=no,resizable=no,menubar=no,width="+breite+",height="+hoehe+",screenX="+xpos+",screenY="+ypos+",top="+ypos+",left="+xpos)
 /*	
   alert("Name des kleinen Fensters: " + Fenster.name);
   neu = prompt("Vergeben Sie einen neuen Fensternamen", "Name");
