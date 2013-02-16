@@ -304,6 +304,13 @@ body {
 	vertical-align: text-top;	
     text-align: left;
 }
+#datatable {
+    margin-left: 0px;
+  	padding: 10px;
+/*	font-family: inherit; /* monospace; /* cursive; /*  serif; /*   sans-serif;*/*/
+	font-weight: normal;
+	font-size: normal;
+}
 
 #help_1 {
       	margin-top: 5px;

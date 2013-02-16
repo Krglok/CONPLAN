@@ -68,8 +68,8 @@ function print_header_admin ($NAME)
   echo "<META NAME=\"Author\" CONTENT=\"Dipl. Ing. Olaf Duda\">\n";
   echo"  <title>$grp_name $NAME </title> \n";
   echo"  <link rel=\"stylesheet\" type=\"text/css\" href=\"$layout_path/konzept1.css\">  \n";
-  echo"  <script src=\"/ckeditor/ckeditor.js\"></script> \n";
   echo"  <script src=\"js/test1.js\" type=\"text/javascript\"></script>  \n";
+  echo"  <script src=\"/ckeditor/ckeditor.js\"></script> \n";
   echo "</HEAD>\n";
   echo "\n";
 }
@@ -89,49 +89,77 @@ function POST_editor1($value = "")
  */  
 function get_template_header()
 {
+    global $version;
+    global $grp_name;
+    global $layout_path;
+    
 	$template[0] = "<HTML>\n";
 	$template[1] = "<!-- PHP ".phpversion()." / Drachenhorst Framework $version / 2013-->\n";
-	$template[2] = "<HEAD>\n";
-	$template[3] = "<TITLE></TITLE>\n";
-	$template[4] = "<META NAME=\"Description\" CONTENT=\"$grp_name \">\n";
-	$template[5] = "<META NAME=\"Keywords\" CONTENT=\"Pages Template\">\n";
-	$template[6] = "<META NAME=\"Author\" CONTENT=\"Dipl. Ing. Olaf Duda\">\n";
-	$template[7] = "<title>Pages Template</title> \n";
-	$template[8] = "<link rel=\"stylesheet\" type=\"text/css\" href=\"$layout_path/konzept1.css\">  \n";
-	$template[9] = "</HEAD>\n";
-	$template[10] = "\n";
+    $template[2] = "<!-- PHP Template Pages Header -->\n";
+	$template[3] = "<HEAD>\n";
+	$template[5] = "<META NAME=\"Description\" CONTENT=\"$grp_name \">\n";
+	$template[6] = "<META NAME=\"Keywords\" CONTENT=\"Pages Template\">\n";
+	$template[7] = "<META NAME=\"Author\" CONTENT=\"Dipl. Ing. Olaf Duda\">\n";
+	$template[8] = "<title>Pages Template</title> \n";
+	$template[9] = "<link rel=\"stylesheet\" type=\"text/css\" href=\"$layout_path/konzept1.css\">  \n";
+	$template[10] = "</HEAD>\n";
+	$template[11] = "\n";
 	return $template;
 }  
 
 function get_template_bodystart()
 {
-	$template[0] =  "<body>\n  ";
-	return $template;
-	
+  $template[0] = "<!-- PHP Template Pages Body-->\n";
+  $template[1] =  "<body>\n  ";
+  return $template;
 }
 
 function get_template_end()
 {
-	$template[0] =  "</body>\n  ";
-	$template[1] =  "</html>\n>\n  ";
-	return $template;
-	
+  $template[0] = "<!-- PHP Template Pages Body Ende -->\n";
+  $template[1] =  "</body>\n  ";
+  $template[2] =  "</html>\n>\n  ";
+  return $template;
 }
 
-function make_html_page($lines)
+function appendarray($a, $b)
 {
-	$header = get_template_header();
-	$body   = get_template_bodystart();
-	$end		= get_template_end();
-	$page = array_merge($header,$body,$lines,$end);
+  $i=0;
+  $c = array_values ($a);
+  $i = count($c);
+  $d = array_values($b);
+  for ($j=0; $j<count($d); $j++)
+  {
+    $c[$i+$j] = $d[$j];
+  }
+  return $c;
+}
+
+function make_html_page($data)
+{
+// 	$header = get_template_header();
+// 	$body   = get_template_bodystart();
+// 	$end	= get_template_end();
+	$lines[0] = $data;
+	$page = $lines;
+// 	$page = appendarray($header, $body);
+// 	$page = appendarray($page, $lines);
+// 	$page = appendarray($page, $end);	
 	return $page;
 }
 
+/**
+ * Liest die HTML page ein 
+ * und gibt die als Array of lines zurück
+ * @param $path  string mit dem dateipfad, relativ zur homepage   
+ * @param $name  dateiname
+ * @return array <string>
+ */
 function lese_html_lines ($path,$name)
 {
 	$html_file = $path."/".$name;
 	$page = read_html_page($html_file);
-	$lines = get_htmlbody($page);
+	$lines = $page; //get_htmlbody($page);
 	return $lines;
 }
 
@@ -153,10 +181,12 @@ function write_html_file($filename, $page)
 			echo "Cannot open file ($filename)";
 			return FALSE;
 		}
-		foreach ($page as $line)
+//		echo count($page);
+		for($i=0; $i<count($page); $i++)
 		{	
+		  $data = $page[$i];
 			// Write $somecontent to our opened file.
-			if (fwrite($handle, $line) === FALSE) 
+			if (fwrite($handle, $data) === FALSE) 
 			{
 			echo "Cannot write to file ($filename)";
 			exit;
@@ -172,10 +202,12 @@ function write_html_file($filename, $page)
 	
 }
 
-function schreibe_hmtl_lines($path,$name,$lines)
+function schreibe_hmtl_lines($path,$name,$data)
 {
 	$html_file = $path."/".$name;
-	$page =	make_html_page($lines);
+	$page =	make_html_page($data);
+//	echo":".$page[(count($page)-2)]."<br>";
+//	echo":".$page[(count($page)-1)]."<br>";
 	write_html_file($html_file, $page);
 }
 

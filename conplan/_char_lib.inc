@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  Projekt : CONPLAN
 

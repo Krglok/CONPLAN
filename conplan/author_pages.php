@@ -51,25 +51,17 @@ function get_pagesdir($dir,$file_extend)
 		$dir_entry[$i] = $dir;
 		while (false !== ($entry = readdir($handle))) 
 		{
-		    if ($file_extend != "..")
-			{
-   					$i++;
-    		  		$dir_entry[$i] = $entry;
-//    		  		echo "$entry <br>\n";
-			} else
-			{
-			if (preg_match (".", $entry))  //, $out, PREG_OFFSET_CAPTURE))
-		  	{
-		  		continue;
-		  	}
-			if (preg_match ("..", $entry, $out) ) //, PREG_OFFSET_CAPTURE))
-		  	{
-		  		continue;
-		  	}
-		  	$i++;
-				$dir_entry[$i] = $entry;
-				echo "$entry\n";
-			}
+		  $pos = stripos($entry,$file_extend);
+//          echo $file_extend."/".$entry.":".$pos."<br>\n";
+		  if ( $pos === false )
+		  {
+		    //echo $file_extend."/".$entry."\n";
+		  } else
+		  {
+   			$i++;
+    		$dir_entry[$i] = $entry;
+    		//    		echo "$entry <br>\n";
+		  }
 		}
 		closedir($handle);
 	}
@@ -80,7 +72,7 @@ function get_pagesdir($dir,$file_extend)
 function get_pages_list($path)
 {
 //	$dir = './pages';
-	$file_extend = "hmt";
+	$file_extend = "htm";
 	$pages =  get_pagesdir($path,$file_extend);
 	return $pages;
 }
@@ -93,37 +85,49 @@ function get_images_list()
 	return $images;
 }
 
-function print_pages_list()
+function print_pages_list($ID)
 {
 	global $PHP_SELF;
 	
 	$path = './pages';
 	$pages = get_pages_list($path,".html");
+	echo "<div >";
+	echo "<p>";
+	echo " ";
+	echo "</p >";
+	echo "</div >";
 	
-	$style = $GLOBALS['style_datatab'];
+	
+	$style = "id=\"menu\"";
 	echo "<div $style >";
 	echo "<!---  DATEN Spalte   --->\n";
-	echo "<table width=\"100%\" border=\"1\"> \n";
+	echo "<table  border=\"1\"> \n"; //width=\"100%\"
 	echo "<tbody >";
 	
 	for($i=0; $i<count($pages); $i++)
 	{
 	    $name = $pages[$i];
 		echo "\t<tr> \n";
-		echo "\t\t<td> \n";
-		echo "<a href=\"$PHP_SELF?md=2&daten=$name\" ";
-		print_menu_icon_mfd("_add","Edit Html Datei");
-		echo "</a>";
+		echo "\t\t<td width=\"25\"> \n";
+		if ($i>0)
+		{
+    		echo "<a href=\"$PHP_SELF?md=2&daten=$name&ID=$ID \" >";
+    		print_menu_icon("_db","Edit Html Datei");
+    		echo "</a>";
+		}
 		echo "\t\t</td> \n";
 		echo "\t\t<td> \n";
 		echo "$name";
 		echo "";
 		echo "\t\t</td> \n";
 		echo "\t\t<td> \n";
-		echo "<a href=\"$PHP_SELF?md=2&daten=$name\" ";
-		print_menu_icon_mfd("_text","Preview Html Datei in separatem Fenster");
-		echo "</a>";
-		echo "Preview";
+		if ($i>0)
+		{
+    		echo "<a href=\"$PHP_SELF?md=3&daten=$name&ID=$ID \"> ";
+    		print_menu_icon("_text","Preview Html Datei in separatem Fenster");
+    		echo "</a>";
+		}
+		echo "";
 		echo "";
 		echo "\t\t</td> \n";
 		echo "\t</tr> \n";
@@ -137,61 +141,57 @@ function print_pages_list()
 }
 
 
-function new_edit ($name)
+function pages_edit ($name,$ID)
 {
-	$path = "./pages";
-	$lines = lese_html_lines ($path,$name);
+  global $PHP_SELF;
+  $path = "./pages";
+  $lines = lese_html_lines ($path,$name);
   $next  = 6;
 	
-	$style = $GLOBALS['style_datatab'];
+  $style = $GLOBALS["style_datatable"];
   echo "<div $style >";
-  echo "Dateiname: ".$name;
+//  echo "Dateiname: ".$name;
   
   echo "<!---  DATEN Spalte   --->\n";
-  echo "Editor";
-  echo "<p>";
-	echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST>\n";
+    echo "<p>";
+	echo "<FORM ACTION=\"$PHP_SELF?md=3&daten=$name&ID=$ID\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$name\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"ID\"   VALUE=\"$ID\">\n";
-  
-	echo "<textarea name=\"editor1\">$lines</textarea>";
-  
-echo "<!--  Text editor Konfiguration-->";  
-echo "  <script type=\"text/javascript\">";
-echo "  CKEDITOR.replace( 'editor1' ,"; 
-echo "	{ ";
-echo "	  toolbar: [";
-echo "	            { name: 'document', items: [ 'Source', '-', 'NewPage', 'Preview', '-', 'Templates' ] },"; 
-echo "	            // Defines toolbar group with name (used to create voice label) and items in 3 subgroups.";
-echo "	            [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ],";      
-echo "	            // Defines toolbar group without name.";
-echo "	            '/',";                                          
-echo "	            // Line break - next group will be placed in new line.";
-echo "	            { name: 'basicstyles', items: [ 'Bold', 'Italic' ] },";
-echo "	            { name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule', 'SpecialChar' ] },";
-echo "	            { name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] }";
-echo "	          ]";	  
-echo "    ,uiColor : '#9AB8F3'";    
-echo "	  ,	language: 'de'";
-echo "  }";
-echo "  );";
-echo "  </script>";
-  echo "</p>";
-  echo "<p>";
+//	echo "<INPUT TYPE=\"hidden\" NAME=\"ID\"   VALUE=\"$ID\">\n";
+	echo "<p>";
 	echo "<INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">";
 	echo "&nbsp;&nbsp;&nbsp;&nbsp;";
-	echo "<INPUT TYPE=\"RESET\" VALUE=\"ABBRECHEN\">";
-    echo "</p>";
+	echo "<INPUT TYPE=\"RESET\" VALUE=\"Reset\">";
+	echo "</p>";
+	
+	$text = $lines[0];
+	for ($i=1; $i<count($lines); $i++)
+	{
+	  $text = $text.$lines[$i];
+	}
+	echo "<textarea   name=\"editor1\"  COLS=\"80\" ROWS=\"34\" >"; //class=\"ckeditor\"
+    echo $text;
+	echo "</textarea>";
+  
+  echo "<!--  Text editor Konfiguration-->";  
+  echo "  <script type=\"text/javascript\">";
+  echo " CKEDITOR.replace('editor1');";
+  echo "  </script>";
+  echo "</p>";
   echo '</div>';
   echo "<!---  ENDE DATEN Spalte   --->\n";
   
 } 
 
-function print_preview($name)
+function print_preview($name,$ID)
 {
-	$lines = lese_html_lines ($path,$name);
-	print_pages($html_file);	
+  $path = "./pages";
+  
+  print_pages_list($ID);
+  echo "<!---  Preview Spalte   --->\n";
+//  echo $name;
+  print_pages($name);	
+  echo "<!---  ENDE Preview Spalte   --->\n";
 }
 
 // ---------------------------------------------------------------
@@ -243,7 +243,7 @@ if (is_author()==FALSE)
 }
 
 
-print_header("Authoren Bereich");
+print_header_admin("Authoren Bereich");
 
 print_body(2);
 
@@ -260,21 +260,24 @@ print_kopf($admin_typ,$header_typ,"HTML Pages",$anrede,$menu_item);
 
 $bereich = "PUBLIC";
 $sub     = "main";
-$item		 = "regeln";
+$item	 = "pages";
 
 $path ="./pages";
 
 switch($p_md):
 case 5: // Insert -> Erfassen
 //	insert($p_row);
-echo $path."/".$p_id;
-//	schreibe_hmtl_lines($path,$p_id,$p_row);
-	$md = 0;
+    echo $path."/".$p_id;
+	schreibe_hmtl_lines($path,$p_id,$p_editor1);
+	$daten = $p_id;
+    echo "Insert speichern";
+	$md = 3;
 break;
 case 6: // Insert -> Erfassen
 //	update($p_row);
-//	schreibe_hmtl_lines($path,$p_id,$p_row);
-	$md = 0;
+	schreibe_hmtl_lines($path,$p_id,$p_editor1);
+//    echo "Update speichern";
+    $md = 3;
 	break;
 	endswitch;
 
@@ -282,15 +285,16 @@ case 6: // Insert -> Erfassen
 //mneu aufbereitung 
 switch ($md):
 case 1: // erfassen
-		$menu = array (0=>array("icon" => "7","caption" => "HTML Pages","link" => "$PHP_SELF?md=1&ID=$ID"),
+		$menu = array (0=>array("icon" => "7","caption" => "HTML Pages","link" => ""),
 		        1=>array("icon" => "1","caption" => "NEU","link" => ""),
 				2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
 		);
 		break;
 case 2:  //Bearbeiten
-	$menu = array (0=>array("icon" => "7","caption" => "HTML Pages","link" => "$PHP_SELF?md=1&ID=$ID"),
-		        1=>array("icon" => "1","caption" => "ÄNDERN","link" => ""),
-	            2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=1&ID=$ID")
+	$menu = array (0=>array("icon" => "7","caption" => "HTML Pages","link" => ""),
+		        2=>array("icon" => "1","caption" => "ÄNDERN","link" => ""),
+	            1=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID"),
+	            3=>array ("icon" => "1","caption" => $daten,"link" => "")
 	);
 	break;
 default: // main
@@ -301,21 +305,23 @@ default: // main
 	break;
 	endswitch;
 
-	print_menu_status($menu);
+	print_menu_status($menu,$ID);
 
 switch ($md):
 case 1:
-	pages_new($daten);
+	//pages_new($daten);
 	break;
 case 2:
-	pages_edit($daten);
+    // Edit
+	pages_edit($daten,$ID);
 	break;
-case 2:
-		print_preview($name);
-		break;
+case 3:
+    // preview  
+	print_preview($daten,$ID);
+	break;
 	
 default:
-	print_pages_list();
+	print_pages_list($ID);
 	break;
 endswitch;
 

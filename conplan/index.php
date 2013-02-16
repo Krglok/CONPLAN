@@ -63,13 +63,6 @@ Es wird eine strikte Trennung von Content und Layout durchgefuehrt.
 Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues 
 Layoutpfades in der config.inc
 Ansonsten bleibt der Inhalt der Seiten identisch.
-
-	$style = $GLOBALS['style_datatab'];
-	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
-
-	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
  
 */
 

@@ -150,36 +150,39 @@ function print_md_ende()
  */
 function get_htmlbody($lines)
 {
-	
-	$ishead = 'true';
-	for($i=0, $i<count($lines); $i++;)
+    $outline[0] = "";
+    $ishead = false;
+    $index = 0;
+	for($i=0; $i<count($lines); $i++)
 	{
-		$line = $lines[$i];
+	    $line = $lines[$i];
 		/* Funktioniert nur, wenn Titel und title-Tags in einer Zeile stehen */
-		if ($ishead!='true')
+		if ($ishead != true)
 		{
-			if (preg_match ("</head>", $line, $out, PREG_OFFSET_CAPTURE))
+		    if (preg_match ("</head>", $line, $out, PREG_OFFSET_CAPTURE))
 			{
-				$ishead = 'false';
+			  $ishead = false;
 			} else
 			{
 				if (preg_match ("</body>", $line, $out, PREG_OFFSET_CAPTURE))
 				{
-					$ishead = 'false';
+				  $ishead = false;
 				} else
 				{
 					if (preg_match ("<body>", $line, $out, PREG_OFFSET_CAPTURE))
 					{
-						$ishead = 'false';
+					  $ishead = false;
 					} else
 					{
-						if (preg_match ("<table>", $line, $out, PREG_OFFSET_CAPTURE))
-						{
-							$out[$i] = "<table> ";
-						} else
-						{
-							$out[$i] =  $line;
-						}
+// 						if (preg_match ("<table>", $line, $out, PREG_OFFSET_CAPTURE))
+// 						{
+// 							$outline[$index] = "<table> ";
+// 							$index++;
+// 						} else
+// 						{
+// 						}
+						$outline[$index] =  $line;
+						$index++;
 					};
 				};
 			};
@@ -188,16 +191,16 @@ function get_htmlbody($lines)
 			
 			if (preg_match("</head>", $line, $out, PREG_OFFSET_CAPTURE))
 			{
-				$ishead = 'false';
+			  $ishead = false;
 			};
-			if (preg_match ("</body>", $line, $out))
+			if (preg_match ("</body>", $line, $out, PREG_OFFSET_CAPTURE))
 			{
-				$ishead = 'false';
+			  $ishead = false;
 			};
 		}
 	}
 	//echo $line;
-	return $out;
+	return $outline;
 }
 
 /**
@@ -234,7 +237,7 @@ function read_html_page($html_file)
 	};
 	fclose($file);
 
-	return lines;
+	return $lines;
 }
 
 
@@ -258,11 +261,6 @@ function print_pages($html_file)
 function print_data($html_file)
 {
   // pruefe ob File vorhanden
-    $file = fopen ($html_file, "r");
-
-//     $style = $GLOBALS['style_status1'];
-//     echo '<p $style> Caught exception: ',  $e->getMessage()," </p>\n";
-//     return;
   // keine leere seite anzeigen
   if (sizeof($html_file) == 0 ) { return; }
   	
@@ -270,15 +268,15 @@ function print_data($html_file)
   
   if($lines == false) { return; }
   // header und body entfernen
-  $out = get_htmlbody($lines);
-  // Zeilen ausgeben
-  foreach ($out as $line)
+  $outline = get_htmlbody($lines);
+  // Zeilen ausgeben als datatab
+  $style = $GLOBALS['style_datatab'];
+  echo "<div $style >";
+  echo "<!---  DATEN Spalte   --->\n";
+  for($i=0; $i<count($outline); $i++)
   {
-  	echo $line;
+  	echo $outline[$i];
   }
-//   echo "</td>";
-//   echo "</tr>";
-//   echo "</table>";
   echo "</div>\n";
   echo "<!---  ENDE DATEN Spalte   --->\n";
 };
