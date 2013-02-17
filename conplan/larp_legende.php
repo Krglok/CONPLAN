@@ -283,6 +283,7 @@ $daten  = GET_daten("");
 $id    = GET_id("");
 $ID     = GET_SESSIONID("");
 
+session_id ($ID);
 session_start($ID);
 $user       = $_SESSION["user"];
 $user_lvl   = $_SESSION["user_lvl"];

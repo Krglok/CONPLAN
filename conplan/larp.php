@@ -104,20 +104,20 @@ $sub    = GET_sub("main");
 $item   = GET_item("");
 $ID     = GET_SESSIONID("");
 
-session_start($ID);
+session_id ($ID);
+session_start();
 $user       = $_SESSION["user"];
 $user_lvl   = $_SESSION["user_lvl"];
 $spieler_id = $_SESSION["spieler_id"];
 $user_id 	= $_SESSION["user_id"];
+$SID        = $_SESSION["ID"];
 
-if ($ID == "")
+if ($ID != $SID)
 {
-	$session_id = 'FFFF';
-	header ("Location: main.php");  // Umleitung des Browsers
+	header ("Location: main.php?md=0&ID=$ID");  // Umleitung des Browsers
 	exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
 	// Code ausgeführt wird.
 }
-
 
 print_header("Interner Bereich");
 print_body(2);
@@ -126,8 +126,8 @@ $spieler_name = get_spieler($spieler_id); //Auserwählter\n";
 
 $menu_item = $menu_item_help;
 $anrede["name"] = $spieler_name;
-print_kopf($logo_typ,$header_typ,"Intern",$anrede,$menu_item);
 
+print_kopf($logo_typ,$header_typ,"Intern",$anrede,$menu_item);
 
 if ($item == '')
 {

@@ -85,11 +85,12 @@ function get_images_list()
 	return $images;
 }
 
-function print_pages_list($path,$ID,$sub)
+function print_pages_list($ID)
 {
 	global $PHP_SELF;
-	$pages = get_pages_list($path,".html");
 	
+	$path = './pages';
+	$pages = get_pages_list($path,".html");
 	echo "<div >";
 	echo "<p>";
 	echo " ";
@@ -110,41 +111,26 @@ function print_pages_list($path,$ID,$sub)
 		echo "\t\t<td width=\"25\"> \n";
 		if ($i>0)
 		{
-    		echo "<a href=\"$PHP_SELF?md=2&daten=$name&ID=$ID&sub=$sub \" >";
+    		echo "<a href=\"$PHP_SELF?md=2&daten=$name&ID=$ID \" >";
     		print_menu_icon("_db","Edit Html Datei");
     		echo "</a>";
-        	echo "\t\t</td> \n";
-        	echo "\t\t<td> \n";
-        	echo "$name";
-        	echo "";
-        	echo "\t\t</td> \n";
-        	echo "\t\t<td> \n";
-        	if ($i>0)
-        	{
-          		echo "<a href=\"$PHP_SELF?md=3&daten=$name&ID=$ID&sub=$sub \"> ";
-          		print_menu_icon("_text","Preview Html Datei in separatem Fenster");
-          		echo "</a>";
-        	}
-        	echo "";
-        	echo "";
-        	echo "\t\t</td> \n";
-        	echo "\t</tr> \n";
-		} else
-		{
-		  echo "<a href=\"$PHP_SELF?md=1&ID=$ID&sub=$sub \" >";
-		  print_menu_icon("_plus","Neue Html Datei");
-		  echo "</a>";
-		  echo "\t\t</td> \n";
-		  echo "\t\t<td> \n";
-		  echo "<b>Neu</b>";
-		  echo "";
-		  echo "\t\t</td> \n";
-		  echo "\t\t<td> \n";
-          echo "";
-  		  echo "";
-    	  echo "\t\t</td> \n";
-    	  echo "\t</tr> \n";
 		}
+		echo "\t\t</td> \n";
+		echo "\t\t<td> \n";
+		echo "$name";
+		echo "";
+		echo "\t\t</td> \n";
+		echo "\t\t<td> \n";
+		if ($i>0)
+		{
+    		echo "<a href=\"$PHP_SELF?md=3&daten=$name&ID=$ID \"> ";
+    		print_menu_icon("_text","Preview Html Datei in separatem Fenster");
+    		echo "</a>";
+		}
+		echo "";
+		echo "";
+		echo "\t\t</td> \n";
+		echo "\t</tr> \n";
 	}
 	
 	echo "</tbody>";
@@ -155,10 +141,10 @@ function print_pages_list($path,$ID,$sub)
 }
 
 
-function pages_edit ($path,$name,$ID,$sub)
+function pages_edit ($name,$ID)
 {
   global $PHP_SELF;
-
+  $path = "./pages";
   $lines = lese_html_lines ($path,$name);
   $next  = 6;
 	
@@ -168,10 +154,9 @@ function pages_edit ($path,$name,$ID,$sub)
   
   echo "<!---  DATEN Spalte   --->\n";
     echo "<p>";
-	echo "<FORM ACTION=\"$PHP_SELF?md=3&daten=$name&ID=$ID&sub=$sub\" METHOD=POST>\n";
+	echo "<FORM ACTION=\"$PHP_SELF?md=3&daten=$name&ID=$ID\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$name\">\n";
-	
 //	echo "<INPUT TYPE=\"hidden\" NAME=\"ID\"   VALUE=\"$ID\">\n";
 	echo "<p>";
 	echo "<INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">";
@@ -198,14 +183,14 @@ function pages_edit ($path,$name,$ID,$sub)
   
 } 
 
-function print_preview($path,$name,$ID,$sub)
+function print_preview($name,$ID)
 {
+  $path = "./pages";
   
-  print_pages_list($path,$ID,$sub);
+  print_pages_list($ID);
   echo "<!---  Preview Spalte   --->\n";
 //  echo $name;
-  $html_file = $path."/".$name;
-  print_data($html_file);	
+  print_pages($name);	
   echo "<!---  ENDE Preview Spalte   --->\n";
 }
 
@@ -222,13 +207,12 @@ function print_preview($path,$name,$ID,$sub)
 // <script src="/ckeditor/ckeditor.js"></script>
 // </head>
 
-$BEREICH = 'AUTHOR';
+$BEREICH = 'ADMIN';
 $PHP_SELF = $_SERVER['PHP_SELF'];
 
 $md     = GET_md(0);
 $id     = GET_id(0);
 $daten  = GET_daten("");
-$sub    = GET_sub("");
 
 $ID     = GET_SESSIONID("");
 $p_md   = POST_md(0);
@@ -252,7 +236,8 @@ if ($ID == "")
 
 if (is_author()==FALSE)
 {
-  header ("Location: main.php?md=0");  // Umleitung des Browsers
+  $session_id = 'FFFF';
+  header ("Location: main.php");  // Umleitung des Browsers
   exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
   // Code ausgeführt wird.
 }
@@ -260,7 +245,7 @@ if (is_author()==FALSE)
 
 print_header_admin("Authoren Bereich");
 
-print_body();
+print_body(2);
 
 $spieler_name = get_spieler($spieler_id); //Auserwählter\n";
 
@@ -273,15 +258,11 @@ $anrede["formel"] = "Sei gegrüsst Author ";
 
 print_kopf($admin_typ,$header_typ,"HTML Pages",$anrede,$menu_item);
 
-$bereich = "AUTHOR";
+$bereich = "PUBLIC";
+$sub     = "main";
+$item	 = "pages";
 
-if ($sub == "")
-{
-  $path ="./regeln";
-} else
-{
-  $path ="./".$sub;
-}
+$path ="./pages";
 
 switch($p_md):
 case 5: // Insert -> Erfassen
@@ -312,29 +293,21 @@ case 1: // erfassen
 case 2:  //Bearbeiten
 	$menu = array (0=>array("icon" => "7","caption" => "HTML Pages","link" => ""),
 		        2=>array("icon" => "1","caption" => "ÄNDERN","link" => ""),
-	            9=>array ("icon" => "1","caption" => $daten,"link" => ""),
-	            10=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
+	            1=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID"),
+	            3=>array ("icon" => "1","caption" => $daten,"link" => "")
 	);
 	break;
 case 3:  //Bearbeiten
 	$menu = array (0=>array("icon" => "7","caption" => "HTML Pages","link" => ""),
-		        2=>array("icon" => "1","caption" => "PREVIEW","link" => ""),
-		        9=>array ("icon" => "1","caption" => $daten,"link" => ""),
-		        3=>array("icon" => "_list","caption" => "SPIELER","link" => "$PHP_SELF?md=0&sub=spieler&ID=$ID"),
-		        4=>array("icon" => "_list","caption" => "LAND","link" => "$PHP_SELF?md=0&sub=land&ID=$ID"),
-		        5=>array("icon" => "_list","caption" => "HELP","link" => "$PHP_SELF?md=0&sub=help&ID=$ID"),
-		        
-	            10=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
+		        2=>array("icon" => "1","caption" => "ÄNDERN","link" => ""),
+	            1=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID"),
+	            3=>array ("icon" => "1","caption" => $daten,"link" => "")
 	);
 	break;
-default: // main
-	            $menu = array (
-            	0=>array("icon" => "7","caption" => "HTML Pages","link" => ""),
-            	1=>array ("icon" => "_list","caption" => "REGELN","link" => "$PHP_SELF?md=0&sub=regeln&ID=$ID"),
-		        3=>array("icon" => "_list","caption" => "SPIELER","link" => "$PHP_SELF?md=0&sub=spieler&ID=$ID"),
-		        4=>array("icon" => "_list","caption" => "LAND","link" => "$PHP_SELF?md=0&sub=land&ID=$ID"),
-		        5=>array("icon" => "_list","caption" => "HELP","link" => "$PHP_SELF?md=0&sub=help&ID=$ID"),
-	            10=>array ("icon" => "_stop","caption" => "Zurück","link" => "larp.php?md=0&ID=$ID")
+	default: // main
+	$menu = array (0=>array("icon" => "7","caption" => "HTML Pages","link" => ""),
+	1=>array ("icon" => "_plus","caption" => "Neue Page","link" => "$PHP_SELF?md=1&ID=$ID"),
+	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_config.php?md=0&ID=$ID")
 	);
 	break;
 	endswitch;
@@ -347,15 +320,15 @@ case 1:
 	break;
 case 2:
     // Edit
-	pages_edit($path,$daten,$ID,$sub);
+	pages_edit($daten,$ID);
 	break;
 case 3:
     // preview  
-	print_preview($path,$daten,$ID,$sub);
+	print_preview($daten,$ID);
 	break;
 	
 default:
-	print_pages_list($path,$ID,$sub);
+	print_pages_list($ID);
 	break;
 endswitch;
 

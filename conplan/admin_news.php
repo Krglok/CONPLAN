@@ -70,8 +70,11 @@ function print_news_liste($ID,$limit)
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $PHP_SELF;
 
-	echo "    <TD>\n";
-	echo "      <TABLE WIDTH=\"500\"  BORDER=\"0\" BGCOLOR=\"\" >";
+	$style = $GLOBALS['style_datatab'];
+	echo "<div $style >";
+	echo "<!---  DATEN Spalte   --->\n";
+	
+	echo "      <TABLE WIDTH=\"500\"  BORDER=\"1\" BGCOLOR=\"\" >";
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
 	or die("Fehler beim verbinden!");
 
@@ -82,13 +85,13 @@ function print_news_liste($ID,$limit)
 
 	while ($row = mysql_fetch_row($result))
 	{
-		echo "\t<TR>";
-		echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=$row[0]\">\n";
+		echo "\t<TR >";
+		echo "\t<td><a href=\"$PHP_SELF?md=2&ID=$ID&id=$row[0]\">\n";
 		print_menu_icon ("_db");
 		echo "\t</a></td>\n";
-		echo "\t<td width=\"85\">".$row[1]."&nbsp;<br><br><br><br></td>\n";
+		echo "\t<td width=\"85\">".$row[1]."&nbsp;<br><br></td>\n";
 		echo "\t<td>".$row[2]."<BR>".$row[3]."<BR>".$row[4];
-		echo "<HR>";
+//		echo "<HR>";
 		echo "</td>\n";
 		echo '        </TR>';
 	}
@@ -98,55 +101,84 @@ function print_news_liste($ID,$limit)
 	echo "    </TD>\n";
 	echo "    <TD>\n";
 	echo "    .\n";
-	echo "    </TD>\n";
+	echo '</div>';
+	echo "<!---  ENDE DATEN Spalte   --->\n";
+		
 };
 
-
-function print_sp_erf($id,$next,$erf,$ID)
-//
-//  $id   beinhaltet den zu bearbeitenden Datensatz
-//  $next beinhaltet die nächste zu rufende Funktion
-//  $erf  steurt die Variablen initialisierung
-//
-// durch $next kann die Maske sowohl für Erfassen als auch Bearbeiten benutzt werden.
-//
+/**
+ * erfasst einenneun News Datensatz , macht datenbank insert
+ * $id   beinhaltet den zu bearbeitenden Datensatz
+ * $next beinhaltet die nächste zu rufende Funktion
+ * $erf  steurt die Variablen initialisierung
+ * durch $next kann die Maske sowohl für Erfassen als auch Bearbeiten benutzt werden.
+ * @param unknown $id
+ * @param unknown $next
+ * @param unknown $erf
+ * @param unknown $ID
+*/
+function news_erf($id,$ID)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+	$next = 5;
+    $d = getdate();
+	$row[0] = 0;
+	$row[1] = $d["year"]."-".$d["mon"]."-".$d["mday"];
+	$row[2] = "";
+	$row[3] = "";
+	$row[4] = "";
+	
+	print_news_maske($row, $id, $next, $ID);
+}
+
+/**
+ * Bearbeitet  einen News Datensatz , macht datenbank update
+ * $id   beinhaltet den zu bearbeitenden Datensatz
+ * $next beinhaltet die nächste zu rufende Funktion
+ * $erf  steurt die Variablen initialisierung
+ * durch $next kann die Maske sowohl für Erfassen als auch Bearbeiten benutzt werden.
+ * @param unknown $id
+ * @param unknown $next
+ * @param unknown $erf
+ * @param unknown $ID
+ */
+function news_edit($id,$ID)
+{
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $PHP_SELF;
+  $next = 6;
+  //  Daten
+  //
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
+  mysql_select_db($DB_NAME);
+
+  $q = "select id,datum,text_1,text_2,text_3 from news where id=\"$id\" ";
+  $result = mysql_query($q) or die("select Fehler....$q");
+  $row = mysql_fetch_row($result);
+
+  mysql_close($db);
+  
+  print_news_maske($row, $id, $next, $ID);
+}
+
+/**
+ * Erstellt die Bearbeitungsmakse 
+ * @param unknown $row
+ * @param unknown $id
+ * @param unknown $next
+ * @param unknown $ID
+ */
+function print_news_maske($row, $id, $next, $ID)
+{	
 	global $PHP_SELF;
-	//  Daten
-	//
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
-	mysql_select_db($DB_NAME);
-
-	if ($erf==1)
-	{
-		$d = getdate();
-		$row[0] = 0;
-		$row[1] = $d[year]."-".$d[mon]."-".$d[mday];
-		$row[2] = "";
-		$row[3] = "";
-		$row[4] = "";
-
-	} else
-	{
-		$q = "select id,datum,text_1,text_2,text_3 from news where id=\"$id\" ";
-		$result = mysql_query($q) or die("select Fehler....$q");
-		$row = mysql_fetch_row($result);
-
-	};
-
-
-	mysql_close($db);
-
-
-
-	echo "<TD>\n";  /// Spalte für Datenbereich
-
+	
+    $style = $GLOBALS['style_datatab'];
+	echo "<div $style >";
+	echo "<!---  DATEN Spalte   --->\n";
+  
 	//  FORMULAR
-	echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST>\n";
+	echo "<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"$row[0]\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"ID\"   VALUE=\"$ID\">\n";
 
 	echo "\t <TABLE WIDTH=\"100%\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"2\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\" BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
 
@@ -186,7 +218,8 @@ function print_sp_erf($id,$next,$erf,$ID)
 	echo "</table>\n";
 	echo "</FORM>\n";
 
-	echo "</TD>\n"; //  ENDE Spalte Datenbereich
+	echo '</div>';
+	echo "<!---  ENDE DATEN Spalte   --->\n";
 };
 
 function insert($row)
@@ -287,7 +320,7 @@ print_kopf($admin_typ,$header_typ,"Admin Bereich",$anrede,$menu_item);
 switch($p_md):
 case 5: // Insert -> Erfassen
 	insert($p_row);
-$md = 0;
+    $md = 0;
 break;
 case 6: // Insert -> Erfassen
 	update($p_row);
@@ -297,49 +330,43 @@ case 6: // Insert -> Erfassen
 
 
 
-	switch ($md):
+switch ($md):
 case 2: // erfassen
-		$menu = array (0=>array("icon" => "7","caption" => "ERFASSEN","link" => "$PHP_SELF?md=1&ID=$ID"),
-				1=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
-		);
-		break;
+	$menu = array (0=>array("icon" => "7","caption" => "ERFASSEN","link" => "$PHP_SELF?md=1&ID=$ID"),
+			1=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
+	);
+	break;
 case 4:  //Bearbeiten
 	$menu = array (0=>array("icon" => "7","caption" => "BEARBEITEN","link" => "$PHP_SELF?md=1&ID=$ID"),
 	1=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=1&ID=$ID")
 	);
 	break;
-case 10: // main
-	$menu = array (0=>array("icon" => "7","caption" => "NEWS","link" => "$PHP_SELF?md=1&ID=$ID"),
-	1=>array ("icon" => "_add","caption" => "Erfassen","link" => "$PHP_SELF?md=2&ID=$ID"),
-	2=>array ("icon" => "_list","caption" => "Letzten 10 News","link" => "$PHP_SELF?md=1&ID=$ID"),
-	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_main.php?md=0&ID=$ID")
-	);
-	break;
 default: // main
 	$menu = array (0=>array("icon" => "7","caption" => "NEWS","link" => "$PHP_SELF?md=1&ID=$ID"),
-	1=>array ("icon" => "_add","caption" => "Erfassen","link" => "$PHP_SELF?md=2&ID=$ID"),
+	1=>array ("icon" => "_plus","caption" => "Erfassen","link" => "$PHP_SELF?md=1&ID=$ID"),
 	2=>array ("icon" => "_list","caption" => "Alle News","link" => "$PHP_SELF?md=10&ID=$ID"),
 	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_main.php?md=0&ID=$ID")
 	);
 	break;
 	endswitch;
 
-	print_menu($menu);
-
+//	print_menu($menu);
+	print_menu_status($menu);
+	
 	switch ($md):
-case 2:
-		print_sp_erf($id,5,1,$ID);
+case 1:
+	news_erf($id,$ID);
 	break;
-case 4:
-	print_sp_erf($id,6,0,$ID);
+case 2:
+	news_edit($id,$ID);
 	break;
 case 10:
-	print_news_liste($ID,1000);
+	print_news_liste($ID,10);
 	break;
 default:
 	print_news_liste($ID,10);
 	break;
-	endswitch;
+endswitch;
 
 	print_md_ende();
 

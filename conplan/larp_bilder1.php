@@ -533,6 +533,7 @@ $TAG   = GET_TAG("1");
 $LISTE = GET_LISTE("");
 $ID    = GET_SESSIONID("");
 
+session_id ($ID);
 session_start($ID);
 $user       = $_SESSION["user"];
 $user_lvl   = $_SESSION["user_lvl"];

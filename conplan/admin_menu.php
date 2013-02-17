@@ -12,6 +12,7 @@ Rev.    :  2.0
 Author  :  Olaf Duda
 
 beschreibung : realisiert die Bearbeitungsfunktionen für die Datei <menu_item>
+Es wird die mfd verwaltung verwendet. Der mfd wird manuell erezugt.
 - Liste der Datensätze
 - Efassen neuer Datensätze
 - Bearbeiten vorhandener Datensätze
@@ -381,9 +382,7 @@ case 6: // Update -> Edit
 	break;
 	endswitch;
 
-
-
-	switch ($md):
+switch ($md):
 case 2: // erfassen
 		$menu = array (0=>array("icon" => "7","caption" => "MENUITEMS","link" => "$PHP_SELF?md=1&ID=$ID"),
 		        1=>array("icon" => "1","caption" => "NEU","link" => ""),
@@ -399,13 +398,13 @@ case 4:  //Bearbeiten
 case 10: // main
 	$menu = array (0=>array("icon" => "7","caption" => "MENUITEMS","link" => "$PHP_SELF?md=1&ID=$ID"),
 	1=>array ("icon" => "_plus","caption" => "Erfassen","link" => "$PHP_SELF?md=2&ID=$ID"),
-	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_main.php?md=0&ID=$ID")
+	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_config.php?md=0&ID=$ID")
 	);
 	break;
 default: // main
 	$menu = array (0=>array("icon" => "7","caption" => "MENUITEMS","link" => "$PHP_SELF?md=1&ID=$ID"),
 	1=>array ("icon" => "_plus","caption" => "Erfassen","link" => "$PHP_SELF?md=2&ID=$ID"),
-	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_main.php?md=0&ID=$ID")
+	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_config.php?md=0&ID=$ID")
 	);
 	break;
 	endswitch;

@@ -98,7 +98,7 @@ function checkuser($user, $pw)
  		  $message .= 'Whole query: ' . $Q;
  		  die($message);
           
-		  return "FALSE";
+		  return FALSE;
 		} else
 		{
     		//or die( "Fehler checkUser ".$Q);
@@ -116,22 +116,23 @@ function checkuser($user, $pw)
     			//     echo ">$row[0] / $check";
     			if ($row[0] == $check)
     			{
-    				session_start ($ID);
-    
+    				session_start ();
+                    $ID = session_id();
     				$_SESSION["user"]         = $user;
     				$_SESSION["user_id"]      = $user_id;
     				$_SESSION["user_lvl"]     = $user_lvl;     // Setzen globale Userstatus
     				$_SESSION["spieler_id"]   = $spieler_id;   // Setzen globale Spieler_ID
+    				$_SESSION["ID"]           = $ID;   // Setzen globale Spieler_ID
     				session_write_close();
-    				return "TRUE";
+    				return TRUE;
     			} else
     			{
-    				return "FALSE";
+    			  return FALSE;
     			};
     		}
     		else
     		{
-    			return "FALSE";
+    			return FALSE;
     		}
     	}
 	}

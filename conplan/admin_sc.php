@@ -78,8 +78,10 @@ function print_sp_liste($user,$ID)
 
 	mysql_close($db);
 
-
-	echo "    <TD>\n";
+	$style = $GLOBALS['style_datatable'];
+	echo "<div $style >";
+	echo "<!---  DATEN Spalte   --->\n";
+	
 	echo "<table border=1 BGCOLOR="."  >\n";
 
 	//Header
@@ -124,8 +126,10 @@ function print_sp_liste($user,$ID)
 		echo "<tr>";
 	}
 	echo "</table>";
-	echo "    </TD>\n";
 
+	echo '</div>';
+	echo "<!---  ENDE DATEN Spalte   --->\n";
+	
 };
 
 function print_ref_liste($user,$ID)
@@ -558,7 +562,9 @@ default: // main
 	break;
 	endswitch;
 
-	print_menu($menu);
+	print_menu_status($menu,$ID);
+	
+	//print_menu($menu);
 
 	switch ($md):
 case 1:

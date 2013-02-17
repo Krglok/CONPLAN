@@ -195,9 +195,9 @@ function GET_item($value = "")
 
 function GET_sub($value = "main")
 {
-	if (isset($_GET['main'])==true)
+	if (isset($_GET['sub'])==true)
 	{
-		return $_GET['main'];
+		return $_GET['sub'];
 	}
 	return $value;
 }

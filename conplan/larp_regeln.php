@@ -332,6 +332,7 @@ $p_row  = POST_row("0");
 $LISTE  = GET_LISTE("");
 $KAP    = GET_KAP("");
 
+session_id ($ID);
 session_start($ID);
 $user       = $_SESSION["user"];
 $user_lvl   = $_SESSION["user_lvl"];

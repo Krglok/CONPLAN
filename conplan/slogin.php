@@ -53,23 +53,30 @@ include_once "_login.inc";
 $user   = POST_user("user");
 $pw     = POST_pw();
 
-$md=GET_md(0);
-$daten=GET_daten("");
-$sub=GET_sub("main");
-$item=GET_item("main");
+$md    =GET_md(0);
+$daten =GET_daten("");
+$sub   =GET_sub("main");
+$item  =GET_item("main");
+$ID    =GET_SESSIONID("0");
 
 
-if (checkuser($user,$pw) == "TRUE")
+
+// Holt User daten aus der Datenbank und startet die session
+if (checkuser($user,$pw) == TRUE)
 {
-	$session_id = session_start();  // startet eine neue session, erfordert session refresh in den modulen !
-	header ("Location: larp.php?md=0&ID=$session_id");  // Umleitung des Browsers
+//    session_id($ip);
+	$session_id =  session_id();  // die Session ID
+	$SID        = $_SESSION["ID"];
+//	echo "check TRUE";
+    header ("Location: larp.php?md=0&ID=$session_id&SID=$SID");  // Umleitung des Browsers
 	exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
 	// Code ausgeführt wird. */
 }
 else
 {
-
-	header ("Location: main.php?md=2&daten=slogin.html&sub=$sub&item=$item");
+//    echo $ID."/".$SID;
+	echo "check FALSE";
+    header ("Location: main.php?md=2&daten=slogin.html&ID=$SID");
 	/* Umleitung des Browsers
 	 zur PHP-Web-Seite. */
 	exit;  /* Sicher stellen, das nicht trotz Umleitung nachfolgender

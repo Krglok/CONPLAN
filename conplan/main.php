@@ -93,16 +93,18 @@ print_body(2);
 
 $PHP_SELF = $_SERVER['PHP_SELF'];
 // Steuerparameter und steuerdaten
-$md=GET_md(0);
-$daten=GET_daten("");
-$item=GET_item("");
-$sub=GET_sub("main");
+$md     =GET_md(0);
+$daten  =GET_daten("");
+$item   =GET_item("");
+$sub    =GET_sub("main");
+$ID     =GET_SESSIONID("0");
 
 $menu_item = $menu_item_help;
 
 print_kopf($logo_typ,$header_typ,"Öffentlich",$anrede,$menu_item);
 
 //echo "POST : $p_md / GET : $md / THEMEN :$THEMEN ";
+
 
 // manuelles main menu
 $menu_main = array (0=>array("icon" => "0","caption" => "Hauptseite","link" => "ss","itemtyp"=>"0"),

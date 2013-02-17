@@ -189,7 +189,8 @@ function print_menu ($menu)
   $menu_item_subsl= array ("icon" => "_tool","caption" => "Planung","link" => "con_plan.php?md=0&ID=$ID","itemtyp"=>"0");
   $menu_item_sl 	= array ("icon" => "_tool","caption" => "SL","link" => "con_main.php?md=0&ID=$ID","itemtyp"=>"0");
   $menu_item_admin= array ("icon" => "_tool","caption" => "Admin","link" => "admin_main.php?md=0&ID=$ID","itemtyp"=>"0");
-    
+  $menu_item_author= array ("icon" => "_tool","caption" => "Author","link" => "author_pages.php?md=0&ID=$ID","itemtyp"=>"0");
+  
   //   menü spalte
   echo "<!---  Menu Spalte   --->\n";
   //  stellt die breite der Menüspalte ein !!!
@@ -225,6 +226,10 @@ function print_menu ($menu)
   }
   if ($is_sub == "0")
   {
+    if (is_author()==TRUE)
+    {
+      print_menu_item($menu_item_author);
+    }
     if (is_subsl()==TRUE)
     {
       print_menu_item($menu_item_subsl);
@@ -258,9 +263,10 @@ function print_menu_status ($menu)
 {
   global $ID;
   $menu_item_subsl= array ("icon" => "_tool","caption" => "Planung","link" => "con_plan.php?md=0&ID=$ID","itemtyp"=>"0");
-  $menu_item_sl 	= array ("icon" => "_tool","caption" => "SL","link" => "con_main.php?md=0&ID=$ID","itemtyp"=>"0");
+  $menu_item_sl   = array ("icon" => "_tool","caption" => "SL","link" => "con_main.php?md=0&ID=$ID","itemtyp"=>"0");
   $menu_item_admin= array ("icon" => "_tool","caption" => "Admin","link" => "admin_main.php?md=0&ID=$ID","itemtyp"=>"0");
-
+  $menu_item_author= array ("icon" => "_tool","caption" => "Author","link" => "author_pages.php?md=0&ID=$ID","itemtyp"=>"0");
+  
   //   menü spalte
   echo "<!---  Menu Spalte   --->\n";
   //  stellt die breite der Menüspalte ein !!!
@@ -298,8 +304,12 @@ function print_menu_status ($menu)
     echo "\t\t</div >\n";
     $i++;
   }
-  if ($is_sub == "0")
+  if ($is_sub == "0")    // Codierung des Menuheader Icon
   {
+    if (is_author()==TRUE)
+    {
+      print_menu_item($menu_item_author);
+    }
     if (is_subsl()==TRUE)
     {
       print_menu_item($menu_item_subsl);

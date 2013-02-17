@@ -102,41 +102,6 @@ include_once "_lib.inc";
 include_once "_head.inc";
 
 
-function print_main_data()
-{
-	global $DB_HOST, $DB_USER, $DB_PASS;
-
-	echo "    <TD>\n";
-	echo "      <TABLE WIDTH=\"100%\"  BORDER=\"1\" BGCOLOR=\"\" >";
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-	or die("Fehler beim verbinden!");
-
-	mysql_select_db($DB_NAME);
-
-	$result = mysql_query("SELECT datum,text_1,text_2,Text_3 from news")
-	or die("Query Fehler...");
-
-	while ($row = mysql_fetch_row($result))
-	{
-		echo "        <TR>";
-		echo "        <FONT FACE=\"Comic Sans MS\" SIZE=\"2\">\n";
-		echo "\t<td width=\"85\">".$row[0]."&nbsp;</td>\n";
-		echo "\t<td>".$row[1]."<BR>".$row[2]."<BR>".$row[3];
-		echo "<HR>";
-		echo "</td>\n";
-		echo '        </TR>';
-	}
-
-	mysql_close($db);
-	echo '      </TABLE>';
-	echo "    </TD>\n";
-	echo "    <TD>\n";
-	echo "    .\n";
-	echo "    </TD>\n";
-};
-
-
-
 // ---------------------------------------------------------------
 // ---------    MAIN ---------------------------------------------
 // ----------------------------------------------------------------
@@ -181,30 +146,17 @@ print_body(2);
 
 $spieler_name = get_spieler($spieler_id); //Auserwählter\n";
 
-
-$spieler_name = get_spieler($spieler_id); //Auserwählter\n";
-
 $menu_item = $menu_item_help;
 $anrede["name"] = $spieler_name;
 $anrede["formel"] = "Sei gegrüsst Meister ";
 
 print_kopf($admin_typ,$header_typ,"<b>Admin Bereich</b>",$anrede,$menu_item);
 
-
-print_md();
-
 switch ($md):
-case 1:
-	$menu = array (0=>array("icon" => "7","caption" => "ADMIN","link" => ""),
-			1=>array ("icon" => "6","caption" => "Zurück","link" => "larp.php?md=0&ID=$ID")
-	);
-	break;
-case 2:
-	break;
 default:
 	$menu = array (0=>array("icon" => "7","caption" => "ADMIN","link" => ""),
 	1=>array ("icon" => "_list","caption" => "Spieler","link" => "admin_sc.php?md=0&ID=$ID"),
-	2=>array ("icon" => "_list","caption" => "News","link" => "admin_news.php?md=1&ID=$ID"),
+	2=>array ("icon" => "_list","caption" => "News","link" => "admin_news.php?md=0&ID=$ID"),
 	3=>array ("icon" => "_list","caption" => "Anmeldung","link" => "admin_anmelde.php?md=0&ID=$ID"),
 	4=>array ("icon" => "_list","caption" => "Hilfe","link" => "admin_hilfe.php?md=0&ID=$ID"),
 	5=>array ("icon" => "_list","caption" => "CON-SL","link" => "admin_con.php?md=0&ID=$ID"),
@@ -217,17 +169,15 @@ default:
 	13=>array ("icon" => "_list","caption" => "Bib-Bereich","link" => "admin_bib_bereich.php?md=0&ID=$ID"),
 	14=>array ("icon" => "_list","caption" => "Bib-Thema","link" => "admin_bib_thema.php?md=0&ID=$ID"),
 	15=>array ("icon" => "_list","caption" => "Bib-Item","link" => "admin_bib_item.php?md=0&ID=$ID"),
-	16=>array ("icon" => "_list","caption" => "Menu-Item","link" => "admin_menu.php?md=0&ID=$ID"),
-	17=>array ("icon" => "_list","caption" => "CK Editor","link" => "author_pages.php?md=0&ID=$ID"),
+	16=>array ("icon" => "_list","caption" => "<b>Configuration</b>","link" => "admin_config.php?md=0&ID=$ID"),
 	20=>array ("icon" => "_stop","caption" => "Zurück","link" => "larp.php?md=0&ID=$ID")
-
 	);
 
-	endswitch;
+endswitch;
 
-	print_menu($menu);
+print_menu($menu);
 
-	switch ($md):
+switch ($md):
 case 1:
 		print_pages("main.html");
 	break;
