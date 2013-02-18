@@ -11,7 +11,20 @@ Rev.    :  3.0
 
 Author  :  Olaf Duda
 
-beschreibung : realisiert die Bearbeitungsfunktionen für die Datei <menu_item>
+beschreibung : realisiert die Bearbeitungsfunktionen für eine Tabelle.
+							Es werden automatisch daten nach dem MFD Schema erstellt.
+							MFD = Main Formular Data, beschreibt eine Tabelle und die
+										Daten dieser Tabelle die in einer Datenliste angezeigt 
+										werden sollen.
+						  Mit diesem Schema koennen einheitliche Anzeige- und 
+						  Bearbeitungsfunktionen benutzt werden, da die Funktionen nicht
+						  an die Tabelleneigenschaften gebunden sind.
+						  Das MFD Schema wird als Library abgelegt und bietet die Funktionen 
+						  - Anzeige einer Datenliste mit Bearbeitungsaufruf  und Deleteaufruf
+						  - Anzeige einer Detailmaske nach Standardscheme mit Speichern 
+						  	zum Editieren (Update) eines Datensatzes
+						  	zum erfassen (Insert) eines Datensatzes
+						  
 
 Es wird eine Session Verwaltung benutzt, die den User prueft.
 
@@ -36,44 +49,168 @@ include_once "_lib.inc";
 include_once "_head.inc";
 include_once '_edit.inc';
 
-function new_edit ()
+
+$field_item = array
+(
+		"Field" => "",
+		"Type" => "",
+		"Null" => "",
+		"Key" => "",
+		"Default" => "",
+		"Extra" => ""   //auto_increment
+);
+
+/**
+ * Fragt die Feldliste in der Datenabnk ab.
+ * ACHTUNG ! die Datenbank connection muss vorhanden sein !
+ * @param unknown $table
+ */
+function get_fieldlist($table)
 {
-  $style = $GLOBALS['style_datatab'];
-  echo "<div $style >";
-  echo "<!---  DATEN Spalte   --->\n";
-  echo "Editor";
-  echo "<p>";
-  echo "<form method=\"post\">";
-  echo "<textarea name=\"editor1\">&lt;p&gt;Initial value.&lt;/p&gt;</textarea>";
-echo "<!--  Text editor Konfiguration-->";  
-echo "  <script type=\"text/javascript\">";
-echo "  CKEDITOR.replace( 'editor1' ,"; 
-echo "	{ ";
-echo "	  toolbar: [";
-echo "	            { name: 'document', items: [ 'Source', '-', 'NewPage', 'Preview', '-', 'Templates' ] },"; 
-echo "	            // Defines toolbar group with name (used to create voice label) and items in 3 subgroups.";
-echo "	            [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ],";      
-echo "	            // Defines toolbar group without name.";
-echo "	            '/',";                                          
-echo "	            // Line break - next group will be placed in new line.";
-echo "	            { name: 'basicstyles', items: [ 'Bold', 'Italic' ] },";
-echo "	            { name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule', 'SpecialChar' ] },";
-echo "	            { name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] }";
-echo "	          ]";	  
-echo "    ,uiColor : '#9AB8F3'";    
-echo "	  ,	language: 'de'";
-echo "  }";
-echo "  );";
-echo "  </script>";
-  echo "</p>";
-  echo "<p>";
-  echo "<input type=\"submit\">";
-  echo "</p>";
-  echo "</script>";
-  echo '</div>';
-  echo "<!---  ENDE DATEN Spalte   --->\n";
-  
-} 
+	$result = mysql_query("SHOW COLUMNS FROM $table");
+}
+
+function get_fieldtyp_width($typ)
+{
+	if (preg_match ("int", $typ, $out, PREG_OFFSET_CAPTURE)>0)
+	{
+		return 8;
+	} else if(preg_match ("varchar", $typ, $out, PREG_OFFSET_CAPTURE)>0)
+	{
+		$s =  explode("(",$typ);
+		$len = explode(")",$s[1]); 
+		return $len;
+	} else if(preg_match ("text", $typ, $out, PREG_OFFSET_CAPTURE)>0)
+	{
+		return 12;
+	} else if(preg_match ("enum", $typ, $out, PREG_OFFSET_CAPTURE)>0)
+	{
+	   return 5;
+	}
+}
+
+/**
+ * erzeugt automatisch die col-definitionen fuer eine Tabelle
+ * @param unknown $table
+ */
+function get_mfd_fields_default($table,$mfd_name)
+{
+	$result = get_fieldlist($table);
+	$i=0;
+	foreach ($result as $row)
+	{
+		$mfd_col["mfd_name"]	= $mfd_name;
+		$mfd_col["mfd_titel"]	= $table;
+		$mfd_col["mfd_pos"]		= $i; 
+		$mfd_col["mfd_field"]	= $row["Field"];
+		$mfd_col["mfd_field_titel"] = $row["Field"]; 
+		$mfd_col["mfd_width"]	= get_fieldtyp_width($row["Type"]);
+		$mfd_cols[$i] = $mfd_col;
+		$i++;
+	}
+	return $mfd_cols;
+}
+
+/**
+ * erstellt eine Tabelle , formatiert fuer Datatab
+ * mit den definition einer tabelle nach mfd schema
+ * @param unknown $table
+ */
+function show_table_info($table)
+{
+	$mfd_name = "mfd_".$table;
+	$mfd_cols = get_mfd_fields_default($table, $mfd_name);
+	
+	$style = $GLOBALS['style_datatab'];
+	echo "<div $style > \n";
+	echo "<!---  DATEN Spalte   --->\n";
+	echo "<TABLE> \n";
+	echo "<TBODY> \n";
+		echo "<TR \n>";
+			echo "<TD>";
+  		echo "Tabelle \n";
+			echo "</TD> \n";
+			
+			echo "<TD> \n";
+	  	echo "".$table;
+			echo "</TD> \n";
+				
+			echo "<TD> \n";
+			echo "";
+			echo "</TD> \n";
+		echo "</TR> \n";
+
+		echo "<TR> \n";
+			echo "<TD> \n";
+			echo "Fieldname \n";
+			echo "</TD> \n";
+				
+			echo "<TD> \n";
+			echo "Titel \n";
+			echo "</TD> \n";
+			
+			echo "<TD> \n";
+			echo "Width \n";
+			echo "</TD> \n";
+		echo "</TR> \n";
+	foreach ($mfd_cols as $mfd_col)
+	{
+		echo "<TR> \n";
+		echo "<TD> \n";
+		echo $mfd_col["mfd_field"];
+		echo "</TD> \n";
+		
+		echo "<TD> \n";
+		echo $mfd_col["mfd_titel"];
+		echo "</TD> \n";
+			
+		echo "<TD> \n";
+		echo $mfd_col["mfd_width"];;
+		echo "</TD> \n";
+		echo "</TR> \n";
+		
+	}		
+	echo "</TBODY> \n";
+	echo "</TABLE> \n";
+	echo '</div> \n';
+	echo "<!---  ENDE DATEN Spalte   --->\n";
+	
+}
+
+/**
+ * erzeugt eine komma separatet list der Feldnamen 
+ * @param unknown $table
+ * @return string
+*/
+function get_fieldname_list($table)
+{
+	$result = get_fieldlist($table);
+	$list = "";
+	foreach($result as $row)
+	{
+		$list = $list.",".$row["Field"];
+	}
+	return $list;
+}
+
+/**
+ * erzeugt eine mfd definition fuer eine tabelle
+ * @param unknown $table
+ * @return string
+ */
+function make_mfd_table($table, $mfd_name)
+{
+	$mfd_list['mfd'] = mfd_name;
+	$mfd_list['table'] = $table;
+	$mfd_list['titel'] = $table;
+	$mfd_list['fields'] = get_fieldname_list($table);
+	$mfd_list['join'] = "";
+	$mfd_list['where'] = "id > 0";
+	$mfd_list['order'] = "id";
+	return $mfd_list;
+}
+
+
 
 // ---------------------------------------------------------------
 // ---------    MAIN ---------------------------------------------

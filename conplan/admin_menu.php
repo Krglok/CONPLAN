@@ -61,7 +61,7 @@ function print_mfd_liste( $ID, $mfd_list, $mfd_cols)
 	$result = mfd_data_result($mfd_list)
 	or die("Query Fehler...");
 
-    echo "\t<TR>";
+  echo "\t<TR>";
 	foreach ($mfd_cols as $mfd_col)
     { 
       echo "\t\t<TD>";

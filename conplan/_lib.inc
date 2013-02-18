@@ -11,31 +11,6 @@ Author  :  $author$  / krglok
 
 beschreibung :
 Enthält allgemiengültige Funktionen
-Für alle Bereiche
-Spieler
-SL
-ADMIN
-
-function print_menu_icon ($typ)
-function print_menu_ref($caption, $ref)
-function print_menu_item($item)
-function print_menu ($menu)
-
-function print_head_icon ($typ)
-
-function get_spieler_id($user_id)
-function get_user_id($user)
-function get_author($user_id)
-function get_mail($user_id)
-function get_charname($user_id)
-function get_spieler($user_id)
-function get_akttag()
-function get_sltag($user,$tag)
-function get_hilfe($item)
-function print_hilfe($ID,$item,$id)
-function print_kalender()
-function tumb_erzeugen($bild_url,$zieldir,$max_x,$max_y,$type)
-function tumb_copy($bild_url,$zieldir,$max_x,$max_y,$type)
 
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
