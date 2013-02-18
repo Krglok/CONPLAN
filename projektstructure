@@ -34,5 +34,65 @@ scriptstruktur
     
 
     
-datenbak
+datenbank tabellen
+userverwaltung
+'user_liste'
+'spieler'
+
+systemdaten
+'news'
+'download'
+'forum_post'
+'forum_topic'
+'menu_bereich'
+'menu_item'
+'menu_page'
+'menu_sub'
+'mfd_cols'
+'mfd_list'
+'kalender'
+'idea_post'
+'hilfe'
+'forums'
+'bilder'
+'bilder_topic'
+
+
+contentdaten
+'artefakte'
+'bib_bereich'
+'bib_item'
+'bib_thema'
+'bib_titel'
+'bib_zugriff'
+'char_basis'
+'char_fert'
+'char_kopf'
+'char_mag'
+'char_nach'
+'char_rasse'
+'char_tage'
+'char_trank'
+'char_vor'
+'char_waf'
+'con_ablauf'
+'con_andienst'
+'con_anmeldung'
+'con_buch'
+'con_geruecht'
+'con_gilde'
+'con_grp_user'
+'con_konst'
+'con_nsc'
+'con_orte'
+'con_sc'
+'con_tage'
+'legende'
+'mag_grp'
+'mag_list'
+'regelwerk'
+'trank_grp'
+'trank_list'
+'trank_pflanz_list'
+
     
