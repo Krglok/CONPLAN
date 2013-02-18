@@ -7,9 +7,9 @@ Datei   :  $RCSfile: i_liste.php,v $
 
 Datum   :  $Date: 2002/03/08 21:21:45 $  /
 
-Rev.    :  $Revision: 1.1 $   / 1.0
+Rev.    :  3.0
 
-Author  :  $Author: windu $  / duda
+Author  :  Windu 
 
 beschreibung :
 Ueber das Script wird der Interne Forum abgewickelt.

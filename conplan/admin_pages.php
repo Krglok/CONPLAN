@@ -7,7 +7,7 @@ Datei   :  author_pages.php
 
 Datum   :  2013/02/15
 
-Rev.    :  2.0
+Rev.    :  3.0
 
 Author  :  Olaf Duda
 

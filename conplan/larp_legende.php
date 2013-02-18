@@ -6,7 +6,7 @@ Datei   :  larp_leg_liste.php
 
 Datum   :  2002/05/24
 
-Rev.    :  2.0
+Rev.    :  3.0
 
 Author  :  Olaf Duda
 
@@ -53,16 +53,11 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 	echo '</div>';
 	echo "<!---  ENDE DATEN Spalte   --->\n";
 
-
 */
 
 include_once "_config.inc";
 include_once "_lib.inc";
 include_once "_head.inc";
-//include_once ''; "_login.inc";
-
-
-
 
 //-----------------------------------------------------------------------------
 function print_leg_liste($ID)

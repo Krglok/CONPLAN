@@ -7,7 +7,7 @@ Datum   :  $date$  / 03.02.2013
 
 Rev.    :  $rev$   / 3.0
 
-Author  :  @author oduda
+Author  :  $author oduda
 
 
 beschreibung :	Funktonssammlung fuer den Aufbau einer

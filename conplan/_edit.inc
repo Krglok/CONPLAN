@@ -6,7 +6,7 @@
 
  Datum   :  2013/02/14
 
- Rev.    :  1.0
+ Rev.    :  3.0
 
  Author  :  Olaf Duda
 

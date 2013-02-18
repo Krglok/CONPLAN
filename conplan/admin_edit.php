@@ -7,7 +7,7 @@ Datei   :  admin_edit.php
 
 Datum   :  2013/02/14
 
-Rev.    :  2.0
+Rev.    :  3.0
 
 Author  :  Olaf Duda
 

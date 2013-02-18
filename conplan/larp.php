@@ -6,7 +6,7 @@ Datei   :  larp.php
 
 Datum   :  2002/06/12 17:39:02
 
-Rev.    :  2.0
+Rev.    :  3.0
 
 Author  :  $Author: windu $  / duda
 

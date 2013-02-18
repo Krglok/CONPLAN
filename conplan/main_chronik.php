@@ -6,9 +6,9 @@ Datei   :  main_chronik
 
 Datum   :  2002/06/01
 
-Rev.    :  2.0
+Rev.    :  3.0
 
-Author  :  Olaf Duda
+Author  :  Windu
 
 beschreibung :
 Es gibt keine Zugriffsverwaltung und keine Rechte !

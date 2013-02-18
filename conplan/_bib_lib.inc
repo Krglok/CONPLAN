@@ -7,7 +7,7 @@ Datei   :  bib_lib.inc
 
 Datum   :  2008/07/11
 
-Rev.    :  1.0
+Rev.    :  3.0
 
 Author  :  Olaf Duda
 

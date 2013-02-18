@@ -6,9 +6,9 @@ Datei   :  $RCSfile: char_lib.inc,v $
 
 Datum   :  $Date: 2002/06/01 10:31:54 $  /
 
-Rev.    :  $Revision: 1.4 $   / 1.0
+Rev.    :  3.0
 
-Author  :  $Author: windu $  / duda
+Author  :  Windu
 
 beschreibung :  Sammlung von Funktioen für die
 Darstellung der Charakter daten

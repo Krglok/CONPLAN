@@ -7,7 +7,7 @@ Datei   :  larp_regeln_liste.php
 
 Datum   :  2002/06/01
 
-Rev.    :   2.0
+Rev.    :   3.0
 
 Author  :  Olaf Duda
 

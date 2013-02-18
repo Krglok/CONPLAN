@@ -7,7 +7,7 @@ Datei   :  admin_menu.php
 
 Datum   :  2002/02/26
 
-Rev.    :  2.0
+Rev.    :  3.0
 
 Author  :  Olaf Duda
 

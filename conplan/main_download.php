@@ -6,9 +6,9 @@ Datei   :  main_download
 
 Datum   :  2002/06/01
 
-Rev.    :   2.0
+Rev.    :   3.0
 
-Author  :  OlafDuda
+Author  :  Windu
 
 beschreibung :
 Es gibt keine Zugriffsverwaltung und keine Rechte !

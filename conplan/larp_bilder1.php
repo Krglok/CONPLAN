@@ -6,12 +6,14 @@ Datei   :  main_bilder.php
 
 Datum   :  2002/06/08
 
-Rev.    :  2.1
+Rev.    :  3.0
 
 Author  :  OlafDuda
 
 beschreibung :
-Dies ist eine Bildergalerie fuer den oeffentlichen Bereich
+Dies ist eine Bildergalerie fuer den User Bereich
+Es zeigt die Bilder ueber tag 100, da aufgrund von alten Daten definitionen
+nur bis 99 angezeigt werden kann
 Die Bilder sind in Kapitel oder Topics gegliedert.
 Die Verwaltung der Topics geschieht in einem separaten Modul.
 
@@ -28,17 +30,12 @@ Die Bilder werden in einen Standardpfad gespeichert.
 
 Es werden HTML Seiten angezeigt,
 die folgenden Subdir  werden werden relativ benutzt
-
-./BILDER  2)
-
+./pages  2)
 Die images kommen ebenfalls aus dem Verzeichnis
-
-./BILDER
+./BILDER/BASE
 
 Die HTML Seiten werden mit der Funktion
-
 function print_data($html_file)
-
 dargestellt.
 
 Alle PHP-Scripte sind in einem Verzeichnis. siehe 1)

@@ -6,16 +6,16 @@ Datei   :  admin_config.php
 
 Datum   :  2013/02/14
 
-Rev.    :  1.0
+Rev.    :  3.0
 
 Author  :  Olaf Duda
 
 beschreibung : Main Modul fuer Konfigurationsmodule
+Das Modul erzeugt ein Menu, um die Konfiguration zusammenzufassen
 
 - Menu Konfigurator
-
 - MFD Konfigurator
-
+- Tabellen Editor
 - Pages Editor
 
 Es wird eine Session Verwaltung benutzt, die den User prueft.

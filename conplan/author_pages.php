@@ -7,15 +7,14 @@ Datei   :  author_pages.php
 
 Datum   :  2013/02/15
 
-Rev.    :  2.0
+Rev.    :  3.0
 
 Author  :  Olaf Duda
 
-beschreibung : realisiert die Bearbeitungsfunktionen für die Datei <menu_item>
-- Liste der Datensätze
-- Efassen neuer Datensätze
-- Bearbeiten vorhandener Datensätze
-- Löschen  eines Datensatzes
+beschreibung : realisiert die Bearbeitungsfunktionen für HTML Dateien
+- Liste der HTML in ./pges
+- Erfassen neuer Dateien
+- Bearbeiten vorhandener Dateien
 
 Es wird eine Session Verwaltung benutzt, die den User prueft.
 Es werden Subseiten mit eigenen PHP-scripten aufgerufen.

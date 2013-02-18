@@ -7,7 +7,7 @@ Datei   :  admin_sc.php
 
 Datum   :  2002/05/03
 
-Rev.    :  2.0
+Rev.    :  3.0
 
 Author  :  Olaf Duda
 

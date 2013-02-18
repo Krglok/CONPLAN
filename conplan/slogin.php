@@ -7,7 +7,7 @@ Datei   :  $RCSfile: slogin.php,v $
 
 Datum   :  $Date: 2002/05/03 20:23:41 $  /
 
-Rev.    :  $Revision: 1.1 $   / 1.0
+Rev.    :  3.0
 
 Author  :  $Author: windu $  / duda
 

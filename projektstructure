@@ -13,3 +13,26 @@
     /pages          {html.pages}
     /regeln         {regeln.html, regeln.images}
     /BILDER         [bilder.images, bilder.thumbnails
+
+bereiche der applikation
+- public            oeffentlich ohne session und ohne login zugaenglich
+- intern            ueber login mit session ID
+- intern/user       bereich fuer normale user
+- intern/author     bereich fuer user mit schreibrechten und bestimmten datenbereichen
+- intern/sub        bereich fuer sub-sl mit schreibrecht im bereich der con-planung
+- intern/sl         bereich fuer sl mit schreibrechten auf regeln und con-inhalte
+- itern/admin       bereich fuer administration der homepage und applikation
+
+scriptstruktur
+    _*.inc          sind library file mit unterschiedlichen Aufageb
+    main_*.php      scripte , die zum Bereich main bzw. oeffentlich gehören
+    slogin.php      das script fuer den login in den internen bereich
+    larp_*.php      scripte fuer den internen bereich user
+    author_*.php    scripte fuer den internen bereich authoren
+    con_*.php       scripte fuer internen bereich SL
+    admin_*.php     scripte fuer den bereich admin
+    
+
+    
+datenbak
+    

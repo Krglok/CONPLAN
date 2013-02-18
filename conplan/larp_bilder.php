@@ -6,7 +6,7 @@ Datei   :  main_bilder.php
 
 Datum   :  2002/06/08
 
-Rev.    :  2.1
+Rev.    :  3.0
 
 Author  :  OlafDuda
 
