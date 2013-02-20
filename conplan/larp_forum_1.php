@@ -42,6 +42,13 @@ Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues
 Layoutpfades in der config.inc
 Ansonsten bleibt der Inhalt der Seiten identisch.
 
+	$style = $GLOBALS['style_datatab'];
+	echo "<div $style >";
+	echo "<!---  DATEN Spalte   --->\n";
+
+	echo '</div>';
+	echo "<!---  ENDE DATEN Spalte   --->\n";
+
 */
 
 include_once "_config.inc";
@@ -62,25 +69,25 @@ function print_thema_liste($ID,$foren_id,$user)
 	or die("Fehler beim verbinden!");
 	mysql_select_db($DB_NAME);
 
-	$q = "SELECT  * from forum_post where foren_id=\"$foren_id\" AND post_id=\"0\" order by id DESC LIMIT 20";
+	$q = "SELECT  * from forum_post where foren_id=\"$foren_id\" AND post_id=\"0\" order by id DESC LIMIT 30";
 	$result = mysql_query($q) or die("ForumList Fehler...");
 
 
 	//Macht aus einem Resultset eine HTML Tabelle
 
-	echo "\n";
-	echo "<TD>\n";
-	echo "\t <TABLE WIDTH=\"100%\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"2\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\"
-			BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
+	$style = $GLOBALS['style_datatable'];
+	echo "<div $style >";
+	echo "<!---  DATEN Spalte   --->\n";
+
+	echo "\t <TABLE WIDTH=\"800px\" BORDER=\"0\" >\n";
 
 	//Header
 	$field_num = mysql_num_fields($result);
 	echo "\t<tr>\n";
+	echo "\t<td width=\"25\"><b> </b></td>\n";
 	echo "\t<td width=\"300\"><b>Thema</b></td>\n";
 	echo "\t<td width=\"75\"><b>Author</b></td>\n";
 	echo "\t<td width=\"75\"><b>Datum</b></td>\n";
-	echo "\t<td width=\"30\"><b> </b></td>\n";
-	echo "\t<td width=\"30\"><b> </b></td>\n";
 	echo "\t<td><b>Anwort</b></td>\n";
 	echo "\n</tr>\n";
 
@@ -90,30 +97,26 @@ function print_thema_liste($ID,$foren_id,$user)
 		// (ID, foren_id, top_id, post_id, author, datum, betreff, text, user_id)
 		$count = mysql_fetch_row(mysql_query("select count(*) from forum_post where post_id = \"$row[0]\""));
 		echo "\t<tr>\n";
+		echo "\t  <td>\n";
+		echo "<a href=\"$PHP_SELF?md=2&ID=$ID&id=$row[0]&foren_id=$row[1]&post_id=$row[0]\"> \n";
+		//echo "\t  <IMG SRC=\"images/xview.gif\" BORDER=\"0\" HEIGHT=\"20\" WIDTH=\"30\" ALT=\"Zeige Thema und Antworten\" HSPACE=\"0\" VSPACE=\"0\">\n";
+		print_menu_icon ("_buble","Öffne Thema");
+		echo "\t  </a>\n";
+		echo "\t  </td>\n";
 		echo "\t  <td>$row[6]&nbsp;</td>\n";
 		echo "\t  <td>$row[4]&nbsp;</td>\n";
 		echo "\t  <td>$row[5]&nbsp;</td>\n";
-		echo "\t  <td><a href=\"$PHP_SELF?md=2&ID=$ID&id=$row[0]&foren_id=$row[1]&post_id=$row[0]\"\n>";
-		//echo "\t  <IMG SRC=\"images/xview.gif\" BORDER=\"0\" HEIGHT=\"20\" WIDTH=\"30\" ALT=\"Zeige Thema und Antworten\" HSPACE=\"0\" VSPACE=\"0\">\n";
-		print_menu_icon ("_list","Öffne Thema");
-		echo "\t  </a></td>\n";
-		
-		echo "\t  <td><a href=\"$PHP_SELF?md=3&ID=$ID&id=$row[0]&foren_id=$row[1]&top_id=$row[2]&post_id=$row[0]&betreff=Re:$row[6]\">\n";
-		//echo "\t  <IMG SRC=\"images/xview.gif\" BORDER=\"0\" HEIGHT=\"20\" WIDTH=\"30\" ALT=\"Thema Lesen\" HSPACE=\"0\" VSPACE=\"0\">\n";
-		print_menu_icon ("_text");
-		echo "\t  </a>\n";
-		echo "\t  </td>\n";
-		echo "\t  <td><a href=\"$PHP_SELF?md=4&ID=$ID&id=$row[0]&foren_id=$row[1]&top_id=$row[2]&post_id=$row[0]&betreff=Re:$row[6]&next=1\" &post_id=$row[0]>\n";
-		//echo "\t  <IMG SRC=\"images/feder1.gif\" BORDER=\"0\" HEIGHT=\"20\" WIDTH=\"30\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\">\n";
-		print_menu_icon ("_add");
-		echo "\t  </a>\n";
+	
+		echo "\t  <td>\n";
 		echo "\t&nbsp;&nbsp;&nbsp;&nbsp;$count[0]";
 		echo "\t  </td>\n";
 		echo "\t</tr>\n";
 	}
 	echo "\t</table>\n";
-	echo "  </TD>\n";
-	mysql_close($db);
+	echo '</div>';
+	echo "<!---  ENDE DATEN Spalte   --->\n";
+	
+		mysql_close($db);
 
 };
 
@@ -136,53 +139,52 @@ function print_thema($ID,$foren_id,$id,$user)
 	$result = mysql_query($q)    or die("Query Fehler...");
 	mysql_close($db);
 
-	//  FORMULAR
-	echo "\n";
-	echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST>\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"3\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"user\" VALUE=\"$user\">\n";
-	//    echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$id\">\n";
-	echo "</FORM>";
-
-	echo "\t <TABLE WIDTH=\"100%\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"2\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\"
-			BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
+	$style = $GLOBALS['style_datatable'];
+	echo "<div $style >";
+	echo "<!---  DATEN Spalte   --->\n";
+	
+	echo "\t <TABLE WIDTH=\"\" BORDER=\"0\" >\n";
 
 	//Header
 	$field_num = mysql_num_fields($result);
 	echo "<tr>\n";
 // 	echo "\t<td width=\"30\"><b>Lesen</b></td>\n";
- 	echo "\t<td ><b></b></td>\n";
+ 	echo "\t<td ></td>\n";
  	echo "\t<td></td>\n";
- 	echo "\t<td width=\"300\"><b>Thema</b></td>\n";
-	echo "\t<td width=\"75\"><b>Author</b></td>\n";
-	echo "\t<td width=\"75\"><b>Datum</b></td>\n";
+ 	echo "\t<td width=\"500\"><b>Thema</b></td>\n";
+	echo "\t<td width=\"150\"><b>Author</b></td>\n";
+	echo "\t<td width=\"100\"><b>Datum</b></td>\n";
 	echo "\t<td width=\"50\"><b>Anwort</b></td>\n";
+ 	echo "\t<td> </td>\n";
 	echo "</tr>\n";
 
 	//Daten
 	$row = mysql_fetch_row($result);
 	// (ID, foren_id, top_id, post_id, author, datum, betreff, text, user_id)
+	//  HauptBeitrag 
 	echo "<tr>";
-// 	echo "\t<td><a href=\"$PHP_SELF?md=3&ID=$ID&id=$row[0]&foren_id=$row[1]&top_id=$row[2]&post_id=$row[0]\">\n";
-// 	//echo "\t<IMG SRC=\"images/xview.gif\" BORDER=\"0\" HEIGHT=\"20\" WIDTH=\"30\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\">\n";
-// 	print_menu_icon ("_page");
-// 	echo "\t</a></td>\n";
-	echo "\t<td><img src=\"images/button_orange.gif\"></td>\n";
- 	echo "\t<td></td>\n";
-	echo "\t<td>$row[6]&nbsp;</td>\n";
-	echo "\t<td>$row[4]&nbsp;</td>\n";
-	echo "\t<td>$row[5]&nbsp;</td>\n";
-	echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=$row[0]&foren_id=$row[1]&top_id=$row[2]&post_id=$row[0]&betreff=Re:$row[6]&next=2\">\n";
-	//echo "\t<IMG SRC=\"images/feder1.gif\" BORDER=\"0\" HEIGHT=\"20\" WIDTH=\"30\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\">\n";
-	print_menu_icon ("_edit");
-	echo "\t</td>\n";
-	echo "\t<tr>\n";
+ 		echo "\t<td>\n";
+		print_menu_icon ("_buble"," ");
+		echo "\t</td>\n";
+	   	echo "\t<td></td>\n";
+    	echo "\t<td><b>$row[6]</b></td>\n";
+    	echo "\t<td>$row[4]&nbsp;</td>\n";
+    	echo "\t<td>$row[5]&nbsp;</td>\n";
+    	echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=$row[0]&foren_id=$row[1]&top_id=$row[2]&post_id=$row[0]&betreff=Re:$row[6]&next=2\">\n";
+    	//echo "\t<IMG SRC=\"images/feder1.gif\" BORDER=\"0\" HEIGHT=\"20\" WIDTH=\"30\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\">\n";
+    	print_menu_icon ("_edit","Anwort zu dem Thema");
+    	echo "\t</td>\n";
+    	echo "\t<td> </td>\n";
+    echo "</tr>";
+    	 
 	echo "<tr>";
  	echo "\t<td></td>\n";
 //	echo "\t<td></td>\n";
 	echo "\t<td ></td>\n";
-	echo "\t<td>$row[7]&nbsp;</td>\n";
-	echo "\t<tr>\n";
+	$delimiter="\n";
+	$lines = explode($delimiter, $row[7]);
+	print_textblock_td($lines);
+	echo "\t</tr>\n";
 //     echo "</table>";
 // 	echo "\t <TABLE WIDTH=\"100%\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"2\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\"
 // 			BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
@@ -191,17 +193,19 @@ function print_thema($ID,$foren_id,$id,$user)
 		// (ID, foren_id, top_id, post_id, author, datum, betreff, text, user_id)
 		echo "<tr>";
  		echo "\t<td></td>\n";
-	    echo "\t<td><img src=\"images/button_orange.gif\"></td>\n";
-// 		echo "\t<td><a href=\"$PHP_SELF?md=3&ID=$ID&id=$row[0]&foren_id=$row[1]&top_id=$row[2]&post_id=$row[3]\">\n";
+ 		echo "\t<td>\n";
+		print_menu_icon ("_buble");
+		echo "\t</td>\n";
+ 		// 		echo "\t<td><a href=\"$PHP_SELF?md=3&ID=$ID&id=$row[0]&foren_id=$row[1]&top_id=$row[2]&post_id=$row[3]\">\n";
 // 		//echo "\t<IMG SRC=\"images/xview.gif\" BORDER=\"0\" HEIGHT=\"20\" WIDTH=\"30\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\">\n";
 // 		print_menu_icon ("_page");
 // 		echo "\t</a></td>\n";
-		echo "\t<td>$row[6]&nbsp;</td>\n";
+		echo "\t<td><b>$row[6]</b></td>\n";
 		echo "\t<td>$row[4]&nbsp;</td>\n";
 		echo "\t<td>$row[5]&nbsp;</td>\n";
 		echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=$row[0]&foren_id=$row[1]&top_id=$row[2]&post_id=$row[3]&betreff=Re:$row[6]&next=2\">\n";
 		//echo "\t<IMG SRC=\"images/feder1.gif\" BORDER=\"0\" HEIGHT=\"20\" WIDTH=\"30\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\">\n";
-		print_menu_icon ("_edit");
+		print_menu_icon ("_edit","Anwort zu dem Thema");
 		echo "\t</td>\n";
 		echo "\t<td>\n";
 		echo "\t</td>\n";
@@ -211,11 +215,15 @@ function print_thema($ID,$foren_id,$id,$user)
 		echo "\t</a></td>\n";
  		echo "\t<td></td>\n";
 // 		echo "\t<td></td>\n";
-		echo "\t<td>$row[7]&nbsp;</td>\n";
-		echo "\t<tr>\n";
+	    $lines = explode($delimiter, $row[7]);
+	    print_textblock_td($lines);
+ 		echo "\t<tr>\n";
 	}
 	echo "</table>\n";
 
+	echo '</div>';
+	echo "<!---  ENDE DATEN Spalte   --->\n";
+	
 };
 
 function print_thema_lesen($ID,$foren_id,$id,$user)
@@ -348,7 +356,7 @@ function print_thema_erf($ID,$id, $foren_id, $post_id, $author, $datum, $betreff
 
 	//  FORMULAR
 	echo "\n";
-	echo "\t<FORM ACTION=\"$PHP_SELF\" METHOD=POST>\n";
+	echo "\t<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID\" METHOD=POST>\n";
 	echo "\t<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"5\">\n";
 	echo "\t<INPUT TYPE=\"hidden\" NAME=\"foren_id\" VALUE=\"$foren_id\">\n";
 	echo "\t<INPUT TYPE=\"hidden\" NAME=\"post_id\" VALUE=\"$post_id\">\n";
@@ -394,6 +402,20 @@ function print_thema_erf($ID,$id, $foren_id, $post_id, $author, $datum, $betreff
 	echo "<!---  Daten Spalte ENDE   --->\n\n";
 }
 
+/**
+ * erzeugt einen EIntrag in der Forentabelle
+ * sowohl neue themen als auch antworten auf themen
+ * @param unknown $ID
+ * @param unknown $foren_id
+ * @param unknown $top_id
+ * @param unknown $post_id
+ * @param unknown $author
+ * @param unknown $datum
+ * @param unknown $betreff
+ * @param unknown $text
+ * @param unknown $user_id
+ * @return string
+ */
 function erf_thema($ID, $foren_id, $top_id, $post_id, $author, $datum, $betreff, $text, $user_id)
 {
 	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
@@ -427,7 +449,7 @@ function erf_thema($ID, $foren_id, $top_id, $post_id, $author, $datum, $betreff,
 $BEREICH = 'INTERN';
 $PHP_SELF = $_SERVER['PHP_SELF'];
 
-// $g_top_id   = $_GET['top_id'];
+$md     = GET_md(0);
 $g_id       = GET_id("0");
 $g_post_id  = GET_post_id("0");
 $g_datum    = GET_datum("");
@@ -445,10 +467,7 @@ $p_text     = POST_text("");
 $p_user_id  = POST_user_id("0");
 
 
-$md     = GET_md(0);
 $daten  = GET_daten("");
-$sub    = GET_sub("main");
-$item   = GET_item("");
 $ID     = GET_SESSIONID("");
 
 session_id ($ID);
@@ -472,18 +491,18 @@ print_body(2);
 $foren_id = 2;   // Internes Forum
 
 switch ($p_md):
-case 5:
-	$err = erf_thema($ID, $foren_id, $p_top_id, $p_post_id, $p_author, $p_datum, $p_betreff, $p_text, $p_user_id);
-$md = 2;
-break;
-default:
-	break;
-	endswitch;
+  case 5:
+  	$err = erf_thema($ID, $foren_id, $p_top_id, $p_post_id, $p_author, $p_datum, $p_betreff, $p_text, $p_user_id);
+  //    $md = 2;
+  break;
+  default:
+  break;
+endswitch;
 
-	switch ($md):
+switch ($md):
 case 1:
 	$menu = array (0=>array("icon" => "99","caption" => "FORUM","link" => ""),
-	2=>array("icon" => "_add","caption" => "Neues Thema","link" => "$PHP_SELF?md=4&ID=$ID"),
+	2=>array("icon" => "_add","caption" => "Neues Thema","link" => "$PHP_SELF?md=3&ID=$ID"),
 	3=>array("icon" => "_stop","caption" => "Verlassen","link" => "larp.php?md=0&ID=$ID")
 	);
 	break;
@@ -493,15 +512,14 @@ case 2:
 	2=>array("icon" => "_stop","caption" => "Zurück ","link" => "$PHP_SELF?md=1&ID=$ID")
 	);
 	break;
-case 3:
-	$menu = array (0=>array("icon" => "99","caption" => "LESEN","link" => ""),
-	2=>array("icon" => "_stop","caption" => "Zurück Forum","link" => "$PHP_SELF?md=1&ID=$ID"),
-	3=>array("icon" => "_stop","caption" => "Zurück Thema","link" => "$PHP_SELF?md=2&ID=$ID&post_id=$g_post_id")
+case 3:  // neues Themne
+	$menu = array (0=>array("icon" => "99","caption" => "NEU","link" => ""),
+	2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=1&ID=$ID")
 	);
 	break;
-case 4:
-	$menu = array (0=>array("icon" => "99","caption" => "NEUER BEITRAG","link" => ""),
-	2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=1&ID=$ID&id=g_id")
+case 4:  // neue Antwort , ACHTUNG id kreuzverweis
+	$menu = array (0=>array("icon" => "99","caption" => "NEU","link" => ""),
+	2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=2&ID=$ID&post_id= $g_id")
 	);
 	break;
 case 5:
@@ -523,20 +541,20 @@ $menu_item = $menu_item_help;
 $anrede["name"] = $spieler_name;
 print_kopf($logo_typ,$header_typ,"Intern",$anrede,$menu_item);
 	
-print_menu($menu);
+print_menu_status($menu);
 
 
 switch ($md):
 case 1:
-		print_thema_liste($ID,$foren_id,$user);
+	print_thema_liste($ID,$foren_id,$user);
 	break;
 case 2:
 	$g_id = $g_post_id;
 	print_thema($ID,$foren_id,$g_id,$user);
 	break;
 case 3:
-	print_thema_lesen($ID,$foren_id,$g_id,$user);
-	break;
+	print_thema_erf($ID,$g_id, $foren_id, $g_post_id, $spieler_name, $g_datum, $g_betreff, $g_text, $user_id,$g_next);
+  	break;
 case 4:
 	print_thema_erf($ID,$g_id, $foren_id, $g_post_id, $spieler_name, $g_datum, $g_betreff, $g_text, $user_id,$g_next);
 	break;

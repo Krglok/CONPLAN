@@ -25,15 +25,21 @@ Enthält allgemiengültige Funktionen
 //include_once '_config.inc';
 
 
-function print_textblock($text)
+function print_textblock_td($lines)
 {
-  
-  $line = explode('\n', $text);
-  foreach ($line as $s)
+  if (count($lines)>0)
   {
-    echo $s."\n"; 
-  } 
-}
+    echo "\t<td>\n";
+    for ($i=0; $i<count($lines); $i++)
+    {
+    echo "\t$lines[$i]<br>\n";
+    }
+    echo "\t</td>\n";
+	} else
+    {
+      echo "\t<td>&nbsp;</td>\n";
+      }
+  }
 
 /**
  * Macht einen normale Datumsanzeige

@@ -330,6 +330,47 @@ body {
 	font-size: normal;
 }
 
+#datatable p {
+	margin-top: 1px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-bottom: 1px;
+	text-align: left;
+	font-weight: normal;
+}
+
+#datatable p a {
+		color: gray;
+        text-decoration: none;
+        font-weight: normal;
+        display: block;
+        border: solid 0px silver;
+}
+
+#datatable td a {
+		color: gray;
+        text-decoration: none;
+        font-weight: normal;
+        display: block;
+        border: solid 0px silver;
+}
+
+#datatable a {
+		color: gray;
+        text-decoration: none;
+        font-weight: normal;
+        display: block;
+        border: solid 0px silver;
+}
+
+#datatable img {
+	width: 21px;
+	height: 21px;
+	vertical-align: middle;
+    border: solid 0px silver;
+    margin-right: 1px;
+}
+
 #help_1 {
       	margin-top: 5px;
       	margin-bottom: 5px; 
