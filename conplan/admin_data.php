@@ -68,24 +68,33 @@ $field_item = array
 function get_fieldlist($table)
 {
 	$result = mysql_query("SHOW COLUMNS FROM $table");
+	return $result;
 }
 
+/**
+ * Ermittelt die Default Width anhand des Datentyp
+ * @param unknown $typ
+ * @return number|multitype:
+ */
 function get_fieldtyp_width($typ)
 {
-	if (preg_match ("int", $typ, $out, PREG_OFFSET_CAPTURE)>0)
+	if (stripos($typ,"int")>0)
 	{
 		return 8;
-	} else if(preg_match ("varchar", $typ, $out, PREG_OFFSET_CAPTURE)>0)
+	} else if(stripos($typ,"varchar")>0)
 	{
 		$s =  explode("(",$typ);
 		$len = explode(")",$s[1]); 
 		return $len;
-	} else if(preg_match ("text", $typ, $out, PREG_OFFSET_CAPTURE)>0)
+	} else if(stripos($typ,"text")>0)
 	{
 		return 12;
-	} else if(preg_match ("enum", $typ, $out, PREG_OFFSET_CAPTURE)>0)
+	} else if(stripos($typ,"enum")>0)
 	{
 	   return 5;
+	} else 
+	{
+	  return 10;
 	}
 }
 
@@ -96,15 +105,17 @@ function get_fieldtyp_width($typ)
 function get_mfd_fields_default($table,$mfd_name)
 {
 	$result = get_fieldlist($table);
+	
 	$i=0;
-	foreach ($result as $row)
+	while ($row = mysql_fetch_row($result))
 	{
+	  // 0 = Field, 1 = Type, 2 Null, 3 = Key, 4Defaault, 5=Extra
 		$mfd_col["mfd_name"]	= $mfd_name;
 		$mfd_col["mfd_titel"]	= $table;
 		$mfd_col["mfd_pos"]		= $i; 
-		$mfd_col["mfd_field"]	= $row["Field"];
-		$mfd_col["mfd_field_titel"] = $row["Field"]; 
-		$mfd_col["mfd_width"]	= get_fieldtyp_width($row["Type"]);
+		$mfd_col["mfd_field"]	= $row[0];
+		$mfd_col["mfd_field_titel"] = $row[0]; 
+		$mfd_col["mfd_width"]	= get_fieldtyp_width($row[1]);
 		$mfd_cols[$i] = $mfd_col;
 		$i++;
 	}
@@ -116,23 +127,24 @@ function get_mfd_fields_default($table,$mfd_name)
  * mit den definition einer tabelle nach mfd schema
  * @param unknown $table
  */
-function show_table_info($table)
+function show_table_info($table,$ID)
 {
-	$mfd_name = "mfd_".$table;
+    print_table_list($ID);
+    $mfd_name = "mfd_".$table;
 	$mfd_cols = get_mfd_fields_default($table, $mfd_name);
 	
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style > \n";
 	echo "<!---  DATEN Spalte   --->\n";
-	echo "<TABLE> \n";
+	echo "<TABLE border=\"1\"> \n";
 	echo "<TBODY> \n";
-		echo "<TR \n>";
-			echo "<TD>";
-  		echo "Tabelle \n";
+		echo "<TR> \n>";
+			echo "<TD>\n";
+  		echo "Tabelle";
 			echo "</TD> \n";
 			
 			echo "<TD> \n";
-	  	echo "".$table;
+	  	echo "<b>".$table."</b>";
 			echo "</TD> \n";
 				
 			echo "<TD> \n";
@@ -165,7 +177,7 @@ function show_table_info($table)
 		echo "</TD> \n";
 			
 		echo "<TD> \n";
-		echo $mfd_col["mfd_width"];;
+		echo $mfd_col["mfd_width"];
 		echo "</TD> \n";
 		echo "</TR> \n";
 		
@@ -247,6 +259,8 @@ function print_table_list($ID)
         $i++;
       }
     }
+    // Hearderzeile einfuegen
+    $pages[0] = "Tabellen";
   echo "<div >";
   echo "<p>";
   echo " ";
@@ -411,7 +425,7 @@ default: // main
 
 switch ($md):
 case 2:
-	new_edit();
+    show_table_info($daten,$ID);
 	break;
 case 4:
 	break;
