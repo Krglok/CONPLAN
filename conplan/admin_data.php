@@ -210,6 +210,92 @@ function make_mfd_table($table, $mfd_name)
 	return $mfd_list;
 }
 
+/**
+ * Erzeugt eine liste der Tabelle der Datenbank als Menu
+ */
+
+function print_table_list($ID)
+{
+  global $PHP_SELF;
+
+	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+	
+	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+
+	mysql_select_db($DB_NAME);
+    $q= "show tables";
+    $result = mysql_query($q) ;
+    $style = $GLOBALS['style_menu_tab1'];
+
+	$style = "id=\"style_datatab\"";
+	echo "<div $style >";
+	echo "<!---  DATEN Spalte   --->\n";
+    echo "<div $style >";
+    echo "<!---  MENU Spalte   --->\n";
+    
+    if (!$result) {
+      $message  = 'Invalid query: ' . mysql_error() . "\n";
+      $message .= 'Whole query: ' . $q;
+      die($message);
+    
+    } else
+    {
+      $i=0;
+      while ($row = mysql_fetch_row($result))
+      {
+        $pages[$i+1] = $row[0];
+        $i++;
+      }
+    }
+  echo "<div >";
+  echo "<p>";
+  echo " ";
+  echo "</p >";
+  echo "</div >";
+
+
+  $style = "id=\"menu\"";
+  echo "<div $style >";
+  echo "<!---  DATEN Spalte   --->\n";
+  echo "<table  border=\"1\"> \n"; //width=\"100%\"
+  echo "<tbody >";
+
+  for($i=0; $i<count($pages); $i++)
+    {
+    $name = $pages[$i];
+    echo "\t<tr> \n";
+		echo "\t\t<td width=\"25\"> \n";
+		if ($i>0)
+      {
+    		echo "<a href=\"$PHP_SELF?md=2&daten=$name&ID=$ID \" >";
+    		print_menu_icon("_db","Edit Html Datei");
+    		    echo "</a>";
+		}
+		echo "\t\t</td> \n";
+		echo "\t\t<td> \n";
+		echo "$name";
+		echo "";
+		echo "\t\t</td> \n";
+		echo "\t\t<td> \n";
+		if ($i>0)
+		{
+		  echo "<a href=\"$PHP_SELF?md=3&daten=$name&ID=$ID \"> ";
+		  print_menu_icon("_branch","Preview Html Datei in separatem Fenster");
+		      echo "</a>";
+  }
+  echo "";
+  echo "";
+		echo "\t\t</td> \n";
+		echo "\t</tr> \n";
+	}
+
+	echo "</tbody>";
+	echo "</table>\n";
+    echo '</div>';
+	echo '</div>';
+    echo "<!---  ENDE DATEN Spalte   --->\n";
+	
+}
 
 
 // ---------------------------------------------------------------
@@ -296,25 +382,25 @@ case 6: // Insert -> Erfassen
 
 	switch ($md):
 case 2: // erfassen
-		$menu = array (0=>array("icon" => "7","caption" => "MENUITEMS","link" => "$PHP_SELF?md=1&ID=$ID"),
+		$menu = array (0=>array("icon" => "7","caption" => "DATA","link" => "$PHP_SELF?md=1&ID=$ID"),
 		        1=>array("icon" => "1","caption" => "NEU","link" => ""),
 				2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
 		);
 		break;
 case 4:  //Bearbeiten
-	$menu = array (0=>array("icon" => "7","caption" => "MENUITEMS","link" => "$PHP_SELF?md=1&ID=$ID"),
+	$menu = array (0=>array("icon" => "7","caption" => "DATA","link" => "$PHP_SELF?md=1&ID=$ID"),
 		        1=>array("icon" => "1","caption" => "ÄNDERN","link" => ""),
 	            2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=1&ID=$ID")
 	);
 	break;
 case 10: // main
-	$menu = array (0=>array("icon" => "7","caption" => "MENUITEMS","link" => "$PHP_SELF?md=1&ID=$ID"),
+	$menu = array (0=>array("icon" => "7","caption" => "DATA","link" => "$PHP_SELF?md=1&ID=$ID"),
 	1=>array ("icon" => "_plus","caption" => "Erfassen","link" => "$PHP_SELF?md=2&ID=$ID"),
 	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_main.php?md=0&ID=$ID")
 	);
 	break;
 default: // main
-	$menu = array (0=>array("icon" => "7","caption" => "MENUITEMS","link" => "$PHP_SELF?md=1&ID=$ID"),
+	$menu = array (0=>array("icon" => "7","caption" => "DATA","link" => "$PHP_SELF?md=1&ID=$ID"),
 	1=>array ("icon" => "_plus","caption" => "Editor","link" => "$PHP_SELF?md=2&ID=$ID"),
 	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_main.php?md=0&ID=$ID")
 	);
@@ -328,20 +414,14 @@ case 2:
 	new_edit();
 	break;
 case 4:
-	
 	break;
 case 10:
 	break;
 default:
-	if (!$p_editor1)
-	{
-	echo $p_editor1;  
-	
-	}
-	break;
+  print_table_list($ID);
+  break;
 endswitch;
 
-	print_md_ende();
+print_md_ende();
 
-
-	?>
+?>

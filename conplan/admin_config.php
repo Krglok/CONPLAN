@@ -87,6 +87,7 @@ print_kopf($admin_typ,$header_typ,"<b>Admin Bereich</b>",$anrede,$menu_item);
 
 $menu = array (
     0=>array  ("icon" => "7","caption" => "ADMIN CONFIG","link" => ""),
+    15=>array ("icon" => "_list","caption" => "DataTable","link" => "admin_data.php?md=0&ID=$ID"),
     16=>array ("icon" => "_list","caption" => "Menu-Item","link" => "admin_menu.php?md=0&ID=$ID"),
     17=>array ("icon" => "_list","caption" => "Pages","link" => "admin_pages.php?md=0&ID=$ID"),
     20=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_main.php?md=0&ID=$ID")

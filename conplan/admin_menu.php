@@ -364,10 +364,6 @@ $anrede["formel"] = "Sei gegrüsst Meister ";
 
 print_kopf($admin_typ,$header_typ,"Menu Konfigurator",$anrede,$menu_item);
 
-$bereich = "PUBLIC";
-$sub     = "main";
-$item		 = "regeln";
-
 $mfd_list = make_mfd_list($bereich, $sub, $item);
 $mfd_cols = make_mfd_cols($mfd_list);
 
