@@ -70,12 +70,12 @@ function print_thema_liste($ID,$foren_id,$user)
 	//Header
 	$field_num = mysql_num_fields($result);
 	echo "\t<tr>\n";
-	echo "\t<td width=\"30\"><b>Liste</b></td>\n";
-	echo "\t<td width=\"300\"><b>Thema</b></td>\n";
-	echo "\t<td width=\"75\"><b>Author</b></td>\n";
-	echo "\t<td width=\"75\"><b>Datum</b></td>\n";
-	echo "\t<td width=\"50\"><b>Lesen</b></td>\n";
-	echo "\t<td><b>Anwort</b></td>\n";
+	echo "\t<td width=\"30\"><p><b>Liste</b></p></td>\n";
+	echo "\t<td width=\"300\"><p><b>Thema</b></p></td>\n";
+	echo "\t<td width=\"75\"><p><b>Author</b></p></td>\n";
+	echo "\t<td width=\"75\"><p><b>Datum</b></p></td>\n";
+	echo "\t<td width=\"50\"><p><b>Lesen</b></p></td>\n";
+	echo "\t<td><p><b>Anwort</b></p></td>\n";
 	echo "\n</tr>\n";
 
 	//Daten
@@ -525,7 +525,7 @@ default:
 
 	print_md();
 
-	print_menu($menu);
+	print_menu_status($menu);
 
 
 	switch ($md):

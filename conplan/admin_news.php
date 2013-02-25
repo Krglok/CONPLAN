@@ -45,18 +45,18 @@ einen veraenderte Konfiguration eingestellt
 
 
 Ver 3.0  / 06.02.2013
-Es werden CSS-Dateien verwendert. 
+Es werden CSS-Dateien verwendert.
 Es wird eine strikte Trennung von Content und Layout durchgefuehrt.
-Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues 
+Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues
 Layoutpfades in der config.inc
 Ansonsten bleibt der Inhalt der Seiten identisch.
 
-	$style = $GLOBALS['style_datatab'];
-	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+$style = $GLOBALS['style_datatab'];
+echo "<div $style >";
+echo "<!---  DATEN Spalte   --->\n";
 
-	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+echo '</div>';
+echo "<!---  ENDE DATEN Spalte   --->\n";
 
 */
 
@@ -67,43 +67,43 @@ include_once "_head.inc";
 
 function print_news_liste($ID,$limit)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $PHP_SELF;
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $PHP_SELF;
 
-	$style = $GLOBALS['style_datatab'];
-	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
-	
-	echo "      <TABLE WIDTH=\"500\"  BORDER=\"1\" BGCOLOR=\"\" >";
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-	or die("Fehler beim verbinden!");
+  $style = $GLOBALS['style_datalist'];
+  echo "<div $style >";
+  echo "<!---  DATEN Spalte   --->\n";
 
-	mysql_select_db($DB_NAME);
+  echo "      <TABLE >";
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+  or die("Fehler beim verbinden!");
 
-	$result = mysql_query("SELECT id,datum,text_1,text_2,Text_3 from news order by id DESC LIMIT $limit")
-	or die("Query Fehler...");
+  mysql_select_db($DB_NAME);
 
-	while ($row = mysql_fetch_row($result))
-	{
-		echo "\t<TR >";
-		echo "\t<td><a href=\"$PHP_SELF?md=2&ID=$ID&id=$row[0]\">\n";
-		print_menu_icon ("_db");
-		echo "\t</a></td>\n";
-		echo "\t<td width=\"85\">".$row[1]."&nbsp;<br><br></td>\n";
-		echo "\t<td>".$row[2]."<BR>".$row[3]."<BR>".$row[4];
-//		echo "<HR>";
-		echo "</td>\n";
-		echo '        </TR>';
-	}
+  $result = mysql_query("SELECT id,datum,text_1,text_2,Text_3 from news order by id DESC LIMIT $limit")
+  or die("Query Fehler...");
 
-	mysql_close($db);
-	echo '      </TABLE>';
-	echo "    </TD>\n";
-	echo "    <TD>\n";
-	echo "    .\n";
-	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
-		
+  while ($row = mysql_fetch_row($result))
+  {
+    echo "\t<TR >";
+    echo "\t<td><a href=\"$PHP_SELF?md=2&ID=$ID&id=$row[0]\">\n";
+    print_menu_icon ("_db");
+    echo "\t</a></td>\n";
+    echo "\t<td width=\"85\">".$row[1]."&nbsp;<br><br></td>\n";
+    echo "\t<td>".$row[2]."<BR>".$row[3]."<BR>".$row[4];
+    //		echo "<HR>";
+    echo "</td>\n";
+    echo '        </TR>';
+  }
+
+  mysql_close($db);
+  echo '      </TABLE>';
+  echo "    </TD>\n";
+  echo "    <TD>\n";
+  echo "    .\n";
+  echo '</div>';
+  echo "<!---  ENDE DATEN Spalte   --->\n";
+
 };
 
 /**
@@ -116,18 +116,18 @@ function print_news_liste($ID,$limit)
  * @param unknown $next
  * @param unknown $erf
  * @param unknown $ID
-*/
+ */
 function news_erf($id,$ID)
 {
-	$next = 5;
-    $d = getdate();
-	$row[0] = 0;
-	$row[1] = $d["year"]."-".$d["mon"]."-".$d["mday"];
-	$row[2] = "";
-	$row[3] = "";
-	$row[4] = "";
-	
-	print_news_maske($row, $id, $next, $ID);
+  $next = 5;
+  $d = getdate();
+  $row[0] = 0;
+  $row[1] = $d["year"]."-".$d["mon"]."-".$d["mday"];
+  $row[2] = "";
+  $row[3] = "";
+  $row[4] = "";
+
+  print_news_maske($row, $id, $next, $ID);
 }
 
 /**
@@ -156,101 +156,101 @@ function news_edit($id,$ID)
   $row = mysql_fetch_row($result);
 
   mysql_close($db);
-  
+
   print_news_maske($row, $id, $next, $ID);
 }
 
 /**
- * Erstellt die Bearbeitungsmakse 
+ * Erstellt die Bearbeitungsmakse
  * @param unknown $row
  * @param unknown $id
  * @param unknown $next
  * @param unknown $ID
  */
 function print_news_maske($row, $id, $next, $ID)
-{	
-	global $PHP_SELF;
-	
-    $style = $GLOBALS['style_datatab'];
-	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
-  
-	//  FORMULAR
-	echo "<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID\" METHOD=POST>\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"$row[0]\">\n";
+{
+  global $PHP_SELF;
 
-	echo "\t <TABLE WIDTH=\"100%\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"2\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\" BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
+  $style = $GLOBALS['style_datatab'];
+  echo "<div $style >";
+  echo "<!---  DATEN Spalte   --->\n";
 
-	echo "<tr>\n";
+  //  FORMULAR
+  echo "<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID\" METHOD=POST>\n";
+  echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
+  echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"$row[0]\">\n";
 
-	echo "\t<td WIDTH=\"75\"><b>ID</b></td>\n";
-	echo "<td>\"$row[0]\"&nbsp;</td>\n";
-	echo "</tr>\n";
-	echo "<tr>\n";
-	echo "\t<td><b>Datum</b></td>\n";
-	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[1]\" SIZE=12 MAXLENGTH=12 VALUE=\"$row[1]\">&nbsp;</td>\n";
-	echo "</tr>\n";
-	echo "<tr>\n";
-	echo "\t<td><b>Zeile 1</b></td>\n";
+  echo "\t <TABLE WIDTH=\"100%\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"2\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\" BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
 
-	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[2]\" SIZE=50 MAXLENGTH=50 VALUE=\"$row[2]\">&nbsp;</td>\n";
-	echo "</tr>\n";
-	echo "<tr>\n";
-	echo "\t<td><b>Zeile 2</b></td>\n";
-	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[3]\" SIZE=50 MAXLENGTH=50 VALUE=\"$row[3]\">&nbsp;</td>\n";
-	echo "</tr>\n";
-	echo "<tr>\n";
-	echo "\t<td><b>Zeile 3</b></td>\n";
-	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[4]\" SIZE=50 MAXLENGTH=50 VALUE=\"$row[4]\">&nbsp;</td>\n";
-	echo "</tr>\n";
-	echo "<tr>\n";
-	echo "</tr>\n";
-	echo "<tr>\n";
-	echo "</tr>\n";
-	echo "<tr>\n";
-	echo "\t<td></td>\n";
-	echo "<td> <INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">
-			&nbsp;&nbsp;&nbsp;&nbsp;
-			<INPUT TYPE=\"RESET\" VALUE=\"ABBRECHEN\">
-			</td>\n";
-	echo "</tr>\n";
-	echo "</table>\n";
-	echo "</FORM>\n";
+  echo "<tr>\n";
 
-	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+  echo "\t<td WIDTH=\"75\"><b>ID</b></td>\n";
+  echo "<td>\"$row[0]\"&nbsp;</td>\n";
+  echo "</tr>\n";
+  echo "<tr>\n";
+  echo "\t<td><b>Datum</b></td>\n";
+  echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[1]\" SIZE=12 MAXLENGTH=12 VALUE=\"$row[1]\">&nbsp;</td>\n";
+  echo "</tr>\n";
+  echo "<tr>\n";
+  echo "\t<td><b>Zeile 1</b></td>\n";
+
+  echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[2]\" SIZE=50 MAXLENGTH=50 VALUE=\"$row[2]\">&nbsp;</td>\n";
+  echo "</tr>\n";
+  echo "<tr>\n";
+  echo "\t<td><b>Zeile 2</b></td>\n";
+  echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[3]\" SIZE=50 MAXLENGTH=50 VALUE=\"$row[3]\">&nbsp;</td>\n";
+  echo "</tr>\n";
+  echo "<tr>\n";
+  echo "\t<td><b>Zeile 3</b></td>\n";
+  echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[4]\" SIZE=50 MAXLENGTH=50 VALUE=\"$row[4]\">&nbsp;</td>\n";
+  echo "</tr>\n";
+  echo "<tr>\n";
+  echo "</tr>\n";
+  echo "<tr>\n";
+  echo "</tr>\n";
+  echo "<tr>\n";
+  echo "\t<td></td>\n";
+  echo "<td> <INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <INPUT TYPE=\"RESET\" VALUE=\"ABBRECHEN\">
+      </td>\n";
+  echo "</tr>\n";
+  echo "</table>\n";
+  echo "</FORM>\n";
+
+  echo '</div>';
+  echo "<!---  ENDE DATEN Spalte   --->\n";
 };
 
 function insert($row)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-	or die("Fehler beim verbinden!");
-	if (mysql_select_db($DB_NAME) != TRUE) {
-		echo "Fehler DB";
-	};
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+  or die("Fehler beim verbinden!");
+  if (mysql_select_db($DB_NAME) != TRUE) {
+    echo "Fehler DB";
+  };
 
-	$q ="insert into news (datum,text_1,text_2,text_3) VALUES (\"$row[1]\",\"$row[2]\",\"$row[3]\",\"$row[4]\")";
-	$result = mysql_query($q) or die("insert Fehler....$q.");
+  $q ="insert into news (datum,text_1,text_2,text_3) VALUES (\"$row[1]\",\"$row[2]\",\"$row[3]\",\"$row[4]\")";
+  $result = mysql_query($q) or die("insert Fehler....$q.");
 
-	mysql_close($db);
+  mysql_close($db);
 
 }
 
 function update($row)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-	or die("Fehler beim verbinden!");
-	if (mysql_select_db($DB_NAME) != TRUE) {
-		echo "Fehler DB";
-	};
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+  or die("Fehler beim verbinden!");
+  if (mysql_select_db($DB_NAME) != TRUE) {
+    echo "Fehler DB";
+  };
 
-	$q ="update news set datum=\"$row[1]\",text_1=\"$row[2]\", text_2=\"$row[3]\", text_3=\"$row[4]\"  where id=\"$row[0]\"";
-	$result = mysql_query($q) or die("Fehler....$q.");
+  $q ="update news set datum=\"$row[1]\",text_1=\"$row[2]\", text_2=\"$row[3]\", text_3=\"$row[4]\"  where id=\"$row[0]\"";
+  $result = mysql_query($q) or die("Fehler....$q.");
 
-	mysql_close($db);
+  mysql_close($db);
 
 }
 
@@ -319,56 +319,56 @@ print_kopf($admin_typ,$header_typ,"Admin Bereich",$anrede,$menu_item);
 
 switch($p_md):
 case 5: // Insert -> Erfassen
-	insert($p_row);
-    $md = 0;
+  insert($p_row);
+$md = 0;
 break;
 case 6: // Insert -> Erfassen
-	update($p_row);
-	$md = 0;
-	break;
-	endswitch;
+  update($p_row);
+  $md = 0;
+  break;
+  endswitch;
 
 
 
-switch ($md):
+  switch ($md):
 case 2: // erfassen
-	$menu = array (0=>array("icon" => "7","caption" => "ERFASSEN","link" => "$PHP_SELF?md=1&ID=$ID"),
-			1=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
-	);
-	break;
+    $menu = array (0=>array("icon" => "7","caption" => "ERFASSEN","link" => "$PHP_SELF?md=1&ID=$ID"),
+        1=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
+    );
+    break;
 case 4:  //Bearbeiten
-	$menu = array (0=>array("icon" => "7","caption" => "BEARBEITEN","link" => "$PHP_SELF?md=1&ID=$ID"),
-	1=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=1&ID=$ID")
-	);
-	break;
+  $menu = array (0=>array("icon" => "7","caption" => "BEARBEITEN","link" => "$PHP_SELF?md=1&ID=$ID"),
+  1=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=1&ID=$ID")
+  );
+  break;
 default: // main
-	$menu = array (0=>array("icon" => "7","caption" => "NEWS","link" => "$PHP_SELF?md=1&ID=$ID"),
-	1=>array ("icon" => "_plus","caption" => "Erfassen","link" => "$PHP_SELF?md=1&ID=$ID"),
-	2=>array ("icon" => "_list","caption" => "Alle News","link" => "$PHP_SELF?md=10&ID=$ID"),
-	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_main.php?md=0&ID=$ID")
-	);
-	break;
-	endswitch;
+  $menu = array (0=>array("icon" => "7","caption" => "NEWS","link" => "$PHP_SELF?md=1&ID=$ID"),
+  1=>array ("icon" => "_plus","caption" => "Erfassen","link" => "$PHP_SELF?md=1&ID=$ID"),
+  2=>array ("icon" => "_list","caption" => "Alle News","link" => "$PHP_SELF?md=10&ID=$ID"),
+  5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_main.php?md=0&ID=$ID")
+  );
+  break;
+  endswitch;
 
-//	print_menu($menu);
-	print_menu_status($menu);
-	
-	switch ($md):
+  //	print_menu($menu);
+  print_menu_status($menu);
+
+  switch ($md):
 case 1:
-	news_erf($id,$ID);
-	break;
+    news_erf($id,$ID);
+  break;
 case 2:
-	news_edit($id,$ID);
-	break;
+  news_edit($id,$ID);
+  break;
 case 10:
-	print_news_liste($ID,10);
-	break;
+  print_news_liste($ID,10);
+  break;
 default:
-	print_news_liste($ID,10);
-	break;
-endswitch;
+  print_news_liste($ID,10);
+  break;
+  endswitch;
 
-	print_md_ende();
+  print_md_ende();
 
 
-	?>
+  ?>

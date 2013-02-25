@@ -140,13 +140,13 @@ body {
 #status {
 	width: 100%;
 	height:25px;
-	border: solid 0px silver;
+	border: solid 1px silver;
 	padding-left: 10px;
 }
 
 #statusheader {
 	float: left;
-	border: solid 1px silver;
+	border: solid 0px silver;
     width:100px;
 	height:25px;
 	font-size: medium;
@@ -269,6 +269,7 @@ body {
 /*	background-color: silver; */
     border: solid 1px black;
 }
+
 #menuitem p a:hover {
 	color: black;
     border: solid 1px black;
@@ -280,6 +281,26 @@ body {
 	vertical-align: middle;
     border: solid 0px silver;
     margin-right: 1px;
+}
+
+#menu table {
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	text-align: left;
+	font-weight: normal;
+    border:thin solid silver; 
+    border-spacing:0px;
+    padding:0px;
+}
+
+#menu td {
+	text-align: left;
+	font-weight: normal;
+    border:thin solid silver; 
+    border-spacing:0px;
+    padding:2px;
 }
 
 #menu ul {
@@ -308,7 +329,7 @@ body {
 
 #datatab {
     margin-left: 200px;
-  	padding: 20px;
+  	padding: 5px;
 /*	font-family: inherit; /* monospace; /* cursive; /*  serif; /*   sans-serif;*/*/
 	font-weight: normal;
 	font-size: normal;
@@ -316,15 +337,17 @@ body {
 #datatab p{
 	font-family: "Comic Sans MS"";
     text-align: left;
+/*    border: solid 1px silver;*/
 }
 
 #datatab td{
-	vertical-align: text-top;	
+/*	vertical-align: text-top;*/	
     text-align: left;
 }
+
 #datatable {
     margin-left: 0px;
-  	padding: 10px;
+  	padding: 5px;
 /*	font-family: inherit; /* monospace; /* cursive; /*  serif; /*   sans-serif;*/*/
 	font-weight: normal;
 	font-size: normal;
@@ -347,15 +370,91 @@ body {
         border: solid 0px silver;
 }
 
-#datatable td a {
-		color: gray;
+#datatable p a:hover {
+	color: black;
+    border: solid 1px black;
+}
+
+#datatable table {
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	text-align: left;
+	font-weight: normal;
+    border:thin solid silver; 
+    border-spacing:0px;
+    padding:0px;
+}
+
+#datatable td {
+	text-align: left;
+	font-weight: normal;
+    border:thin solid silver; 
+    border-spacing:0px;
+    padding:2px;
+}
+
+#datatable td  {
+	color: black;
         text-decoration: none;
         font-weight: normal;
         display: block;
-        border: solid 0px silver;
+        border: solid 1px silver;
+}
+
+#datatable td a {
+	color: gray;
+        text-decoration: none;
+        font-weight: normal;
+        display: block;
+        border: solid 1px silver;
+}
+
+#datatable td a:hover {
+	color: black;
+    	border: solid 1px black;
 }
 
 #datatable a {
+	color: gray;
+        text-decoration: none;
+        font-weight: normal;
+        display: block;
+        border: solid 1px silver;
+}
+
+#datatable a:hover {
+	color: black;
+    	border: solid 1px black;
+}
+
+#datatable img {
+	width: 21px;
+	height: 21px;
+	vertical-align: middle;
+    border: solid 0px silver;
+    margin-right: 1px;
+}
+
+#datalist {
+    margin-left: 0px;
+  	padding: 5px;
+/*	font-family: inherit; /* monospace; /* cursive; /*  serif; /*   sans-serif;*/*/
+	font-weight: normal;
+	font-size: normal;
+}
+
+#datalist p {
+	margin-top: 1px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-bottom: 1px;
+	text-align: left;
+	font-weight: normal;
+}
+
+#datalist p a {
 		color: gray;
         text-decoration: none;
         font-weight: normal;
@@ -363,7 +462,59 @@ body {
         border: solid 0px silver;
 }
 
-#datatable img {
+#datalist p a:hover {
+	color: black;
+    border: solid 1px black;
+}
+
+#datalist table {
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	text-align: left;
+	font-weight: normal;
+    border: solid 0px silver;
+/*    border:thin solid silver;*/ 
+    border-spacing:0px;
+    padding:0px;
+}
+
+#datalist td {
+	text-align: left;
+	font-weight: normal;
+    border:thin solid silver; 
+    border-spacing:0px;
+    padding:2px;
+}
+
+#datalist td a {
+	color: gray;
+        text-decoration: none;
+        font-weight: normal;
+        display: block;
+        border: solid 1px silver;
+}
+
+#datalist td a:hover {
+	color: black;
+    	border: solid 1px black;
+}
+
+#datalist a {
+	color: gray;
+        text-decoration: none;
+        font-weight: normal;
+        display: block;
+        border: solid 1px silver;
+}
+
+#datalist a:hover {
+	color: black;
+    	border: solid 1px black;
+}
+
+#datalist img {
 	width: 21px;
 	height: 21px;
 	vertical-align: middle;

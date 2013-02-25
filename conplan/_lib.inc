@@ -391,14 +391,8 @@ function get_menu_items($bereich, $sub,$item)
 	mysql_select_db($DB_NAME);
 	$table = 'menu_item';
 
-	//   $q = "SELECT item,item_titel,item_typ,item_icon,item_link,item_sort,sub FROM menu_bereich
-	//   join menu_sub on menu_sub.ref_bereich = menu_bereich.ID
-	//  join menu_item on menu_item.ref_sub=menu_sub.ID
-	//  where bereich = \"$bereich\" and sub= \"$sub\"  and item=\"$item\" order by item_sort";
-	$q="SELECT item,item_titel,item_typ,item_icon,item_link,item_sort FROM menu_bereich
-	join menu_sub on menu_sub.ref_bereich = menu_bereich.ID
-	join menu_item on menu_item.ref_sub=menu_sub.ID
-	where bereich = \"$bereich\" and sub= \"$sub\" and item=\"$item\" order by item_sort";
+	$q="SELECT sub,item_titel,item_typ,item_icon,item_link,item_sort FROM menu_item
+	where bereich = \"$bereich\" and sub= \"$sub\"  order by item_sort";
 
 	$result = mysql_query($q) ;
 	if (!$result) {
@@ -827,30 +821,75 @@ function mfd_delete($name, $id)
 
 };
 
+function mfd_insert($mfd_list, $row)
+{
+  global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  
+  $table = $mfd_list["table"];
+  $fields =$mfd_list["fields"];
+  $join = ""; //$mfd_list["join"];
+  $where ="";
+  $order = "";
+//  echo $fields;
+  $field_name = make_mfd_fieldlist($fields);
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+  or die("Fehler beim verbinden!");
+  
+  $field_num = count($field_name);
+  // der PK (ID) muss in der Fieldmenge enthalten sein, als erster!!
+  $q ="insert INTO  $table  (";
+  $q = $q."$field_name[1]";
+  for ($i=2; $i<$field_num; $i++)
+  {
+  $q = $q.",$field_name[$i]";
+  };
+  
+  $q = $q.") VALUES (\"$row[1]\" ";
+  for ($i=2; $i<$field_num; $i++)
+  {
+    $q = $q.",\"$row[$i]\" ";
+  };
+  $q = $q.")";
+  if (mysql_select_db($DB_NAME) != TRUE) 
+  {
+   echo "Fehler DB";
+  }
+//  echo $q;
+  $result = mysql_query($q) or die("InsertFehler....$q.");
+  mysql_close($db);
+  
+}
+
+
+function mfd_insert_name($name,$row)
+{
+  global $mfd_list;
+  
+  $mfd_list = get_mfd_list($name);
+  mfdlist_insert($mfd_list, $row);
+}
 
 /**
- * Macht ein Tabellen update auf mfd Tabelle
+ * Macht ein Tabellen update mit mfd 
  * @param unknown $name 	// referenz auf mfd
  * @param unknown $row		// Datensatz Row mit Datenfelder
  */
-function mfd_update($name, $row)
+function mfd_update($mfd_list, $row)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $mfd_list;
 
-	$mfd_list = get_mfm_list($name);
 	$id = $row['ID'];
 	$table = $mfd_list["table"];
 	$fields =$mfd_list["fields"];
 	$join = ""; //$mfd_list["join"];
 	$where ="id = $id";
 	$order = "";
-	$field_name = split(',',$fields);
+	$field_name = make_mfd_fieldlist($fields);
+	$field_num = count($field_name);
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
 	or die("Fehler beim verbinden!");
 
-	$field_num = count($field_name);
 	// der PK (ID) muss in der Fieldmenge enthalten sein, als erster!!
 	$q ="update $table  SET ";
 	$q = $q."$field_name[1]=\"$row[1]\" ";
@@ -873,6 +912,271 @@ function mfd_update($name, $row)
 	mysql_close($db);
 
 };
+
+/**
+ * Macht ein Tabellen update auf Tabelle von mfd $name 
+ * @param unknown $name 	// referenz auf mfd
+ * @param unknown $row		// Datensatz Row mit Datenfelder
+ */
+function mfd_update_name($name, $row)
+{
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $mfd_list;
+
+  $mfd_list = get_mfd_list($name);
+  
+  mfd_update($mfd_list, $row); 
+};
+
+
+/**
+ * Fragt die Feldliste in der Datenabnk ab.
+ * ACHTUNG ! die Datenbank connection muss vorhanden sein !
+ * @param unknown $table
+ */
+function get_fieldlist($table)
+{
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+  mysql_select_db($DB_NAME);
+  $result = mysql_query("SHOW COLUMNS FROM $table");
+  return $result;
+}
+
+/**
+ * Ermittelt die Default Width anhand des Datentyp
+ * @param unknown $typ
+ * @return number|multitype:
+ */
+function get_fieldtyp_width($typ)
+{
+  if (stripos($typ,"int")>0)
+  {
+    return 8;
+  } else if(stripos($typ,"varchar")>0)
+  {
+    $s =  explode("(",$typ);
+    $len = explode(")",$s[1]);
+    return $len;
+  } else if(stripos($typ,"text")>0)
+  {
+    return 12;
+  } else if(stripos($typ,"enum")>0)
+  {
+    return 5;
+  } else
+  {
+    return 10;
+  }
+}
+
+/**
+ * erzeugt eine komma separatet list der Feldnamen
+ * @param unknown $table
+ * @return string
+ */
+function get_fieldname_list($table)
+{
+  $result = get_fieldlist($table);
+
+
+  $row = mysql_fetch_row($result);
+  $list = $row[0];
+  while ($row = mysql_fetch_row($result))
+  {
+    $list = $list.",".$row[0];
+  }
+  return $list;
+}
+
+
+/**
+ * erzeugt eine mfd definition fuer eine tabelle
+ * @param unknown $table
+ * @return string
+ */
+function make_mfd_table($table, $mfd_name)
+{
+  $mfd_list['mfd'] = $mfd_name;
+  $mfd_list['table'] = $table;
+  $mfd_list['titel'] = $table;
+  $mfd_list['fields'] = get_fieldname_list($table);
+  $mfd_list['join'] = "";
+  $mfd_list['where'] = "id > 0";
+  $mfd_list['order'] = "id";
+  return $mfd_list;
+}
+
+
+/**
+ * Erstellt eine Datenliste fuer ein mfd entsprechend dem mfd_cols
+ * @param unknown $ID
+ * @param unknown $mfd_list
+ * @param unknown $mfd_cols
+ */
+function print_mfd_liste( $ID, $mfd_list, $mfd_cols)
+{
+  // 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $PHP_SELF;
+
+  $style = $GLOBALS['style_datalist'];
+  echo "<div $style >";
+  echo "<!---  DATEN Spalte   --->\n";
+
+  echo "      <TABLE   BORDER=\"0\" BGCOLOR=\"\" >";
+  // 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+  // 	or die("Fehler beim verbinden!");
+
+  //	mysql_select_db($DB_NAME);
+
+  $result = mfd_data_result($mfd_list)
+	or die("Query Fehler...");
+
+  echo "\t<TR>";
+  //Print header
+  for($i=0; $i<count($mfd_cols); $i++) 
+  {
+    $mfd_col = $mfd_cols[$i];
+    $width = $mfd_col["mfd_width"]*5;
+    echo "\t\t<TD width=\"$width\">";
+    echo "<p>";
+    echo $mfd_col["mfd_field_titel"];
+    echo "</p>";
+    echo "\t\t</TD>";
+    if($i > 32) exit;
+  }
+  echo "\t</TR>";
+  // Printdata
+  while ($row = mysql_fetch_row($result))
+  {
+    echo "\t<TR>";
+    echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=".$row[0]."\">\n"; //
+    print_menu_icon_mfd ("_db","Datensatz bearbeiten");
+    echo "\t</a></td>\n";
+    for ($i = 1; $i < count($mfd_cols); $i++)
+      {
+		  echo "\t<td width=\"".$mfd_cols[$i]["mfd_field_titel"]."\">".$row[$i]."\n";
+		  echo "</td>\n";
+  }
+  echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=".$row[0]."\">\n"; //
+  print_menu_icon_mfd ("_del","Datensatz löschen");
+		echo "\t</a></td>\n";
+		echo "\t</TR>";
+  }
+
+  // 	mysql_close($db);
+	echo '      </TABLE>';
+	echo "    </TD>\n";
+	echo "    <TD>\n";
+	echo "    \n";
+	echo '</div>';
+	echo "<!---  ENDE DATEN Spalte   --->\n";
+
+};
+
+/**
+ * Erstellt eine Eingabe Detailmaske als FORM
+ * $next beinhaltet die nächste zu rufende Funktion
+ * @param unknown $mfd_list
+ * @param unknown $row
+ * @param unknown $id
+ * @param unknown $next
+ * @param unknown $erf
+ * @param unknown $ID
+ */
+function print_mfd_maske($mfd_list, $row, $id,$next,$ID, $mfd_cols )
+{
+  //  Fielddefs holen  bzw. defaultwerte erzeugen
+  global $PHP_SELF;
+
+  $style = $GLOBALS['style_datalist'];
+  echo "<div $style >";
+  echo "<!---  DATEN Spalte   --->\n";
+
+  //  FORMULAR
+  echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST>\n";
+  echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
+  echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"$row[0]\">\n";
+  echo "<INPUT TYPE=\"hidden\" NAME=\"ID\"   VALUE=\"$ID\">\n";
+
+  echo "\t <TABLE WIDTH=\"100%\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"2\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\" BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
+
+	echo "<tr>\n";
+	echo "\t<td WIDTH=\"75\"><b>".$mfd_cols[0]["mfd_field_titel"]."</b></td>\n";
+	echo "<td>\"$row[0]\"&nbsp;</td>\n";
+	echo "</tr>\n";
+
+	for ($i = 1; $i < count($mfd_cols); $i++)
+    {
+    echo "<tr>\n";
+    echo "\t<td><b>".$mfd_cols[$i]["mfd_field_titel"]."</b></td>\n";
+    echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[1]\" SIZE=".$mfd_cols[$i]["mfd_width"]." MAXLENGTH=".$mfd_cols[$i]["mfd_width"]." VALUE=\"$row[$i]\">&nbsp;</td>\n";
+    echo "</tr>\n";
+  }
+
+  echo "<tr>\n";
+  echo "</tr>\n";
+	echo "<tr>\n";
+	echo "\t<td></td>\n";
+	echo "<td> <INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<INPUT TYPE=\"RESET\" VALUE=\"ABBRECHEN\">
+			</td>\n";
+			echo "</tr>\n";
+			echo "</table>\n";
+	echo "</FORM>\n";
+
+	echo '</div>';
+	echo "<!---  ENDE DATEN Spalte   --->\n";
+};
+
+/**
+ * Erstellt eine mfd Detailmaske zum erfassen eines Datensatzes (Insert)
+ * HINWEIS : Im rufenden Modul muss post_md = 5 als insert ausgewertet werden
+ * @param unknown $id
+ * @param unknown $ID
+ * @param unknown $mfd_list
+ * @param unknown $mfd_cols
+ */
+function mfd_erf($id, $ID, $mfd_list, $mfd_cols)
+//
+// $id   beinhaltet den zu bearbeitenden Datensatz
+//
+{
+  for ($i=1; $i<count($mfd_cols); $i++)
+  {
+    $row[$i] = "";
+  }
+  $row[0] = 0;
+  $next = 5;	// Datenfunktion Insert
+
+  print_mfd_maske($mfd_list,$row, $id,$next,$ID, $mfd_cols );
+}
+
+/**
+ * Erstellt eine mfd Detailmaske zum editieren des Datensatzes (Update)
+ * HINWEIS : Im rufenden Modul muss post_md = 6 als update ausgewertet werden
+ * @param unknown $id
+ * @param unknown $ID
+ * @param unknown $mfd_list
+ * @param unknown $mfd_cols
+ */
+function mfd_edit($id, $ID, $mfd_list, $mfd_cols)
+//
+//  $id   beinhaltet den zu bearbeitenden Datensatz
+//
+{
+  //  Daten
+  //
+  $next = 6;	// Datenfunktion Update
+  $result = mfd_detail_result($mfd_list, $id);
+  $row = mysql_fetch_row($result);
+
+
+  print_mfd_maske($mfd_list,$row, $id,$next,$ID, $mfd_cols );
+
+}
 
 
 /**

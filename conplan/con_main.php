@@ -96,17 +96,34 @@ Referenz eingeführt bei conplan
 Revision 1.3  2002/02/26 18:41:39  windu
 keyword aktiviert
 
+
+Ver 3.0  / 06.02.2013
+Es werden CSS-Dateien verwendert.
+Es wird eine strikte Trennung von Content und Layout durchgefuehrt.
+Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues
+Layoutpfades in der config.inc
+Ansonsten bleibt der Inhalt der Seiten identisch.
+
+$style = $GLOBALS['style_datalist'];
+echo "<div $style >";
+echo "<!---  DATEN Spalte   --->\n";
+
+echo '</div>';
+echo "<!---  ENDE DATEN Spalte   --->\n";
+
 */
 
-include "config.inc";
-include "login.inc";
-include "lib.inc";
-include "head.inc";
+include_once "_config.inc";
+include_once "_lib.inc";
+include_once "_head.inc";
 
 function print_main_data($ID)
 {
 
-	echo "    <TD>\n";
+  $style = $GLOBALS['style_datalist'];
+  echo "<div $style >";
+  echo "<!---  DATEN Spalte   --->\n";
+  
 	echo "      <TABLE WIDTH=\"100%\" BORDER=\"1\" BGCOLOR=\"\" >\n";
 	echo "        <TR>\n";
 	echo "          <TD><!-- Row:1, Col:1 -->\n";
@@ -249,7 +266,9 @@ function print_main_data($ID)
 	echo "    </TD>\n";
 	echo "    <TD>\n";
 	echo "    .\n";
-	echo "    </TD>\n";
+
+echo '</div>';
+echo "<!---  ENDE DATEN Spalte   --->\n";
 };
 
 // ---------------------------------------------------------------
@@ -259,66 +278,48 @@ function print_main_data($ID)
 // ----------------------------------------------------------------
 // Prüfung ob User  berechtigt ist
 
-$c_md = $_COOKIE['md'];
-$p_md = $_POST['md'];
-$md = $_GET['md'];
-$ID = $_GET['ID'];
+$BEREICH = 'SL';
+$PHP_SELF = $_SERVER['PHP_SELF'];
 
+$md     = GET_md(0);
+$daten  = GET_daten("");
+$sub    = GET_sub("main");
+$ID     = GET_SESSIONID("");
 
-session_start ($ID);
-$user       = $_SESSION[user];
-$user_lvl   = $_SESSION[user_lvl];
-$spieler_id = $_SESSION[spieler_id];
-$user_id 		= $_SESSION[user_id];
+session_start($ID);
+$user       = $_SESSION["user"];
+$user_lvl   = $_SESSION["user_lvl"];
+$spieler_id = $_SESSION["spieler_id"];
+$user_id 	= $_SESSION["user_id"];
 
 if ($ID == "")
 {
-	$session_id = 'FFFF';
-	header ("Location: main.php");  // Umleitung des Browsers
-	exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
-	// Code ausgeführt wird.
+  $session_id = 'FFFF';
+  header ("Location: main.php");  // Umleitung des Browsers
+  exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
+  // Code ausgeführt wird.
 }
 
-if (getuser($user,$pw) != "TRUE")
+if (is_admin()==FALSE)
 {
-	header ("Location: main.php");  // Umleitung des Browsers
-	//       zur PHP-Web-Seite.
-	exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
-	// Code ausgeführt wird.
+  $session_id = 'FFFF';
+  header ("Location: main.php");  // Umleitung des Browsers
+  exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
+  // Code ausgeführt wird.
 }
-else
-{
-	$l1 = (int) $user_lvl;
-	$l2 = (int) $lvl_sl[14];
-	if ($l1 >= $l2)
-	{
-		header ("Location: main.php?md=0");  /* Umleitung des Browsers
-		zur HTML-StartSeite. */
-		exit;  /* Sicher stellen, das nicht trotz Umleitung nachfolgender
-		Code ausgeführt wird. */
-	};
-};
-if ($md == 99)
-{
-	session_destroy();
-	header ("Location: main.php?md=0");  /* Umleitung des Browsers
-	zur PHP-Web-Seite. */
-	exit;  /* Sicher stellen, das nicht trotz Umleitung nachfolgender
-	Code ausgeführt wird. */
-};
-
-print_header("SL Bereich");
+  
+  
+print_header("Admin Bereich");
 
 print_body(2);
 
 $spieler_name = get_spieler($spieler_id); //Auserwählter\n";
 
-print_kopf(9,0,"SL Bereich","Sei gegrüsst Wissender ");
+$menu_item = $menu_item_help;
+$anrede["name"] = $spieler_name;
+$anrede["formel"] = "Sei gegrüsst Meister ";
 
-
-echo "POST : $p_md / GET : $md / ID :$ID / Spieler = $spieler_id";
-
-print_md();
+print_kopf($admin_typ,$header_typ,"<b>SL Bereich</b>",$anrede,$menu_item);
 
 switch ($md):
 case 10:
@@ -327,19 +328,19 @@ case 10:
 	);
 	break;
 default:
-	$menu = array (0=>array("icon" => "7","caption" => "SL-MAIN","link" => ""),
-	1=>array("icon" => "5","caption" => "Legenden","link" => "con_leg_liste.php?md=0&ID=$ID"),
-	2=>array("icon" => "5","caption" => "Magie","link" => "con_mag_liste.php?md=0&ID=$ID"),
-	3=>array("icon" => "5","caption" => "Artefakte","link" => "con_art_liste.php?md=0&ID=$ID"),
-	4=>array("icon" => "1","caption" => "Planung","link" => "con_liste.php?md=0&ID=$ID"),
-	5=>array("icon" => "1","caption" => "SL-Forum","link" => "con_forum.php?md=0&ID=$ID"),
-	6=>array("icon" => "1","caption" => "NSC","link" => "con_nsc_liste.php?md=0&ID=$ID"),
-	7=>array("icon" => "5","caption" => "Regelwerk","link" => "con_regel_liste.php?md=0&ID=$ID"),
-	8=>array ("icon" => "1","caption" => "Bibliothekar","link" => "con_bib_liste.php?md=0&ID=$ID"),
-	9=>array("icon" => "5","caption" => "Tränke","link" => "con_trank_liste.php?md=0&ID=$ID"),
-	10=>array("icon" => "5","caption" => "Pflanzen","link" => "con_trankstoff_liste.php?md=0&ID=$ID"),
-	17=>array("icon" => "10","caption" => "Hilfe","link" => "$PHP_SELF?md=10&ID=$ID&item=conplan"),
-	18=>array("icon" => "6","caption" => "Zurück","link" => "larp.php?md=0&ID=$ID")
+	$menu = array (0=>array("icon" => "0","caption" => "SL-MAIN","link" => ""),
+	1=>array("icon" => "_list","caption" => "Legenden","link" => "con_leg_liste.php?md=0&ID=$ID"),
+	2=>array("icon" => "_list","caption" => "Magie","link" => "con_mag_liste.php?md=0&ID=$ID"),
+	3=>array("icon" => "_list","caption" => "Artefakte","link" => "con_art_liste.php?md=0&ID=$ID"),
+	4=>array("icon" => "_folder","caption" => "Planung","link" => "con_liste.php?md=0&ID=$ID"),
+	5=>array("icon" => "_folder","caption" => "SL-Forum","link" => "con_forum.php?md=0&ID=$ID"),
+	6=>array("icon" => "_folder","caption" => "NSC","link" => "con_nsc_liste.php?md=0&ID=$ID"),
+	7=>array("icon" => "_list","caption" => "Regelwerk","link" => "con_regel_liste.php?md=0&ID=$ID"),
+	8=>array ("icon" => "_list","caption" => "Bibliothekar","link" => "con_bib_liste.php?md=0&ID=$ID"),
+	9=>array("icon" => "_list","caption" => "Tränke","link" => "con_trank_liste.php?md=0&ID=$ID"),
+	10=>array("icon" => "_list","caption" => "Pflanzen","link" => "con_trankstoff_liste.php?md=0&ID=$ID"),
+	17=>array("icon" => "_help","caption" => "Hilfe","link" => "$PHP_SELF?md=10&ID=$ID&item=conplan"),
+	18=>array("icon" => "_stop","caption" => "Zurück","link" => "larp.php?md=0&ID=$ID")
 	);
 	endswitch;
 
@@ -351,7 +352,8 @@ case 10:
 		print_hilfe($ID,$item,$id);
 	break;
 default:
-	print_main_data($ID);
+    $daten="con_main.html"; 
+	print_pages($daten);
 	break;
 	endswitch;
 

@@ -140,9 +140,13 @@ function make_html_page($data)
 // 	$header = get_template_header();
 // 	$body   = get_template_bodystart();
 // 	$end	= get_template_end();
-	$lines[0] = $data;
-	$page = $lines;
-// 	$page = appendarray($header, $body);
+    $lines[0] = "<html>";
+    $lines[0] = "<body>";
+	$lines[1] = $data;
+    $lines[2] = "</body>";
+    $lines[0] = "</html>";
+    $page = $lines;
+	// 	$page = appendarray($header, $body);
 // 	$page = appendarray($page, $lines);
 // 	$page = appendarray($page, $end);	
 	return $page;
@@ -171,8 +175,6 @@ function lese_html_lines ($path,$name)
  */
 function write_html_file($filename, $page)
 {
-	if (is_writable($filename)) 
-	{
 		// In our example we're opening $filename in append mode.
 		// The file pointer is at the bottom of the file hence
 		// that's where $somecontent will go when we fwrite() it.
@@ -194,11 +196,6 @@ function write_html_file($filename, $page)
 		}
 		fclose($handle);
 		return TRUE;
-	} else 
-	{
-		echo "The file $filename is not writable";
-		return FALSE;
-	}
 	
 }
 

@@ -211,6 +211,8 @@ function get_htmlbody($lines)
 function read_html_page($html_file)
 {
 	// pruefe ob File vorhanden
+  if (file_exists($html_file)) 
+  {
 	$file = fopen ($html_file, "r");
 	// keine leere seite anzeigen
 	if (sizeof($html_file) == 0 ) { return false; }
@@ -220,15 +222,6 @@ function read_html_page($html_file)
 	//     $style = $GLOBALS['style_status1'];
 	//     echo '<p $style> Caught exception: ',  $e->getMessage()," </p>\n";
 	//   	return;
-
-	if (!$file)
-	{
-		$style = $GLOBALS['style_status1'];
-		echo "<p $style > n";
-		echo "<p $style>Datei konnte nicht ge&ouml;ffnet werden.</p>\n";
-		echo "</p> \n";
-		return false;
-	};
 	$i=0;
 	while (!feof ($file))
 	{
@@ -238,6 +231,14 @@ function read_html_page($html_file)
 	fclose($file);
 
 	return $lines;
+  } else
+  {
+  	$style = $GLOBALS['style_datatab'];
+  	echo "<p $style > n";
+  	echo "<p $style>Datei konnte nicht ge&ouml;ffnet werden.</p>\n";
+  	echo "</p> \n";
+  	return false;
+  };
 }
 
 

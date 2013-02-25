@@ -41,190 +41,110 @@ include_once "_config.inc";
 include_once "_lib.inc";
 include_once "_head.inc";
 
-
-function print_mfd_liste( $ID, $mfd_list, $mfd_cols)
-{
-// 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $PHP_SELF;
-	global $mfd_col;
-
-	$style = $GLOBALS['style_datatab'];
-	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
-
-	echo "      <TABLE WIDTH=\"700\"  BORDER=\"0\" BGCOLOR=\"\" >";
-// 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-// 	or die("Fehler beim verbinden!");
-
-//	mysql_select_db($DB_NAME);
-
-	$result = mfd_data_result($mfd_list)
-	or die("Query Fehler...");
-
-  echo "\t<TR>";
-	foreach ($mfd_cols as $mfd_col)
-    { 
-      echo "\t\t<TD>";
-      echo $mfd_col["mfd_field_titel"];
-      echo "\t\t</TD>";
-    }
-    echo "\t</TR>";
-    while ($row = mysql_fetch_row($result))
-	{
-	    echo "\t<TR>";
-		echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=".$row[0]."\">\n"; //
-		print_menu_icon_mfd ("_db","Datensatz bearbeiten");
-		echo "\t</a></td>\n";
-		for ($i = 1; $i < count($mfd_cols); $i++) 
-		{
-		  echo "\t<td width=\"".$mfd_cols[$i]["mfd_field_titel"]."\">".$row[$i]."\n";
-		  echo "</td>\n";
-		}
-		echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=".$row[0]."\">\n"; //
-		print_menu_icon_mfd ("_del","Datensatz löschen");
-		echo "\t</a></td>\n";
-		echo "\t</TR>";
-	}
-
-// 	mysql_close($db);
-	echo '      </TABLE>';
-	echo "    </TD>\n";
-	echo "    <TD>\n";
-	echo "    \n";
-	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
-	
-};
-
-
-function mfd_erf($id, $ID, $mfd_list, $mfd_cols)
-//
-// $id   beinhaltet den zu bearbeitenden Datensatz
-//
-{
-  for ($i=1; $i<count($mfd_cols); $i++)
-  {
-    $row[$i] = "";
-  }	    	
-  $row[0] = 0;
-  $next = 5;	// Datenfunktion Insert
-  
-  print_mfd_maske($mfd_list,$row, $id,$next,$ID, $mfd_cols );
-}
-
-function mfd_edit($id, $ID, $mfd_list, $mfd_cols)
-//
-//  $id   beinhaltet den zu bearbeitenden Datensatz
-//
-{
-	//  Daten
-	//
-  $next = 6;	// Datenfunktion Update
-    $result = mfd_detail_result($mfd_list, $id);
-  $row = mysql_fetch_row($result);
-  
-  
-  print_mfd_maske($mfd_list,$row, $id,$next,$ID, $mfd_cols );
-
-}
-
 /**
- * Erstellt eine Eingabe Detailmaske als FORM 
- * $next beinhaltet die nächste zu rufende Funktion
- * @param unknown $mfd_list
- * @param unknown $row
- * @param unknown $id
- * @param unknown $next
- * @param unknown $erf
- * @param unknown $ID
+ * Erzeugt eine liste der Tabelle der Datenbank als Menu
  */
-function print_mfd_maske($mfd_list, $row, $id,$next,$ID, $mfd_cols )
+function print_sub_list($ID,$sub)
 {
-	//  Fielddefs holen  bzw. defaultwerte erzeugen
-	global $PHP_SELF;
-	
-	$style = $GLOBALS['style_datatab'];
-	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
-	
-	//  FORMULAR
-	echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST>\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"$row[0]\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"ID\"   VALUE=\"$ID\">\n";
+  global $PHP_SELF;
 
-	echo "\t <TABLE WIDTH=\"100%\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"2\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\" BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 
-	echo "<tr>\n";
-	echo "\t<td WIDTH=\"75\"><b>".$mfd_cols[0]["mfd_field_titel"]."</b></td>\n";
-	echo "<td>\"$row[0]\"&nbsp;</td>\n";
-	echo "</tr>\n";
-	
-	for ($i = 1; $i < count($mfd_cols); $i++) 
-	{
-    	echo "<tr>\n";
-    	echo "\t<td><b>".$mfd_cols[$i]["mfd_field_titel"]."</b></td>\n";
-    	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[1]\" SIZE=".$mfd_cols[$i]["mfd_width"]." MAXLENGTH=".$mfd_cols[$i]["mfd_width"]." VALUE=\"$row[$i]\">&nbsp;</td>\n";
-    	echo "</tr>\n";
-	}
-	
-	echo "<tr>\n";
-	echo "</tr>\n";
-	echo "<tr>\n";
-	echo "\t<td></td>\n";
-	echo "<td> <INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">
-			&nbsp;&nbsp;&nbsp;&nbsp;
-			<INPUT TYPE=\"RESET\" VALUE=\"ABBRECHEN\">
-			</td>\n";
-    echo "</tr>\n";
-	echo "</table>\n";
-	echo "</FORM>\n";
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+
+  mysql_select_db($DB_NAME);
+  $q= "SELECT ID, ref_bereich, sub FROM menu_sub ";
+  $result = mysql_query($q) ;
+  $style = $GLOBALS['style_menu_tab1'];
+
+  $style = "id=\"style_datalist\"";
+  echo "<div $style >";
+  echo "<!---  DATEN Spalte   --->\n";
+  echo "<div $style >";
+  echo "<!---  MENU Spalte   --->\n";
+
+  if (!$result) {
+    $message  = 'Invalid query: ' . mysql_error() . "\n";
+    $message .= 'Whole query: ' . $q;
+    die($message);
+
+  } else
+  {
+    $i=0;
+    while ($row = mysql_fetch_row($result))
+    {
+      $pages[$i+1] = $row[1]." | ".$row[2];
+      $subs[$i+1] = $row[2];
+      $i++;
+    }
+  }
+  // Hearderzeile einfuegen
+  $pages[0] = "SubBereiche";
+  $tableanz = count($pages);
+  echo "<div >";
+  echo "<p>";
+  echo " ";
+  echo "</p >";
+  echo "</div >";
+
+
+  $style = "id=\"menu\"";
+  echo "<div $style >";
+  echo "<!---  DATEN Spalte   --->\n";
+  echo "<table  border=\"1\"> \n"; //width=\"100%\"
+  echo "<tbody >";
+
+  for($i=0; $i<count($pages); $i++)
+  {
+  $name = $pages[$i];
+  echo "\t<tr> \n";
+		echo "\t\t<td width=\"25\"> \n";
+		if ($i>0)
+		{
+		echo "<a href=\"$PHP_SELF?md=0&daten=$name&sub=$subs[$i]&ID=$ID \" >";
+		print_menu_icon("_db","Edit SubBereich");
+    		    echo "</a>";
+  } else
+  {
+    echo $tableanz;
+  }
+
+    echo "\t\t</td> \n";
+    echo "\t\t<td> \n";
+		echo "$name";
+    echo "";
+		    echo "\t\t</td> \n";
+		    echo "\t\t<td> \n";
+		if ($i>0)
+		{
+		  echo "<a href=\"$PHP_SELF?md=1&daten=$name&sub=$subs[$i]&ID=$ID \"> ";
+		  print_menu_icon("_branch","Preview Menu in separatem Fenster");
+		      echo "</a>";
+		    }        echo "";
+		        echo "";
+		        echo "\t\t</td> \n";
+		        echo "\t</tr> \n";
+		    }
+
+	echo "</tbody>";
+		    echo "</table>\n";
+    echo '</div>';
 
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
-};
-
-function insert($row)
-{
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-	or die("Fehler beim verbinden!");
-	if (mysql_select_db($DB_NAME) != TRUE) {
-		echo "Fehler DB";
-	};
-
-	$q ="insert into news (datum,text_1,text_2,text_3) VALUES (\"$row[1]\",\"$row[2]\",\"$row[3]\",\"$row[4]\")";
-	$result = mysql_query($q) or die("insert Fehler....$q.");
-
-	mysql_close($db);
+		    echo "<!---  ENDE DATEN Spalte   --->\n";
 
 }
 
-function update($row)
-{
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-	or die("Fehler beim verbinden!");
-	if (mysql_select_db($DB_NAME) != TRUE) {
-		echo "Fehler DB";
-	};
 
-	$q ="update news set datum=\"$row[1]\",text_1=\"$row[2]\", text_2=\"$row[3]\", text_3=\"$row[4]\"  where id=\"$row[0]\"";
-	$result = mysql_query($q) or die("Fehler....$q.");
-
-	mysql_close($db);
-
-}
-
-function make_mfd_list($bereich, $sub, $item)
+function make_mfd_list($bereich, $sub)
 {
 	$mfd_list = array(
 			"mfd"=>"menu_item", 
 			"table"=>"menu_item",
 			"tite"=>"MenuItems",
-			"fields"=>"menu_item.ID,ref_sub,item,item_titel,item_typ,item_icon,item_link,item_sort",
-			"join"=>"join menu_bereich on bereich = \"$bereich\" join menu_sub on menu_sub.ref_bereich = menu_bereich.ID  ",
-			"where"=>"menu_item.ref_sub=menu_sub.ID and sub= \"$sub\" and item=\"$item\" ", 
+			"fields"=>"menu_item.ID,bereich,sub,item_titel,item_typ,item_icon,item_link,item_sort",
+			"join"=>"", //join menu_bereich on bereich = \"$bereich\" join menu_sub on menu_sub.ref_bereich = menu_bereich.ID  ",
+			"where"=>"sub=\"$sub\" ", 
 			"order"=>"item_sort");
 	return $mfd_list;
 }
@@ -249,15 +169,15 @@ function make_mfd_cols($mfd_list)
 		$mfd_col['mfd_titel'] = "MenuItem";
 		$mfd_col['mfd_pos'] = $i;
 		$mfd_col['mfd_field'] = $fields[$i];
-		$mfd_col['mfd_field_titel'] = "Ref";
-		$mfd_col['mfd_width'] = 5;
+		$mfd_col['mfd_field_titel'] = "Bereich";
+		$mfd_col['mfd_width'] = 15;
 		$mfd_cols[$i] = $mfd_col;
 	$i=2;
 		$mfd_col['mfd_name'] = $mfd_list["mfd"];
 		$mfd_col['mfd_titel'] = "MenuItem";
 		$mfd_col['mfd_pos'] = $i;
 		$mfd_col['mfd_field'] = $fields[$i];
-		$mfd_col['mfd_field_titel'] = $fields[$i];
+		$mfd_col['mfd_field_titel'] = "SubBereich";
 		$mfd_col['mfd_width'] = 15;
 		$mfd_cols[$i] = $mfd_col;
 	$i=3;
@@ -320,6 +240,7 @@ $PHP_SELF = $_SERVER['PHP_SELF'];
 $md     = GET_md(0);
 $id     = GET_id(0);
 $daten  = GET_daten("");
+$sub    = GET_sub("");
 
 $ID     = GET_SESSIONID("");
 $p_md   = POST_md(0);
@@ -364,16 +285,18 @@ $anrede["formel"] = "Sei gegrüsst Meister ";
 
 print_kopf($admin_typ,$header_typ,"Menu Konfigurator",$anrede,$menu_item);
 
-$mfd_list = make_mfd_list($bereich, $sub, $item);
+
+
+$mfd_list = make_mfd_list($BEREICH, $sub);
 $mfd_cols = make_mfd_cols($mfd_list);
 
 switch($p_md):
 case 5: // Insert -> Erfassen
-	insert($p_row);
+	mfd_insert($mfd_list, $p_row);
 	$md = 0;
 break;
 case 6: // Update -> Edit
-	update($p_row);
+	mfd_update(mfd_list, $p_row);
 	$md = 0;
 	break;
 	endswitch;
@@ -399,7 +322,7 @@ case 10: // main
 	break;
 default: // main
 	$menu = array (0=>array("icon" => "7","caption" => "MENUITEMS","link" => "$PHP_SELF?md=1&ID=$ID"),
-	1=>array ("icon" => "_plus","caption" => "Erfassen","link" => "$PHP_SELF?md=2&ID=$ID"),
+	1=>array ("icon" => "_plus","caption" => "Neu","link" => "$PHP_SELF?md=2&ID=$ID"),
 	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_config.php?md=0&ID=$ID")
 	);
 	break;
@@ -417,6 +340,7 @@ case 4:
 case 10:
 	break;
 default:
+    print_sub_list($ID,$sub);
 	print_mfd_liste($ID,$mfd_list,$mfd_cols);
 	break;
 endswitch;

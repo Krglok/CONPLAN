@@ -61,44 +61,6 @@ $field_item = array
 );
 
 /**
- * Fragt die Feldliste in der Datenabnk ab.
- * ACHTUNG ! die Datenbank connection muss vorhanden sein !
- * @param unknown $table
- */
-function get_fieldlist($table)
-{
-	$result = mysql_query("SHOW COLUMNS FROM $table");
-	return $result;
-}
-
-/**
- * Ermittelt die Default Width anhand des Datentyp
- * @param unknown $typ
- * @return number|multitype:
- */
-function get_fieldtyp_width($typ)
-{
-	if (stripos($typ,"int")>0)
-	{
-		return 8;
-	} else if(stripos($typ,"varchar")>0)
-	{
-		$s =  explode("(",$typ);
-		$len = explode(")",$s[1]); 
-		return $len;
-	} else if(stripos($typ,"text")>0)
-	{
-		return 12;
-	} else if(stripos($typ,"enum")>0)
-	{
-	   return 5;
-	} else 
-	{
-	  return 10;
-	}
-}
-
-/**
  * erzeugt automatisch die col-definitionen fuer eine Tabelle
  * @param unknown $table
  */
@@ -127,43 +89,43 @@ function get_mfd_fields_default($table,$mfd_name)
  * mit den definition einer tabelle nach mfd schema
  * @param unknown $table
  */
-function show_table_info($table,$ID)
+function show_mfd_cols($table,$ID)
 {
     print_table_list($ID);
     $mfd_name = "mfd_".$table;
 	$mfd_cols = get_mfd_fields_default($table, $mfd_name);
 	
-	$style = $GLOBALS['style_datatab'];
+	$style = $GLOBALS['style_datalist'];
 	echo "<div $style > \n";
 	echo "<!---  DATEN Spalte   --->\n";
-	echo "<TABLE border=\"1\"> \n";
-	echo "<TBODY> \n";
-		echo "<TR> \n>";
-			echo "<TD>\n";
+ 	echo "<TABLE > \n";
+ 	echo "<TBODY> \n";
+	  echo "<TR> \n";
+		echo "<TD>\n";
   		echo "Tabelle";
-			echo "</TD> \n";
+		echo "</TD> \n";
 			
-			echo "<TD> \n";
-	  	echo "<b>".$table."</b>";
-			echo "</TD> \n";
+		echo "<TD> \n";
+	  	echo "<b>$table</b>";
+		echo "</TD> \n";
 				
-			echo "<TD> \n";
-			echo "";
-			echo "</TD> \n";
+		echo "<TD> \n";
+		echo "";
+		echo "</TD> \n";
 		echo "</TR> \n";
 
 		echo "<TR> \n";
-			echo "<TD> \n";
-			echo "Fieldname \n";
-			echo "</TD> \n";
-				
-			echo "<TD> \n";
-			echo "Titel \n";
-			echo "</TD> \n";
+		echo "<TD> \n";
+		echo "Fieldname \n";
+		echo "</TD> \n";
 			
-			echo "<TD> \n";
-			echo "Width \n";
-			echo "</TD> \n";
+		echo "<TD> \n";
+		echo "Titel \n";
+		echo "</TD> \n";
+		
+		echo "<TD> \n";
+		echo "Width \n";
+		echo "</TD> \n";
 		echo "</TR> \n";
 	foreach ($mfd_cols as $mfd_col)
 	{
@@ -173,59 +135,145 @@ function show_table_info($table,$ID)
 		echo "</TD> \n";
 		
 		echo "<TD> \n";
-		echo $mfd_col["mfd_titel"];
+		echo $mfd_col["mfd_field_titel"];
 		echo "</TD> \n";
 			
 		echo "<TD> \n";
 		echo $mfd_col["mfd_width"];
 		echo "</TD> \n";
 		echo "</TR> \n";
-		
 	}		
 	echo "</TBODY> \n";
 	echo "</TABLE> \n";
-	echo '</div> \n';
+	echo "</div> \n";
 	echo "<!---  ENDE DATEN Spalte   --->\n";
 	
 }
 
-/**
- * erzeugt eine komma separatet list der Feldnamen 
- * @param unknown $table
- * @return string
-*/
-function get_fieldname_list($table)
+
+function show_mfd($table,$ID)
 {
-	$result = get_fieldlist($table);
-	$list = "";
-	foreach($result as $row)
-	{
-		$list = $list.",".$row["Field"];
-	}
-	return $list;
+  global $PHP_SELF;
+  $next = 5;
+//  $name = "";
+  $sub  = "admin";
+  print_table_list($ID);
+  
+  $mfd = make_mfd_table($table,$table);
+  
+  $style = $GLOBALS['style_datalist'];
+  echo "<div $style > \n";
+  echo "<!---  DATEN Spalte   --->\n";
+  echo "<TABLE > \n";
+        echo "<TR> \n";
+        echo "<TD>\n";
+        echo "Breich";
+        echo "</TD> \n";
+        echo "<TD> \n";
+        echo "<b>ADMIN</b>";
+        echo "</TD> \n";
+  	    echo "</TR> \n";
+
+  echo "<TBODY> \n";
+        echo "<TR> \n";
+        echo "<TD>\n";
+        echo "Sub";
+        echo "</TD> \n";
+        echo "<TD> \n";
+        echo "<b>main</b>";
+        echo "</TD> \n";
+  	    echo "</TR> \n";
+
+      echo "<TR> \n";
+        echo "<TD>\n";
+        echo "Mfd";
+        echo "</TD> \n";
+        echo "<TD> \n";
+        echo "<b>".$mfd['mfd']."</b>";
+        echo "</TD> \n";
+  	    echo "</TR> \n";
+
+		echo "<TR> \n";
+		echo "<TD> \n";
+		echo "Table \n";
+		echo "</TD> \n";
+		echo "<TD> \n";
+		echo $mfd['table']." \n";
+		echo "</TD> \n";
+		echo "</TR> \n";
+		
+		echo "<TR> \n";
+		echo "<TD> \n";
+		echo "Fields \n";
+		echo "</TD> \n";
+		echo "<TD> \n";
+		echo $mfd['fields']." \n";
+		echo "</TD> \n";
+		echo "</TR> \n";
+		
+		echo "<TR> \n";
+		echo "<TD> \n";
+		echo "Join \n";
+		echo "</TD> \n";
+		 
+		echo "<TD> \n";
+		echo $mfd['join']." \n";
+		echo "</TD> \n";
+		
+		echo "<TD> \n";
+		echo "\n";
+		echo "</TD> \n";
+		echo "</TR> \n";
+		
+		echo "<TR> \n";
+		echo "<TD> \n";
+		echo "Where \n";
+		echo "</TD> \n";
+		 
+		echo "<TD> \n";
+		echo $mfd['where']." \n";
+		echo "</TD> \n";
+		echo "</TR> \n";
+		
+		echo "<TR> \n";
+		echo "<TD> \n";
+		echo "Order \n";
+		echo "</TD> \n";
+		echo "<TD> \n";
+		echo $mfd['order']." \n";
+		echo "</TD> \n";
+		echo "</TR> \n";
+		
+	echo "</TBODY> \n";
+	echo "</TABLE> \n";
+	echo "<p>";
+	echo "<FORM ACTION=\"$PHP_SELF?md=3&daten=mfd_list&ID=$ID\" METHOD=POST>\n";
+	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
+//	echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$name\">\n";
+	echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"0\">\n";
+    echo "<INPUT TYPE=\"hidden\" NAME=\"row[1]\"   VALUE=\"ADMIN\">\n";
+	echo "<INPUT TYPE=\"hidden\" NAME=\"row[2]\"   VALUE=\"main\">\n";
+    echo "<INPUT TYPE=\"hidden\" NAME=\"row[3]\"   VALUE=\"".$mfd['mfd']."\">\n";
+    echo "<INPUT TYPE=\"hidden\" NAME=\"row[4]\"   VALUE=\"".$mfd['table']."\">\n";
+    echo "<INPUT TYPE=\"hidden\" NAME=\"row[5]\"   VALUE=\"".$mfd['table']."\">\n";
+    echo "<INPUT TYPE=\"hidden\" NAME=\"row[6]\"   VALUE=\"".$mfd['fields']."\">\n";
+    echo "<INPUT TYPE=\"hidden\" NAME=\"row[7]\"   VALUE=\"".$mfd['join']."\">\n";
+    echo "<INPUT TYPE=\"hidden\" NAME=\"row[8]\"   VALUE=\"".$mfd['where']."\">\n";
+    echo "<INPUT TYPE=\"hidden\" NAME=\"row[9]\"   VALUE=\"".$mfd['order']."\">\n";
+    echo "<p>";
+	echo "<INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">";
+    echo "&nbsp;&nbsp;&nbsp;&nbsp;";
+    echo "<INPUT TYPE=\"RESET\" VALUE=\"Reset\">";
+    echo "</p>";
+	echo "</div> \n";
+  	echo "<!---  ENDE DATEN Spalte   --->\n";
+  
 }
 
-/**
- * erzeugt eine mfd definition fuer eine tabelle
- * @param unknown $table
- * @return string
- */
-function make_mfd_table($table, $mfd_name)
-{
-	$mfd_list['mfd'] = mfd_name;
-	$mfd_list['table'] = $table;
-	$mfd_list['titel'] = $table;
-	$mfd_list['fields'] = get_fieldname_list($table);
-	$mfd_list['join'] = "";
-	$mfd_list['where'] = "id > 0";
-	$mfd_list['order'] = "id";
-	return $mfd_list;
-}
 
 /**
  * Erzeugt eine liste der Tabelle der Datenbank als Menu
  */
-
 function print_table_list($ID)
 {
   global $PHP_SELF;
@@ -239,7 +287,7 @@ function print_table_list($ID)
     $result = mysql_query($q) ;
     $style = $GLOBALS['style_menu_tab1'];
 
-	$style = "id=\"style_datatab\"";
+	$style = "id=\"style_datalist\"";
 	echo "<div $style >";
 	echo "<!---  DATEN Spalte   --->\n";
     echo "<div $style >";
@@ -261,6 +309,7 @@ function print_table_list($ID)
     }
     // Hearderzeile einfuegen
     $pages[0] = "Tabellen";
+    $tableanz = count($pages);
   echo "<div >";
   echo "<p>";
   echo " ";
@@ -271,7 +320,7 @@ function print_table_list($ID)
   $style = "id=\"menu\"";
   echo "<div $style >";
   echo "<!---  DATEN Spalte   --->\n";
-  echo "<table  border=\"1\"> \n"; //width=\"100%\"
+  echo "<table  > \n"; //width=\"100%\"
   echo "<tbody >";
 
   for($i=0; $i<count($pages); $i++)
@@ -280,11 +329,15 @@ function print_table_list($ID)
     echo "\t<tr> \n";
 		echo "\t\t<td width=\"25\"> \n";
 		if ($i>0)
-      {
+        {
     		echo "<a href=\"$PHP_SELF?md=2&daten=$name&ID=$ID \" >";
-    		print_menu_icon("_db","Edit Html Datei");
+    		print_menu_icon("_db","Show Default MFD");
     		    echo "</a>";
-		}
+		} else
+        {
+          echo $tableanz;
+        }
+		
 		echo "\t\t</td> \n";
 		echo "\t\t<td> \n";
 		echo "$name";
@@ -294,11 +347,10 @@ function print_table_list($ID)
 		if ($i>0)
 		{
 		  echo "<a href=\"$PHP_SELF?md=3&daten=$name&ID=$ID \"> ";
-		  print_menu_icon("_branch","Preview Html Datei in separatem Fenster");
+		  print_menu_icon("_branch","Show Default MFD COLS");
 		      echo "</a>";
-  }
-  echo "";
-  echo "";
+        }        echo "";
+        echo "";
 		echo "\t\t</td> \n";
 		echo "\t</tr> \n";
 	}
@@ -306,6 +358,7 @@ function print_table_list($ID)
 	echo "</tbody>";
 	echo "</table>\n";
     echo '</div>';
+    
 	echo '</div>';
     echo "<!---  ENDE DATEN Spalte   --->\n";
 	
@@ -347,7 +400,8 @@ $user_id 	= $_SESSION["user_id"];
 if ($ID == "")
 {
   $session_id = 'FFFF';
-  header ("Location: main.php");  // Umleitung des Browsers
+  echo "session";
+//  header ("Location: main.php");  // Umleitung des Browsers
   exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
   // Code ausgeführt wird.
 }
@@ -355,7 +409,8 @@ if ($ID == "")
 if (is_admin()==FALSE)
 {
   $session_id = 'FFFF';
-  header ("Location: main.php");  // Umleitung des Browsers
+  echo "Admin";
+//  header ("Location: main.php");  // Umleitung des Browsers
   exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
   // Code ausgeführt wird.
 }
@@ -383,7 +438,8 @@ $item		 = "regeln";
 
 switch($p_md):
 case 5: // Insert -> Erfassen
-//	insert($p_row);
+    $mfd_list = make_mfd_table($daten, $daten);
+    mfd_insert($mfd_list, $p_row);
 	$md = 0;
 break;
 case 6: // Insert -> Erfassen
@@ -397,13 +453,13 @@ case 6: // Insert -> Erfassen
 	switch ($md):
 case 2: // erfassen
 		$menu = array (0=>array("icon" => "7","caption" => "DATA","link" => "$PHP_SELF?md=1&ID=$ID"),
-		        1=>array("icon" => "1","caption" => "NEU","link" => ""),
+		        1=>array("icon" => "1","caption" => "MFD","link" => ""),
 				2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
 		);
 		break;
-case 4:  //Bearbeiten
+case 3:  //Bearbeiten
 	$menu = array (0=>array("icon" => "7","caption" => "DATA","link" => "$PHP_SELF?md=1&ID=$ID"),
-		        1=>array("icon" => "1","caption" => "ÄNDERN","link" => ""),
+		        1=>array("icon" => "1","caption" => "MFD-COLS","link" => ""),
 	            2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=1&ID=$ID")
 	);
 	break;
@@ -415,8 +471,7 @@ case 10: // main
 	break;
 default: // main
 	$menu = array (0=>array("icon" => "7","caption" => "DATA","link" => "$PHP_SELF?md=1&ID=$ID"),
-	1=>array ("icon" => "_plus","caption" => "Editor","link" => "$PHP_SELF?md=2&ID=$ID"),
-	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_main.php?md=0&ID=$ID")
+	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_config.php?md=0&ID=$ID")
 	);
 	break;
 	endswitch;
@@ -425,9 +480,12 @@ default: // main
 
 switch ($md):
 case 2:
-    show_table_info($daten,$ID);
+    show_mfd($daten,$ID);
 	break;
-case 4:
+case 3:
+    show_mfd_cols($daten,$ID);
+	break;
+	case 4:
 	break;
 case 10:
 	break;

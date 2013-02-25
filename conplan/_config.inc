@@ -32,22 +32,11 @@ Variable fuer die Styletypen
 $LOG$
 */
 
-// DB-Verbindung
- $DB_HOST='192.168.5.173';	// dies ist WICHTIG !!!!
- $DB_NAME='db451197603';		//
- $DB_USER='dbo451197603';			// Achtung user muss vorhanden sein und die rechte auf die DB haben
- $DB_PASS='dbo451197603';				// !!
-// $DB_HOST='db451197603.db.1and1.com';
-// $DB_NAME='db451197603';
-// $DB_USER='dbo451197603';
-// $DB_PASS='db42039950';
-
-
-$TBL_USER='user_liste';		// Tabellname fuer die Userliste m, muss bestimmte Felder beinhalten
-//$DB_INTERN='db42039950';	// Alternative DB not used !!!
+include_once '_db.inc';
 
 // Default Session fuer Gäste
-$session_id ="FFFF";
+$session_id ="FFFF";    // die Default Einstellung fuehrt zu einem Fehler
+                        // die Session muss im Hauptprogramm initialisiert werden session_start($ID)
 
 // allgemeine Konfigurationsparameter
 $version = "3.0.0";
@@ -133,21 +122,12 @@ $style_datatab = "id=\"datatab\"";
 $style_datatable = "id=\"datatable\"";
 // Datensatz counter ??
 $style_data_list_count  = "id=\"data_list_count\"";
-//Datensatzliste
+//Datensatzlisten im Datenbereich
 $style_datalist = "id=\"datalist\"";
 // Eingabe fuer Detailmaske, variable breite
 $style_data_detail = "id=\"data_detail\"";
 // textspalte ohne fuer Detailmaske, feste breite
 $style_data_text = "id=\"data_text\"";
-
-//class , id name Balkemnenu
-$css_balkenmenu = "balkenmenu.css";
-$style_balken_tab = "id=\"balken_tab\"";
-$style_balken_menu1 = "id=\"balken_menu1\"";
-$style_balken_menu2 = "id=\"balken_menu2\"";
-$style_balken_menu_r = "id=\"balken_menu_r\"";
-$style_balken_data = "id=\"balken_data\"";
-$style_balken_page = "id=\"balken_page\"";
 
 
 // Zugriffsrechte -------------------------------------

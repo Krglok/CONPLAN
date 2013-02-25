@@ -84,11 +84,11 @@ function print_thema_liste($ID,$foren_id,$user)
 	//Header
 	$field_num = mysql_num_fields($result);
 	echo "\t<tr>\n";
-	echo "\t<td width=\"25\"><b> </b></td>\n";
-	echo "\t<td width=\"300\"><b>Thema</b></td>\n";
-	echo "\t<td width=\"75\"><b>Author</b></td>\n";
-	echo "\t<td width=\"75\"><b>Datum</b></td>\n";
-	echo "\t<td><b>Anwort</b></td>\n";
+	echo "\t<td width=\"25\"><p><b> </b></p></td>\n";
+	echo "\t<td width=\"300\"><p><b>Thema</b></p></td>\n";
+	echo "\t<td width=\"75\"><p><b>Author</b></p></td>\n";
+	echo "\t<td width=\"75\"><p><b>Datum</b></p></td>\n";
+	echo "\t<td><p><b>Anwort</b></p></td>\n";
 	echo "\n</tr>\n";
 
 	//Daten
@@ -170,7 +170,7 @@ function print_thema($ID,$foren_id,$id,$user)
     	echo "\t<td><b>$row[6]</b></td>\n";
     	echo "\t<td>$row[4]&nbsp;</td>\n";
     	echo "\t<td>$row[5]&nbsp;</td>\n";
-    	echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=$row[0]&foren_id=$row[1]&top_id=$row[2]&post_id=$row[0]&betreff=Re:$row[6]&next=2\">\n";
+    	echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=$row[0]&foren_id=$row[1]&post_id=$row[0]&betreff=Re:$row[6]&next=2\">\n";
     	//echo "\t<IMG SRC=\"images/feder1.gif\" BORDER=\"0\" HEIGHT=\"20\" WIDTH=\"30\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\">\n";
     	print_menu_icon ("_edit","Anwort zu dem Thema");
     	echo "\t</td>\n";
@@ -320,7 +320,7 @@ function print_thema_lesen($ID,$foren_id,$id,$user)
 }
 
 
-function print_thema_erf($ID,$id, $foren_id, $post_id, $author, $datum, $betreff, $text, $user_id,$next)
+function print_thema_erf($ID,$id, $foren_id, $post_id, $author, $datum, $betreff, $text, $user_id,$next, $md)
 {
 	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
     global $PHP_SELF;
@@ -356,7 +356,7 @@ function print_thema_erf($ID,$id, $foren_id, $post_id, $author, $datum, $betreff
 
 	//  FORMULAR
 	echo "\n";
-	echo "\t<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID\" METHOD=POST>\n";
+	echo "\t<FORM ACTION=\"$PHP_SELF?md=$md&ID=$ID&post_id=$post_id\" METHOD=POST>\n";
 	echo "\t<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"5\">\n";
 	echo "\t<INPUT TYPE=\"hidden\" NAME=\"foren_id\" VALUE=\"$foren_id\">\n";
 	echo "\t<INPUT TYPE=\"hidden\" NAME=\"post_id\" VALUE=\"$post_id\">\n";
@@ -430,15 +430,15 @@ function erf_thema($ID, $foren_id, $top_id, $post_id, $author, $datum, $betreff,
 	$err = "Daten gespeichert ";
 	mysql_close($db);
 	// Datenbank Ende =======================
-	if ($post_id == 0)
-	{
-		header ("Location: $PHP_SELF?md=1&ID=$ID");  /* Umleitung des Browsers zur PHP-Web-Seite. */
-	} else
-	{
-		header ("Location: $PHP_SELFE?md=2&ID=$ID&id=$id&post_id=$post_id");
-	};
-	exit;  /* Sicher stellen, das nicht trotz Umleitung nachfolgender
-	Code ausgeführt wird. */
+// 	if ($post_id == 0)
+// 	{
+// 		header ("Location: $PHP_SELF?md=1&ID=$ID");  /* Umleitung des Browsers zur PHP-Web-Seite. */
+// 	} else
+// 	{
+// 		header ("Location: $PHP_SELFE?md=2&ID=$ID&id=$id&post_id=$post_id");
+// 	};
+// 	exit;  /* Sicher stellen, das nicht trotz Umleitung nachfolgender
+// 	Code ausgeführt wird. */
 	return $err;
 }
 
@@ -519,7 +519,7 @@ case 3:  // neues Themne
 	break;
 case 4:  // neue Antwort , ACHTUNG id kreuzverweis
 	$menu = array (0=>array("icon" => "99","caption" => "NEU","link" => ""),
-	2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=2&ID=$ID&post_id= $g_id")
+	2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=2&ID=$ID&post_id= $g_post_id")
 	);
 	break;
 case 5:
@@ -553,10 +553,10 @@ case 2:
 	print_thema($ID,$foren_id,$g_id,$user);
 	break;
 case 3:
-	print_thema_erf($ID,$g_id, $foren_id, $g_post_id, $spieler_name, $g_datum, $g_betreff, $g_text, $user_id,$g_next);
+	print_thema_erf($ID,$g_id, $foren_id, $g_post_id, $spieler_name, $g_datum, $g_betreff, $g_text, $user_id,$g_next,1);
   	break;
 case 4:
-	print_thema_erf($ID,$g_id, $foren_id, $g_post_id, $spieler_name, $g_datum, $g_betreff, $g_text, $user_id,$g_next);
+	print_thema_erf($ID,$g_id, $foren_id, $g_post_id, $spieler_name, $g_datum, $g_betreff, $g_text, $user_id,$g_next,2);
 	break;
 case 5:
 	echo "UPDATE";

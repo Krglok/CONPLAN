@@ -141,6 +141,48 @@ function print_pages_list($ID)
 }
 
 
+function pages_erf ($name,$ID)
+{
+  global $PHP_SELF;
+  $path = "./pages";
+  $lines = ""; //lese_html_lines ($path,$name);
+  $next  = 6;
+
+  $style = $GLOBALS["style_datatable"];
+  echo "<div $style >";
+
+  echo "<!---  DATEN Spalte   --->\n";
+  echo "<p>";
+  echo "<FORM ACTION=\"$PHP_SELF?md=3&daten=$name&ID=$ID\" METHOD=POST>\n";
+  echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
+//  echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$name\">\n";
+  //	echo "<INPUT TYPE=\"hidden\" NAME=\"ID\"   VALUE=\"$ID\">\n";
+  echo "<p>";
+  echo "<INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">";
+	echo "&nbsp;&nbsp;&nbsp;&nbsp;";
+	echo "<INPUT TYPE=\"RESET\" VALUE=\"Reset\">";
+    echo "<INPUT TYPE=\"TEXT\" NAME=\"id\" SIZE=25 MAXLENGTH=25 VALUE=\"$name\">\n";
+	echo "</p>";
+
+	$text = $lines[0];
+	for ($i=1; $i<count($lines); $i++)
+    {
+      $text = $text.$lines[$i];
+}
+	echo "<textarea   name=\"editor1\"  COLS=\"80\" ROWS=\"34\" >"; //class=\"ckeditor\"
+	echo $text;
+	echo "</textarea>";
+
+	echo "<!--  Text editor Konfiguration-->";
+	echo "  <script type=\"text/javascript\">";
+	echo " CKEDITOR.replace('editor1');";
+	echo "  </script>";
+	echo "</p>";
+	    echo '</div>';
+	    echo "<!---  ENDE DATEN Spalte   --->\n";
+
+}
+
 function pages_edit ($name,$ID)
 {
   global $PHP_SELF;
@@ -156,12 +198,13 @@ function pages_edit ($name,$ID)
     echo "<p>";
 	echo "<FORM ACTION=\"$PHP_SELF?md=3&daten=$name&ID=$ID\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$name\">\n";
+//	echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$name\">\n";
 //	echo "<INPUT TYPE=\"hidden\" NAME=\"ID\"   VALUE=\"$ID\">\n";
 	echo "<p>";
 	echo "<INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">";
 	echo "&nbsp;&nbsp;&nbsp;&nbsp;";
 	echo "<INPUT TYPE=\"RESET\" VALUE=\"Reset\">";
+    echo "<INPUT TYPE=\"TEXT\" NAME=\"id\" SIZE=25 MAXLENGTH=25 readonly VALUE=\"$name\">\n";
 	echo "</p>";
 	
 	$text = $lines[0];
@@ -269,17 +312,17 @@ case 5: // Insert -> Erfassen
 //	insert($p_row);
     echo $path."/".$p_id;
 	schreibe_hmtl_lines($path,$p_id,$p_editor1);
-	$daten = $p_id;
+//	$daten = $p_id;
     echo "Insert speichern";
-	$md = 3;
+	$md = 0;
 break;
 case 6: // Insert -> Erfassen
 //	update($p_row);
 	schreibe_hmtl_lines($path,$p_id,$p_editor1);
 //    echo "Update speichern";
     $md = 3;
-	break;
-	endswitch;
+break;
+endswitch;
 
 
 //mneu aufbereitung 
@@ -300,8 +343,7 @@ case 2:  //Bearbeiten
 case 3:  //Bearbeiten
 	$menu = array (0=>array("icon" => "7","caption" => "HTML Pages","link" => ""),
 		        2=>array("icon" => "1","caption" => "ÄNDERN","link" => ""),
-	            1=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID"),
-	            3=>array ("icon" => "1","caption" => $daten,"link" => "")
+	            1=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
 	);
 	break;
 	default: // main
@@ -316,7 +358,7 @@ case 3:  //Bearbeiten
 
 switch ($md):
 case 1:
-	//pages_new($daten);
+	pages_erf($daten,$ID);
 	break;
 case 2:
     // Edit
@@ -335,4 +377,4 @@ endswitch;
 	print_md_ende();
 
 
-	?>
+?>
