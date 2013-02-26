@@ -300,7 +300,7 @@ if ($ID == "")
   // Code ausgeführt wird.
 }
 
-if (is_admin()==FALSE)
+if (is_sl()==FALSE)
 {
   $session_id = 'FFFF';
   header ("Location: main.php");  // Umleitung des Browsers

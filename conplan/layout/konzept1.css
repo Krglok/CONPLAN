@@ -163,30 +163,32 @@ body {
 	float: left;
 	color: black;
 	border: solid 0px silver;
-    width:100px;
+/*    width:50px;*/
 }
 
 #statusitem p {
 	margin-top: 1px;
-	margin-left: 0px;
-	margin-right: 0px;
+	margin-left: 3px;
+	margin-right: 3px;
 	margin-bottom: 1px;
+	padding-left: 3px;
+	padding-right: 3px;
 	text-align: left;
 	font-weight: normal;
 }
 
 #statusitem p a {
-		color: gray;
-        text-decoration: none;
-        font-weight: normal;
-        display: block;
-        border: solid 0px silver;
+	color: gray;
+    text-decoration: none;
+    font-weight: normal;
+    display: block;
+    border: solid 0px silver;
 }
 
 /*  will not do in ie9, so disabled */
 #statusitem p:hover {
 /*	background-color: silver; */
-    border: solid 1px black;
+/*    border: solid 1px black;*/
 }
 #statusitem p a:hover {
 	color: black;
@@ -254,6 +256,7 @@ body {
 	margin-bottom: 1px;
 	text-align: left;
 	font-weight: normal;
+	border: solid 0px silver;
 }
 
 #menuitem p a {
