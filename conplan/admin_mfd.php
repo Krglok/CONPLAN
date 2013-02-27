@@ -11,14 +11,9 @@ Rev.    :  3.0
 
 Author  :  Olaf Duda
 
-beschreibung : realisiert die Bearbeitungsfunktionen für eine Tabelle.
-Es werden automatisch daten nach dem MFD Schema erstellt.
-MFD = Main Formular Data, beschreibt eine Tabelle und die
-Daten dieser Tabelle die in einer Datenliste angezeigt
-werden sollen.
-Mit diesem Schema koennen einheitliche Anzeige- und
-Bearbeitungsfunktionen benutzt werden, da die Funktionen nicht
-an die Tabelleneigenschaften gebunden sind.
+beschreibung : MFD = Main Formular Data
+Das modul realisiert die Bearbeitungsfunktionen für die MFD Daten.
+Es werden automatisch Daten fuer MFD Schema und MFD-COLS Schema erstellt.
 Das MFD Schema wird als Library abgelegt und bietet die Funktionen
 - Anzeige einer Datenliste mit Bearbeitungsaufruf  und Deleteaufruf
 - Anzeige einer Detailmaske nach Standardscheme mit Speichern
@@ -48,69 +43,8 @@ include_once "_config.inc";
 include_once "_lib.inc";
 include_once "_head.inc";
 include_once '_edit.inc';
+include_once '_mfd_lib.inc';
 
-
-// function make_mfd_mfd()
-// {
-//   $mfd_list = array
-//   (
-//   "breich"=>"ADMIN",
-//   "sub"=>"main",
-//   "mfd"=>"mfd_list",
-//   "table"=>"mfd_list",
-//   "fields"=>"ID,ref_bereich,ref_sub,mfd_name,mfd_table,mfd_titel,mfd_fields,mfd_join,mfd_where,mfd_order",
-//   "join"=>"",
-//   "where"=>"id > 0",
-//   "order"=>"id"
-//   );
-// }
-
-function make_mfd_cols($mfd_list)
-{
-  $i=0;
-  // Reihenfolge der menu_item nach spalte item_sort
-  $mfd_col['mfd_name'] = $mfd_list["mfd"];
-  $mfd_col['mfd_titel'] = "MFD-LIST";
-  $mfd_col['mfd_pos'] = $i;
-  $mfd_col['mfd_field'] = "ID";
-  $mfd_col['mfd_field_titel'] = "ID";
-  $mfd_col['mfd_width'] = 5;
-  $mfd_cols[$i] = $mfd_col;
-  $i=1;
-  // Reihenfolge der menu_item nach spalte item_sort
-  $mfd_col['mfd_name'] = $mfd_list["mfd"];
-  $mfd_col['mfd_titel'] = "MFD-LIST";
-  $mfd_col['mfd_pos'] = $i;
-  $mfd_col['mfd_field'] = "bereich";
-  $mfd_col['mfd_field_titel'] = "bereich";
-  $mfd_col['mfd_width'] = 15;
-  $mfd_cols[$i] = $mfd_col;
-  $i=2;
-  $mfd_col['mfd_name'] = $mfd_list["mfd"];
-  $mfd_col['mfd_titel'] = "MFD-LIST";
-  $mfd_col['mfd_pos'] = $i;
-  $mfd_col['mfd_field'] = "sub";
-  $mfd_col['mfd_field_titel'] = "subBereich";
-  $mfd_col['mfd_width'] = 15;
-  $mfd_cols[$i] = $mfd_col;
-  $i=3;
-  $mfd_col['mfd_name'] = $mfd_list["mfd"];
-  $mfd_col['mfd_titel'] = "MFD-LIST";
-  $mfd_col['mfd_pos'] = $i;
-  $mfd_col['mfd_field'] = "mfd_name";
-  $mfd_col['mfd_field_titel'] = "MFD-Name";
-  $mfd_col['mfd_width'] = 25;
-  $mfd_cols[$i] = $mfd_col;
-  $i=4;
-  $mfd_col['mfd_name'] = $mfd_list["mfd"];
-  $mfd_col['mfd_titel'] = "MFD-LIST";
-  $mfd_col['mfd_pos'] = $i;
-  $mfd_col['mfd_field'] = "mfd_table";
-  $mfd_col['mfd_field_titel'] = "Tabelle";
-  $mfd_col['mfd_width'] = 25;
-  $mfd_cols[$i] = $mfd_col;
-  return $mfd_cols;
-}
 
 // ---------------------------------------------------------------
 // ---------    MAIN ---------------------------------------------
@@ -185,18 +119,18 @@ $item		 = "regeln";
 // fuer die Tabellen Operationen
 $mfd_list = make_mfd_table("mfd_list", "mfd_list");
 // Fuer die Anzeige Listen
-$mfd_cols = make_mfd_cols($mfd_list);
+$mfd_cols = make_mfd_cols_default($mfd_list['table'], $mfd_list['mfd']);
 
 switch($p_md):
 case 5: // Insert -> Erfassen
   mfd_insert($mfd_list, $p_row);
-$md = 0;
-break;
-case 6: // Insert -> Erfassen
-  //	update($p_row);
   $md = 0;
   break;
-  endswitch;
+case 6: // Insert -> Erfassen
+  mfd_update($mfd_list, $p_row);
+  $md = 0;
+  break;
+endswitch;
 
 
 
@@ -215,7 +149,7 @@ case 4:  //Bearbeiten
   break;
 case 10: // main
   $menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=1&ID=$ID"),
-  1=>array ("icon" => "_plus","caption" => "Erfassen","link" => "$PHP_SELF?md=2&ID=$ID"),
+  1=>array ("icon" => "_tadd","caption" => "Erfassen","link" => "$PHP_SELF?md=2&ID=$ID"),
   5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_config.php?md=0&ID=$ID")
   );
   break;

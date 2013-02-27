@@ -136,7 +136,7 @@ if ($item == '')
 	"1"=>array ("icon" => "$menu_list","caption" => "Spieler","link" => "larp_sc_liste.php?md=1&ID=$ID","itemtyp"=>"0"),
 	"2"=>array ("icon" => "$menu_folder","caption" => "Forum Intern","link" => "larp_forum_1.php?md=1&ID=$ID","itemtyp"=>"0"),
 	"3"=>array ("icon" => "$menu_folder","caption" => "Forum MC","link" => "larp_forum_2.php?md=1&ID=$ID","itemtyp"=>"0"),
-	"4"=>array ("icon" => "$menu_folder","caption" => "Anmeldung","link" => "larp_anmelde_liste.php?md=0&ID=$ID","itemtyp"=>"0"),
+	"4"=>array ("icon" => "$menu_folder","caption" => "Anmeldung","link" => "larp_anmeldung.php?md=0&ID=$ID","itemtyp"=>"0"),
 	"5"=>array ("icon" => "$menu_folder","caption" => "Bilder","link" => "larp_bilder.php?md=0&ID=$ID","itemtyp"=>"0"),
 	"6"=>array ("icon" => "$menu_folder","caption" => "Neue Bilder","link" => "larp_bilder1.php?md=0&ID=$ID","itemtyp"=>"0"),
 	"7"=>array ("icon" => "$menu_folder","caption" => "Termine","link" => "$PHP_SELF?md=1&ID=$ID","itemtyp"=>"0"),

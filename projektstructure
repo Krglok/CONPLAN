@@ -32,8 +32,6 @@ scriptstruktur
     con_*.php       scripte fuer internen bereich SL
     admin_*.php     scripte fuer den bereich admin
     
-
-    
 datenbank tabellen
 userverwaltung
 'user_liste'
