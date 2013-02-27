@@ -527,7 +527,6 @@ echo "<!---  DATEN Spalte   --->\n";
   
   echo "<FORM ACTION=\"$PHP_SELF?md=0&TAG=$TAG&ID=$ID\" METHOD=POST>\n";
   echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
-  echo "<INPUT TYPE=\"hidden\" NAME=\"ID\" VALUE=\"$ID\">\n";
   echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"$id\">\n";
   echo "<INPUT TYPE=\"hidden\" NAME=\"TAG\"  VALUE=\"$TAG\">\n";
   echo "<TABLE >\n";

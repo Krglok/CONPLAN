@@ -270,6 +270,15 @@ function GET_grp($value="")
   return $value;
 }
 
+function GET_sc($value="")
+{
+	if (isset($_GET['sc'])==true)
+	{
+		return $_GET['sc'];
+	}
+	return $value;
+}
+
 
 function GET_SESSIONID($value = "")
 {

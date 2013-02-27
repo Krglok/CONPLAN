@@ -82,7 +82,7 @@ function print_sp_liste($user,$ID)
 	echo "<div $style >";
 	echo "<!---  DATEN Spalte   --->\n";
 	
-	echo "<table border=1 BGCOLOR="."  >\n";
+	echo "<table >\n";
 
 	//Header
 	$field_num = mysql_num_fields($result);
@@ -150,7 +150,7 @@ function print_ref_liste($user,$ID)
 
 
 	//  echo "    <TD>\n";
-	echo "<table width=700 border=1 BGCOLOR="."  >\n";
+	echo "<table >\n";
 
 	//Header
 	$field_num = mysql_num_fields($result);
@@ -282,23 +282,25 @@ function print_sp_maske($id,$user,$next,$erf,$ID)
 	// SUB-Funktion Start ======
 	//  Daten
 	//
-	echo "<TD>\n";/// Spalte für Datenbereich
-
+	$style = $GLOBALS['style_datatab'];
+	echo "<div $style >";
+	echo "<!---  DATEN Spalte   --->\n";
+	
 	//  FORMULAR
-	echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST>\n";
+	echo "<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"user\" VALUE=\"$user\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$id\">\n";
 
-	echo "<table border=1 BGCOLOR="."  >\n";
 	if ($erf ==1)
 	{
-		echo "<CAPTION>Erfassen der Spieler Daten</CAPTION>\n";
+		echo "Erfassen der Spieler Daten\n";
 	} else
 	{
-		echo "<CAPTION>Bearbeiten der Spieler Daten</CAPTION>\n";
+		echo "Bearbeiten der Spieler Daten\n";
 	};
 
+	echo "<table >\n";
 	echo "<tr>\n";
 	echo "\t<td WIDTH=\"75\"><b>ID</b></td>\n";
 	echo "<td>$id&nbsp;</td>\n";
@@ -352,8 +354,10 @@ function print_sp_maske($id,$user,$next,$erf,$ID)
 	};
 	echo "</table>\n";
 	echo "</FORM>\n";
-	echo "</TD>\n"; //  ENDE Spalte Datenbereich
 
+	echo '</div>';
+	echo "<!---  ENDE DATEN Spalte   --->\n";
+	
 }
 
 
@@ -385,8 +389,10 @@ function print_user_maske($id,$user,$next,$erf,$ID)
 
 	//  Daten
 	//
-	echo "<TD>\n";/// Spalte für Datenbereich
-
+	$style = $GLOBALS['style_datatab'];
+	echo "<div $style >";
+	echo "<!---  DATEN Spalte   --->\n";
+	
 	//  FORMULAR
 	echo "<FORM ACTION=\"$PHP_SELFE\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
@@ -425,10 +431,15 @@ function print_user_maske($id,$user,$next,$erf,$ID)
 			<INPUT TYPE=\"RESET\" VALUE=\"ABBRECHEN\">
 			</td>\n";
 	echo "</tr>";
+	
 	echo "<tr>";
+	echo "\t<td>&nbsp</td>\n";
 	echo "</tr>";
+
 	echo "<tr>";
+	echo "\t<td>Spielerdaten</td>\n";
 	echo "</tr>";
+	
 	echo "<tr>";
 	echo "\t<td><b>Spielername</b></td>\n";
 	echo "<td>&nbsp;$row[1]</td>\n";
@@ -449,8 +460,10 @@ function print_user_maske($id,$user,$next,$erf,$ID)
 	echo "</tr>";
 	echo "</table>";
 	echo "</FORM>";
-	echo "</TD>\n"; //  ENDE Spalte Datenbereich
-}
+
+	echo '</div>';
+	echo "<!---  ENDE DATEN Spalte   --->\n";
+	}
 
 // ---------------------------------------------------------------
 // ---------    MAIN ---------------------------------------------
@@ -461,7 +474,7 @@ function print_user_maske($id,$user,$next,$erf,$ID)
 // Prüfung ob User  berechtigt ist
 
 
-$BEREICH = 'INTERN';
+$BEREICH = 'ADMIN';
 $PHP_SELF = $_SERVER['PHP_SELF'];
 
 $md     = GET_md(0);
@@ -564,8 +577,6 @@ default: // main
 
 	print_menu_status($menu,$ID);
 	
-	//print_menu($menu);
-
 	switch ($md):
 case 1:
 		print_sp_maske($id,$user,5,1,$ID);
