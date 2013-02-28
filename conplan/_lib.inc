@@ -254,7 +254,7 @@ function print_menue_header($caption, $style)
 function print_menu_status ($menu)
 {
   global $ID;
-  $menu_item_subsl= array ("icon" => "_tool","caption" => "Planung","link" => "con_plan.php?md=0&ID=$ID","itemtyp"=>"0");
+  $menu_item_subsl= array ("icon" => "_tool","caption" => "Planung","link" => "con_liste.php?md=0&ID=$ID","itemtyp"=>"0");
   $menu_item_sl   = array ("icon" => "_tool","caption" => "SL","link" => "con_main.php?md=0&ID=$ID","itemtyp"=>"0");
   $menu_item_admin= array ("icon" => "_tool","caption" => "Admin","link" => "admin_main.php?md=0&ID=$ID","itemtyp"=>"0");
   $menu_item_author= array ("icon" => "_tool","caption" => "Author","link" => "author_pages.php?md=0&ID=$ID","itemtyp"=>"0");

@@ -134,16 +134,7 @@ $menu_main = array (0=>array("icon" => "0","caption" => "Hauptseite","link" => "
 //prueft ob ein dynamisches menu vorhanden ist
 $sub = check_sub_item($BEREICH,"main","");
 
-if ($item == '')
-{
 	print_menu($menu_main);
-} else
-{
-	// Erstellt ein dynamisches Menu
-	$menu = get_menu_items($BEREICH, $sub, $item) + $menu_main + $menu_default_main;
-	print_menu($menu);
-	
-}
 
 // Auswahl der Aktion durch $md
 // und erstellen das Datenbereiches

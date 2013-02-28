@@ -64,432 +64,432 @@ include_once "_planung.inc";
 //-----------------------------------------------------------------------------
 function print_liste($ID)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $PHP_SELF;
-	global $TABLE;
-	global $TAG;
-	global $PHP_SELF;
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $PHP_SELF;
+  global $TABLE;
+  global $TAG;
+  global $PHP_SELF;
 
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
 
-	mysql_select_db($DB_NAME);
+  mysql_select_db($DB_NAME);
 
-	$q = "select id,S0,s1,name,kurz,r_char,r_grp,notority,hintergrund from $TABLE where S0=\"$TAG\" order by r_grp,name";
-	$result = mysql_query($q)  or die("Query Fehler...");
+  $q = "select id,S0,s1,name,kurz,r_char,r_grp,notority,hintergrund from $TABLE where S0=\"$TAG\" order by r_grp,name";
+  $result = mysql_query($q)  or die("Query Fehler...");
 
-	mysql_close($db);
+  mysql_close($db);
 
 
-$style = $GLOBALS['style_datalist'];
-echo "<div $style >";
-echo "<!---  DATEN Spalte   --->\n";
+  $style = $GLOBALS['style_datalist'];
+  echo "<div $style >";
+  echo "<!---  DATEN Spalte   --->\n";
 
-		echo "<table>\n";
+  echo "<table>\n";
 
-	//Kopfzeile
-	echo "<tr>\n";
-	$field_num = mysql_num_fields($result);
-	for ($i=0; $i<$field_num; $i++)
-	{
-		echo "\t<td><b>".mysql_field_name($result,$i)."</b></td>\n";
-	};
-	echo "</tr>\n";
-	echo "<hr>\n";
-	//Liste der Datensätze
-	while ($row = mysql_fetch_row($result))
-	{
-		echo "<tr>";
-		for ($i=0; $i<$field_num; $i++)
-		{
-			// aufruf der Deateildaten
-			if ($i==0)
-			{
-				echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=$row[$i]&TAG=$TAG\">\n";
-				//        echo "\t<IMG SRC=\"../larp/images/db.gif\" BORDER=\"0\" HEIGHT=\"25\" WIDTH=\"25\" ALT=\"Datensatz Bearbeiten\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>\n";
-				print_menu_icon (9);
-				echo "\t</a></td>\n";
-			} else
-			{
-				if ($i==8)
-				{
-					$s = substr($row[$i],0,100);
-					echo "\t<td>$s&nbsp;</td>\n";
+  //Kopfzeile
+  echo "<tr>\n";
+  $field_num = mysql_num_fields($result);
+  for ($i=0; $i<$field_num; $i++)
+  {
+    echo "\t<td><b>".mysql_field_name($result,$i)."</b></td>\n";
+  };
+  echo "</tr>\n";
+  echo "<hr>\n";
+  //Liste der Datensätze
+  while ($row = mysql_fetch_row($result))
+  {
+    echo "<tr>";
+    for ($i=0; $i<$field_num; $i++)
+    {
+      // aufruf der Deateildaten
+      if ($i==0)
+      {
+        echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=$row[$i]&TAG=$TAG\">\n";
+        //        echo "\t<IMG SRC=\"../larp/images/db.gif\" BORDER=\"0\" HEIGHT=\"25\" WIDTH=\"25\" ALT=\"Datensatz Bearbeiten\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>\n";
+        print_menu_icon ("_tcheck","");
+        echo "\t</a></td>\n";
+      } else
+      {
+        if ($i==8)
+        {
+          $s = substr($row[$i],0,100);
+          echo "\t<td>$s&nbsp;</td>\n";
 
-				} else
-				{
-					echo "\t<td>$row[$i]&nbsp;</td>\n";
-				}
-			};
-		}
-		echo "\t<td><a href=\"$PHP_SELF?md=2&ID=$ID&id=$row[0]&TAG=$TAG\">\n";
-		//      echo "\t<IMG SRC=\"../larp/images/xview.gif\" BORDER=\"0\" HEIGHT=\"15\" WIDTH=\"25\" ALT=\"Thema Lesen\" HSPACE=\"0\" VSPACE=\"0\">\n";
-		print_menu_icon (7);
-		echo "\t</a></td>\n";
-		echo "<tr>";
-	}
-	echo "</table>";
+        } else
+        {
+          echo "\t<td>$row[$i]&nbsp;</td>\n";
+        }
+      };
+    }
+    echo "\t<td><a href=\"$PHP_SELF?md=2&ID=$ID&id=$row[0]&TAG=$TAG\">\n";
+    //      echo "\t<IMG SRC=\"../larp/images/xview.gif\" BORDER=\"0\" HEIGHT=\"15\" WIDTH=\"25\" ALT=\"Thema Lesen\" HSPACE=\"0\" VSPACE=\"0\">\n";
+    print_menu_icon (7);
+    echo "\t</a></td>\n";
+    echo "<tr>";
+  }
+  echo "</table>";
 
-echo '</div>';
-echo "<!---  ENDE DATEN Spalte   --->\n";
-	
+  echo '</div>';
+  echo "<!---  ENDE DATEN Spalte   --->\n";
+
 };
 
 function print_loeschen($ID)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $PHP_SELF;
-	global $TABLE;
-	global $TAG;
-	global $PHP_SELF;
-	
-
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
-
-	mysql_select_db($DB_NAME);
-
-	$q = "select * from $TABLE where S0=\"$TAG\"";
-	$result = mysql_query($q)  or die("Query Fehler...");
-
-	mysql_close($db);
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $PHP_SELF;
+  global $TABLE;
+  global $TAG;
+  global $PHP_SELF;
 
 
-$style = $GLOBALS['style_datalist'];
-echo "<div $style >";
-echo "<!---  DATEN Spalte   --->\n";
-	
-	echo "<table>\n";
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
 
-	// Kopfzeile
-	echo "<tr>\n";
-	$field_num = mysql_num_fields($result);
-	for ($i=0; $i<$field_num-6; $i++)
-	{
-		echo "\t<td><b>".mysql_field_name($result,$i)."</b></td>\n";
-	};
-	//lfdnr,name,vorname,orga}
-	echo "</tr>\n";
-	echo "<hr>\n";
-	//Liste der Datensätze
-	while ($row = mysql_fetch_row($result))
-	{
-		echo "<tr>";
-		for ($i=0; $i<$field_num-6; $i++)
-		{
-			// aufruf der Deateildaten
-			if ($i==0)
-			{
-				echo "\t<td><a href=\"$PHP_SELF?md=7&ID=$ID&id=$row[$i]&TAG=$TAG\">\n";
-				//        echo "\t<IMG SRC=\"../larp/images/trash.png\" BORDER=\"0\" HEIGHT=\"20\" WIDTH=\"20\" ALT=\"Datensatz Löschen\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>\n";
-				print_menu_icon (4);
-				echo "\t</a></td>\n";
-			} else
-			{
-				if ($i==8)
-				{
-					$s = substr($row[$i],0,100);
-					echo "\t<td>$s&nbsp;</td>\n";
+  mysql_select_db($DB_NAME);
 
-				} else
-				{
-					echo "\t<td>$row[$i]&nbsp;</td>\n";
-				}
-			};
-		}
-		echo "\t<td><a href=\"$PHP_SELF?md=2&ID=$ID&id=$row[0]&TAG=$TAG\">\n";
-		//echo "\t<IMG SRC=\"../larp/images/xview.gif\" BORDER=\"0\" HEIGHT=\"15\" WIDTH=\"25\" ALT=\"Datensatz Ansehen\" HSPACE=\"0\" VSPACE=\"0\">\n";
-		echo "\t</a></td>\n";
-		echo "<tr>";
-	}
-	echo "</table>";
+  $q = "select * from $TABLE where S0=\"$TAG\"";
+  $result = mysql_query($q)  or die("Query Fehler...");
 
-echo '</div>';
-echo "<!---  ENDE DATEN Spalte   --->\n";
-	
+  mysql_close($db);
+
+
+  $style = $GLOBALS['style_datalist'];
+  echo "<div $style >";
+  echo "<!---  DATEN Spalte   --->\n";
+
+  echo "<table>\n";
+
+  // Kopfzeile
+  echo "<tr>\n";
+  $field_num = mysql_num_fields($result);
+  for ($i=0; $i<$field_num-6; $i++)
+  {
+    echo "\t<td><b>".mysql_field_name($result,$i)."</b></td>\n";
+  };
+  //lfdnr,name,vorname,orga}
+  echo "</tr>\n";
+  echo "<hr>\n";
+  //Liste der Datensätze
+  while ($row = mysql_fetch_row($result))
+  {
+    echo "<tr>";
+    for ($i=0; $i<$field_num-6; $i++)
+    {
+      // aufruf der Deateildaten
+      if ($i==0)
+      {
+        echo "\t<td><a href=\"$PHP_SELF?md=7&ID=$ID&id=$row[$i]&TAG=$TAG\">\n";
+        //        echo "\t<IMG SRC=\"../larp/images/trash.png\" BORDER=\"0\" HEIGHT=\"20\" WIDTH=\"20\" ALT=\"Datensatz Löschen\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>\n";
+        print_menu_icon (4);
+        echo "\t</a></td>\n";
+      } else
+      {
+        if ($i==8)
+        {
+          $s = substr($row[$i],0,100);
+          echo "\t<td>$s&nbsp;</td>\n";
+
+        } else
+        {
+          echo "\t<td>$row[$i]&nbsp;</td>\n";
+        }
+      };
+    }
+    echo "\t<td><a href=\"$PHP_SELF?md=2&ID=$ID&id=$row[0]&TAG=$TAG\">\n";
+    //echo "\t<IMG SRC=\"../larp/images/xview.gif\" BORDER=\"0\" HEIGHT=\"15\" WIDTH=\"25\" ALT=\"Datensatz Ansehen\" HSPACE=\"0\" VSPACE=\"0\">\n";
+    echo "\t</a></td>\n";
+    echo "<tr>";
+  }
+  echo "</table>";
+
+  echo '</div>';
+  echo "<!---  ENDE DATEN Spalte   --->\n";
+
 };
 
 function print_info($id,$ID)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $TABLE;
-	global $TAG;
-	global $PHP_SELF;
-	
-	//Anzeigen von Contage als einfache Maske
-	//function view() {
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $TABLE;
+  global $TAG;
+  global $PHP_SELF;
 
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-	or die("Fehler beim verbinden!");
+  //Anzeigen von Contage als einfache Maske
+  //function view() {
 
-	mysql_select_db($DB_NAME);
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+  or die("Fehler beim verbinden!");
 
-	$q = "select * from $TABLE where id=$id";
-	$result = mysql_query($q)
-	or die("Query Fehler...");
+  mysql_select_db($DB_NAME);
 
-	$field_num = mysql_num_fields($result);
-	$row = mysql_fetch_row($result);
+  $q = "select * from $TABLE where id=$id";
+  $result = mysql_query($q)
+  or die("Query Fehler...");
 
-	mysql_close($db);
+  $field_num = mysql_num_fields($result);
+  $row = mysql_fetch_row($result);
 
-	//Daten bereich
-$style = $GLOBALS['style_datatab'];
-echo "<div $style >";
-echo "<!---  DATEN Spalte   --->\n";
-	
-	echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST>\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"0\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"ID\" VALUE=\"$ID\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$id\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"TAG\"  VALUE=\"$TAG\">\n";
-	echo "<TABLE WIDTH=\"100%\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"2\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\"
-			BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
+  mysql_close($db);
 
-	for ($i=0; $i<$field_num; $i++)
-	{
-		$field_name[$i] =  mysql_field_name($result,$i);
-		$type[$i]       =  mysql_field_type ($result, $i);
-	}
-	for ($i=0; $i<$field_num; $i++)
-	{
-		if ($type[$i]=="date") {
-			$len[$i] = 10;
-		}
-		if ($type[$i]=="int") {
-			$len[$i] = 5;
-		}
-		if ($type[$i]!="blob")
-		{
-			echo "<tr>";
-			echo "\t<td >$field_name[$i]&nbsp;</td>\n";
-			echo "\t<td><input name=\"\" maxlength=$len[$i] size=$len[$i] readonly value=$row[$i]></td>\n";
-			echo "<tr>";
-		} else
-		{
-			echo "<tr>";
-			echo "\t<td><b></b></td>\n";
-			echo "\t<td><TEXTAREA NAME=\"$field_name[$i]\" COLS=85 ROWS=12 readonly>$row[$i]</TEXTAREA>&nbsp;</td>\n";
-			echo "<tr>";
-		}
-	}
-	echo "</table>";
+  //Daten bereich
+  $style = $GLOBALS['style_datatab'];
+  echo "<div $style >";
+  echo "<!---  DATEN Spalte   --->\n";
 
-echo '</div>';
-echo "<!---  ENDE DATEN Spalte   --->\n";
-	
+  echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST>\n";
+  echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"0\">\n";
+  echo "<INPUT TYPE=\"hidden\" NAME=\"ID\" VALUE=\"$ID\">\n";
+  echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$id\">\n";
+  echo "<INPUT TYPE=\"hidden\" NAME=\"TAG\"  VALUE=\"$TAG\">\n";
+  echo "<TABLE WIDTH=\"100%\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"2\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\"
+      BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
+
+  for ($i=0; $i<$field_num; $i++)
+  {
+    $field_name[$i] =  mysql_field_name($result,$i);
+    $type[$i]       =  mysql_field_type ($result, $i);
+  }
+  for ($i=0; $i<$field_num; $i++)
+  {
+    if ($type[$i]=="date") {
+      $len[$i] = 10;
+    }
+    if ($type[$i]=="int") {
+      $len[$i] = 5;
+    }
+    if ($type[$i]!="blob")
+    {
+      echo "<tr>";
+      echo "\t<td >$field_name[$i]&nbsp;</td>\n";
+      echo "\t<td><input name=\"\" maxlength=$len[$i] size=$len[$i] readonly value=$row[$i]></td>\n";
+      echo "<tr>";
+    } else
+    {
+      echo "<tr>";
+      echo "\t<td><b></b></td>\n";
+      echo "\t<td><TEXTAREA NAME=\"$field_name[$i]\" COLS=85 ROWS=12 readonly>$row[$i]</TEXTAREA>&nbsp;</td>\n";
+      echo "<tr>";
+    }
+  }
+  echo "</table>";
+
+  echo '</div>';
+  echo "<!---  ENDE DATEN Spalte   --->\n";
+
 };
 
 
 function insert($row)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
-	global $TABLE;
+  global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
+  global $TABLE;
 
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-	or die("Fehler beim verbinden!");
-	$result = mysql_list_fields($DB_NAME,$TABLE)  or die("Query ERF...");
-	$field_num = mysql_num_fields($result);
-	for ($i=0; $i<$field_num; $i++)
-	{
-		$field_name[$i] =  mysql_field_name ($result, $i);
-	}
-	$q ="insert INTO  $TABLE  (";
-	$q = $q."$field_name[1]";
-	for ($i=2; $i<$field_num; $i++)
-	{
-		$q = $q.",$field_name[$i]";
-	};
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+  or die("Fehler beim verbinden!");
+  $result = mysql_list_fields($DB_NAME,$TABLE)  or die("Query ERF...");
+  $field_num = mysql_num_fields($result);
+  for ($i=0; $i<$field_num; $i++)
+  {
+    $field_name[$i] =  mysql_field_name ($result, $i);
+  }
+  $q ="insert INTO  $TABLE  (";
+  $q = $q."$field_name[1]";
+  for ($i=2; $i<$field_num; $i++)
+  {
+    $q = $q.",$field_name[$i]";
+  };
 
-	$q = $q.") VALUES (\"$row[1]\" ";
-	for ($i=2; $i<$field_num; $i++)
-	{
-		$q = $q.",\"$row[$i]\" ";
-	};
-	$q = $q.")";
-	//  echo $q;
+  $q = $q.") VALUES (\"$row[1]\" ";
+  for ($i=2; $i<$field_num; $i++)
+  {
+    $q = $q.",\"$row[$i]\" ";
+  };
+  $q = $q.")";
+  //  echo $q;
 
-	if (mysql_select_db($DB_NAME) != TRUE) {
-		echo "Fehler DB";
-	};
-	//  $q ="insert INTO con_tage (tag,von,bis,bemerkung,kosten,leg_id,text) VALUES ( \"$tag\",\"$von\",\"$bis\",\"$bemerkung\",\"$kosten\",\"$leg_id\",\"$text\"";
-	$result = mysql_query($q) or die("InsertFehler....$q.");
+  if (mysql_select_db($DB_NAME) != TRUE) {
+    echo "Fehler DB";
+  };
+  //  $q ="insert INTO con_tage (tag,von,bis,bemerkung,kosten,leg_id,text) VALUES ( \"$tag\",\"$von\",\"$bis\",\"$bemerkung\",\"$kosten\",\"$leg_id\",\"$text\"";
+  $result = mysql_query($q) or die("InsertFehler....$q.");
 
-	mysql_close($db);
+  mysql_close($db);
 
 };
 
 
 function update($row)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
-	global $TABLE;
+  global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
+  global $TABLE;
 
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-	or die("Fehler beim verbinden!");
-	$result = mysql_list_fields($DB_NAME,$TABLE)  or die("Query ERF...");
-	$field_num = mysql_num_fields($result);
-	for ($i=0; $i<$field_num; $i++)
-	{
-		$field_name[$i] =  mysql_field_name ($result, $i);
-	}
-	$q ="update $TABLE  SET ";
-	$q = $q."$field_name[1]=\"$row[1]\" ";
-	for ($i=2; $i<$field_num; $i++)
-	{
-		$q = $q.",$field_name[$i]=\"$row[$i]\" ";
-	};
-	$q = $q."where id=\"$row[0]\" ";
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+  or die("Fehler beim verbinden!");
+  $result = mysql_list_fields($DB_NAME,$TABLE)  or die("Query ERF...");
+  $field_num = mysql_num_fields($result);
+  for ($i=0; $i<$field_num; $i++)
+  {
+    $field_name[$i] =  mysql_field_name ($result, $i);
+  }
+  $q ="update $TABLE  SET ";
+  $q = $q."$field_name[1]=\"$row[1]\" ";
+  for ($i=2; $i<$field_num; $i++)
+  {
+    $q = $q.",$field_name[$i]=\"$row[$i]\" ";
+  };
+  $q = $q."where id=\"$row[0]\" ";
 
-	//  echo $q;
-	if (mysql_select_db($DB_NAME) != TRUE) {
-		echo "Fehler DB";
-	};
-	/**/
-	$result = mysql_query($q) or die("update Fehler....$q.");
-	/**/
-	mysql_close($db);
+  //  echo $q;
+  if (mysql_select_db($DB_NAME) != TRUE) {
+    echo "Fehler DB";
+  };
+  /**/
+  $result = mysql_query($q) or die("update Fehler....$q.");
+  /**/
+  mysql_close($db);
 
 };
 
 
 function loeschen($id,$ID)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
-	global $TABLE;
+  global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
+  global $TABLE;
 
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)     or die("Fehler beim verbinden!");
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)     or die("Fehler beim verbinden!");
 
-	if (mysql_select_db($DB_NAME) != TRUE) {
-		echo "Fehler DB";
-	};
-	/**/
-	$q = "delete from $TABLE where id=\"$id\" ";
-	//  echo $q;
-	$result = mysql_query($q) or die("Delete Fehler....$q.");
-	/**/
-	mysql_close($db);
+  if (mysql_select_db($DB_NAME) != TRUE) {
+    echo "Fehler DB";
+  };
+  /**/
+  $q = "delete from $TABLE where id=\"$id\" ";
+  //  echo $q;
+  $result = mysql_query($q) or die("Delete Fehler....$q.");
+  /**/
+  mysql_close($db);
 
 };
 
 
 /**
- * Erstellt die Detailmaske fuer Neu (insert) und Edit (update) 
+ * Erstellt die Detailmaske fuer Neu (insert) und Edit (update)
  * @param unknown $id beinhaltet den zu bearbeitenden Datensatz
  * @param unknown $ID Session ID
  * @param unknown $next beinhaltet die zu rufende Datenbankfunktion
  * @param unknown $row  beinhaltet das Array der Datenfelder
  */
-function print_maske($id,$ID,$next,$row,$field_num)
+function print_maske($id,$ID,$next,$row,$field_num,$result)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $TABLE;
-	global $TAG;
-	global $PHP_SELF;
-	
-	//  echo count($row);
-	/**/
-	/**/
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $TABLE;
+  global $TAG;
+  global $PHP_SELF;
 
-$style = $GLOBALS['style_datatab'];
-echo "<div $style >";
-echo "<!---  DATEN Spalte   --->\n";
-	
-	echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST>\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"$id\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"TAG\"  VALUE=\"$TAG\">\n";
+  //  echo count($row);
+  /**/
+  /**/
 
-	echo "<TABLE WIDTH=\"100%\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"2\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\"
-			BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
-	echo "\t<tr>\n";
-	echo "\t<td width=100></td>\n";
-	echo "\t<td><center><b>$TABLE</b></td>\n";
-	echo "\t</tr>\n";
-	for ($i=0; $i<$field_num; $i++)
-	{
-		$field_name[$i] =  mysql_field_name ($result, $i);
-		$type[$i]       =  mysql_field_type ($result, $i);
-		$len[$i]        =  mysql_field_len  ($result,$i);
+  $style = $GLOBALS['style_datatab'];
+  echo "<div $style >";
+  echo "<!---  DATEN Spalte   --->\n";
 
-	}
-	for ($i=0; $i<$field_num; $i++)
-	{
-		if ($type[$i]=="date") {
-			$len[$i] = 10;
-		}
-		if ($type[$i]=="int") {
-			$len[$i] = 5;
-		}
-		if ($i!=0)
-		{
-			if ($type[$i]!="blob")
-			{
-				echo "<tr>";
-				echo "\t<td >$field_name[$i]&nbsp;</td>\n";
+  echo "<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID&TAG=$TAG\" METHOD=POST>\n";
+  echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
+  echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"$id\">\n";
+  echo "<INPUT TYPE=\"hidden\" NAME=\"TAG\"  VALUE=\"$TAG\">\n";
 
-				echo "<td><input type=\"text\" name=\"row[$i]\" SIZE=$len[$i] MAXLENGTH=$len[$i] VALUE=\"$row[$i]\">\n";
-				if ($i == 3)
-				{
-					echo "  $name\n";
-				};
-				echo "</td>\n";
+  echo "<TABLE WIDTH=\"100%\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"2\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\"
+      BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
+  echo "\t<tr>\n";
+  echo "\t<td width=100></td>\n";
+  echo "\t<td><center><b>$TABLE</b></td>\n";
+  echo "\t</tr>\n";
+  for ($i=0; $i<$field_num; $i++)
+  {
+    $field_name[$i] =  mysql_field_name ($result, $i);
+    $type[$i]       =  mysql_field_type ($result, $i);
+    $len[$i]        =  mysql_field_len  ($result,$i);
 
-				echo "<tr>";
+  }
+  for ($i=0; $i<$field_num; $i++)
+  {
+    if ($type[$i]=="date") {
+      $len[$i] = 10;
+    }
+    if ($type[$i]=="int") {
+      $len[$i] = 5;
+    }
+    if ($i!=0)
+    {
+      if ($type[$i]!="blob")
+      {
+        echo "<tr>";
+        echo "\t<td >$field_name[$i]&nbsp;</td>\n";
 
-			} else
-			{
-				echo "<tr>";
-				echo "\t<td><b></b></td>\n";
-				echo "\t<td><TEXTAREA NAME=\"row[$i]\" COLS=85 ROWS=12>$row[$i]</TEXTAREA>&nbsp;</td>\n";
-				echo "<tr>";
-			}
-		} else
-		{
-			echo "<tr>";
-			echo "\t<td >$field_name[$i]&nbsp;</td>\n";
-			echo "<td><input type=\"text\" name=\"\" SIZE=$len[$i] MAXLENGTH=$len[$i] VALUE=\"$row[$i]\" readonly></td>\n";
-			echo "<tr>";
-		}
-	}
+        echo "<td><input type=\"text\" name=\"row[$i]\" SIZE=$len[$i] MAXLENGTH=$len[$i] VALUE=\"$row[$i]\">\n";
+        if ($i == 3)
+        {
+          echo "$row[4]\n";
+        };
+        echo "</td>\n";
+
+        echo "<tr>";
+
+      } else
+      {
+        echo "<tr>";
+        echo "\t<td><b></b></td>\n";
+        echo "\t<td><TEXTAREA NAME=\"row[$i]\" COLS=85 ROWS=30>$row[$i]</TEXTAREA>&nbsp;</td>\n";
+        echo "<tr>";
+      }
+    } else
+    {
+      echo "<tr>";
+      echo "\t<td >$field_name[$i]&nbsp;</td>\n";
+      echo "<td><input type=\"text\" name=\"\" SIZE=$len[$i] MAXLENGTH=$len[$i] VALUE=\"$row[$i]\" readonly></td>\n";
+      echo "<tr>";
+    }
+  }
 
 
-	echo "\t<tr>\n";
-	echo "\t<td></td>\n";
-	echo "\t<td> <INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">
-			&nbsp;&nbsp;&nbsp;&nbsp;
-			<INPUT TYPE=\"RESET\" VALUE=\"ABBRECHEN\">
-			</td>\n";
-	echo "\t</tr>\n";
+  echo "\t<tr>\n";
+  echo "\t<td></td>\n";
+  echo "\t<td> <INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <INPUT TYPE=\"RESET\" VALUE=\"ABBRECHEN\">
+      </td>\n";
+  echo "\t</tr>\n";
 
-	echo "</table>";
+  echo "</table>";
 
-echo '</div>';
-echo "<!---  ENDE DATEN Spalte   --->\n";
-	
+  echo '</div>';
+  echo "<!---  ENDE DATEN Spalte   --->\n";
+
 };
 
 /**
- * Holt einen datensatz aus der Tabelle und ruft ie Detailmaske auf 
+ * Holt einen datensatz aus der Tabelle und ruft ie Detailmaske auf
  * @param unknown $id	, PK des Datensatzes
  * @param unknown $ID , Session ID
  */
 function print_edit($id,$ID)
 {
-		$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-		or die("Fehler beim verbinden!");
-	
-		mysql_select_db($DB_NAME);
-	
-		$q = "select * from $TABLE where id=$id";
-		$result = mysql_query($q) or die("Query BEARB.");
-	
-		mysql_close($db);
-	
-		$field_num = mysql_num_fields($result);
-		//
-		$row = mysql_fetch_array ($result);
-		$len = mysql_fetch_row($result);
-		$next = 6;
-		print_maske($id, $ID, $next,$row,$field_num);
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+  or die("Fehler beim verbinden!");
+
+  mysql_select_db($DB_NAME);
+
+  $q = "select * from $TABLE where id=$id";
+  $result = mysql_query($q) or die("Query BEARB.");
+
+  mysql_close($db);
+
+  $field_num = mysql_num_fields($result);
+  //
+  $row = mysql_fetch_array ($result);
+  $len = mysql_fetch_row($result);
+  $next = 6;
+  print_maske($id, $ID, $next,$row,$field_num,$result);
 }
 
 /**
@@ -500,31 +500,36 @@ function print_edit($id,$ID)
  */
 function print_erf($id,$ID,$next)
 {
-		$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-		or die("Fehler beim verbinden!");
-	
-		mysql_select_db($DB_NAME);
-	
-		$q = "select * from $TABLE where id=\"0\"";
-		$result = mysql_query($q) or die("Query ERF...");
-	
-	
-		mysql_close($db);
-	
-		$row = mysql_fetch_array ($result);
-		$field_num = mysql_num_fields($result);
-		for ($i=0; $i<$field_num; $i++)
-		{
-			$row[$i] = "";
-		};
-		$row[1] = $TAG;
-		$row[3] = $id;
-		$name = get_author($id);
-		$row[4] = $name;
-		$row[7] = get_charname($id);
-		
-		$next = 5;
-		print_maske($id, $ID, $next,$row,$field_num);
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $PHP_SELF;
+  global $TABLE;
+  global $TAG;
+  
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+  or die("Fehler beim verbinden!");
+
+  mysql_select_db($DB_NAME);
+
+  $q = "select * from $TABLE where id=\"0\"";
+  $result = mysql_query($q) or die("Query ERF...");
+
+
+  mysql_close($db);
+
+  $row = mysql_fetch_array ($result);
+  $field_num = mysql_num_fields($result);
+  for ($i=0; $i<$field_num; $i++)
+  {
+    $row[$i] = "";
+  };
+  $row[1] = $TAG;
+  $row[3] = $id;
+  $name = get_author($id);
+  $row[4] = $name;
+  $row[7] = get_charname($id);
+
+  $next = 5;
+  print_maske($id, $ID, $next,$row,$field_num,$result);
 }
 
 /**
@@ -534,59 +539,58 @@ function print_erf($id,$ID,$next)
  */
 function print_spieler($ID)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $PHP_SELF;
-	global $TABLE;
-	global $TAG;
-	global $PHP_SELF;
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $PHP_SELF;
+  global $TABLE;
+  global $TAG;
 
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
-	mysql_select_db($DB_NAME);
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+  mysql_select_db($DB_NAME);
 
-	$q = "select id,name,vorname,charakter,bemerkung from spieler order by name, vorname";
-	$result = mysql_query($q)  or die("Query Fehler...");
+  $q = "select id,name,vorname,charakter,bemerkung from spieler order by name, vorname";
+  $result = mysql_query($q)  or die("Query Fehler...");
 
-	mysql_close($db);
+  mysql_close($db);
 
-$style = $GLOBALS['style_datalist'];
-echo "<div $style >";
-echo "<!---  DATEN Spalte   --->\n";
+  $style = $GLOBALS['style_datalist'];
+  echo "<div $style >";
+  echo "<!---  DATEN Spalte   --->\n";
 
-	echo "<table >\n";
+  echo "<table >\n";
 
-	//Kopfzeile
-	echo "<tr>\n";
-	$field_num = mysql_num_fields($result);
-	for ($i=0; $i<$field_num; $i++)
-	{
-		echo "\t<td><b>".mysql_field_name($result,$i)."</b></td>\n";
-	};
-	echo "</tr>\n";
-	echo "<hr>\n";
-	//Liste der Datensätze
-	while ($row = mysql_fetch_row($result))
-	{
-		echo "<tr>";
-		for ($i=0; $i<$field_num; $i++)
-		{
-			// aufruf der Deateildaten
-			if ($i==0)
-			{
-				echo "\t<td><a href=\"$PHP_SELF?md=1&ID=$ID&sc=$row[0]&TAG=$TAG\">\n";
-				print_menu_icon ("_con_sc");
-				echo "\t</a></td>\n";
-			} else
-			{
-				echo "\t<td>$row[$i]&nbsp;</td>\n";
-			};
-		}
-		echo "<tr>";
-	}
-	echo "</table>";
+  //Kopfzeile
+  echo "<tr>\n";
+  $field_num = mysql_num_fields($result);
+  for ($i=0; $i<$field_num; $i++)
+  {
+    echo "\t<td><b>".mysql_field_name($result,$i)."</b></td>\n";
+  };
+  echo "</tr>\n";
+  echo "<hr>\n";
+  //Liste der Datensätze
+  while ($row = mysql_fetch_row($result))
+  {
+    echo "<tr>";
+    for ($i=0; $i<$field_num; $i++)
+    {
+      // aufruf der Deateildaten
+      if ($i==0)
+      {
+        echo "\t<td><a href=\"$PHP_SELF?md=1&ID=$ID&sc=$row[0]&TAG=$TAG\">\n";
+        print_menu_icon ("_con_sc");
+        echo "\t</a></td>\n";
+      } else
+      {
+        echo "\t<td>$row[$i]&nbsp;</td>\n";
+      };
+    }
+    echo "<tr>";
+  }
+  echo "</table>";
 
-echo '</div>';
-echo "<!---  ENDE DATEN Spalte   --->\n";
-	
+  echo '</div>';
+  echo "<!---  ENDE DATEN Spalte   --->\n";
+
 };
 
 
@@ -605,7 +609,7 @@ $sub    = GET_sub("main");
 $ID     = GET_SESSIONID("");
 $TAG    = GET_TAG("0");
 $id     = GET_id("0");
-$sc			= GET_sc("0");
+$sc		= GET_sc("0");
 
 $p_md   = POST_md(0);
 $p_row  = POST_row("");
@@ -618,18 +622,18 @@ $user_id 	= $_SESSION["user_id"];
 
 if ($ID == "")
 {
-	$session_id = 'FFFF';
-	header ("Location: main.php");  // Umleitung des Browsers
-	exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
-	// Code ausgeführt wird.
+  $session_id = 'FFFF';
+  header ("Location: main.php");  // Umleitung des Browsers
+  exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
+  // Code ausgeführt wird.
 }
 
 if (is_subsl()==FALSE)
 {
-	$session_id = 'FFFF';
-	header ("Location: larp.php");  // Umleitung des Browsers
-	exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
-	// Code ausgeführt wird.
+  $session_id = 'FFFF';
+  header ("Location: larp.php");  // Umleitung des Browsers
+  exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
+  // Code ausgeführt wird.
 }
 
 
@@ -649,100 +653,100 @@ $TABLE = "con_sc";
 
 switch ($p_md):
 case 5:  // MAIN-Menu
-	insert($p_row);
+  insert($p_row);
 $md=0;
 break;
 case 6: // Update eines bestehnden Datensatzes
-	// Update SQL
-	update($p_row);
-	$md=0;
-	break;
+  // Update SQL
+  update($p_row);
+  $md=0;
+  break;
 default :
-	break;
-	endswitch;
+  break;
+  endswitch;
 
-	switch ($md):
+  switch ($md):
 case 7: // Delete eines bestehenden Datensatzes
-	// SQL delete
-	loeschen($id);
-	$md=0;
-	break;
+    // SQL delete
+    loeschen($id);
+  $md=0;
+  break;
 default :
-	break;
-	endswitch;
+  break;
+  endswitch;
 
 
-	switch ($md):
+  switch ($md):
 case 1: // Erfassen eines neuen Datensatzes
-		$menu = array (0=>array("icon" => "1","caption" => "SC $TAG","link" => ""),
-				1=>array("icon" => "1","caption" => "ERFASSEN","link" => ""),
-				2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
-		);
-		break;
+    $menu = array (0=>array("icon" => "1","caption" => "SC $TAG","link" => ""),
+        1=>array("icon" => "1","caption" => "ERFASSEN","link" => ""),
+        2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
+    );
+    break;
 case 2: // Ansehen / INFO eines Datensatzes
-	$menu = array (0=>array("icon" => "1","caption" => "SC $TAG","link" => ""),
-	1=>array("icon" => "1","caption" => "ANSEHEN","link" => ""),
-	8=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
-	);
-	break;
+  $menu = array (0=>array("icon" => "1","caption" => "SC $TAG","link" => ""),
+  1=>array("icon" => "1","caption" => "ANSEHEN","link" => ""),
+  8=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
+  );
+  break;
 case 3: // Delete eines bestehenden Datensatzes
-	$menu = array (0=>array("icon" => "1","caption" => "SC $TAG","link" => ""),
-	1=>array("icon" => "1","caption" => "LÖSCHEN","link" => ""),
-	9=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
-	);
-	break;
+  $menu = array (0=>array("icon" => "1","caption" => "SC $TAG","link" => ""),
+  1=>array("icon" => "1","caption" => "LÖSCHEN","link" => ""),
+  9=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
+  );
+  break;
 case 4: // Anzigen Bearbeiten Form
-	$menu = array (0=>array("icon" => "1","caption" => "SC $TAG","link" => ""),
-	1=>array("icon" => "1","caption" => "BEARBEITEN","link" => ""),
-	2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
-	);
-	break;
+  $menu = array (0=>array("icon" => "1","caption" => "SC $TAG","link" => ""),
+  1=>array("icon" => "1","caption" => "BEARBEITEN","link" => ""),
+  2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
+  );
+  break;
 case 8: // Delete eines bestehenden Datensatzes
-	$menu = array (0=>array("icon" => "1","caption" => "SC $TAG","link" => ""),
-	1=>array("icon" => "1","caption" => "SELECT","link" => ""),
-	9=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
-	);
-	break;
+  $menu = array (0=>array("icon" => "1","caption" => "SC $TAG","link" => ""),
+  1=>array("icon" => "1","caption" => "SELECT","link" => ""),
+  9=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
+  );
+  break;
 
 default:  // MAIN-Menu
-	$menu = array (0=>array("icon" => "1","caption" => "SC $TAG","link" => ""),
-	1=>array("icon" => "_tadd","caption" => "Erfassen","link" => "$PHP_SELF?md=8&ID=$ID&TAG=$TAG"),
-	2=>array("icon" => "_tdelete","caption" => "Löschen","link" => "$PHP_SELF?md=3&ID=$ID&TAG=$TAG"),
-	3=>array("icon" => "_printer","caption" => "Report","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG"),
-	9=>array("icon" => "_stop","caption" => "Zurück","link" => "con_plan.php?md=0&ID=$ID&TAG=$TAG")
-	);
-	endswitch;
+  $menu = array (0=>array("icon" => "1","caption" => "SC $TAG","link" => ""),
+  1=>array("icon" => "_tadd","caption" => "Erfassen","link" => "$PHP_SELF?md=8&ID=$ID&TAG=$TAG"),
+  2=>array("icon" => "_tdelete","caption" => "Löschen","link" => "$PHP_SELF?md=3&ID=$ID&TAG=$TAG"),
+  3=>array("icon" => "_printer","caption" => "Report","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG"),
+  9=>array("icon" => "_stop","caption" => "Zurück","link" => "con_plan.php?md=0&ID=$ID&TAG=$TAG")
+  );
+  endswitch;
 
-	print_menu_status($menu);
+  print_menu_status($menu);
 
-	switch ($md):
+  switch ($md):
 case 1:
-	// neuer Datensatz
-	print_erf($sc,$ID,5,1);
-	break;
+    // neuer Datensatz
+    print_erf($sc,$ID,5,1);
+  break;
 case 2:
-	// Info Datensatz
-	Print_info($id, $ID);
-	break;
+  // Info Datensatz
+  Print_info($id, $ID);
+  break;
 case 3:
-	//  Edit Datensatz
-	print_loeschen($ID);
-	break;
+  //  Edit Datensatz
+  print_loeschen($ID);
+  break;
 case 4:
-	//
-	print_maske($id,$ID,6,0);
-	break;
+  //
+  print_maske($id,$ID,6,0);
+  break;
 case 8:
-	//  Spielerauswahl fuer Neu
-	print_spieler($ID);
-	break;
+  //  Spielerauswahl fuer Neu
+  print_spieler($ID);
+  break;
 default:
-	print_liste($ID);
-	break;
-	endswitch;
+  print_liste($ID);
+  break;
+  endswitch;
 
-	print_md_ende();
+  print_md_ende();
 
-	print_body_ende();
+  print_body_ende();
 
-	?>
+  ?>

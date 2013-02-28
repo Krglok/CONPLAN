@@ -251,15 +251,10 @@ echo "<!---  DATEN Spalte   --->\n";
 	{
 		$field_name[$i] =  mysql_field_name($result,$i);
 		$type[$i]       =  mysql_field_type ($result, $i);
+        $len[$i]        =  get_fieldtyp_width($type[$i]);
 	}
 	for ($i=0; $i<$field_num; $i++)
 	{
-		if ($type[$i]=="date") {
-			$len[$i] = 10;
-		}
-		if ($type[$i]=="int") {
-			$len[$i] = 5;
-		}
 		if ($type[$i]!="blob")
 		{
 			echo "<tr>";
@@ -270,7 +265,7 @@ echo "<!---  DATEN Spalte   --->\n";
 		{
 			echo "<tr>";
 			echo "\t<td><b></b></td>\n";
-			echo "\t<td><TEXTAREA NAME=\"$field_name[$i]\" COLS=85 ROWS=12 readonly>$row[$i]</TEXTAREA>&nbsp;</td>\n";
+			echo "\t<td><TEXTAREA NAME=\"$field_name[$i]\" COLS=85 ROWS=30 readonly>$row[$i]</TEXTAREA>&nbsp;</td>\n";
 			echo "<tr>";
 		}
 	}
@@ -475,7 +470,7 @@ echo "<!---  DATEN Spalte   --->\n";
 			{
 				echo "<tr>";
 				echo "\t<td><b></b></td>\n";
-				echo "\t<td><TEXTAREA NAME=\"row[$i]\" COLS=85 ROWS=12>$row[$i]</TEXTAREA>&nbsp;</td>\n";
+				echo "\t<td><TEXTAREA NAME=\"row[$i]\" COLS=85 ROWS=30>$row[$i]</TEXTAREA>&nbsp;</td>\n";
 				echo "<tr>";
 			}
 		} else

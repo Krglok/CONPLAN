@@ -127,14 +127,20 @@ function checkuser($user, $pw)
     				return TRUE;
     			} else
     			{
+//echo "pw check";	  
     			  return FALSE;
     			};
     		}
     		else
     		{
-    			return FALSE;
+//echo "user check";	  
+    		  return FALSE;
     		}
     	}
+	}
+	else
+	{
+//,echo "no user";	  
 	}
 }
 

@@ -35,6 +35,13 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 include_once "_config.inc";
 include_once "_lib.inc";
 
+function header_reload($name, $md, $ID, $param)
+{
+  header ("Location: $name?md=$md&ID=$ID".$param);  // Umleitung des Browsers
+  exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
+  
+}
+
 
 /**
  * erstellt einne html Header mit css-Layout 

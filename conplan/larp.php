@@ -119,6 +119,14 @@ if ($ID != $SID)
 	// Code ausgeführt wird.
 }
 
+if (is_user()==FALSE)
+{
+  echo "no lvl";	
+  header ("Location: main.php?md=0&ID=$ID");  // Umleitung des Browsers
+    exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
+  // Code ausgeführt wird.
+}
+
 print_header("Interner Bereich");
 print_body(2);
 
@@ -133,7 +141,7 @@ if ($item == '')
 {
 	$menu = array (
 	"0"=>array("icon" => "0","caption" => "INTERN","link" => "","itemtyp"=>"0"),
-	"1"=>array ("icon" => "$menu_list","caption" => "Spieler","link" => "larp_sc_liste.php?md=1&ID=$ID","itemtyp"=>"0"),
+	"1"=>array ("icon" => "$menu_list","caption" => "Spieler","link" => "larp_sc.php?md=1&ID=$ID","itemtyp"=>"0"),
 	"2"=>array ("icon" => "$menu_folder","caption" => "Forum Intern","link" => "larp_forum_1.php?md=1&ID=$ID","itemtyp"=>"0"),
 	"3"=>array ("icon" => "$menu_folder","caption" => "Forum MC","link" => "larp_forum_2.php?md=1&ID=$ID","itemtyp"=>"0"),
 	"4"=>array ("icon" => "$menu_folder","caption" => "Anmeldung","link" => "larp_anmeldung.php?md=0&ID=$ID","itemtyp"=>"0"),

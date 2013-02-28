@@ -80,71 +80,74 @@ include_once "_config.inc";
 include_once "_lib.inc";
 include_once "_head.inc";
 
-/**
- * Erstellt eine Tabelle zu einem Resultset
- * @param unknown $result
- */
-function result_to_table($result)
-{
-
-}
 
 /**
  * Erstellt eine Spielerliste
  * @param unknown $ID
  */
-function print_sp_liste()
+function print_sp_liste($id)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	//Macht aus einem Resultset eine HTML Tabelle
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  //Macht aus einem Resultset eine HTML Tabelle
 
 
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-	or die("Fehler beim verbinden!");
-	mysql_select_db($DB_NAME);
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+  or die("Fehler beim verbinden!");
+  mysql_select_db($DB_NAME);
 
-	$result = mysql_query("SELECT id,name,vorname,charakter,email,telefon from spieler where (name <> \"XX\" and  name <> \"??\")")
-	or die("Query Fehler...");
+  $result = mysql_query("SELECT id,name,vorname,charakter,email,telefon from spieler where (name <> \"XX\" and  name <> \"??\")")
+  or die("Query Fehler...");
 
-	mysql_close($db);
+  mysql_close($db);
 
-	$style = $GLOBALS['style_datatab'];
-	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+  $style = $GLOBALS['style_datatab'];
+  echo "<div $style >";
+  echo "<!---  DATEN Spalte   --->\n";
 
-	echo "<table >\n";
+  echo "<table >\n";
 
-	//Header
-	$field_num = mysql_num_fields($result);
+  //Header
+  $field_num = mysql_num_fields($result);
 
-	echo "<tr>\n";
-	echo "\t<td><b>ID</b></td>\n";
-	echo "\t<td><b>Name</b></td>\n";
-	echo "\t<td><b>Vorname</b></td>\n";
-	echo "\t<td><b>Charakter</b></td>\n";
-	echo "\t<td><b>email</b></td>\n";
-	echo "\t<td><b>Telefon</b></td>\n";
-	echo "</tr>\n";
+  echo "<tr>\n";
+  echo "\t<td><b>ID</b></td>\n";
+  echo "\t<td><b>Name</b></td>\n";
+  echo "\t<td><b>Vorname</b></td>\n";
+  echo "\t<td><b>Charakter</b></td>\n";
+  echo "\t<td><b>email</b></td>\n";
+  echo "\t<td><b>Telefon</b></td>\n";
+  echo "</tr>\n";
 
-	//Daten
-	while ($row = mysql_fetch_row($result))
-	{
-		echo "<tr>";
-		for ($i=0; $i<$field_num; $i++)
-		{
-			if ($i==5)
-			{
-				echo "\t<td><a href=\"mailto:$row[$i]\"> $row[$i]</a></td>\n";
-			} else
-			{
-				echo "\t<td>".$row[$i]."&nbsp;</td>\n";
-			};
-		}
-		echo "<tr>\n";
-	}
-	echo "</table>\n";
-	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+  //Daten
+  while ($row = mysql_fetch_row($result))
+  {
+    echo "<tr>";
+    for ($i=0; $i<$field_num; $i++)
+    {
+      if ($i==0)
+      {
+        if($id==$row[0])
+        {
+          echo "<td>\n";
+          print_menu_icon("_con_sc","Dein eigener Eintrag");
+          echo "</td>\n";
+        }else
+        {
+          echo "\t<td>&nbsp;</td>\n";
+        }
+      }elseif ($i==5)
+      {
+        echo "\t<td><a href=\"mailto:$row[$i]\"> $row[$i]</a></td>\n";
+      } else
+      {
+        echo "\t<td>".$row[$i]."&nbsp;</td>\n";
+      };
+    }
+    echo "<tr>\n";
+  }
+  echo "</table>\n";
+  echo '</div>';
+  echo "<!---  ENDE DATEN Spalte   --->\n";
 
 };
 
@@ -153,111 +156,112 @@ function print_sp_liste()
  * @param unknown $user
  * @param unknown $ID
  */
-function print_sp_upd($user,$ID)
+function print_spieler_edit($id,$ID)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS;
-	global $PHP_SELF;
-	// DAtenbank zugriff
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
-	mysql_select_db("drachenhorst") ;
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $PHP_SELF;
+  // DAtenbank zugriff
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+  or die("Fehler beim verbinden!");
 
-	$q = "select spieler_id,id,username from user_liste where username=\"$user\"";
-	$result = mysql_query($q) or die("select Fehler....$q.");
-	$row = mysql_fetch_row($result);
-	$id=$row[0];
-	//  echo "$user/$id/$result\n";
+  mysql_select_db($DB_NAME);
 
-	$q = "select id,name,vorname,charakter,email,telefon,geb,bemerkung from spieler where id=\"$id\" ";
-	$result = mysql_query($q) or die("select Fehler....$q.");
+//   $q = "select spieler_id,id,username from user_liste where id=\"$id\"";
+//   $result = mysql_query($q) or die("select Fehler....$q.");
+//   $row = mysql_fetch_row($result);
+//   $spieler_id=$row[0];
+  //  echo "$user/$id/$result\n";
 
-	mysql_close($db);
+  $q = "select id,name,vorname,charakter,email,telefon,geb,bemerkung from spieler where id=\"$id\" ";
+  $result = mysql_query($q) or die("select Fehler....$q.");
 
-	//  Daten
-	//
-	echo "<TD>\n";/// Spalte für Datenbereich
+  mysql_close($db);
 
-	//  FORMULAR
-	echo "<FORM ACTION=\"$PHP_SELFE?md=0&ID=$ID\" METHOD=POST>\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"3\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"user\" VALUE=\"$user\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$id\">\n";
+  $row = mysql_fetch_row($result);
+  
+  //  Daten
+  //
+  $style = $GLOBALS['style_datatab'];
+  echo "<div $style >";
+  echo "<!---  DATEN Spalte   --->\n";
 
-	echo "<table border=1 BGCOLOR="."  >\n";
-	echo "<CAPTION>Bearbeiten der Spieler Daten</CAPTION>\n";
+  //  FORMULAR
+  echo "<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID\" METHOD=POST>\n";
+  echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"3\">\n";
+  echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$id\">\n";
 
-	$row = mysql_fetch_row($result);
+  echo "<table >\n";
+  echo "Bearbeiten <b>deiner</b> Spieler Daten\n";
 
-	echo "<tr>\n";
-	echo "\t<td WIDTH=\"75\"><b>ID</b></td>\n";
-	echo "<td>".$row[0]."&nbsp;</td>\n";
-	echo "</tr>\n";
-	echo "<tr>\n";
-	echo "\t<td><b>Name</b></td>\n";
-	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"name\" SIZE=30 MAXLENGTH=30 VALUE=\"$row[1]\">&nbsp;</td>\n";
-	echo "</tr>\n";
-	echo "<tr>\n";
-	echo "\t<td><b>Vorname</b></td>\n";
-	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"vorname\" SIZE=30 MAXLENGTH=30 VALUE=\"$row[2]\">&nbsp;</td>\n";
-	echo "</tr>\n";
-	echo "<tr>\n";
-	echo "\t<td><b>Charakter</b></td>\n";
-	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"charakter\" SIZE=30 MAXLENGTH=30 VALUE=\"$row[3]\">&nbsp;</td>\n";
-	echo "</tr>\n";
-	echo "<tr>\n";
-	echo "\t<td><b>email</b></td>\n";
-	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"email\" SIZE=30 MAXLENGTH=30 VALUE=\"$row[4]\">&nbsp;</td>\n";
-	echo "</tr>\n";
-	echo "<tr>\n";
-	echo "\t<td><b>Telefon</b></td>\n";
-	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"telefon\" SIZE=30 MAXLENGTH=30 VALUE=\"$row[5]\">&nbsp;</td>\n";
-	echo "</tr>\n";
-	echo "<tr>\n";
-	echo "\t<td><b>Geburtstag</b></td>\n";
-	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"geb\" SIZE=30 MAXLENGTH=30 VALUE=\"$row[6]\">&nbsp;</td>\n";
-	echo "</tr>\n";
-	echo "<tr>\n";
-	echo "\t<td><b>Bemerkung</b></td>\n";
-	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"bemerkung\" SIZE=30 MAXLENGTH=30 VALUE=\"$row[7]\">&nbsp;</td>\n";
-	echo "</tr>\n";
-	echo "<tr>\n";
-	echo "</tr>\n";
-	echo "<tr>\n";
-	echo "</tr>\n";
-	echo "<tr>\n";
-	echo "\t<td></td>\n";
-	echo "<td> <INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">
-			&nbsp;&nbsp;&nbsp;&nbsp;
-			<INPUT TYPE=\"RESET\" VALUE=\"ABBRECHEN\">
-			</td>\n";
-	echo "</tr>\n";
-	echo "</table>\n";
-	echo "</FORM>\n";
-	echo "</TD>\n"; //  ENDE Spalte Datenbereich
+  echo "<tr>\n";
+  echo "\t<td WIDTH=\"75\"></td>\n"; //<b>ID</b>
+  echo "<td> &nbsp; </td>\n"; //$user_id &nbsp;/ $id
+  echo "</tr>\n";
+  echo "<tr>\n";
+  echo "\t<td><b>Name</b></td>\n";
+  echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[1]\" SIZE=30 MAXLENGTH=30 VALUE=\"$row[1]\">&nbsp;</td>\n";
+  echo "</tr>\n";
+  echo "<tr>\n";
+  echo "\t<td><b>Vorname</b></td>\n";
+  echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[2]\" SIZE=30 MAXLENGTH=30 VALUE=\"$row[2]\">&nbsp;</td>\n";
+  echo "</tr>\n";
+  echo "<tr>\n";
+  echo "\t<td><b>Charakter</b></td>\n";
+  echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[3]\" SIZE=30 MAXLENGTH=30 VALUE=\"$row[3]\">&nbsp;</td>\n";
+  echo "</tr>\n";
+  echo "<tr>\n";
+  echo "\t<td><b>email</b></td>\n";
+  echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[4]\" SIZE=30 MAXLENGTH=30 VALUE=\"$row[4]\">&nbsp;</td>\n";
+  echo "</tr>\n";
+  echo "<tr>\n";
+  echo "\t<td><b>Telefon</b></td>\n";
+  echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[5]\" SIZE=30 MAXLENGTH=30 VALUE=\"$row[5]\">&nbsp;</td>\n";
+  echo "</tr>\n";
+  echo "<tr>\n";
+  echo "\t<td><b>Geburtstag</b></td>\n";
+  echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[6]\" SIZE=10 MAXLENGTH=10 VALUE=\"$row[6]\">&nbsp;</td>\n";
+  echo "</tr>\n";
+  echo "<tr>\n";
+  echo "\t<td><b>Bemerkung</b></td>\n";
+  echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[7]\" SIZE=30 MAXLENGTH=30 VALUE=\"$row[7]\">&nbsp;</td>\n";
+  echo "</tr>\n";
+  echo "<tr>\n";
+  echo "</tr>\n";
+  echo "<tr>\n";
+  echo "</tr>\n";
+  echo "<tr>\n";
+  echo "\t<td></td>\n";
+  echo "<td> <INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <INPUT TYPE=\"RESET\" VALUE=\"ABBRECHEN\">
+      </td>\n";
+  echo "</tr>\n";
+  echo "</table>\n";
+  echo "</FORM>\n";
+
+  echo '</div>';
+  echo "<!---  ENDE DATEN Spalte   --->\n";
 }
 
 /**
  * macht datenbank Update fuer Spieler
  * @param unknown $id
- * @param unknown $name
- * @param unknown $vorname
- * @param unknown $charakter
- * @param unknown $email
- * @param unknown $telefon
- * @param unknown $geb
- * @param unknown $bemerkung
+ * @param unknown $ow  , datensatz als array
  */
-function update_sc($id,$name,$vorname,$charakter,$email,$telefon,$geb,$bemerkung)
+function update_sc($id,$row)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-	or die("Fehler beim verbinden!");
-	mysql_select_db($DB_NAME);
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+  or die("Fehler beim verbinden!");
+  mysql_select_db($DB_NAME);
+  //	$q = "select id,name,vorname,charakter,email,telefon,geb,bemerkung from spieler where id=\"$user_id\" ";
 
-	$q ="update spieler SET name=\"$name\",vorname=\"$vorname\",charakter=\"$charakter\",email=\"$email\",telefon=\"$telefon\",geb=\"$geb\",bemerkung=\"$bemerkung\" where id=\"$id\"";
-	$result = mysql_query($q) or die("UPDATE Fehler....$q.");
-
-	mysql_close($db);
+  $q ="update spieler SET name=\"".$row[1]."\",vorname=\"".$row[2]."\",
+      charakter=\"".$row[3]."\",email=\"".$row[4]."\",telefon=\"".$row[5]."\",
+      geb=\"".$row[6]."\",bemerkung=\"".$row[7]."\" where id=$id";
+  $result = mysql_query($q) or die("UPDATE Fehler....$q.");
+  mysql_close($db);
 
 }
 
@@ -266,91 +270,91 @@ function update_sc($id,$name,$vorname,$charakter,$email,$telefon,$geb,$bemerkung
  * @param unknown $user
  * @param unknown $ID
  */
-function print_user_upd($user,$ID)
+function print_user_edit($id,$ID)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $PHP_SELF;
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $PHP_SELF;
 
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
-	mysql_select_db($DB_NAME);
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
+  mysql_select_db($DB_NAME);
 
-	$q = "select spieler_id,id,username from user_liste where username=\"$user\"";
-	$result = mysql_query($q) or die("select Fehler....$q.");
-	$row = mysql_fetch_row($result);
+  $q = "select spieler_id,id,username from user_liste where id=\"$id\"";
+  $result = mysql_query($q) or die("select Fehler....$q.");
+  $row = mysql_fetch_row($result);
+  $user_id=$row[0];
+  $user = $row[2];
 
-	$q = "select id,name,vorname,charakter,email,telefon,geb,bemerkung from spieler where id=\"$row[0]\" ";
-	$result_1 = mysql_query($q) or die("select Fehler....$q.");
+  $q = "select id,name,vorname,charakter,email,telefon,geb,bemerkung from spieler where id=\"$user_id\" ";
+  $result_1 = mysql_query($q) or die("select Fehler....$q.");
 
-	result_to_table($id,$user,$result_1);
+  mysql_close($db);
+  //  Daten
+  //
+  $sp_row = mysql_fetch_row($result_1);
 
-	mysql_close($db);
-	//  Daten
-	//
-	echo "<TD>\n";/// Spalte für Datenbereich
+  $style = $GLOBALS['style_datatab'];
+  echo "<div $style >";
+  echo "<!---  DATEN Spalte   --->\n";
 
-	//  FORMULAR
-	echo "<FORM ACTION=\"$PHP_SELFE?md=0&ID=$ID\" METHOD=POST>\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"5\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"user\" VALUE=\"$user\">\n";
+  //  FORMULAR
+  echo "<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID\" METHOD=POST>\n";
+  echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"5\">\n";
+  echo "<INPUT TYPE=\"hidden\" NAME=\"id\" VALUE=\"$id\">\n";
 
-	$row = mysql_fetch_row($result_1);
-	$id = $row[0]; // User_id  setzen
-	echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$id\">\n";
+  //	echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$id\">\n";
 
-	echo "<table border=1 BGCOLOR="."  >\n";
-	echo "<CAPTION>Bearbeiten der User Daten</CAPTION>\n";
-	echo "<tr>";
-	echo "  \t<td><b>Username</b></td>\n";
-	echo "  <td><INPUT TYPE=\"TEXT\" NAME=\"username\" SIZE=30 MAXLENGTH=30 VALUE=\"$user\">&nbsp;</td>\n";
-	echo "</tr>";
-	echo "<tr>";
-	echo "  \t<td><b>Paswort alt</b></td>\n";
-	echo "  <td><INPUT TYPE=\"PASSWORD\" NAME=\"alt_pw\" SIZE=30 MAXLENGTH=30 VALUE=\"\">&nbsp;</td>\n";
-	echo "</tr>";
-	echo "<tr>";
-	echo "  \t<td><b>Passwort neu</b></td>\n";
-	echo "  <td><INPUT TYPE=\"PASSWORD\" NAME=\"pw_1\" SIZE=30 MAXLENGTH=30 VALUE=\"\">&nbsp;</td>\n";
-	echo "</tr>";
-	echo "<tr>";
-	echo "  \t<td><b>Kontrolle</b></td>\n";
-	echo "  <td><INPUT TYPE=\"PASSWORD\" NAME=\"pw_2\" SIZE=30 MAXLENGTH=30 VALUE=\"\">&nbsp;</td>\n";
-	echo "</tr>";
-	echo "<tr>";
-	echo "</tr>";
-	echo "<tr>";
-	echo "</tr>";
-	echo "<tr>";
-	echo "\t<td></td>\n";
-	echo "<td> <INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">
-			&nbsp;&nbsp;&nbsp;&nbsp;
-			<INPUT TYPE=\"RESET\" VALUE=\"ABBRECHEN\">
-			</td>\n";
-	echo "</tr>";
-	echo "<tr>";
-	echo "</tr>";
-	echo "<tr>";
-	echo "</tr>";
-	echo "<tr>";
-	echo "\t<td><b>Spielername</b></td>\n";
-	echo "<td>&nbsp;$row[1]</td>\n";
-	echo "</tr>";
-	echo "<tr>";
-	echo "\t<td><b>Vorname</b></td>\n";
-	echo "<td>&nbsp;$row[2]</td>\n";
-	echo "</tr>";
-	echo "<tr>";
-	echo "\t<td><b>Charakter</b></td>\n";
-	echo "<td>&nbsp;$row[3]</td>\n";
-	echo "</tr>";
-	echo "<tr>";
-	echo "\t<td><b>email</b></td>\n";
-	echo "<td>&nbsp;$row[4]</td>\n";
-	echo "</tr>";
-	echo "<tr>";
-	echo "</tr>";
-	echo "</table>";
-	echo "</FORM>";
-	echo "</TD>\n"; //  ENDE Spalte Datenbereich
+  echo "<table  >\n";
+  echo "<CAPTION>Bearbeiten <b>deiner</b> User Daten</CAPTION>\n";
+  echo "<tr>";
+  echo "  \t<td><b>Username</b></td>\n";
+  echo "  <td><INPUT TYPE=\"TEXT\" NAME=\"row[2]\" SIZE=30 MAXLENGTH=30 VALUE=\"$user\">&nbsp;</td>\n";
+  echo "</tr>";
+  echo "<tr>";
+  echo "  \t<td><b>Paswort alt</b></td>\n";
+  echo "  <td><INPUT TYPE=\"PASSWORD\" NAME=\"row[3]\" SIZE=30 MAXLENGTH=30 VALUE=\"\">&nbsp;</td>\n";
+  echo "</tr>";
+  echo "<tr>";
+  echo "  \t<td><b>Passwort neu</b></td>\n";
+  echo "  <td><INPUT TYPE=\"PASSWORD\" NAME=\"row[4]\" SIZE=30 MAXLENGTH=30 VALUE=\"\">&nbsp;</td>\n";
+  echo "</tr>";
+  echo "<tr>";
+  echo "  \t<td><b>Kontrolle</b></td>\n";
+  echo "  <td><INPUT TYPE=\"PASSWORD\" NAME=\"row[5]\" SIZE=30 MAXLENGTH=30 VALUE=\"\">&nbsp;</td>\n";
+  echo "</tr>";
+  echo "<tr>";
+  echo "\t<td></td>\n";
+  echo "<td> <INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <INPUT TYPE=\"RESET\" VALUE=\"ABBRECHEN\">
+      </td>\n";
+  echo "</tr>";
+  echo "<tr>";
+  echo "</tr>";
+  echo "<tr>";
+  echo "</tr>";
+  echo "<tr>";
+  echo "\t<td><b>Spielername</b></td>\n";
+  echo "<td>&nbsp;$sp_row[1]</td>\n";
+  echo "</tr>";
+  echo "<tr>";
+  echo "\t<td><b>Vorname</b></td>\n";
+  echo "<td>&nbsp;$sp_row[2]</td>\n";
+  echo "</tr>";
+  echo "<tr>";
+  echo "\t<td><b>Charakter</b></td>\n";
+  echo "<td>&nbsp;$sp_row[3]</td>\n";
+  echo "</tr>";
+  echo "<tr>";
+  echo "\t<td><b>email</b></td>\n";
+  echo "<td>&nbsp;$sp_row[4]</td>\n";
+  echo "</tr>";
+  echo "<tr>";
+  echo "</tr>";
+  echo "</table>";
+  echo "</FORM>";
+
+  echo '</div>';
+  echo "<!---  ENDE DATEN Spalte   --->\n";
 
 }
 
@@ -364,40 +368,46 @@ function print_user_upd($user,$ID)
  * @param unknown $pw_2
  * @return string
  */
-function update_user($user,$id,$username,$alt_pw,$pw_1,$pw_2)
+function update_user($id,$row)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
-	mysql_select_db($DB_NAME) ;
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
+  mysql_select_db($DB_NAME) ;
 
-	$q = "select pword from user_liste where username=\"$user\"";
-	$result = mysql_query($q) or die("select Fehler....$q.");
-	$row = mysql_fetch_row($result);
-	$check = $row[0];
+  $username = $row[2];
+  $alt_pw   = $row[3];
+  $pw_1     = $row[4];
+  $pw_2     = $row[5];
 
-	$q = "select old_password(\"$alt_pw\");";
-	$result = mysql_query($q) or die($q);
-	$row = mysql_fetch_row($result) ;
-	//  echo "$row[0] / $check";  // nur zum testen !!
+  $q = "select pword from user_liste where username=\"$user\"";
+  $result = mysql_query($q) or die("select Fehler....$q.");
+  $row = mysql_fetch_row($result);
+  $check = $row[0];
 
-	if ($check==$row[0])
-	{
-		if ($pw_1==$pw_2)
-		{
-			$q ="update user_liste SET username=\"$username\",pword=old_Password(\"$pw_1\") where username=\"$user\"";
-			$result = mysql_query($q) or die("Update Fehler....$q.");
-			$err = "Daten gespeichert";
-		} else
-		{
-			$err = "Passwort ungleich  Kontrolle / Datensatz nicht gespeichert";
-		};
-	} else
-	{
-		$err = "Passwort falsch Datensatz nicht gespeichert";
-	};
-	mysql_close($db);
-	return $err;
+  // passwort codieren
+  $q = "select old_password(\"$alt_pw\");";
+  $result = mysql_query($q) or die($q);
+  $row = mysql_fetch_row($result) ;
+  //  echo "$row[0] / $check";  // nur zum testen !!
+
+  if ($check==$row[0])
+  {
+    if ($pw_1==$pw_2)
+    {
+      $q ="update user_liste SET username=\"$username\",pword=old_Password(\"$pw_1\") where id=\"$id\"";
+      $result = mysql_query($q) or die("Update Fehler....$q.");
+      $err = "Daten gespeichert";
+    } else
+    {
+      $err = "Passwort ungleich  Kontrolle / Datensatz nicht gespeichert";
+    };
+  } else
+  {
+    $err = "Passwort falsch Datensatz nicht gespeichert";
+  };
+  mysql_close($db);
+  return $err;
 }
 
 
@@ -407,20 +417,23 @@ function update_user($user,$id,$username,$alt_pw,$pw_1,$pw_2)
 $BEREICH = 'INTERN';
 $PHP_SELF = $_SERVER['PHP_SELF'];
 
-$p_md = $_POST['md'];
-$p_id					= $_POST['id'];
-$p_name				= $_POST['name'];
-$p_vorname		= $_POST['vorname'];
-$p_charakter	= $_POST['charakter'];
-$p_email			= $_POST['email'];
-$p_telefon		= $_POST['telefon'];
-$p_geb				= $_POST['geb'];
-$p_bemerkung	= $_POST['bemerkung'];
+$p_md    = POST_md(0);
+$p_row   = POST_row("");
+$p_id    = POST_id(0);
 
-$p_username		= $_POST['username'];
-$p_alt_pw			= $_POST['alt_pw'];
-$p_pw_1				= $_POST['pw_1'];
-$p_pw_2				= $_POST['pw_2'];
+// $p_id					= $_POST['id'];
+// $p_name				= $_POST['name'];
+// $p_vorname		= $_POST['vorname'];
+// $p_charakter	= $_POST['charakter'];
+// $p_email			= $_POST['email'];
+// $p_telefon		= $_POST['telefon'];
+// $p_geb				= $_POST['geb'];
+// $p_bemerkung	= $_POST['bemerkung'];
+
+// $p_username		= $_POST['username'];
+// $p_alt_pw			= $_POST['alt_pw'];
+// $p_pw_1				= $_POST['pw_1'];
+// $p_pw_2				= $_POST['pw_2'];
 
 
 $md     = GET_md(0);
@@ -439,10 +452,37 @@ $SID        = $_SESSION["ID"];
 
 if ($ID != $SID)
 {
-	header ("Location: main.php?md=0&ID=$ID");  // Umleitung des Browsers
-	exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
-	// Code ausgeführt wird.
+  header ("Location: main.php?md=0&ID=$ID");  // Umleitung des Browsers
+  exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
+  // Code ausgeführt wird.
 }
+
+if (is_user()==FALSE)
+{
+  header ("Location: larp.php");  // Umleitung des Browsers
+  exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
+  // Code ausgeführt wird.
+}
+
+/// Datenbank Funktion  mit reload , um F5 (refresh) zu unterdruecken
+switch ($p_md):
+case 3:
+  update_sc($p_id,$p_row);
+  $md = 1;
+  $param = "";
+  header_reload($PHP_SELF, $md, $ID, $param);
+  exit;
+  break;
+case 5:
+  update_user($p_id,$p_row);
+  $md = 1;
+  $param = "";
+  header_reload($PHP_SELF, $md, $ID, $param);
+  exit;
+  break;
+default:
+  break;
+  endswitch;
 
 print_header("Interner Bereich");
 print_body(2);
@@ -456,66 +496,48 @@ print_kopf($logo_typ,$header_typ,"Intern",$anrede,$menu_item);
 
 if ($user=="gast")
 {
-	$g_md=1;
+  $md=1;
+  $p_md=0;
 };
 
-switch ($p_md):
-case 3:
-	$err = update_sc($p_id,$p_name,$p_vorname,$p_charakter,$p_email,$p_telefon,$p_geb,$p_bemerkung);
-	$md = 0;
-	break;
-case 5:
-	update_user($user,$p_id,$p_username,$p_alt_pw,$p_pw_1,$p_pw_2);
-	$md = 0;
-	break;
-default:
-	break;
-	endswitch;
 
-
-	switch ($g_md):
-case 1:
-	$menu = array (0=>array("icon" => "1","caption" => "SPIELER","link" => ""),
-			1=>array("icon" => "_tedit","caption" => "Spieler","link" => "$PHP_SELFE?md=2&ID=$ID"),
-			2=>array("icon" => "_tedit","caption" => "User","link" => "$PHP_SELFE?md=4&ID=$ID"),
-			3=>array("icon" => "_stop","caption" => "Zurück","link" => "larp.php?md=0&ID=$ID")
-		);
-		break;
+  switch ($md):
 case 2:
-	$menu = array (0=>array("icon" => "1","caption" => "BEARBEITEN","link" => ""),
-	2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELFE?md=1&ID=$ID")
-	);
-	break;
+  $menu = array (0=>array("icon" => "1","caption" => "BEARBEITEN","link" => ""),
+  2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=1&ID=$ID")
+  );
+  break;
 case 4:
-	$menu = array (0=>array("icon" => "1","caption" => "USER","link" => ""),
-	2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELFE?md=1&ID=$ID")
-	);
-	break;
+  $menu = array (0=>array("icon" => "1","caption" => "USER","link" => ""),
+  2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=1&ID=$ID")
+  );
+  break;
 default:
-	$menu = array (0=>array("icon" => "1","caption" => "SPIELER","link" => ""),
-	1=>array("icon" => "_tedit","caption" => "Bearbeiten","link" => "$PHP_SELFE?md=2&ID=$ID"),
-	2=>array("icon" => "_stop","caption" => "Zurück","link" => "larp.php?md=0&ID=$ID")
-	);
-	break;
-	endswitch;
+    $menu = array (0=>array("icon" => "1","caption" => "SPIELER","link" => ""),
+        1=>array("icon" => "_tcheck","caption" => "Spieler","link" => "$PHP_SELF?md=2&ID=$ID"),
+        2=>array("icon" => "_tcheck","caption" => "User","link" => "$PHP_SELF?md=4&ID=$ID"),
+        3=>array("icon" => "_stop","caption" => "Zurück","link" => "larp.php?md=0&ID=$ID")
+    );
+    break;
+  endswitch;
 
-	print_menu($menu);
+  print_menu_status($menu);
 
-switch ($md):
-case 1:
-	break;
+  switch ($md):
 case 2:
-	print_sp_upd($user,$ID);
-	break;
+    // es werden die Id aus der Session verwendet
+    print_spieler_edit($spieler_id,$ID);
+  break;
 case 4:
-	print_user_upd($user,$ID);
-	break;
+  // es werden die Id aus der Session verwendet
+  print_user_edit($user_id,$ID);
+  break;
 default:
-	print_sp_liste();
-	break;
-	endswitch;
+  print_sp_liste($spieler_id);
+  break;
+  endswitch;
 
-	print_md_ende();
+  print_md_ende();
 
 
-	?>
+  ?>

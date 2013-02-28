@@ -68,15 +68,14 @@ if (checkuser($user,$pw) == TRUE)
 	$session_id =  session_id();  // die Session ID
 	$SID        = $_SESSION["ID"];
 //	echo "check TRUE";
-    header ("Location: larp.php?md=0&ID=$session_id&SID=$SID");  // Umleitung des Browsers
+    header ("Location: larp.php?md=0&ID=$SID");  // Umleitung des Browsers
 	exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
 	// Code ausgeführt wird. */
 }
 else
 {
 //    echo $ID."/".$SID;
-	echo "check FALSE";
-    header ("Location: main.php?md=2&daten=slogin.html&ID=$SID");
+    header ("Location: main.php?md=2&daten=slogin.html");
 	/* Umleitung des Browsers
 	 zur PHP-Web-Seite. */
 	exit;  /* Sicher stellen, das nicht trotz Umleitung nachfolgender
