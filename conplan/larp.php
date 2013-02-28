@@ -135,7 +135,7 @@ $spieler_name = get_spieler($spieler_id); //Auserwählter\n";
 $menu_item = $menu_item_help;
 $anrede["name"] = $spieler_name;
 
-print_kopf($logo_typ,$header_typ,"Intern",$anrede,$menu_item);
+print_kopf($logo_typ,$header_typ,"INTERN",$anrede,$menu_item);
 
 if ($item == '')
 {
@@ -143,7 +143,7 @@ if ($item == '')
 	"0"=>array("icon" => "0","caption" => "INTERN","link" => "","itemtyp"=>"0"),
 	"1"=>array ("icon" => "$menu_list","caption" => "Spieler","link" => "larp_sc.php?md=1&ID=$ID","itemtyp"=>"0"),
 	"2"=>array ("icon" => "$menu_folder","caption" => "Forum Intern","link" => "larp_forum_1.php?md=1&ID=$ID","itemtyp"=>"0"),
-	"3"=>array ("icon" => "$menu_folder","caption" => "Forum MC","link" => "larp_forum_2.php?md=1&ID=$ID","itemtyp"=>"0"),
+	"3"=>array ("icon" => "$menu_folder","caption" => "Forum Draskoria","link" => "larp_forum_2.php?md=1&ID=$ID","itemtyp"=>"0"),
 	"4"=>array ("icon" => "$menu_folder","caption" => "Anmeldung","link" => "larp_anmeldung.php?md=0&ID=$ID","itemtyp"=>"0"),
 	"5"=>array ("icon" => "$menu_folder","caption" => "Bilder","link" => "larp_bilder.php?md=0&ID=$ID","itemtyp"=>"0"),
 	"6"=>array ("icon" => "$menu_folder","caption" => "Neue Bilder","link" => "larp_bilder1.php?md=0&ID=$ID","itemtyp"=>"0"),

@@ -901,7 +901,7 @@ function get_sltag($user,$tag)
 		$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
 		or die( "Fehler beim Verbinden".$DB_HOST."-".$DB_USER."-".$DB_PASS);
 
-		mysql_select_db($DB_INTERN);
+	    mysql_select_db($DB_NAME);
 		// User_id ermitteln
 		$Q = "select id,username,lvl from $TBL_USER where username=\"$user\"";
 		$result = mysql_query($Q) or die( "Fehler bei User");
@@ -914,16 +914,16 @@ function get_sltag($user,$tag)
 		//    echo "konst: $row[1] / $tag <BR>";
 		if ($row[1] == $tag)
 		{
-			return "TRUE";
+			return TRUE;
 		}
 		else
 		{
-			return "FALSE";
+			return FALSE;
 		}
 	}
 	else
 	{
-		return "FALSE";
+		return FALSE;
 	}
 };
 

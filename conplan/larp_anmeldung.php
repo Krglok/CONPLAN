@@ -86,11 +86,11 @@ function print_liste($user)
 
 	$anzahl    = mysql_num_rows($result);
 
-	$style = $GLOBALS['style_datatab'];
+	$style = $GLOBALS['style_datatable'];
 	echo "<div $style >";
 	echo "<!---  DATEN Spalte   --->\n";
 	
-	echo "<table border=1 width=700 BGCOLOR=\"\">\n";
+	echo "<table>\n";
 	echo "<tr>\n";
 	echo "<td colspan=4>\n";
 	echo "<B>ANMELDUNG für TAG $TAG\n";
@@ -136,7 +136,6 @@ function print_liste($user)
 			endswitch;
 	};
 	echo "</tr>\n";
-	echo "<hr>\n";
 	//Liste der Datensätze
 	while ($row = mysql_fetch_row($result))
 	{
@@ -213,11 +212,11 @@ function info_liste($spieler,$ID)
 
 	mysql_close($db);
 
-	$style = $GLOBALS['style_datatab'];
+	$style = $GLOBALS['style_datatable'];
 	echo "<div $style >";
 	echo "<!---  DATEN Spalte   --->\n";
 	
-	echo "<table border=1 width=100% BGCOLOR=\"\">\n";
+	echo "<table\n";
 
 	//Kopfzeile
 	echo "<tr>\n";
@@ -252,7 +251,7 @@ function info_liste($spieler,$ID)
 			endswitch;
 	};
 	echo "</tr>\n";
-	echo "<hr>\n";
+
 	//Liste der Datensätze
 	while ($row = mysql_fetch_row($result))
 	{
@@ -299,11 +298,11 @@ function tage_liste($spieler,$ID,$TAG)
 
 	mysql_close($db);
 
-	$style = $GLOBALS['style_datatab'];
+	$style = $GLOBALS['style_datatable'];
 	echo "<div $style >";
 	echo "<!---  DATEN Spalte   --->\n";
 	
-	echo "<table border=1 width=100% BGCOLOR=\"\">\n";
+	echo "<table >\n";
 
 	//Kopfzeile
 	echo "<tr>\n";
@@ -313,7 +312,6 @@ function tage_liste($spieler,$ID,$TAG)
 		echo "\t<td><b>".mysql_field_name($result,$i)."</b></td>\n";
 	};
 	echo "</tr>\n";
-	echo "<hr>\n";
 	//Liste der Datensätze
 	while ($row = mysql_fetch_row($result))
 	{
@@ -416,9 +414,8 @@ function print_info($id,$user,$ID,$TAG)
 	echo "<INPUT TYPE=\"hidden\" NAME=\"user\" VALUE=\"$user\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$id\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"TAG\"  VALUE=\"$TAG\">\n";
-	echo "<TABLE WIDTH=\"700\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"2\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\"
-			BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
-	echo "<TABLE WIDTH=\"435\" BORDER=\"0\" BGCOLOR=\"\" BORDERCOLOR=\"#C0C0C0\" BORDERCOLORDARK=\"#808080\" BORDERCOLORLIGHT=\"#C0C0C0\">\n";
+	echo "<TABLE>\n";
+	echo "<TABLE>\n";
 	echo "    <TR HEIGHT=30>\n";
 	echo "    <TD colspan=6> <CENTER><B>ANMELDUNG&nbsp;&nbsp;&nbsp;&nbsp;</TD>\n";
 	echo "    </TR>\n";
@@ -539,12 +536,12 @@ function print_loeschen($user)
 		$err = 1;
 	}
 
-	$style = $GLOBALS['style_datatab'];
+	$style = $GLOBALS['style_datatable'];
 	echo "<div $style >";
 	echo "<!---  DATEN Spalte   --->\n";
 	
 
-	echo "<table border=1 BGCOLOR=\"\">\n";
+	echo "<table >\n";
 
 	// Kopfzeile
 	echo "<tr>\n";
@@ -583,7 +580,6 @@ function print_loeschen($user)
 	};
 	//lfdnr,name,vorname,orga}
 	echo "</tr>\n";
-	echo "<hr>\n";
 	//Liste der Datensätze
 	while ($row = mysql_fetch_row($result))
 	{
@@ -612,7 +608,9 @@ function print_loeschen($user)
 			} elseif ($i == 10)
 			{
 			  echo "\t<td>\n";
-			  print_textblock($row[$i]);
+			  $lines = explode("\n", $row[$i]);
+			  print_textblock_td($lines);
+			  //print_textblock($row[$i]);
 			  echo "\t</td>\n";
 			}else
 			{
@@ -833,7 +831,7 @@ function print_anmeld($id,$user,$next,$erf,$ID)
 	if ($err != 0)
 	{
 
-	    echo "  <TABLE WIDTH=\"435\" BORDER=\"0\" BGCOLOR=\"\" BORDERCOLOR=\"#C0C0C0\" BORDERCOLORDARK=\"#808080\" BORDERCOLORLIGHT=\"#C0C0C0\">\n";
+	    echo "  <TABLE>\n";
 		echo "    <TR HEIGHT=30>\n";
 		echo "    <TD > <CENTER><B>ANMELDUNGSCHLUSS !&nbsp;".print_datum($row1[6])."&nbsp;&nbsp;&nbsp;</TD>\n";
 		echo "    </TR>\n";
@@ -852,7 +850,7 @@ function print_anmeld($id,$user,$next,$erf,$ID)
 		echo "<INPUT TYPE=\"hidden\" NAME=\"TAG\"  VALUE=\"$TAG\">\n";
 		echo "<INPUT TYPE=\"hidden\" NAME=\"ID\"  VALUE=\"$ID\">\n";
 
-		echo "<TABLE WIDTH=\"560px\" BORDER=\"0px\" BGCOLOR=\"\" BORDERCOLOR=\"#C0C0C0\" BORDERCOLORDARK=\"#808080\" BORDERCOLORLIGHT=\"#C0C0C0\">\n";
+		echo "<TABLE>\n";
 		echo "    <TR HEIGHT=30>\n";
 		echo "    <TD colspan=6> <CENTER><B>ANMELDUNG&nbsp;&nbsp;&nbsp;&nbsp;</TD>\n";
 		echo "    </TR>\n";
@@ -892,10 +890,10 @@ function print_anmeld($id,$user,$next,$erf,$ID)
 		echo "    </TR>\n";
 		echo "</TABLE>\n";
 
-		echo "<TABLE WIDTH=\"560\" BORDER=\"0px\" BGCOLOR=\"\" BORDERCOLOR=\"#C0C0C0\" BORDERCOLORDARK=\"#808080\" BORDERCOLORLIGHT=\"#C0C0C0\">\n";
+		echo "<TABLE >\n";
 		echo "<TR>\n";
 		echo "<TD>\n";
-		echo "    <TABLE WIDTH=\"500\" BORDER=\"0px\" BGCOLOR=\"\" BORDERCOLOR=\"#C0C0C0\" BORDERCOLORDARK=\"#808080\" BORDERCOLORLIGHT=\"#C0C0C0\">\n";
+		echo "    <TABLE >\n";
 		echo "    <TR HEIGHT=10>\n";
 		echo "    <TD></TD>\n";
 		echo "    </TR>\n";
@@ -916,7 +914,7 @@ function print_anmeld($id,$user,$next,$erf,$ID)
 		echo "        </TD>\n";
 		echo "    </TR>\n";
 		echo "</TABLE>\n";
-		echo "<TABLE WIDTH=\"400\" BORDER=\"0\" BGCOLOR=\"\" BORDERCOLOR=\"#C0C0C0\" BORDERCOLORDARK=\"#808080\" BORDERCOLORLIGHT=\"#C0C0C0\">\n";
+		echo "<TABLE >\n";
 		echo "    <TR>\n";
 		echo "        <TD WIDTH=50><!-- Row:2, Col:1 -->\n";
 		echo "        WC\n";
@@ -956,7 +954,7 @@ function print_anmeld($id,$user,$next,$erf,$ID)
 		echo "        </TD>\n";
 		echo "    </TR>\n";
 		echo "</TABLE>\n";
-		echo "<TABLE WIDTH=\"400\" BORDER=\"0\" BGCOLOR=\"\" BORDERCOLOR=\"#C0C0C0\" BORDERCOLORDARK=\"#808080\" BORDERCOLORLIGHT=\"#C0C0C0\">\n";
+		echo "<TABLE >\n";
 		echo "    <TR>\n";
 		echo "        <TD WIDTH=50><!-- Row:2, Col:1 -->\n";
 		echo "        NSC\n";
@@ -996,7 +994,7 @@ function print_anmeld($id,$user,$next,$erf,$ID)
 		echo "        </TD>\n";
 		echo "    </TR>\n";
 		echo "</TABLE>\n";
-		echo "<TABLE WIDTH=\"400\" BORDER=\"0\" BGCOLOR=\"\" BORDERCOLOR=\"#C0C0C0\" BORDERCOLORDARK=\"#808080\" BORDERCOLORLIGHT=\"#C0C0C0\">\n";
+		echo "<TABLE >\n";
 		echo "    <TR>\n";
 		//    echo "      <TD>\n";
 		//    echo "        Bemerkung\n";
@@ -1093,7 +1091,7 @@ $spieler_name = get_spieler($spieler_id); //Auserwählter\n";
 
 $menu_item = $menu_item_help;
 $anrede["name"] = $spieler_name;
-print_kopf($logo_typ,$header_typ,"Con Anmeldung Dienste",$anrede,$menu_item);
+print_kopf($logo_typ,$header_typ,"INTERN",$anrede,$menu_item);
 
 //echo "POST : $p_md / GET : $md / ID :$ID / Spieler = $spieler_id";
 
@@ -1145,19 +1143,19 @@ case 4: // Anzigen Bearbeiten Form
 	);
 	break;
 case 10:  // Meine Anmelde Liste
-	$menu = array (0=>array("icon" => "7","caption" => "LÖSCHEN","link" => ""),
+	$menu = array (0=>array("icon" => "7","caption" => "MEINE ANMELDUNGEN","link" => ""),
 	9=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
 	);
 	break;
 case 11:  // Meine Anmelde Liste
-	$menu = array (0=>array("icon" => "7","caption" => "LÖSCHEN","link" => ""),
+	$menu = array (0=>array("icon" => "7","caption" => "CON-LISTE","link" => ""),
 	9=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
 	);
     break;
 default:  // MAIN-Menu
-	$menu = array (0=>array("icon" => "99","caption" => "ANMELDUNG Tag $TAG","link" => ""),
+	$menu = array (0=>array("icon" => "99","caption" => "CON-ANMELDUNG","link" => ""),
 	1=>array("icon" => "_add","caption" => "Neu","link" => "$PHP_SELF?md=1&ID=$ID&TAG=$TAG"),
-	2=>array("icon" => "_folder","caption" => "Dienste","link" => "larp_anmelde_dienste.php?md=0&ID=$ID&TAG=$TAG"),
+//	2=>array("icon" => "_folder","caption" => "Dienste","link" => "larp_anmelde_dienste.php?md=0&ID=$ID&TAG=$TAG"),
 	3=>array("icon" => "_list","caption" => "Löschen","link" => "$PHP_SELF?md=3&ID=$ID&TAG=$TAG"),
 	5=>array("icon" => "_list","caption" => "alle Anmeldungen","link" => "$PHP_SELF?md=10&ID=$ID&TAG=$TAG"),
 	6=>array("icon" => "_list","caption" => "Con Liste","link" => "$PHP_SELF?md=11&ID=$ID&TAG=$TAG"),
@@ -1166,7 +1164,7 @@ default:  // MAIN-Menu
 	);
 	endswitch;
 
-	print_menu($menu);
+	print_menu_status($menu);
 
 	//echo $TAG;
 

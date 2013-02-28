@@ -40,6 +40,7 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 include_once "_config.inc";
 include_once "_lib.inc";
 include_once "_head.inc";
+include_once '_mfd_lib.inc';
 
 /**
  * Erzeugt eine liste der Tabelle der Datenbank als Menu

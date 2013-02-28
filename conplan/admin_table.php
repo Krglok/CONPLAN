@@ -59,6 +59,7 @@ include_once '_mfd_lib.inc';
  */
 function show_mfd_def($table, $ID)
 {
+    global $PHP_SELF;
 	$mfd = show_mfd($table, $ID);
 	$next = 5;	// Insert mfd Data
 	$style = $GLOBALS['style_datatab'];
@@ -97,13 +98,15 @@ function show_mfd_def($table, $ID)
  */
 function show_mfd_col_def($table, $ID)
 {
-	$mfd_cols = show_mfd_cols($table, $ID);
+  global $PHP_SELF;
+  
+	show_mfd_cols($table, $ID);
 	$next = 6;	// Insert mfd Data
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
 	echo "<!---  DATEN Spalte   --->\n";
 	echo "<p>";
-	echo "<FORM ACTION=\"$PHP_SELF?md=3&daten=mfd_list&ID=$ID\" METHOD=POST>\n";
+	echo "<FORM ACTION=\"$PHP_SELF?md=3&daten=$table&ID=$ID\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
 	//	echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$name\">\n";
 	echo "<p>";
@@ -111,7 +114,7 @@ function show_mfd_col_def($table, $ID)
 	echo "&nbsp;&nbsp;&nbsp;&nbsp;";
 	echo "<INPUT TYPE=\"RESET\" VALUE=\"Reset\">";
 	echo "</p>";
-
+    echo "</form>";
 	echo '</div>';
 	echo "<!---  ENDE DATEN Spalte   --->\n";
 
@@ -128,7 +131,7 @@ function insert_mfd_cols($table,$mfd_name)
 	// erzeuge mfd fuer Tabelle in die der insert gemacht werden soll
 	$mfd_list = make_mfd_table("mfd_cols", "mfd_cols");
 	
-	$mfd_cols = show_mfd_cols($table, $ID);
+	$mfd_cols = make_mfd_cols_default($table, $mfd_name);
 	
 	$i =0;
 	foreach ($mfd_cols as $mfd_col)
@@ -312,7 +315,7 @@ case 5: // Insert -> Erfassen
 	$md = 0;
 	break;
 case 6: // Insert -> Erfassen
-	//	update($p_row);
+    insert_mfd_cols($daten,$daten);
 	$md = 0;
 	break;
 	endswitch;
@@ -349,10 +352,10 @@ default: // main
 
 	switch ($md):
 case 2:
-		show_mfd_def($daten,$ID);
+	show_mfd_def($daten,$ID);
 	break;
 case 3:
-	show_mfd_cols($daten,$ID);
+	show_mfd_col_def($daten,$ID);
 	break;
 case 4:
 	break;

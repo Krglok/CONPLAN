@@ -869,6 +869,15 @@ if (is_subsl()==FALSE)
   // Code ausgeführt wird.
 }
   
+// Prüfung auf SL-Zugriff auf CONTAG
+if (get_sltag($user,$TAG) == FALSE)
+{
+  header ("Location: con_liste.php?md=0&ID=$ID");  /* Umleitung des Browsers
+  zur PHP-Web-Seite. */
+  exit;  /* Sicher stellen, das nicht trotz Umleitung nachfolgender
+  Code ausgeführt wird. */
+}
+
   
 print_header("Con Planung");
 
@@ -908,7 +917,6 @@ default:
 	endswitch;
 
 	print_menu_status($menu);
-
 
 	switch ($md):
 case 1:

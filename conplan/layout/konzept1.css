@@ -146,6 +146,12 @@ body {
 
 #statusheader {
 	float: left;
+	margin-top: 1px;
+	margin-left: 3px;
+	margin-right: 3px;
+	margin-bottom: 1px;
+	padding-left: 3px;
+	padding-right: 3px;
 	border: solid 0px silver;
 /*    width:100px; */
 	height:25px;
@@ -155,12 +161,6 @@ body {
 }
 
 #statusheader p {
-	margin-top: 1px;
-	margin-left: 3px;
-	margin-right: 3px;
-	margin-bottom: 1px;
-	padding-left: 3px;
-	padding-right: 3px;
 	text-align: center;
 	font-weight: bold;
 }
