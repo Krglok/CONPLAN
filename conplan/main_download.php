@@ -45,6 +45,13 @@ Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues
 Layoutpfades in der config.inc
 Ansonsten bleibt der Inhalt der Seiten identisch.
 
+	$style = $GLOBALS['style_datatab'];
+	echo "<div $style >";
+	echo "<!---  DATEN Spalte   --->\n";
+
+	echo '</div>';
+	echo "<!---  ENDE DATEN Spalte   --->\n";
+
 */
 
 include_once "_config.inc";
@@ -52,24 +59,15 @@ include_once "_lib.inc";
 include_once "_head.inc";
 
 
-//-----------------------------------------------------------------------------
+/**
+ * Erstellt eine Liste der Download Dateien als Link
+ * 
+ * @param unknown $ID  Session ID
+ */
 function print_liste($ID)
-//==========================================================================
-// Function     : print_liste
-//--------------------------------------------------------------------------
-// Beschreibun  : Darstelen einer Datenliste  mit
-//                den selektierten Felder der Abfrage
-//                Kopfzeile   = Feldnamem
-//                Datenzeilen = selektierte Felder
-//                LINK auf Detailansicht <print_info>
-//
-// Argumente    : $ID = Session_ID
-//
-// Returns      : --
-//==========================================================================
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-//	global $PHP_SELF;
+	global $PHP_SELF;
 	global $TABLE;
 	global $TAG;
 
@@ -84,8 +82,11 @@ function print_liste($ID)
 	mysql_close($db);
 
 
-	echo "  <TD\n>"; //Daten bereich der Gesamttabelle
-	echo "<table border=\"1\" CELLPADDING=\"1\" CELLSPACING=\"1\" BGCOLOR=\"\">\n";
+	$style = $GLOBALS['style_datalist'];
+	echo "<div $style >";
+	echo "<!---  DATEN Spalte   --->\n";
+
+	echo "<table>\n";
 
 	//Kopfzeile
 	echo "<tr>\n";
@@ -134,8 +135,10 @@ function print_liste($ID)
 		echo "<tr>";
 	}
 	echo "</table>";
-	echo " </TD\n>"; //ENDE Daten bereich der Gesamttabelle
 
+	echo '</div>';
+	echo "<!---  ENDE DATEN Spalte   --->\n";
+	
 };
 
 
@@ -166,10 +169,10 @@ $TABLE = "download";
 
 switch ($md):
 default:  // die einzelnen Bildseiten 11-xx
-	$menu = array (0=>array("icon" => "99","caption" => "DOWNLOAD","link" => ""),
+	$menu = array (0=>array("icon" => "1","caption" => "DOWNLOAD","link" => ""),
 			8=>array("icon" => "_stop","caption" => "Zurück","link" => "main.php?md=0")
 	);
-	print_menu($menu);
+	print_menu_status($menu);
 	print_liste($ID);
 	break;
 	endswitch;

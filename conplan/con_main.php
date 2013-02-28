@@ -332,7 +332,7 @@ default:
 	1=>array("icon" => "_list","caption" => "Legenden","link" => "con_leg_liste.php?md=0&ID=$ID"),
 	2=>array("icon" => "_list","caption" => "Magie","link" => "con_mag_liste.php?md=0&ID=$ID"),
 	3=>array("icon" => "_list","caption" => "Artefakte","link" => "con_art_liste.php?md=0&ID=$ID"),
-	4=>array("icon" => "_folder","caption" => "Planung","link" => "con_liste.php?md=0&ID=$ID"),
+//	4=>array("icon" => "_folder","caption" => "Planung","link" => "con_liste.php?md=0&ID=$ID"),
 	5=>array("icon" => "_folder","caption" => "SL-Forum","link" => "con_forum.php?md=0&ID=$ID"),
 	6=>array("icon" => "_folder","caption" => "NSC","link" => "con_nsc_liste.php?md=0&ID=$ID"),
 	7=>array("icon" => "_list","caption" => "Regelwerk","link" => "con_regel_liste.php?md=0&ID=$ID"),

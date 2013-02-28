@@ -59,12 +59,13 @@ include_once '_mfd_lib.inc';
  */
 function show_mfd_def($table, $ID)
 {
-	show_mfd($table, $ID);
+	$mfd = show_mfd($table, $ID);
+	$next = 5;	// Insert mfd Data
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
 	echo "<!---  DATEN Spalte   --->\n";
 	echo "<p>";
-	echo "<FORM ACTION=\"$PHP_SELF?md=3&daten=mfd_list&ID=$ID\" METHOD=POST>\n";
+	echo "<FORM ACTION=\"$PHP_SELF?md=2&daten=mfd_list&ID=$ID\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
 	//	echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$name\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"0\">\n";
@@ -88,6 +89,61 @@ function show_mfd_def($table, $ID)
 	
 }
 
+/**
+ * Zeigt die Default Definition der Columns fuer eine Tabelle
+ * und ermoeglicht das Abspeichern in der Definition
+ * @param unknown $table
+ * @param unknown $ID
+ */
+function show_mfd_col_def($table, $ID)
+{
+	$mfd_cols = show_mfd_cols($table, $ID);
+	$next = 6;	// Insert mfd Data
+	$style = $GLOBALS['style_datatab'];
+	echo "<div $style >";
+	echo "<!---  DATEN Spalte   --->\n";
+	echo "<p>";
+	echo "<FORM ACTION=\"$PHP_SELF?md=3&daten=mfd_list&ID=$ID\" METHOD=POST>\n";
+	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
+	//	echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$name\">\n";
+	echo "<p>";
+	echo "<INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">";
+	echo "&nbsp;&nbsp;&nbsp;&nbsp;";
+	echo "<INPUT TYPE=\"RESET\" VALUE=\"Reset\">";
+	echo "</p>";
+
+	echo '</div>';
+	echo "<!---  ENDE DATEN Spalte   --->\n";
+
+}
+
+/**
+ * Erzeugt ein Default mfd Columns fuer eine Tabelle in der Datenbank
+ * $row enthaelt den kompletten Datensatz, alle Felder
+ * @param unknown $table
+ * @param unknown $mfd_name
+ */
+function insert_mfd_cols($table,$mfd_name)
+{
+	// erzeuge mfd fuer Tabelle in die der insert gemacht werden soll
+	$mfd_list = make_mfd_table("mfd_cols", "mfd_cols");
+	
+	$mfd_cols = show_mfd_cols($table, $ID);
+	
+	$i =0;
+	foreach ($mfd_cols as $mfd_col)
+	{
+		$row[0] = 0;  //ID
+		$row[1] = $mfd_name;
+		$row[2] = $mfd_col["mfd_pos"];
+		$row[3] = $mfd_col["mfd_field"];
+		$row[4] = $mfd_col["mfd_field_titel"];
+		$row[5] = $mfd_col["mfd_width"];
+		
+		mfd_insert($mfd_list, $row);
+		$i++;
+	}
+}
 
 
 /**
@@ -247,14 +303,11 @@ $anrede["formel"] = "Sei gegrüsst Meister ";
 
 print_kopf($admin_typ,$header_typ,"Menu Konfigurator",$anrede,$menu_item);
 
-$bereich = "PUBLIC";
-$sub     = "main";
-$item		 = "regeln";
-
 
 switch($p_md):
 case 5: // Insert -> Erfassen
-	$mfd_list = make_mfd_table($daten, $daten);
+	// erzeuge mfd fuer Tabelle in die der insert gemacht werden soll
+	$mfd_list = make_mfd_table("mfd_list", "mfd_list");
 	mfd_insert($mfd_list, $p_row);
 	$md = 0;
 	break;
@@ -268,25 +321,25 @@ case 6: // Insert -> Erfassen
 
 	switch ($md):
 case 2: // erfassen
-		$menu = array (0=>array("icon" => "7","caption" => "DATA","link" => "$PHP_SELF?md=1&ID=$ID"),
+		$menu = array (0=>array("icon" => "7","caption" => "TABLE","link" => "$PHP_SELF?md=1&ID=$ID"),
 				1=>array("icon" => "1","caption" => "MFD","link" => ""),
 				2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
 		);
 		break;
 case 3:  //Bearbeiten
-	$menu = array (0=>array("icon" => "7","caption" => "DATA","link" => "$PHP_SELF?md=1&ID=$ID"),
+	$menu = array (0=>array("icon" => "7","caption" => "TABLE","link" => "$PHP_SELF?md=1&ID=$ID"),
 	1=>array("icon" => "1","caption" => "MFD-COLS","link" => ""),
 	2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=1&ID=$ID")
 	);
 	break;
 case 10: // main
-	$menu = array (0=>array("icon" => "7","caption" => "DATA","link" => "$PHP_SELF?md=1&ID=$ID"),
+	$menu = array (0=>array("icon" => "7","caption" => "TABLE","link" => "$PHP_SELF?md=1&ID=$ID"),
 	1=>array ("icon" => "_plus","caption" => "Erfassen","link" => "$PHP_SELF?md=2&ID=$ID"),
 	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_main.php?md=0&ID=$ID")
 	);
 	break;
 default: // main
-	$menu = array (0=>array("icon" => "7","caption" => "DATA","link" => "$PHP_SELF?md=1&ID=$ID"),
+	$menu = array (0=>array("icon" => "7","caption" => "TABLE","link" => "$PHP_SELF?md=1&ID=$ID"),
 	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_config.php?md=0&ID=$ID")
 	);
 	break;
@@ -296,7 +349,7 @@ default: // main
 
 	switch ($md):
 case 2:
-		show_mfd($daten,$ID);
+		show_mfd_def($daten,$ID);
 	break;
 case 3:
 	show_mfd_cols($daten,$ID);

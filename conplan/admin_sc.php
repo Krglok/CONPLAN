@@ -1,3 +1,4 @@
+eclipse
 <?php
 
 /*
@@ -42,18 +43,18 @@ einen veraenderte Konfiguration eingestellt
 - Text1, Text2  fuer rechte Seite
 
 Ver 3.0  / 06.02.2013
-Es werden CSS-Dateien verwendert. 
+Es werden CSS-Dateien verwendert.
 Es wird eine strikte Trennung von Content und Layout durchgefuehrt.
-Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues 
+Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues
 Layoutpfades in der config.inc
 Ansonsten bleibt der Inhalt der Seiten identisch.
 
-	$style = $GLOBALS['style_datatab'];
-	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+$style = $GLOBALS['style_datatab'];
+echo "<div $style >";
+echo "<!---  DATEN Spalte   --->\n";
 
-	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+echo '</div>';
+echo "<!---  ENDE DATEN Spalte   --->\n";
 
 */
 
@@ -61,11 +62,15 @@ include_once "_config.inc";
 include_once "_lib.inc";
 include_once "_head.inc";
 
-
+/**
+ * Erstellt eine Spielerliste mit Bearbeitungsfunktionen (link)
+ * @param unknown $user
+ * @param unknown $ID
+ */
 function print_sp_liste($user,$ID)
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-    global $PHP_SELF;
+	global $PHP_SELF;
 	//Macht aus einem Resultset eine HTML Tabelle
 
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
@@ -81,7 +86,7 @@ function print_sp_liste($user,$ID)
 	$style = $GLOBALS['style_datatable'];
 	echo "<div $style >";
 	echo "<!---  DATEN Spalte   --->\n";
-	
+
 	echo "<table >\n";
 
 	//Header
@@ -129,8 +134,9 @@ function print_sp_liste($user,$ID)
 
 	echo '</div>';
 	echo "<!---  ENDE DATEN Spalte   --->\n";
-	
+
 };
+
 
 function print_ref_liste($user,$ID)
 {
@@ -234,12 +240,20 @@ function update_sp($id,$name,$vorname,$charakter,$email,$telefon,$geb,$bemerkung
 
 }
 
+/**
+ * Erstellt Detailmaske fuer Spielr und User
+ * @param unknown $id  PK des Spielers
+ * @param unknown $user	
+ * @param unknown $next
+ * @param unknown $erf
+ * @param unknown $ID
+ */
 function print_sp_maske($id,$user,$next,$erf,$ID)
 {
 
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $PHP_SELF;
-	
+
 	// DAtenbank zugriff =============================================================
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
 	mysql_select_db($DB_NAME) ;
@@ -285,7 +299,7 @@ function print_sp_maske($id,$user,$next,$erf,$ID)
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
 	echo "<!---  DATEN Spalte   --->\n";
-	
+
 	//  FORMULAR
 	echo "<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
@@ -357,7 +371,7 @@ function print_sp_maske($id,$user,$next,$erf,$ID)
 
 	echo '</div>';
 	echo "<!---  ENDE DATEN Spalte   --->\n";
-	
+
 }
 
 
@@ -365,7 +379,7 @@ function print_user_maske($id,$user,$next,$erf,$ID)
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $PHP_SELF;
-	
+
 
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
 	mysql_select_db($DB_NAME);
@@ -392,7 +406,7 @@ function print_user_maske($id,$user,$next,$erf,$ID)
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
 	echo "<!---  DATEN Spalte   --->\n";
-	
+
 	//  FORMULAR
 	echo "<FORM ACTION=\"$PHP_SELFE\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
@@ -431,7 +445,7 @@ function print_user_maske($id,$user,$next,$erf,$ID)
 			<INPUT TYPE=\"RESET\" VALUE=\"ABBRECHEN\">
 			</td>\n";
 	echo "</tr>";
-	
+
 	echo "<tr>";
 	echo "\t<td>&nbsp</td>\n";
 	echo "</tr>";
@@ -439,7 +453,7 @@ function print_user_maske($id,$user,$next,$erf,$ID)
 	echo "<tr>";
 	echo "\t<td>Spielerdaten</td>\n";
 	echo "</tr>";
-	
+
 	echo "<tr>";
 	echo "\t<td><b>Spielername</b></td>\n";
 	echo "<td>&nbsp;$row[1]</td>\n";
@@ -463,7 +477,7 @@ function print_user_maske($id,$user,$next,$erf,$ID)
 
 	echo '</div>';
 	echo "<!---  ENDE DATEN Spalte   --->\n";
-	}
+}
 
 // ---------------------------------------------------------------
 // ---------    MAIN ---------------------------------------------
@@ -494,18 +508,18 @@ $user_id 	= $_SESSION["user_id"];
 
 if ($ID == "")
 {
-  $session_id = 'FFFF';
-  header ("Location: main.php");  // Umleitung des Browsers
-  exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
-  // Code ausgeführt wird.
+	$session_id = 'FFFF';
+	header ("Location: main.php");  // Umleitung des Browsers
+	exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
+	// Code ausgeführt wird.
 }
 
 if (is_admin()==FALSE)
 {
-  $session_id = 'FFFF';
-  header ("Location: main.php");  // Umleitung des Browsers
-  exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
-  // Code ausgeführt wird.
+	$session_id = 'FFFF';
+	header ("Location: main.php");  // Umleitung des Browsers
+	exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
+	// Code ausgeführt wird.
 }
 
 
@@ -568,7 +582,7 @@ case 7: // erfassen
 default: // main
 	$menu = array (0=>array("icon" => "7","caption" => "SPIELER","link" => ""),
 	1=>array ("icon" => "_add","caption" => "Erfassen","link" => "$PHP_SELF?md=1&ID=$ID"),
-//	2=>array ("icon" => "_list","caption" => "User","link" => "$PHP_SELF?md=0&ID=$ID"),
+	//	2=>array ("icon" => "_list","caption" => "User","link" => "$PHP_SELF?md=0&ID=$ID"),
 	3=>array ("icon" => "_printer","caption" => "Druckliste","link" => "$PHP_SELF?md=7&ID=$ID"),
 	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_main.php?md=0&ID=$ID")
 	);
@@ -576,7 +590,7 @@ default: // main
 	endswitch;
 
 	print_menu_status($menu,$ID);
-	
+
 	switch ($md):
 case 1:
 		print_sp_maske($id,$user,5,1,$ID);

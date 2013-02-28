@@ -220,7 +220,8 @@ function show_mfd($table,$ID)
 	echo "</TABLE> \n";
 	echo "</div> \n";
 	echo "<!---  ENDE DATEN Spalte   --->\n";
-
+  
+	return $mfd;
 }
 
 /**
@@ -255,6 +256,20 @@ function show_mfd_cols($table,$ID)
 	echo "</TR> \n";
 
 	echo "<TR> \n";
+	echo "<TD>\n";
+	echo "MFD-Referenz";
+	echo "</TD> \n";
+	
+	echo "<TD> \n";
+	echo "<b>$mfd_name</b>";
+	echo "</TD> \n";
+	
+	echo "<TD> \n";
+	echo "";
+			echo "</TD> \n";
+			echo "</TR> \n";
+	
+	echo "<TR> \n";
 	echo "<TD> \n";
 	echo "Fieldname \n";
 	echo "</TD> \n";
@@ -288,6 +303,7 @@ function show_mfd_cols($table,$ID)
 	echo "</div> \n";
 	echo "<!---  ENDE DATEN Spalte   --->\n";
 
+	return $mfd_cols;
 }
 
 
@@ -478,7 +494,7 @@ function mfd_data_cols($name)
 }
 
 /**
- * Holt fuer eine mfd Definition  mit dem PK $id
+ * Holt fuer eine mfd einen Datensatz mit dem PK $id
  * @param unknown $name   // mfd referenz
  * @param unknown $id			// pk des gesuchten Datensatz
  * @return resource				// Resultset des SQL
@@ -762,14 +778,58 @@ function make_mfd_table($table, $mfd_name)
 	return $mfd_list;
 }
 
+/**
+ * Erzeugt eine Lnk-Spalte , der Link mus  uebergeben werden
+ * oder alternativ eine Textspalte
+ * @param unknown $link
+ * @param unknown $ID
+ * @param unknown $data
+ */
+function print_mfd_link_check($link,$ID,$data)
+{
+	if ($link != "")
+	{
+		echo "\t<td><a href=\"$link\">\n"; //
+		print_menu_icon_mfd ("_tcheck","Datensatz bearbeiten");
+		echo "\t</a></td>\n";
+	}else
+	{
+		echo "\t<td>\n"; //
+		echo $data;
+		echo "\t</td>\n";
+	}
+}
+
+/**
+ * Ruft die Link bau funktion $link_call
+ * oder alternativ ein Leerstring
+ * @param unknown $ID	session ID
+ * @param unknown $link_call  Funktionsname
+ * @param unknown $data	Datenwert z.b. fuer 
+ * @return Ambigous <string, mixed>
+ */
+function make_mfd_link($ID,$link_call,$data)
+{
+	
+	if (is_callable ($link_call))
+	{
+		$link = call_user_func($link_call,$ID,$data);
+	} else
+	{
+		$link = "";
+	}
+	return $link;
+}
 
 /**
  * Erstellt eine Datenliste fuer ein mfd entsprechend dem mfd_cols
+ * Die Spaltenbreite wird eingestellt
+ * Die Links werden mit einer Callback Funktion erzeugt
  * @param  $ID				SessionID
  * @param  $mfd_list	mfd Definition
  * @param  $mfd_cols	mfd Columns
  */
-function print_mfd_liste( $ID, $mfd_list, $mfd_cols)
+function print_mfd_liste( $ID, $mfd_list, $mfd_cols,$link_call_1, $link_call_2)
 {
 	// 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $PHP_SELF;
@@ -804,13 +864,13 @@ function print_mfd_liste( $ID, $mfd_list, $mfd_cols)
 	// Printdata
 	while ($row = mysql_fetch_row($result))
 	{
+		$link_1 = "";
+		$link_2 = "";
 		echo "\t<TR>";
-		echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=".$row[0]."\">\n"; //
-		print_menu_icon_mfd ("_db","Datensatz bearbeiten");
-		echo "\t</a></td>\n";
+		print_mfd_link_check($link_1,$ID,$row[$i]);
 		for ($i = 1; $i < count($mfd_cols); $i++)
 		{
-			echo "\t<td width=\"".$mfd_cols[$i]["mfd_field_titel"]."\">".$row[$i]."\n";
+			echo "\t<td>".$row[$i]."\n";
 			echo "</td>\n";
 		}
 		echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=".$row[0]."\">\n"; //
@@ -828,6 +888,67 @@ function print_mfd_liste( $ID, $mfd_list, $mfd_cols)
 	echo "<!---  ENDE DATEN Spalte   --->\n";
 
 };
+
+/**
+ * Erstellt eine Datenliste fuer ein mfd entsprechend dem mfd_cols
+ * ohne Links, die Spaltenbreite wird NICHT eingestellt
+ * @param  $ID				SessionID
+ * @param  $mfd_list	mfd Definition
+ * @param  $mfd_cols	mfd Columns
+ */
+function print_mfd_liste( $ID, $mfd_list, $mfd_cols)
+{
+	// 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+	global $PHP_SELF;
+
+	$style = $GLOBALS['style_datalist'];
+	echo "<div $style >";
+	echo "<!---  DATEN Spalte   --->\n";
+
+	echo "<TABLE >";
+	// 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+	// 	or die("Fehler beim verbinden!");
+
+	//	mysql_select_db($DB_NAME);
+
+	$result = mfd_data_result($mfd_list)
+	or die("Query Fehler...");
+
+	echo "\t<TR>";
+	//Print header
+	for($i=0; $i<count($mfd_cols); $i++)
+	{
+		$mfd_col = $mfd_cols[$i];
+		$width = $mfd_col["mfd_width"]*5;
+		echo "\t\t<TD width=\"$width\">";
+		echo "<p>";
+		echo $mfd_col["mfd_field_titel"];
+		echo "</p>";
+		echo "\t\t</TD>";
+	}
+	echo "\t</TR>";
+	// Printdata
+	while ($row = mysql_fetch_row($result))
+	{
+		echo "\t<TR>";
+		for ($i = 0; $i < count($mfd_cols); $i++)
+		{
+			echo "\t<td>".$row[$i]."\n";
+			echo "</td>\n";
+		}
+		echo "\t</TR>";
+	}
+
+	// 	mysql_close($db);
+	echo '      </TABLE>';
+	echo "    </TD>\n";
+	echo "    <TD>\n";
+	echo "    \n";
+	echo '</div>';
+	echo "<!---  ENDE DATEN Spalte   --->\n";
+
+};
+
 
 /**
  * Erstellt eine Eingabe Detailmaske als FORM
