@@ -415,7 +415,7 @@ function update_user($id,$row)
 // ---------    MAIN ---------------------------------------------
 // ----------------------------------------------------------------
 $BEREICH = 'INTERN';
-$PHP_SELF = $_SERVER['PHP_SELF'];
+
 
 $p_md    = POST_md(0);
 $p_row   = POST_row("");

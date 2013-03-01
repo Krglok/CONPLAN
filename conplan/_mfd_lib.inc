@@ -1,8 +1,8 @@
 <?php
 /*
- Projekt : LIBRARY
+Projekt : LIBRARY
 
-Datum   :  $date$  / 27.02.2013
+Datum    :  $date$  / 27.02.2013
 
 Rev.    :  $rev$   / 1.0
 
@@ -1028,7 +1028,7 @@ function print_mfd_maske($mfd_list, $row, $id,$next,$ID, $mfd_cols )
 	echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"$row[0]\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"ID\"   VALUE=\"$ID\">\n";
 
-	echo "\t <TABLE WIDTH=\"100%\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"2\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\" BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
+	echo "\t <TABLE>\n";
 	echo "<tr>\n";
 	echo "\t<td><b><i>".$mfd_list["mfd"]."</i></b></td>\n";
 	echo "\t<td></td>\n";

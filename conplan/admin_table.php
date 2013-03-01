@@ -257,7 +257,7 @@ function print_table_list($ID)
 // </head>
 
 $BEREICH = 'ADMIN';
-$PHP_SELF = $_SERVER['PHP_SELF'];
+
 
 $md     = GET_md(0);
 $id     = GET_id(0);

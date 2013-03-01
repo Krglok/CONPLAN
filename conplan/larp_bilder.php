@@ -529,7 +529,7 @@ $BEREICH = 'INTERN';
 print_header("Chronik");
 print_body(1);
 
-$PHP_SELF = $_SERVER['PHP_SELF'];
+
 // Steuerparameter und steuerdaten
 $md    = GET_md(0);
 $daten = GET_daten("");

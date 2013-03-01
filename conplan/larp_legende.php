@@ -271,7 +271,7 @@ function print_maske($id, $ID,$next,$erf)
 // ----------------------------------------------------------------
 
 $BEREICH = 'INTERN';
-$PHP_SELF = $_SERVER['PHP_SELF'];
+
 
 $md     = GET_md(0);
 $daten  = GET_daten("");

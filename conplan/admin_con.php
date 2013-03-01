@@ -710,7 +710,6 @@ function print_ID($ID)
 // Prüfung ob User  berechtigt ist
 
 $BEREICH = 'ADMIN';
-$PHP_SELF = $_SERVER['PHP_SELF'];
 
 $md     = GET_md(0);
 $id     = GET_id(0);

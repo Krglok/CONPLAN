@@ -489,7 +489,7 @@ function print_user_maske($id,$user,$next,$erf,$ID)
 
 
 $BEREICH = 'ADMIN';
-$PHP_SELF = $_SERVER['PHP_SELF'];
+
 
 $md     = GET_md(0);
 $id     = GET_id(0);

@@ -236,7 +236,7 @@ function make_mfd_cols($mfd_list)
 
 
 $BEREICH = 'ADMIN';
-$PHP_SELF = $_SERVER['PHP_SELF'];
+
 
 $md     = GET_md(0);
 $id     = GET_id(0);

@@ -43,7 +43,7 @@ include_once "_head.inc";
 // keinerlei Ausgabe vor  der header() Zeile !!!!!!!!!!!!!!!!!!!!!
 // Prüfung ob User  berechtigt ist
 $BEREICH = 'ADMIN';
-$PHP_SELF = $_SERVER['PHP_SELF'];
+
 
 $md     = GET_md(0);
 $daten  = GET_daten("");

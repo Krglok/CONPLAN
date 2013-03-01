@@ -12,7 +12,7 @@ Rev.    : 3.0
 Author  :  Olaf Duda
 
 beschreibung :
-Ueber das Script wird der Interne Teil der HP abgewickelt.
+Ueber das Script wird die Log datei angezeigt
 Es wird eine Session Verwaltung benutzt, die den User prueft.
 Es werden Subseiten mit eigenen PHP-scripten aufgerufen.
 Es werden HTML Seiten angezeigt.
@@ -154,22 +154,8 @@ print_kopf($admin_typ,$header_typ,"<b>Admin Bereich</b>",$anrede,$menu_item);
 
 switch ($md):
 default:
-	$menu = array (0=>array("icon" => "7","caption" => "ADMIN","link" => ""),
-	1=>array ("icon" => "_list","caption" => "Spieler","link" => "admin_sc.php?md=0&ID=$ID"),
-	2=>array ("icon" => "_list","caption" => "News","link" => "admin_news.php?md=0&ID=$ID"),
-	3=>array ("icon" => "_list","caption" => "Anmeldung","link" => "admin_anmelde.php?md=0&ID=$ID"),
-	4=>array ("icon" => "_list","caption" => "Hilfe","link" => "admin_hilfe.php?md=0&ID=$ID"),
-	5=>array ("icon" => "_list","caption" => "CON-SL","link" => "admin_con.php?md=0&ID=$ID"),
-	6=>array ("icon" => "_list","caption" => "Bilder","link" => "admin_bilder.php?md=0&ID=$ID"),
-	8=>array ("icon" => "_list","caption" => "Charakter","link" => "admin_char.php?md=0&ID=$ID"),
-	9=>array ("icon" => "_list","caption" => "Download","link" => "admin_down.php?md=0&ID=$ID"),
-	10=>array ("icon" => "_list","caption" => "Kalender","link" => "admin_kal.php?md=0&ID=$ID"),
-	11=>array ("icon" => "_list","caption" => "Bibliothek","link" => "admin_bib.php?md=0&ID=$ID"),
-	12=>array ("icon" => "_list","caption" => "Bib-Zugriff","link" => "admin_bib_zugriff.php?md=0&ID=$ID"),
-	13=>array ("icon" => "_list","caption" => "Bib-Bereich","link" => "admin_bib_bereich.php?md=0&ID=$ID"),
-	14=>array ("icon" => "_list","caption" => "Bib-Thema","link" => "admin_bib_thema.php?md=0&ID=$ID"),
-	15=>array ("icon" => "_list","caption" => "Bib-Item","link" => "admin_bib_item.php?md=0&ID=$ID"),
-	16=>array ("icon" => "_list","caption" => "<b>Configuration</b>","link" => "admin_config.php?md=0&ID=$ID"),
+	$menu = array (0=>array("icon" => "7","caption" => "LOG-FILE","link" => ""),
+	1=>array ("icon" => "_list","caption" => "SUCHEN","link" => "$PHP_SELF?md=".mfd_list."&ID=$ID"),
 	20=>array ("icon" => "_stop","caption" => "Zurück","link" => "larp.php?md=0&ID=$ID")
 	);
 
@@ -178,11 +164,11 @@ endswitch;
 print_menu($menu);
 
 switch ($md):
-case 1:
-		print_pages("main.html");
+case mfd_list:
+	echo "MFD FILTER MASKE";
 	break;
 default:
-	print_pages("admin_logo.html");
+	
 	break;
 	endswitch;
 

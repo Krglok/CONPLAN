@@ -114,7 +114,7 @@ function print_mfd_info_liste($mfd_list, $id,$ID)
 // </head>
 
 $BEREICH = 'ADMIN';
-$PHP_SELF = $_SERVER['PHP_SELF'];
+
 
 $md     = GET_md(0);
 $id     = GET_id(0);

@@ -281,7 +281,7 @@ function print_info($id)
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $TABLE;
 	global $TAG;
-	$PHP_SELF = $_SERVER['PHP_SELF'];
+	global $PHP_SELF;
 	
 
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
@@ -384,7 +384,7 @@ $BEREICH = 'PUBLIC';
 print_header("Chronik");
 print_body(1);
 
-$PHP_SELF = $_SERVER['PHP_SELF'];
+
 // Steuerparameter und steuerdaten
 $md=GET_md(0);
 $daten=GET_daten("");

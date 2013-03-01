@@ -132,10 +132,13 @@ $style_data_text = "id=\"data_text\"";
 
 // Zugriffsrechte -------------------------------------
 // ACHTUNG nicht aendern beinhaltet das Rechte system !!
-$lvl_spieler = array(0=>256,1=>512,14=>3840);
-$lvl_sl      = array(0=>16,1=>32,14=>240);
-$lvl_admin   = array(0=>1,1=>2,14=>15);
-$user_lvl = 3840;  // dies ist der Gastlevel
+define("lvl_public",512);
+define("lvl_user",511);
+define("lvl_author",255);
+define("lvl_subsl",63);
+define("lvl_sl",15);
+define("lvl_admin",3);
+
 
 function GET_md ($value = 0) 
 {
@@ -383,72 +386,15 @@ function POST_user_id($value="")
 
 
 /**
- * Setzt die alten menutyp nummern in die neuen Menutyptexte um
- * Begrenzung auf die 9 standardtypen  , alle anderen werden auf 10 = _help umgesetzt  
- * Sonderfall 99 = _none, soll trennbalken erzeugen
- * @param unknown $typ
- * @return string|unknown
+ * Schreibt einfachen text mit dem Style_status1
+ * @param unknown $wert
  */
-function index2menutyp ($typ ) {
-  global $menu_add,
-  $menu_db, 
-  $menu_del,
-  $menu_edit,
-  $menu_folder,
-  $menu_help, 
-  $menu_kalender,
-  $menu_key, 	
-  $menu_list, 	
-  $menu_page, 	
-  $menu_point, 	
-  $menu_printer, 
-  $menu_stop, 	
-  $menu_text, 	
-  $menu_tool, 	
-  $menu_zip;
- $i = (int)$typ;
- switch ($i) :
- case 99:
-  return "_none";
-  break;
- case 1:
-  return $menu_folder;
-  break;
- case 2:
-  return $menu_add;
-  break;
- case 3:
-  return $menu_edit;
-  break;
- case 4:
-  return $menu_del;
-  break;
- case 5:
-  return $menu_list;
-  break;
- case 6:
-  return $menu_stop;
-  break;
- case 7:
-  return $menu_page;
-  break;
- case 8:
-  return $menu_printer;
-  break;
- case 9:
-  return $menu_db;
-  break;
- default:
-  return $menu_help;
- endswitch;
-
-}
-
 function print_status($wert)
 {
   global $style_status1;
   echo "<p $style_status1>$wert </p> \n";
 }
+
 
 $PHP_SELF = $_SERVER['PHP_SELF'];
 $ID="";

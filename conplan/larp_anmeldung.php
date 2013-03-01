@@ -1042,7 +1042,7 @@ function print_anmeld($id,$user,$next,$erf,$ID)
 // Prüfung ob User  berechtigt ist
 
 $BEREICH = 'INTERN';
-$PHP_SELF = $_SERVER['PHP_SELF'];
+
 
 $g_md     = GET_md(0);
 $daten  = GET_daten("");

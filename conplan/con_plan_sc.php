@@ -601,7 +601,7 @@ function print_spieler($ID)
 // ----------------------------------------------------------------
 
 $BEREICH = 'SUBSL';
-$PHP_SELF = $_SERVER['PHP_SELF'];
+
 
 $md     = GET_md(0);
 $daten  = GET_daten("");

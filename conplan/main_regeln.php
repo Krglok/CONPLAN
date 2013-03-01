@@ -78,7 +78,7 @@ print_header("Regeln");
 
 print_body(2);
 
-$PHP_SELF = $_SERVER['PHP_SELF'];
+
 // Steuerparameter und steuerdaten
 $md=GET_md(0);
 $daten=GET_daten("");

@@ -506,7 +506,7 @@ echo "<!---  ENDE DATEN Spalte   --->\n";
 // keinerlei Ausgabe vor  der header() Zeile !!!!!!!!!!!!!!!!!!!!!
 // ----------------------------------------------------------------
 $BEREICH = 'SUBSL';
-$PHP_SELF = $_SERVER['PHP_SELF'];
+
 
 $md     = GET_md(0);
 $daten  = GET_daten("");

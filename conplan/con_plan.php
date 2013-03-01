@@ -839,7 +839,7 @@ function print_ref_data($ID)
 // Prüfung ob User  berechtigt ist
 
 $BEREICH = 'SUBSL';
-$PHP_SELF = $_SERVER['PHP_SELF'];
+
 
 $md     = GET_md(0);
 $daten  = GET_daten("");
