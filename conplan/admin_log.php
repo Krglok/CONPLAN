@@ -100,6 +100,7 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 include_once "_config.inc";
 include_once "_lib.inc";
 include_once "_head.inc";
+include_once '_log_lib.inc';
 
 
 // ---------------------------------------------------------------
@@ -156,20 +157,25 @@ switch ($md):
 default:
 	$menu = array (0=>array("icon" => "7","caption" => "LOG-FILE","link" => ""),
 	1=>array ("icon" => "_list","caption" => "SUCHEN","link" => "$PHP_SELF?md=".mfd_list."&ID=$ID"),
-	20=>array ("icon" => "_stop","caption" => "Zurück","link" => "larp.php?md=0&ID=$ID")
+	20=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_config.php?md=0&ID=$ID")
 	);
 
 endswitch;
 
-print_menu($menu);
+print_menu_status($menu);
+$table = 'sys_log';
+$mfd_list = make_mfd_table($table, $table);
 
 switch ($md):
 case mfd_list:
 	echo "MFD FILTER MASKE";
+    $result = log_data_result($mfd_list);
+    print_log_data($result,$ID);
 	break;
 default:
-	
-	break;
+    $result = log_data_result100($mfd_list);
+    print_log_data($result,$ID);
+  	break;
 	endswitch;
 
 	print_md_ende();

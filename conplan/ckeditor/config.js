@@ -9,22 +9,22 @@ CKEDITOR.editorConfig = function( config ) {
 	// http://docs.ckeditor.com/#!/api/CKEDITOR.config
 
 	// The toolbar groups arrangement, optimized for two toolbar rows.
-	config.toolbarGroups = [
-		{ name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
-		{ name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] },
-		{ name: 'links' },
-		{ name: 'insert' },
-		{ name: 'forms' },
-		{ name: 'tools' },
-		{ name: 'document',	   groups: [ 'mode', 'document', 'doctools' ] },
-		{ name: 'others' },
-		'/',
-		{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-		{ name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align' ] },
-		{ name: 'styles' },
-		{ name: 'colors' },
-		{ name: 'about' }
-	];
+//	config.toolbarGroups = [
+//		{ name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
+//		{ name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] },
+//		{ name: 'links' },
+//		{ name: 'insert' },
+//		{ name: 'forms' },
+//		{ name: 'tools' },
+//		{ name: 'document',	   groups: [ 'mode', 'document', 'doctools' ] },
+//		{ name: 'others' },
+//		'/',
+//		{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+//		{ name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align' ] },
+//		{ name: 'styles' },
+//		{ name: 'colors' },
+//		{ name: 'about' }
+//	];
 
 	// Remove some buttons, provided by the standard plugins, which we don't
 	// need to have in the Standard(s) toolbar.
@@ -32,5 +32,37 @@ CKEDITOR.editorConfig = function( config ) {
 	config.width = '650px';
 	config.height = '500px';
 
+	//config.toolbar = 'Full';
+	 
+	config.toolbar_ForumToolbar =
+	[
+		{ name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
+		{ name: 'editing', items : [ 'Find','Replace','-','SelectAll','-','Scayt' ] },
+		{ name: 'insert', items : [ 'Image','HorizontalRule','Smiley','SpecialChar'] },
+                '/',
+		{ name: 'styles', items : [ 'Styles','Format' ] },
+		{ name: 'basicstyles', items : [ 'Bold','Italic','Strike','-','RemoveFormat' ] },
+		{ name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote' ] },
+		{ name: 'links', items : [ 'Link','Unlink','Anchor' ] }
+	];
+
+	config.toolbar_Full =
+		[
+			{ name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
+			{ name: 'editing', items : [ 'Find','Replace','-','SelectAll','-','SpellChecker', 'Scayt' ] },
+			{ name: 'insert', items : [ 'Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe' ] },
+			{ name: 'forms', items : [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 
+		        'HiddenField' ] },
+			{ name: 'document', items : [ 'Source','-','Save','NewPage','DocProps','Preview','Print','-','Templates' ] },
+       		{ name: 'tools', items : [ 'Maximize', 'ShowBlocks','-','About' ] },
+			'/',
+			{ name: 'styles', items : [ 'Styles','Format','Font','FontSize' ] },
+			{ name: 'basicstyles', items : [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] },
+			{ name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CreateDiv',
+			'-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl' ] },
+			{ name: 'links', items : [ 'Link','Unlink','Anchor' ] },
+			'/',
+			{ name: 'colors', items : [ 'TextColor','BGColor' ] }
+		];
 
 };

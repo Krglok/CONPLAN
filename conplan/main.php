@@ -76,6 +76,7 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 include_once "_config.inc";
 include_once "_lib.inc";
 include_once "_head.inc";
+include_once '_log_lib.inc';
 
 
 
@@ -85,12 +86,11 @@ include_once "_head.inc";
 //
 // keinerlei Ausgabe vor  der header() Zeile !!!!!!!!!!!!!!!!!!!!!
 // ----------------------------------------------------------------
-// Prüfung ob User  berechtigt ist
 // keine user pruefung, da es eine public seite ist
 $BEREICH = 'PUBLIC';
+
 print_header("Hauptseite");
 print_body(2);
-
 
 // Steuerparameter und steuerdaten
 $md     =GET_md(0);
@@ -125,7 +125,7 @@ $menu_main = array (0=>array("icon" => "0","caption" => "Hauptseite","link" => "
 		24=>array ("icon" => "_page","caption" => "Bilder","link" => "main_bilder.php?md=0","itemtyp"=>"0"),
 		30=>array ("icon" => "0","caption" => "","link" => "","itemtyp"=>"0"),
 		31=>array ("icon" => "_link","caption" => "Liberi Effera","link" => "http://www.liberi-effera.de/","itemtyp"=>"0"),
-		32=>array ("icon" => "_link","caption" => "Draskoria","link" => "http://draskoria.game-host.org:8090/\"target=_blank\"","itemtyp"=>"0"),
+		32=>array ("icon" => "_link","caption" => "Draskoria","link" => "http://draskoria.game-host.org:8090/ target=\"_blank\"","itemtyp"=>"0"),
 //		33=>array ("icon" => "_zip","caption" => "Download","link" => "main_download.php","daten"=>"","itemtyp"=>"0"),
 		34=>array ("icon" => "_list","caption" => "Links","link" => "links.html","itemtyp"=>"2"),
 		50=>array ("icon" => "_help","caption" => "Ich","link" => "ich.html","itemtyp"=>"2"),
@@ -147,6 +147,7 @@ case 1: // html die in pages liegen
     print_data($daten);
     break;
 case 2: // html der nicht in pages liegt
+    log_write_info($PHP_SELF."?md=$md&daten=$daten  /  print_pages($daten);");
 	print_pages($daten);
 	break;
 case 3: // MAIN MENU

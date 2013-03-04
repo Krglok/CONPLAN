@@ -140,7 +140,7 @@ echo "<!---  DATEN Spalte   --->\n";
       if ($i==0)
       {
         echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=$row[$i]&TAG=$TAG\">\n";
-        print_menu_icon ("_tcheck","Datensatz bearbeiten");
+        print_menu_icon ("_editor","Datensatz bearbeiten");
         echo "\t</a></td>\n";
       } else
       {

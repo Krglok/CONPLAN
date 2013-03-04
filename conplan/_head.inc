@@ -37,7 +37,7 @@ include_once "_lib.inc";
 
 function header_reload($name, $md, $ID, $param)
 {
-  header ("Location: $name?md=$md&ID=$ID".$param);  // Umleitung des Browsers
+  header ("Location: $name?md=$md&amp;ID=$ID".$param);  // Umleitung des Browsers
   exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
   
 }
@@ -53,15 +53,16 @@ function print_header ($NAME)
 	global $layout_path ;
 	global $version ;
 	 
-	echo "<HTML>\n";
+	echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n";
 	echo "<!-- PHP ".phpversion()." / Drachenhorst Framework $version / 2013-->\n";
 	echo "<HEAD>\n";
-	echo "<TITLE></TITLE>\n";
+	echo "<meta http-equiv=\"Content-type\" content=\"text/html;\">"; //charset=UTF-8
 	echo "<META NAME=\"Description\" CONTENT=\"$grp_name \">\n";
 	echo "<META NAME=\"Keywords\" CONTENT=\"LARP $NAME\">\n";
 	echo "<META NAME=\"Author\" CONTENT=\"Dipl. Ing. Olaf Duda\">\n";
 	echo"  <title>$grp_name $NAME </title> \n";
 	echo"  <link rel=\"stylesheet\" type=\"text/css\" href=\"$layout_path/konzept1.css\">  \n";
+    echo"  <script src=\"/ckeditor/ckeditor.js\" type=\"text/javascript\"></script> \n";
 	echo"  <script src=\"js/test1.js\" type=\"text/javascript\"></script>  \n";
 	echo "</HEAD>\n";
 	echo "\n";
@@ -93,9 +94,61 @@ function print_body_ende()
   echo "</html>\n";
 };
 
+function get_home($bereich)
+{
+  if ($bereich == "ADMIN")
+  {
+    return $GLOBALS["php_admin"];
+    
+  } 
+  if ($bereich == "SUBSL")
+  {
+    return $GLOBALS["php_subsl"];
+    
+  }
+  if ($bereich == "SL")
+  {
+    return $GLOBALS["php_sl"];
+    
+  }
+  if ($bereich == "AUTHOR")
+  {
+    return $GLOBALS["php_author"];
+    
+  }
+  if ($bereich == "INTERN")
+  {
+    return $GLOBALS["php_intern"];
+    
+  }else
+  {
+    return $GLOBALS["php_main"];
+    
+  }
+}
+
+/**
+ * Ausgabe des Logo image anhand des default style
+ * @param unknown $typ
+ */
+function print_header_icon ($typ)
+{
+  global $BEREICH;
+  global $ID;
+  $home = get_home($BEREICH)."?md=0&amp;ID=$ID";
+  
+  $typ = $GLOBALS['layoutImages_path'].$typ;
+  if($typ != "")
+  {
+    echo "\t<a href=\"$home\">  <IMG SRC=\"$typ\" ALT=\"LOGO\" title=\"Zur Startseite\"> </a>  ";
+} else{
+  echo "<p><a href=\"$home\"> HIER FEHLT EIN BILD </a>  </p>";
+}
+};
+
 function print_kopf ($logo_typ, $header_typ,$bereich,$anrede, $menu_item)
 {
- 
+  
   $info = "Login aufrufen";
   $formel = $anrede["formel"];
   $name   = $anrede["name"];

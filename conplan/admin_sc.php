@@ -490,7 +490,6 @@ function print_user_maske($id,$user,$next,$erf,$ID)
 
 $BEREICH = 'ADMIN';
 
-
 $md     = GET_md(0);
 $id     = GET_id(0);
 $daten  = GET_daten("");

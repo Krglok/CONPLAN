@@ -903,13 +903,13 @@ case 10:
 	break;
 default:
 	$menu = array (0=>array("icon" => "99","caption" => "TAG $TAG","link" => ""),
-	1=>array("icon" => "_list","caption" => "Ablauf","link" => "con_plan_ablauf.php?md=0&ID=$ID&TAG=$TAG"),
-	2=>array("icon" => "_list","caption" => "Orte","link" => "con_plan_orte.php?md=0&ID=$ID&TAG=$TAG"),
-	3=>array("icon" => "_list","caption" => "Nsc","link" => "con_plan_nsc.php?md=0&ID=$ID&TAG=$TAG"),
-	4=>array("icon" => "_list","caption" => "Gerüchte","link" => "con_plan_geruechte.php?md=0&ID=$ID&TAG=$TAG"),
-	5=>array("icon" => "_list","caption" => "Bücher","link" => "con_plan_buch.php?md=0&ID=$ID&TAG=$TAG"),
-	6=>array("icon" => "_list","caption" => "SC","link" => "con_plan_sc.php?md=0&ID=$ID&TAG=$TAG"),
-	7=>array("icon" => "_list","caption" => "Artefakte","link" => "con_plan_artefakt.php?md=0&ID=$ID&TAG=$TAG"),
+	1=>array("icon" => "_editor","caption" => "Ablauf","link" => "con_plan_ablauf.php?md=0&ID=$ID&TAG=$TAG"),
+	2=>array("icon" => "_editor","caption" => "Orte","link" => "con_plan_orte.php?md=0&ID=$ID&TAG=$TAG"),
+	3=>array("icon" => "_editor","caption" => "Nsc","link" => "con_plan_nsc.php?md=0&ID=$ID&TAG=$TAG"),
+	4=>array("icon" => "_editor","caption" => "Gerüchte","link" => "con_plan_geruechte.php?md=0&ID=$ID&TAG=$TAG"),
+	5=>array("icon" => "_editor","caption" => "Bücher","link" => "con_plan_buch.php?md=0&ID=$ID&TAG=$TAG"),
+	6=>array("icon" => "_editor","caption" => "SC","link" => "con_plan_sc.php?md=0&ID=$ID&TAG=$TAG"),
+	7=>array("icon" => "_editor","caption" => "Artefakte","link" => "con_plan_artefakt.php?md=0&ID=$ID&TAG=$TAG"),
 	8=>array("icon" => "_db","caption" => "Referenz","link" => "$PHP_SELF?md=5&ID=$ID&TAG=$TAG"),
 	9=>array("icon" => "_db","caption" => "Liste","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG"),
 	11=>array("icon" => "_stop","caption" => "Zurück","link" => "con_liste.php?md=0&ID=$ID")

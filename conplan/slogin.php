@@ -38,6 +38,7 @@ Das Session managment wird modifiziert um es sicherer zu machen.
 
 include_once "_config.inc";
 include_once "_login.inc";
+include_once "_log_lib.inc";
 //include "_lib.inc";
 //include "_head.inc";
 
@@ -67,14 +68,17 @@ if (checkuser($user,$pw) == TRUE)
 //    session_id($ip);
 	$session_id =  session_id();  // die Session ID
 	$SID        = $_SESSION["ID"];
-//	echo "check TRUE";
+    $text = $PHP_SELF."?md=$md&daten=$daten&user=$user&pw=$pw : checkuser TRUE : ID=$SID ";
+    log_write_info($text);
+	//	echo "check TRUE";
     header ("Location: larp.php?md=0&ID=$SID");  // Umleitung des Browsers
 	exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
 	// Code ausgeführt wird. */
-}
-else
+} else
 {
 //    echo $ID."/".$SID;
+    $text = $PHP_SELF."?md=$md&daten=$daten&user=$user&pw=$pw : checkuser FALSE  : ID=$SID ";
+    log_write_error($text);
     header ("Location: main.php?md=2&daten=slogin.html");
 	/* Umleitung des Browsers
 	 zur PHP-Web-Seite. */

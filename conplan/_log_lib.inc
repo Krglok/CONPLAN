@@ -47,8 +47,8 @@ function log_write_info($text)
 	$join = ""; //$mfd_list["join"];
 	$where ="";
 	$order = "";
-
-	$wert = "message=\"\"$text, typ=\"INFO\", user=$user ";
+    if ($user == "") { $user = "gast"; }
+	$werte = "message=\"$text\", typ=\"INFO\", user=\"$user\" ";
 
 	$q = "insert INTO $table SET $werte ";
 
@@ -74,8 +74,9 @@ function log_write_error($text)
 	$join = ""; //$mfd_list["join"];
 	$where ="";
 	$order = "";
-
-	$wert = "message=\"\"$text, typ=\"ERROR\", user=$user ";
+	if ($user == "") { $user = "gast"; }
+	
+	$werte = "message=\"$text\", typ=\"ERROR\", user=\"$user\" ";
 
 	$q = "insert INTO $table SET $werte ";
 
@@ -102,8 +103,9 @@ function log_write_debug($text)
 		$join = "";
 		$where ="";
 		$order = "";
-
-		$wert = "message=\"\"$text, typ=\"DEBUG\", user=$user ";
+		if ($user == "") { $user = "gast"; }
+		
+		$werte = "message=\"$text\", typ=\"DEBUG\", user=\"$user\" ";
 
 		$q = "insert INTO $table SET $werte ";
 
@@ -158,7 +160,7 @@ function log_data_result_mfd($mfd_list)
  * Liest die letzten 100 Datensaetze aus der Log Datei
  * @return resource
  */
-function log_data_result100()
+function log_data_result100($mfd_list)
 {
 
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
@@ -229,7 +231,7 @@ function print_log_filter($mfd_cols)
 	echo"</td>\n";
 
 	echo"<td >\n";
-	$width = 500; // $mfd_cols[2]['mfd_width'];
+	$width = 100; // $mfd_cols[2]['mfd_width'];
 	echo "<INPUT TYPE=\"TEXT\" NAME=\"row[2]\" SIZE=\"$width\" MAXLENGTH=\"$width\" VALUE=\"\">\n";
 	echo"</td>\n";
 
@@ -239,7 +241,7 @@ function print_log_filter($mfd_cols)
 	echo"</td>\n";
 
 	echo"<td >\n";
-	$width = $mfd_cols[4]['mfd_width'];
+	$width = $mfd_cols[4]['mfd_width']/3;
 	echo "<INPUT TYPE=\"TEXT\" NAME=\"row[4]\" SIZE=\"$width\" MAXLENGTH=\"$width\" VALUE=\"\">\n";
 	echo"</td>\n";
 
@@ -312,7 +314,7 @@ function print_log_zeile($row)
 
 }
 
-function print_log_data($result)
+function print_log_data($result,$ID)
 {
 	global $PHP_SELF;
 
@@ -337,9 +339,12 @@ function print_log_data($result)
 
 	print_log_data_header($mfd_cols);
 	
-	print_log_filter(mfd_cols);
+	print_log_filter($mfd_cols);
 
-	print_log_data($result);
+	while ($row = mysql_fetch_row($result))
+	{
+	  print_log_zeile($row);
+	}
 	
 	echo"</form>\n";
 	

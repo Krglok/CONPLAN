@@ -80,6 +80,7 @@ $p_datum    = POST_datum("");
 $p_betreff  = POST_betreff("??");
 $p_text     = POST_text("");
 $p_user_id  = POST_user_id("0");
+$p_id       = POST_id(0);
 
 
 $daten  = GET_daten("");
@@ -110,6 +111,10 @@ switch ($p_md):
   	$err = erf_thema($ID, $foren_id, $p_top_id, $p_post_id, $p_author, $p_datum, $p_betreff, $p_text, $p_user_id);
   //    $md = 2;
   break;
+  case 6:
+  	$err = upd_thema($p_id, $foren_id, $p_top_id, $p_post_id, $p_author, $p_datum, $p_betreff, $p_text, $p_user_id);
+    //echo $md ;
+  break;
   default:
   break;
 endswitch;
@@ -117,7 +122,7 @@ endswitch;
 switch ($md):
 case 1:
 	$menu = array (0=>array("icon" => "99","caption" => "FORUM","link" => ""),
-	2=>array("icon" => "_add","caption" => "Neues Thema","link" => "$PHP_SELF?md=3&ID=$ID"),
+	2=>array("icon" => "_tadd","caption" => "Neues Thema","link" => "$PHP_SELF?md=3&ID=$ID"),
 	3=>array("icon" => "_stop","caption" => "Verlassen","link" => "larp.php?md=0&ID=$ID")
 	);
 	break;
@@ -138,8 +143,8 @@ case 4:  // neue Antwort , ACHTUNG id kreuzverweis
 	);
 	break;
 case 5:
-	$menu = array (0=>array("icon" => "99","caption" => "FORUM","link" => ""),
-	3=>array("icon" => "_stop","caption" => "Zurück","link" => "larp.php?md=0&ID=$ID")
+	$menu = array (0=>array("icon" => "99","caption" => "EDIT","link" => ""),
+	3=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=2&ID=$ID&post_id= $g_post_id")
 	);
 	break;
 default:
@@ -174,7 +179,7 @@ case 4:
 	print_thema_erf($ID,$g_id, $foren_id, $g_post_id, $spieler_name, $g_datum, $g_betreff, $g_text, $user_id,$g_next,2);
 	break;
 case 5:
-	echo "UPDATE";
+	print_thema_upd($ID,$g_id,2);
 	break;
 default:
 	break;

@@ -41,9 +41,14 @@ $session_id ="FFFF";    // die Default Einstellung fuehrt zu einem Fehler
 // allgemeine Konfigurationsparameter
 $version = "3.0.0";
 $grp_name="Drachenhorst";			// Refrenzname fuer Homepage
-$path_conplan	= "./conplan/";     // Hier werden die Bilder der Conplanung abgelegt
-$main_php="main.php";
-$home = $main_php;
+//$path_conplan	= "./conplan/";     // Hier werden die Bilder der Conplanung abgelegt
+$php_main   ="main.php";
+$php_admin  ="admin_main.php";
+$php_subsl  ="larp.php";
+$php_sl     ="con_main.php";
+$php_author ="larp.php";
+$php_intern ="larp.php";
+//$home = $main_php;
 
 // Pfade die automatisch verwendet werden  ------------
 $path_img 		= "./images";		// Dies sind die Content Bilder
@@ -395,16 +400,29 @@ function print_status($wert)
   echo "<p $style_status1>$wert </p> \n";
 }
 
+/**
+ * prueft $text auf <"> und ersetzt es durch <blank>
+ * die funktion wird benoetigt im SQL string zu formatieren
+ * @param unknown $text
+ */
+function sql_textcheck($text)
+{
+  $char=chr(9);
+  $text=str_replace($char," ",$text);
+  $char="\"";
+  return str_replace($char," ",$text);
+}
 
-$PHP_SELF = $_SERVER['PHP_SELF'];
-$ID="";
+
+$PHP_SELF = $_SERVER['PHP_SELF'];  // Globale Variable fuer den Scriptnamen
+$ID="";  // default wert fuer Session ID
 $menu_item_header = array ("icon" => "1", "caption" => "Default","link" => "","itemtyp"=>"0");
 $menu_item_pages = array ("icon" => "1", "caption" => "Pages","link" => "","itemtyp"=>"0");
 $menu_item_help = array ("icon" => $menu_help, "caption" => "Hilfe","link" => "javascript:openHelp()","itemtyp"=>"0");
 $menu_item_ich 	= array ("icon" => "$menu_page","caption" => "Ich","link" => "ich.html","itemtyp"=>"2");
 $menu_item_imp 	= array ("icon" => "$menu_help","caption" => "Impressum","link" => "impressum.html","itemtyp"=>"2");
 $menu_item_login= array ("icon" => "$menu_key","caption" => "Innerer Zirkel","link" => "slogin.html","itemtyp"=>"2");
-$menu_item_default = array("icon" => $menu_stop,"caption" => "Zurück","link" => "$main_php?md=0","itemtyp"=>"0");
+$menu_item_default = array("icon" => $menu_stop,"caption" => "Zurück","link" => "$php_main?md=0","itemtyp"=>"0");
 //$menu_item = array("icon" => "","caption" => "??","link" => "??","itemtyp"=>0);
 $menu_items = array(99=>$menu_item_default);
 

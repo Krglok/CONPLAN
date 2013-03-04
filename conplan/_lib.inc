@@ -89,7 +89,7 @@ function print_menu_icon_mfd ($typ,$info)
  * @param unknown $typ
  * @param string $info
  */
-function print_menu_icon ($typ,$info = "xx")
+function print_menu_icon ($typ,$info = "Link")
 {
   // convert int to string of icon type  
   //$typ = index2menutyp($typ);
@@ -135,19 +135,19 @@ function print_menu_item($item)
     
   } elseif ($itemtyp == "1")
   {
-    $ref = "main_pages.php?md=0&daten=$link";
+    $ref = "main_pages.php?md=0&amp;daten=$link";
     
   } elseif ($itemtyp == "2")
   {
-    $ref = "$PHP_SELF?md=2&daten=$link";
+    $ref = "$PHP_SELF?md=2&amp;daten=$link";
     
   }  elseif ($itemtyp = "100")
   {
-    $ref = "$PHP_SELF?md=$itemtyp&daten=$link";
+    $ref = "$PHP_SELF?md=$itemtyp&amp;daten=$link";
     
   } elseif ($itemtyp = "101")
   {
-    $ref = "$PHP_SELF?md=$itemtyp&daten=$link";
+    $ref = "$PHP_SELF?md=$itemtyp&amp;daten=$link";
     
   } else 
   {
@@ -164,9 +164,7 @@ function print_menu_item($item)
     echo "          </p>  \n";
   } else 
   {
-    echo "          <p>  \n";
     echo "\t\t<hr> \n";
-    echo "          </p>  \n";
   }
 
 }
@@ -178,13 +176,13 @@ function print_menu_item($item)
 function print_menu ($menu)
 {
   global $ID;
-  $menu_item_subsl= array ("icon" => "_tool","caption" => "Planung","link" => "con_liste.php?md=0&ID=$ID","itemtyp"=>"0");
-  $menu_item_sl 	= array ("icon" => "_tool","caption" => "SL","link" => "con_main.php?md=0&ID=$ID","itemtyp"=>"0");
-  $menu_item_admin= array ("icon" => "_tool","caption" => "Admin","link" => "admin_main.php?md=0&ID=$ID","itemtyp"=>"0");
-  $menu_item_author= array ("icon" => "_tool","caption" => "Author","link" => "author_pages.php?md=0&ID=$ID","itemtyp"=>"0");
+  $menu_item_subsl= array ("icon" => "_tool","caption" => "Planung","link" => "con_liste.php?md=0&amp;ID=$ID","itemtyp"=>"0");
+  $menu_item_sl 	= array ("icon" => "_tool","caption" => "SL","link" => "con_main.php?md=0&amp;ID=$ID","itemtyp"=>"0");
+  $menu_item_admin= array ("icon" => "_tool","caption" => "Admin","link" => "admin_main.php?md=0&amp;ID=$ID","itemtyp"=>"0");
+  $menu_item_author= array ("icon" => "_tool","caption" => "Author","link" => "author_pages.php?md=0&amp;ID=$ID","itemtyp"=>"0");
   
   //   menü spalte
-  echo "<!---  Menu Spalte   --->\n";
+  echo "<!---  Menu Spalte   -->\n";
   //  stellt die breite der Menüspalte ein !!!
   $style = $GLOBALS['style_menu_tab1'];
   echo "<div $style >\n";
@@ -254,10 +252,10 @@ function print_menue_header($caption, $style)
 function print_menu_status ($menu)
 {
   global $ID;
-  $menu_item_subsl= array ("icon" => "_tool","caption" => "Planung","link" => "con_liste.php?md=0&ID=$ID","itemtyp"=>"0");
-  $menu_item_sl   = array ("icon" => "_tool","caption" => "SL","link" => "con_main.php?md=0&ID=$ID","itemtyp"=>"0");
-  $menu_item_admin= array ("icon" => "_tool","caption" => "Admin","link" => "admin_main.php?md=0&ID=$ID","itemtyp"=>"0");
-  $menu_item_author= array ("icon" => "_tool","caption" => "Author","link" => "author_pages.php?md=0&ID=$ID","itemtyp"=>"0");
+  $menu_item_subsl= array ("icon" => "_tool","caption" => "Planung","link" => "con_liste.php?md=0&amp;ID=$ID","itemtyp"=>"0");
+  $menu_item_sl   = array ("icon" => "_tool","caption" => "SL","link" => "con_main.php?md=0&amp;ID=$ID","itemtyp"=>"0");
+  $menu_item_admin= array ("icon" => "_tool","caption" => "Admin","link" => "admin_main.php?md=0&amp;ID=$ID","itemtyp"=>"0");
+  $menu_item_author= array ("icon" => "_tool","caption" => "Author","link" => "author_pages.php?md=0&amp;ID=$ID","itemtyp"=>"0");
   
   //   menü spalte
   echo "<!---  Menu Spalte   --->\n";
@@ -421,10 +419,10 @@ function get_menu_items($bereich, $sub,$item)
 			$menu_item['icon']=$row[3];
 			if ($row[2] == 1)
 			{	// ergaenze pfad durch sub / item  als pfad
-				$menu_item['link']= "&daten=".set_sub_item_name($sub, $item, $row[4]);
+				$menu_item['link']= "&amp;daten=".set_sub_item_name($sub, $item, $row[4]);
 			} elseif ($row[2] == 2)
 			{	// ergaenze pfad durch standard pages_pfad
-				$menu_item['link']="&daten=pages/".$row[4];
+				$menu_item['link']="&amp;daten=pages/".$row[4];
 			} else
 			{
 				$menu_item['link']=$row[4];
@@ -573,21 +571,6 @@ function check_sub_item($bereich,$sub,$item)
 }
 
 
-/**
- * Ausgabe des Logo image anhand des default style 
- * @param unknown $typ
- */
-function print_header_icon ($typ)
-{
-	global $home;
-	$typ = $GLOBALS['layoutImages_path'].$typ;
-	if($typ != "") 
-	{
-		echo "\t<a href=\"$home\">  <IMG SRC=\"$typ\" title=\"Zur Startseite\"> </a>  ";
-	} else{
-		echo "<p><a href=\"$home\"> HIER FEHLT EIN BILD </a>  </p>";
-	}
-};
 
 /**
  * prueft ob user Lvl den entsprechenden Wert hat
@@ -991,7 +974,7 @@ function  print_hilfe($ID,$item,$id)
 				// aufruf der Deateildaten
 				if ($i==0)
 				{
-//					echo "\t<td><a href=\"$PHP_SELF?md=10&ID=$ID&id=$row[$i]&item=$item\">\n";
+//					echo "\t<td><a href=\"$PHP_SELF?md=10&amp;ID=$ID&amp;id=$row[$i]&amp;item=$item\">\n";
                     $style = $GLOBALS['style_balken_menu_r'];
                     echo "\t\t<div $style > \n";
 					print_menu_icon ($GLOBALS['menu_stop']);

@@ -109,7 +109,7 @@ function print_liste($ID)
       {
         echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=$row[$i]&TAG=$TAG\">\n";
         //        echo "\t<IMG SRC=\"../larp/images/db.gif\" BORDER=\"0\" HEIGHT=\"25\" WIDTH=\"25\" ALT=\"Datensatz Bearbeiten\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>\n";
-        print_menu_icon ("_tcheck","Datensatz bearbeiten");
+        print_menu_icon ("_editor","Datensatz bearbeiten");
         echo "\t</a></td>\n";
       } else
       {

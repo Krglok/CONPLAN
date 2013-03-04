@@ -1,4 +1,38 @@
 <?php
+/**
+ * 
+ * 
+ * 
+ */
+
+
+/**
+ * Erstellt ein ckEditor Element  zu fuer $name mit dem default Text $text
+ * Breite=50 und hoehe=34
+ * @param unknown $name
+ * @param unknown $text
+ */
+function print_thema_text($name,$text)
+{
+  echo "\t<td><b>Text</b></td>\n";
+//  echo "\t<td><TEXTAREA NAME=\"$name\" COLS=50 ROWS=12></TEXTAREA>&nbsp;</td>\n";
+  echo "<td>\n";
+  echo "<textarea   name=\"$name\"  COLS=\"60\" ROWS=\"14\" >"; //class=\"ckeditor\"
+  echo $text;
+  echo "</textarea>";
+  
+  echo "<!--  Text editor Konfiguration-->";
+  echo "  <script type=\"text/javascript\">";
+  echo " CKEDITOR.replace('$name',{	
+  toolbar: 'ForumToolbar',
+  removeButtons : 'Table',
+  uiColor : '#9AB8F3',
+  height : '250px'
+  } );";
+  echo "  </script>";
+  echo "</td>\n";
+  
+}
 
 
 function print_thema_liste($ID,$foren_id,$user)
@@ -29,10 +63,10 @@ function print_thema_liste($ID,$foren_id,$user)
   //Header
   $field_num = mysql_num_fields($result);
   echo "\t<tr>\n";
-  echo "\t<td width=\"25\"><i> </i></td>\n";
-  echo "\t<td width=\"300\"><i>Thema</i></td>\n";
-  echo "\t<td width=\"75\"><i>Author</i></td>\n";
-  echo "\t<td width=\"75\"><i>Datum</i></td>\n";
+  echo "\t<td width=\"25px\"><i> </i></td>\n";
+  echo "\t<td width=\"300px\"><i>Thema</i></td>\n";
+  echo "\t<td ><i>Author</i></td>\n";
+  echo "\t<td width=\"85px\"><i>Datum</i></td>\n";
   echo "\t<td><b>Anwort<i></td>\n";
   echo "\n</tr>\n";
 
@@ -70,6 +104,7 @@ function print_thema($ID,$foren_id,$id,$user)
 {
   global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
   global $PHP_SELF;
+  global $user_id;
   //Macht aus einem Resultset eine HTML Tabelle
 
   if ($foren_id=='')
@@ -88,8 +123,9 @@ function print_thema($ID,$foren_id,$id,$user)
   echo "<div $style >";
   echo "<!---  DATEN Spalte   --->\n";
 
-  echo "\t <TABLE  >\n";
-
+  echo "\t <TABLE>\n";
+  echo "\t <TBODY>\n";
+  
   //Header
   $field_num = mysql_num_fields($result);
   echo "<tr>\n";
@@ -100,7 +136,7 @@ function print_thema($ID,$foren_id,$id,$user)
  	echo "\t<td width=\"150\"><i>Author</i></td>\n";
  	echo "\t<td width=\"100\"><i>Datum</i></td>\n";
  	echo "\t<td width=\"50\"><i>Anwort</i></td>\n";
- 	echo "\t<td> </td>\n";
+// 	echo "\t<td> </td>\n";
  	echo "</tr>\n";
 
  	//Daten
@@ -109,7 +145,15 @@ function print_thema($ID,$foren_id,$id,$user)
  	//  HauptBeitrag
  	echo "<tr>";
  	echo "\t<td>\n";
- 	print_menu_icon ("_buble","Thema");
+ 	if ($user_id==$row[8])
+ 	{
+ 	  echo "\t<a href=\"$PHP_SELF?md=5&ID=$ID&id=$row[0]&foren_id=$row[1]&post_id=$row[0]&betreff=Re:$row[6]&next=2\">\n";
+ 	  print_menu_icon ("_editor","Thema");
+ 	  echo "\t</a>\n";
+ 	} else
+ 	{
+ 	  print_menu_icon ("_buble","Thema");
+ 	} 
  	echo "\t</td>\n";
  	echo "\t<td></td>\n";
  	echo "\t<td><b>$row[6]</b></td>\n";
@@ -138,7 +182,15 @@ function print_thema($ID,$foren_id,$id,$user)
  	  echo "<tr>";
  	  echo "\t<td></td>\n";
  	  echo "\t<td>\n";
- 	  print_menu_icon ("_buble","Antwort");
+ 	 	if ($user_id==$row[8])
+     	{
+     	  echo "\t<a href=\"$PHP_SELF?md=5&ID=$ID&id=$row[0]&foren_id=$row[1]&post_id=$row[0]&betreff=Re:$row[6]&next=2\">\n";
+     	  print_menu_icon ("_editor","Thema");
+     	  echo "\t</a>\n";
+     	} else
+     	{
+     	  print_menu_icon ("_buble","Thema");
+     	} 
  	  echo "\t</td>\n";
  	  // 		echo "\t<td><a href=\"$PHP_SELF?md=3&ID=$ID&id=$row[0]&foren_id=$row[1]&top_id=$row[2]&post_id=$row[3]\">\n";
  	  // 		//echo "\t<IMG SRC=\"images/xview.gif\" BORDER=\"0\" HEIGHT=\"20\" WIDTH=\"30\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\">\n";
@@ -151,9 +203,7 @@ function print_thema($ID,$foren_id,$id,$user)
  	  //echo "\t<IMG SRC=\"images/feder1.gif\" BORDER=\"0\" HEIGHT=\"20\" WIDTH=\"30\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\">\n";
  	  print_menu_icon ("_edit","Erstelle eine Anwort zu dem Thema");
  	  echo "\t</td>\n";
- 	  echo "\t<td>\n";
- 	  echo "\t</td>\n";
- 	  echo "\t<tr>\n";
+ 	  echo "\t</tr>\n";
  	  echo "<tr>";
  	  echo "\t<td></td>\n";
  	  echo "\t</a></td>\n";
@@ -163,6 +213,7 @@ function print_thema($ID,$foren_id,$id,$user)
  	  print_textblock_td($lines);
  	  echo "\t<tr>\n";
  	}
+  echo "\t </TBODY>\n";
  	echo "</table>\n";
 
  	echo '</div>';
@@ -326,8 +377,7 @@ function print_thema_erf($ID,$id, $foren_id, $post_id, $author, $datum, $betreff
   echo "\t<td><INPUT TYPE=\"TEXT\" NAME=\"betreff\" SIZE=50 MAXLENGTH=50 VALUE=\"$betreff\">&nbsp;</td>\n";
   echo "\t</tr>\n";
   echo "\t<tr>\n";
-  echo "\t<td><b>Text</b></td>\n";
-  echo "\t<td><TEXTAREA NAME=\"text\" COLS=50 ROWS=12></TEXTAREA>&nbsp;</td>\n";
+  print_thema_text("text",$text);
   echo "\t</tr>\n";
   echo "\t<tr>\n";
   echo "\t</tr>\n";
@@ -368,9 +418,14 @@ function erf_thema($ID, $foren_id, $top_id, $post_id, $author, $datum, $betreff,
   // Datenbankzugriff =====================
   $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
   mysql_select_db($DB_NAME);
-
+  
+//  $author = sql_textcheck($author);
+//  $datum  = sql_textcheck($datum);
+//  $betreff = sql_textcheck($betreff);
+  $text    = sql_textcheck($text);
+  
   $q ="INSERT INTO forum_post (ID, foren_id, top_id, post_id, author, datum, betreff, text, user_id) VALUES (NULL,\"$foren_id\", \"$top_id\", \"$post_id\", \"$author\", \"$datum\", \"$betreff\", \"$text\", \"$user_id\")";
-  $result = mysql_query($q) or die("Insert Fehler....$q.");
+  $result = mysql_query($q) or die("Forum Insert Fehler....$q");
   $err = "Daten gespeichert ";
   mysql_close($db);
   // Datenbank Ende =======================
@@ -383,6 +438,130 @@ function erf_thema($ID, $foren_id, $top_id, $post_id, $author, $datum, $betreff,
       // 	};
       // 	exit;  /* Sicher stellen, das nicht trotz Umleitung nachfolgender
       // 	Code ausgeführt wird. */
+  return $err;
+}
+
+/**
+ * Erstellt eine Detailmakse fuer Edit
+ * @param unknown $ID
+ * @param unknown $id
+ * @param unknown $next
+ * @param unknown $md
+ */
+function print_thema_upd($ID,$id, $md)
+{
+  global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
+  global $PHP_SELF;
+  $next = 6;
+  // DAtenbank zugriff =============================================================
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
+
+  $author = get_spieler($_SESSION["spieler_id"]);
+  $user_id = $_SESSION["user_id"];
+  
+  mysql_select_db($DB_NAME);
+  $table = "forum_post"; //$mfd_list["table"];
+  $fields = "foren_id, post_id, author, datum, betreff, text, user_id ";  //$fields =$mfd_list["fields"];
+  $join = ""; //$mfd_list["join"];
+  $where ="id=$id";
+  $order = "";
+  
+  $q = "SELECT $fields FROM $table $join where $where ";
+  
+  $result = mysql_query($q) ;
+  if (!$result) {
+    $message  = 'Invalid query: ' . mysql_error() . "\n";
+    $message .= 'Whole query: ' . $q;
+    die($message);
+  
+  } else
+  {
+    $row = mysql_fetch_row($result);
+    $foren_id = $row[0]; 
+    $post_id  = $row[1];
+    $author   = $row[2];
+    $datum    = $row[3]; 
+    $betreff  = $row[4]; 
+    $text     = $row[5];    
+  }
+  if ($post_id==0)
+  {
+    $post_id=$id;
+  }
+
+  mysql_close($db);
+  // Datenbank Ende ================================================================
+
+  //  Daten
+  //
+	$style = $GLOBALS['style_datatab'];
+	echo "<div $style >";
+	echo "<!---  DATEN Spalte   --->\n";
+
+  //  FORMULAR
+  echo "\n";
+  echo "\t<FORM ACTION=\"$PHP_SELF?md=$md&ID=$ID&post_id=$post_id\" METHOD=POST>\n";
+  echo "\t<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
+  echo "\t<INPUT TYPE=\"hidden\" NAME=\"foren_id\" VALUE=\"$foren_id\">\n";
+  echo "\t<INPUT TYPE=\"hidden\" NAME=\"post_id\" VALUE=\"$post_id\">\n";
+  echo "\t<INPUT TYPE=\"hidden\" NAME=\"user_id\" VALUE=\"$user_id\">\n";
+  echo "\t<INPUT TYPE=\"hidden\" NAME=\"id\" VALUE=\"$id\">\n";
+  echo "\t<INPUT TYPE=\"hidden\" NAME=\"next\" VALUE=\"$next\">\n";
+
+  echo "\t<P Align=LEFT><B>Lass deine Ideen sprühen\n";
+  echo "\t<TABLE>\n";
+
+  // (ID, foren_id, top_id, post_id, author, datum, betreff, text, user_id)
+
+  echo "\t<td><b>Author</b></td>\n";
+  echo "\t<td><INPUT TYPE=\"TEXT\" NAME=\"author\" SIZE=30 MAXLENGTH=30 readonly VALUE=\"$author \">&nbsp;</td>\n";
+  echo "\t</tr>\n";
+  echo "\t<tr>\n";
+  echo "\t<td><b>Datum</b></td>\n";
+  //    $datum = getdate();
+  echo "\t<td><INPUT TYPE=\"TEXT\" NAME=\"datum\" SIZE=30 MAXLENGTH=30 readonly VALUE=\"$datum\">&nbsp;</td>\n";
+  echo "\t</tr>\n";
+  echo "\t<tr>\n";
+  echo "\t<td><b>Betreff</b></td>\n";
+  echo "\t<td><INPUT TYPE=\"TEXT\" NAME=\"betreff\" SIZE=50 MAXLENGTH=50 VALUE=\"$betreff\">&nbsp;</td>\n";
+  echo "\t</tr>\n";
+  echo "\t<tr>\n";
+  print_thema_text("text",$text);
+  echo "\t</tr>\n";
+  echo "\t<tr>\n";
+  echo "\t<td></td>\n";
+  echo "\t<td> <INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <INPUT TYPE=\"RESET\" VALUE=\"ABBRECHEN\">
+      </td>\n";
+  echo "\t</tr>\n";
+  echo "\t</table>\n";
+  echo "\t</FORM>\n";
+
+  echo '</div>';
+  echo "<!---  ENDE DATEN Spalte   --->\n";
+}
+
+
+function upd_thema($id, $foren_id, $top_id, $post_id, $author, $datum, $betreff, $text, $user_id)
+{
+  global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
+  global $PHP_SELF;
+
+  // Datenbankzugriff =====================
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
+  mysql_select_db($DB_NAME);
+
+  //  $author = sql_textcheck($author);
+  //  $datum  = sql_textcheck($datum);
+  //  $betreff = sql_textcheck($betreff);
+  $text    = sql_textcheck($text)."\n<i>edit am ".date('Y-m-d/H:i:s',time())."</i>";
+  
+  $fields = "foren_id=\"$foren_id\", top_id=\"$top_id\", post_id=\"$post_id\", author=\"$author\", datum=\"$datum\", betreff=\"$betreff\", text=\"$text\", user_id=\"$user_id\" ";
+  $q ="UPDATE forum_post SET $fields  where id=$id ";
+  $result = mysql_query($q) or die("Forum Fehler....$q");
+  $err = "Daten gespeichert ";
+  mysql_close($db);
   return $err;
 }
 

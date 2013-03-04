@@ -121,7 +121,7 @@ function print_liste($ID,$TAG)
       if ($i==0)
       {
         echo "\t<td  bgcolor=\"$bgcolor\"><a href=\"$PHP_SELF?md=4&ID=$ID&id=$row[$i]\">\n";
-        print_menu_icon ("_db","Contag Einladung bearbeiten");
+        print_menu_icon ("_editor","Contag Einladung bearbeiten");
         echo "\t</a></td>\n";
       } else
       {

@@ -110,7 +110,7 @@ function print_pages_list($path,$ID,$sub)
 		if ($i>0)
 		{
     		echo "<a href=\"$PHP_SELF?md=2&daten=$name&ID=$ID&sub=$sub \" >";
-    		print_menu_icon("_db","Edit Html Datei");
+    		print_menu_icon("_editor","Edit Html Datei");
     		echo "</a>";
         	echo "\t\t</td> \n";
         	echo "\t\t<td> \n";
@@ -187,10 +187,14 @@ function pages_edit ($path,$name,$ID,$sub)
     echo $text;
 	echo "</textarea>";
   
-  echo "<!--  Text editor Konfiguration-->";  
+  echo "<!--  Text editor Konfiguration-->";
   echo "  <script type=\"text/javascript\">";
-  echo " CKEDITOR.replace('editor1');";
-  echo "  </script>";
+  echo " CKEDITOR.replace('editor1',{	
+  toolbar: 'Full',
+  uiColor : '#9AB8F3',
+  height : '450px'
+  } );";
+    echo "  </script>";
   echo "</p>";
   echo '</div>';
   echo "<!---  ENDE DATEN Spalte   --->\n";

@@ -206,21 +206,26 @@ function pages_edit ($name,$ID)
 	echo "<INPUT TYPE=\"RESET\" VALUE=\"Reset\">";
     echo "<INPUT TYPE=\"TEXT\" NAME=\"id\" SIZE=25 MAXLENGTH=25 readonly VALUE=\"$name\">\n";
 	echo "</p>";
-	
+	$name = 'editor1';
 	$text = $lines[0];
 	for ($i=1; $i<count($lines); $i++)
 	{
 	  $text = $text.$lines[$i];
 	}
-	echo "<textarea   name=\"editor1\"  COLS=\"80\" ROWS=\"34\" >"; //class=\"ckeditor\"
+	echo "<textarea   name=\"$name\"  COLS=\"80\" ROWS=\"4\" >"; //class=\"ckeditor\"
     echo $text;
 	echo "</textarea>";
   
   echo "<!--  Text editor Konfiguration-->";  
   echo "  <script type=\"text/javascript\">";
-  echo " CKEDITOR.replace('editor1');";
+  echo " CKEDITOR.replace('$name',{	
+  toolbar: 'Full',
+  uiColor : '#9AB8F3',
+  width : '850px',
+  height : '450px'
+  } );";
   echo "  </script>";
-  echo "</p>";
+    echo "</p>";
   echo '</div>';
   echo "<!---  ENDE DATEN Spalte   --->\n";
   
