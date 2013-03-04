@@ -147,112 +147,243 @@ function print_leg_liste($ID)
 	
 };
 
-//-----------------------------------------------------------------------------
-function print_maske($id, $ID,$next,$erf)
+function print_detail_info($id, $ID,$next)
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $PHP_SELF;
-
-	//Anzeigen von Legendenliste
-	//function view() {
-
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
 	or die("Fehler beim verbinden!");
 	//if ($DEBUG) {echo "Verbunden<br>";}
-
+	
 	mysql_select_db($DB_NAME);
 	//if ($DEBUG) {echo "DB ausgewählt<br>";}
+	
+	$result = mysql_query("select id,s0,s1,s2,name,kurz,datum,beschreibung from legende where id=\"$id\"")
+	or die("Query Fehler...");
+	$row = mysql_fetch_row($result);
+	mysql_close($db);
+		
+	print_maske($id, $ID,$next,$row, true);
+}
 
-	if ($erf!=0)
+/**
+ * Erstellt ein Inputfeld mit der Textlaenge 
+ * die Size wird auf max 75 Zeichen begrenzt
+ * 
+ * @param unknown $titel
+ * @param unknown $pos
+ * @param unknown $data
+ * @param unknown $width
+ * @param unknown $readonly
+ */
+function print_edit_spalte($titel,$pos, $data, $width, $is_readonly)
+{
+	if($is_readonly)
 	{
-		$row = array(0=>"",
-				1=>"",
-				2=>"",
-				3=>"",
-				4=>"",
-				5=>"",
-				6=>"",
-				7=>""
-		);
+		$readonly = "readonly";
 	} else
 	{
-		$result = mysql_query("select id,s0,s1,s2,name,kurz,datum,beschreibung from legende where id=\"$id\"")
-		or die("Query Fehler...");
-		$row = mysql_fetch_row($result);
+		$readonly = "";
+	}
+	
+	if($width >75)
+	{
+		$size = 75;
+	} else
+	{
+		$size = $width;
+	}
+	echo "<td width=75 ><i></i></td>\n";
+	echo "<td width=50>\n";
+	echo "<INPUT TYPE=\"TEXT\" NAME=\"row[$pos]\" SIZE=$size MAXLENGTH=$width $readonly VALUE=\"".$data."\n";
+	echo "</td>\n";
+}
 
-	};
+/**
+ * Erstellt eine Textarea als Input. Die Textarea wird durch ckEditor ersetz
+ * bei readonly=true wird nur der Text angezeigt
+ * @param unknown $titel  des Feldes
+ * @param unknown $pos    index des $row
+ * @param unknown $data		vorhandene Daten
+ * @param unknown $is_readonly true = als Text / false = als Eingabe feld 
+ */
+function print_edit_text($titel,$pos, $data, $is_readonly)
+{
+	echo "  <td width=75 ><i>$titel</i></td>\n";
+	echo "<td >\n";
+	if ($is_readonly)
+	{
+			$zeile=explode("\n",$data);
+			$anz  = count($zeile);
+			for ($ii=0; $ii<$anz; $ii++)
+			{
+			echo "\t$zeile[$ii]&nbsp;<br>\n";
+			}
+	} else
+	{
+		$name = "row[$pos]";  // dies ist der Name des Elementres das ersetzt werden soll
+		echo "\t<td><i>$titel</i></td>\n";
+		//  echo "\t<td><TEXTAREA NAME=\"$name\" COLS=50 ROWS=12></TEXTAREA>&nbsp;</td>\n";
+		echo "<td>\n";
+		echo "<textarea   name=\"$name\"  COLS=\"60\" ROWS=\"14\" >"; //class=\"ckeditor\"
+		echo $text;
+		echo "</textarea>";
+		
+				echo "<!--  Text editor Konfiguration-->";
+  echo "  <script type=\"text/javascript\">";
+  echo " CKEDITOR.replace('$name',{
+		  toolbar: 'ForumToolbar',
+		  removeButtons : 'Table',
+		  uiColor : '#9AB8F3',
+		  height : '250px'
+		} );";
+		echo "  </script>";
+  echo "</td>\n";
+			}
+	echo "\t&nbsp;<br>\n";
+	echo "</td>\n";
+	
+}
 
-	mysql_close($db);
+/**
+ * Erstellt ein Radio button mit dem Value true
+ * @param unknown $titel
+ * @param unknown $pos
+ * @param unknown $data
+ * @param unknown $is_readonly
+ */
+function print_edit_bool($titel, $pos, $data, $is_readonly)
+{
+	$name = "row[$pos]";
+	echo "  <td width=75 ><i>$titel</i></td>\n";
+	echo "<td >\n";
+	echo "<td>\n";
+	echo "<input type=\"radio\" class=\"Radio\" name=\"$name\" value=\"true\"> $titel tru<br>\n";
+	echo "<input type=\"radio\" class=\"Radio\" name=\"$name\" value=\"false\"> $titel false\n";
+	echo "</td>";
+}
+
+/**
+ * Erstellt ein Radiobutton mit dem value <J>
+ * @param unknown $titel
+ * @param unknown $pos
+ * @param unknown $data
+ * @param unknown $is_readonly
+ */
+function print_edit_janein($titel, $pos, $data, $is_readonly)
+{
+	$name = "row[$pos]";
+	if(!stripos($data, "ja"))
+	{
+	  $select_ja = "selected";			
+	} else 
+	{
+		$select_nein = "selected";
+	}
+	echo "  <td width=75 ><i>$titel</i></td>\n";
+	echo "<td >\n";
+	echo "<td>\n";
+  echo "<select name=\"$name\" size=\"1\"> \n";
+  echo "<option $select_ja >ja</option> \n";
+  echo "<option $select_nein>nein</option> \n";
+  echo "</select> \n";
+	echo "</td>";
+}
+
+
+/**
+ * Erstellt eine Detailmaske zu einem Datensatz
+ * $is_info = true erstellt eine readonly Ansicht
+ * @param unknown $id
+ * @param unknown $ID
+ * @param unknown $next
+ * @param unknown $is_info = true , erstellt als default eine redonly ansicht
+ */
+function print_maske($id, $ID,$next,$row, $is_info=true)
+{
+	global $PHP_SELF;
 
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
 	echo "<!---  DATEN Spalte   --->\n";
-	
+	/*
+	 * +----------------------------+
+	 * |		|		 |	 	 	    	 	    |
+	 * |		|		 |	 	|	   |	 	|   |
+	 * +----------------------------+
+	 * 
+	 * +----------------------------+
+	 * |		|												|
+	 * |		|												|
+	 * |		|												|
+	 * +----------------------------+
+	 * 
+ 	 * +----------------------------+
+	 * |														|
+	 * |														|
+	 * |														|
+	 * |														|
+ 	 * +----------------------------+
+ 	 * 
+ 	 * +----------------------------+
+	 * |		[SUBMIT]  [RESET]				|
+	 * +----------------------------+
+*/
 	//  FORMULAR
 	echo "\n";
-	echo "<FORM ACTION=\"$PHP_SELF\" METHOD=GET>\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"6\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"ID\" VALUE=\"$ID\">\n";
+	echo "<FORM ACTION=\"$PHP_SELF?=md=0&amp;ID=$ID\" METHOD=GET>\n";
+	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$id\">\n";
 
-	echo "<TABLE WIDTH=\"680\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"2\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\"
-			BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
+	//Detail Header
+	echo "<TABLE WIDTH=\"680\">\n";
+	echo "<tr>\n";  // ID
+	echo "  <td width=75 ><b>ID</b></td>\n";
+	echo "  <td width=50>$mfd_name&nbsp;</td>\n";
+	echo "</tr>\n";  // ID
+	echo "</TABLE>\n";
+	
+	echo "<TABLE WIDTH=\"680\">\n";
 	echo "<tr>\n";  // ID
 	echo "  <td width=75 ><b>ID</b></td>\n";
 	echo "  <td width=50>$row[0]&nbsp;</td>\n";
-	echo "  <td width=50 ><b>JAHR</b></td>\n";
-	echo "  <td width=50>$row[1]&nbsp;</td>\n";
-	echo "  <td width=50><b>TAG</b></td>\n";
-	echo "  <td width=50>$row[2]&nbsp;</td>\n";
-	echo "  <td width=50><b>S2</b></td>\n";
-	echo "  <td width=50>$row[3]&nbsp;</td>\n";
-	echo "  <td ><b>&nbsp;</b></td>\n";
+	echo "</tr>\n"; 
+	//  einfache Datenfelder
+	echo "<tr>\n";  
+	print_edit_spalte("JAHR", 1, $row[1], 12, $is_info);
+	print_edit_spalte("TAG", 2,$row[2],12,$is_info);
+	print_edit_spalte("S2", 3, $row[3], 12,$is_info);
 	echo "</tr>\n";
 	echo "</table>\n";
 
-	echo "<TABLE WIDTH=\"680\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"2\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\"
-			BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
+	echo "<TABLE WIDTH=\"680\">\n";
 	echo "<tr>\n";  // Historie
-	echo "  <td width=75 ><b>DATUM</b></td>\n";
-	echo "  <td BGCOLOR=\"#E9E0DA\">$row[6]&nbsp;</td>\n";
+	print_edit_spalte("DATUM", 6, $row[6],12,$is_info);
 	echo "</tr>\n";
 	echo "<tr>\n";  // Name
-	echo "  <td width=75 ><b>NAME</b></td>\n";
-	echo "  <td  BGCOLOR=\"#E9E0DA\">$row[4]&nbsp;</td>\n";
+	print_edit_spalte("NAME", 4, $row[4], 50,$is_info);
 	echo "</tr>\n";
 	echo "<tr>\n";  // Kurz
-	echo "  <td><b>KURZ</b></td>\n";
-	echo "  <td BGCOLOR=\"#E9E0DA\">$row[5]&nbsp;</td>\n";
+	print_edit_spalte("KURZ", 5, $row[5], 75, $is_info);
 	echo "</tr>\n";
 	echo "</table>\n";
-
-	echo "<TABLE WIDTH=\"680\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"2\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\"
-			BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
+  // Text Datenfelder
+	echo "<TABLE WIDTH=\"680\">\n";
 	echo "<tr>\n";  // Text
-	echo "  <td width=75 ><b></b></td>\n";
-	//  echo "\t<td><TEXTAREA NAME=\"beschreibung\" COLS=80 ROWS=30  readonly>$row[7]</TEXTAREA>&nbsp;</td>\n";
-	echo "<td  WIDTH=\"600\"  BGCOLOR=\"#E9E0DA\">\n";
-	$zeile=explode("\n",$row[7]);
-	$anz  = count($zeile);
-	for ($ii=0; $ii<$anz; $ii++)
-	{
-		echo "\t$zeile[$ii]&nbsp;<br>\n";
-	}
-	echo "\t&nbsp;<br>\n";
-	echo "</td>\n";
-
+	print_edit_text("", 7, $row[7], $is_info);
 	echo "</tr>\n";
-	if ($next!=0)
+	echo "</TABLE>\n";
+
+	// Button Zeile
+	if (!$is_info)
 	{
+		echo "<TABLE WIDTH=\"680\">\n";
 		echo "\t<tr>\n";
 		echo "\t<td></td>\n";
-		echo "\t<td> <INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">
-				&nbsp;&nbsp;&nbsp;&nbsp;
-				<INPUT TYPE=\"RESET\" VALUE=\"ABBRECHEN\">
-				</td>\n";
+		echo "\t<td> <INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\"> </td>\n";
+		echo "\t<td> <INPUT TYPE=\"RESET\" VALUE=\"RESET\">			</td>\n";
 		echo "\t</tr>\n";
+		echo "</table>";
 	};
-	echo "</table>";
 	echo "</FORM>";
 
 	echo '</div>';
