@@ -57,6 +57,38 @@ define("mfd_insert", 21);
 define("mfd_update", 22);
 define("mfd_delete", 23);
 
+
+/**
+ * Erzeugt ein Default mfd Columns fuer eine Tabelle in der Datenbank
+ * Eine mfd COl Definition besteht aus mehreren Tabellenzeile.
+ * Deshalb werden diese dynamisch erstellt und direkt aus der jeweiligen
+ * Tabelle gelesen
+ * @param  $table, name der Tabelle die gelesen wird
+ * @param  $mfd_name , name der mfd-referenz die erzeugt wird
+ */
+function insert_mfd_cols($table,$mfd_name)
+{
+  // erzeuge mfd fuer Tabelle in die der insert gemacht werden soll
+  $mfd_list = make_mfd_table("mfd_cols", "mfd_cols");
+
+  $mfd_cols = make_mfd_cols_default($table, $mfd_name);
+
+  $i =0;
+  foreach ($mfd_cols as $mfd_col)
+  {
+    $row[0] = 0;  //ID
+    $row[1] = $mfd_name;
+    $row[2] = $mfd_col["mfd_pos"];
+    $row[3] = $mfd_col["mfd_field"];
+    $row[4] = $mfd_col["mfd_field_titel"];
+    $row[5] = $mfd_col["mfd_width"];
+    $row[6] = $mfd_col["mfd_field_typ"];
+
+    mfd_insert($mfd_list, $row);
+    $i++;
+  }
+}
+
 $field_item = array
 (
 		"Field" => "",
@@ -81,7 +113,6 @@ function make_mfd_cols_default($table,$mfd_name)
 	{
 		// 0 = Field, 1 = Type, 2 Null, 3 = Key, 4Defaault, 5=Extra
 		$mfd_col["mfd_name"]	= $mfd_name;
-		$mfd_col["mfd_titel"]	= $table;
 		$mfd_col["mfd_pos"]		= $i;
 		$mfd_col["mfd_field"]	= $row[0];
 		$mfd_col["mfd_field_titel"] = $row[0];
@@ -520,9 +551,9 @@ function get_mfd_cols($name)
 
 	mysql_select_db($DB_NAME);
 	$table = "mfd_list";
-	$fields ="mfd_name, mfd_titel, mfd_pos, mfd_field, mfd_field_titel, mfd_width, mfd_field_typ ";
+	$fields ="ref_mfd, mfd_pos, mfd_field, mfd_field_titel, mfd_width, mfd_field_typ ";
 	$join = "join mfd_cols on mfd_cols.ref_mfm=mfd_list.ID";
-	$where ="mfd_name=\"$name\"";
+	$where ="ref_mfd=\"$name\"";
 	$order = "mfd_pos";
 
 	$q = "SELECT $fields FROM $table  $join where $where order by $order";
@@ -540,12 +571,12 @@ function get_mfd_cols($name)
 		{
 			$i++;
 			// Reihenfolge der menu_item nach spalte item_sort
-			$mfd_col['mfd_name'] = $row[0];
-			$mfd_col['mfd_titel'] = $row[1];
+			$mfd_col['ref_mfd'] = $name;
 			$mfd_col['mfd_pos'] = $row[2];
 			$mfd_col['mfd_field'] = $row[3];
 			$mfd_col['mfd_field_titel'] = $row[4];
 			$mfd_col['mfd_width'] = $row[5];
+			$mfd_col['mfd_field_typ'] = $row[5];
 			$mfd_cols[$i] = $mfd_col;
 		}
 	}
@@ -1019,7 +1050,8 @@ function print_mfd_liste( $ID, $mfd_list, $mfd_cols)
 
 	echo "\t<TR>";
 	//Print header
-	for($i=0; $i<count($mfd_cols); $i++)
+	$fieldnum = count($mfd_cols);
+	for($i=0; $i<$fieldnum; $i++)
 	{
 		$mfd_col = $mfd_cols[$i];
 		$width = $mfd_col["mfd_width"]*5;
@@ -1034,7 +1066,7 @@ function print_mfd_liste( $ID, $mfd_list, $mfd_cols)
 	while ($row = mysql_fetch_row($result))
 	{
 		echo "\t<TR>";
-		for ($i = 0; $i < count($mfd_cols); $i++)
+		for ($i = 0; $i < $fieldnum; $i++)
 		{
 			echo "\t<td>".$row[$i]."\n";
 			echo "</td>\n";

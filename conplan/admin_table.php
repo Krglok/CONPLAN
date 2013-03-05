@@ -122,36 +122,6 @@ function show_mfd_col_def($table, $ID)
 
 }
 
-/**
- * Erzeugt ein Default mfd Columns fuer eine Tabelle in der Datenbank
- * Eine mfd COl Definition besteht aus mehreren Tabellenzeile. 
- * Deshalb werden diese dynamisch erstellt und direkt aus der jeweiligen
- * Tabelle gelesen
- * @param  $table, name der Tabelle die gelesen wird
- * @param  $mfd_name , name der mfd-referenz die erzeugt wird
- */
-function insert_mfd_cols($table,$mfd_name)
-{
-	// erzeuge mfd fuer Tabelle in die der insert gemacht werden soll
-	$mfd_list = make_mfd_table("mfd_cols", "mfd_cols");
-	
-	$mfd_cols = make_mfd_cols_default($table, $mfd_name);
-	
-	$i =0;
-	foreach ($mfd_cols as $mfd_col)
-	{
-		$row[0] = 0;  //ID
-		$row[1] = $mfd_name;
-		$row[2] = $mfd_col["mfd_pos"];
-		$row[3] = $mfd_col["mfd_field"];
-		$row[4] = $mfd_col["mfd_field_titel"];
-		$row[5] = $mfd_col["mfd_width"];
-		$row[6] = $mfd_col["mfd_field_typ"];
-		
-		mfd_insert($mfd_list, $row);
-		$i++;
-	}
-}
 
 
 /**

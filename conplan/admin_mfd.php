@@ -45,6 +45,13 @@ include_once "_head.inc";
 include_once '_edit.inc';
 include_once '_mfd_lib.inc';
 
+/**
+ * Callback Funktion fuer mfd liste
+ * Startet Edit Funktion
+ * @param unknown $ID
+ * @param unknown $daten
+ * @return string
+ */
 function mfd_list_edit_link($ID,$daten)
 {
   global $PHP_SELF;
@@ -52,6 +59,13 @@ function mfd_list_edit_link($ID,$daten)
   return $link;
 }
 
+/**
+ * Callback Funktion fuer mfd Liste
+ * Startet Lösch Funktion
+ * @param unknown $ID
+ * @param unknown $daten
+ * @return string
+ */
 function mfd_list_delete_link($ID,$daten)
 {
   global $PHP_SELF;
@@ -59,6 +73,13 @@ function mfd_list_delete_link($ID,$daten)
   return $link;
 }
 
+/**
+ * Callback Funktion fuer MFD Liste 
+ * startet Info-Funktion, die Anzeige der MFD-Colls
+ * @param unknown $ID
+ * @param unknown $daten
+ * @return string
+ */
 function mfd_list_info_link($ID,$daten)
 {
   global $PHP_SELF;
@@ -77,12 +98,28 @@ function mfd_list_cols($table, $mfd_name)
   return $list;
 }
 
+function mfd_cols_edit_link($ID,$daten)
+{
+  global $PHP_SELF;
+  $link = $PHP_SELF."?md=23&id=$id&daten=$daten&ID=$ID";
+  return $link;
+}
+
+
 function print_mfd_info_liste($mfd_list, $id,$ID)
 {
+  echo $mfd_list['table']."/";
   $result = mfd_detail_result($mfd_list, $id);
   $row = mysql_fetch_row($result);
-  $table = $row[4];
-  $mfd  = make_mfd_table($table, $table);
+  $name = $row[3];
+  $table = "mfd_cols";
+  $mfd  = make_mfd_table("mfd_cols","mfd_cols" );
+  $mfd['table'] = "mfd_cols";
+  $mfd['fields'] ="ID,ref_mfd, mfd_pos, mfd_field, mfd_field_titel, mfd_width, mfd_field_typ ";
+  $mfd['join'] = "";
+  $mfd['where'] ="ref_mfd=\"$name\"";
+  $mfd['order'] = "mfd_pos";
+  echo $name."/";
   $mfd_cols = make_mfd_cols_default($table,$table);
   // Spaltenzahl auf 10 begrenzen
   echo $table.":".count($mfd_cols);
@@ -99,6 +136,26 @@ function print_mfd_info_liste($mfd_list, $id,$ID)
   
   print_mfd_liste($ID, $mfd, $list);
 }
+
+function make_mfd_info_cols($mfd_list, $id,$ID)
+{
+  echo "MAKE".$mfd_list['table']."/";
+  $result = mfd_detail_result($mfd_list, $id);
+  $row = mysql_fetch_row($result);
+  $name = $row[3];
+  $table = "mfd_cols";
+  $mfd  = make_mfd_table("mfd_cols","mfd_cols" );
+  $mfd['table'] = "mfd_cols";
+  $mfd['fields'] ="ID,ref_mfd, mfd_pos, mfd_field, mfd_field_titel, mfd_width, mfd_field_typ ";
+  $mfd['join'] = "";
+  $mfd['where'] ="ref_mfd=\"$name\"";
+  $mfd['order'] = "mfd_pos";
+  echo $name."/";
+  
+  insert_mfd_cols($name,$name);
+  
+}
+
 
 // ---------------------------------------------------------------
 // ---------    MAIN ---------------------------------------------
@@ -187,6 +244,12 @@ case mfd_update: // Insert -> Erfassen
 case mfd_delete: // Delete => Loeschen
   mfd_delete($mfd_list, $p_row[0]);
   $md=0;
+  break;
+case 21: // Insert -> Erfassen
+    insert_mfd_cols($daten,$daten);
+    $md = mfd_info;
+    break;
+  
 endswitch;
 
 
@@ -204,19 +267,34 @@ case mfd_edit:  //Bearbeiten
   2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
   );
   break;
-case mfd_del: // erfassen
+case mfd_del: // 
     $menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=0&ID=$ID"),
         1=>array("icon" => "1","caption" => "DELETE","link" => ""),
         2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
     );
     break;
-case mfd_info: // erfassen
+case mfd_info: // 
+    $link = $PHP_SELF."?md=21&id=$id&ID=$ID";
     $menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=0&ID=$ID"),
-        1=>array("icon" => "1","caption" => "INFO","link" => ""),
-        2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
+        1=>array("icon" => "1","caption" => "MFD COLS","link" => ""),
+        2=>array("icon" => "_tadd","caption" => "Make Cols","link" => "$link"),
+        9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
     );
     break;
-default: // main
+case 21: // 
+    $link = $PHP_SELF."?md=21&id=$id&ID=$ID";
+    $menu = array (0=>array("icon" => "7","caption" => "MFD COLS","link" => "$PHP_SELF?md=0&ID=$ID"),
+        1=>array("icon" => "1","caption" => "EDIT","link" => ""),
+        9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
+    );
+    break;
+case 23:  //Bearbeiten
+  $menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=0&ID=$ID"),
+  1=>array("icon" => "1","caption" => " EDIT ","link" => ""),
+  2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=".mfd_info."&ID=$ID")
+  );
+  break;
+    default: // main
   $menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=1&ID=$ID"),
   1=>array ("icon" => "_tadd","caption" => "Erfassen","link" => "$PHP_SELF?md=".mfd_add."&ID=$ID"),
   5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_config.php?md=0&ID=$ID")
@@ -231,7 +309,7 @@ case mfd_add:
     echo "Add Maske";
     break;
 case mfd_edit:
-    mfd_edit($id, $ID, $mfd_list, $mfd_cols);
+    print_mfd_edit($id, $ID, $mfd_list, $mfd_cols);
   break;
 case mfd_del:
 //  echo "Delete Maske";
@@ -243,6 +321,10 @@ case mfd_info:
   break;
 case mfd_list:
   echo "mfd List Maske";
+  break;
+case 21: // make default Cols
+  make_mfd_info_cols($mfd_list, $id, $ID);
+  print_mfd_info_liste($mfd_list,$id,$ID);
   break;
 default:
   //  print_table_list($ID);
