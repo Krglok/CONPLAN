@@ -235,10 +235,10 @@ case mfd_edit:
   break;
 case mfd_del:
 //  echo "Delete Maske";
-  mfd_del($id, $ID, $mfd_list, $mfd_cols);
+  print_mfd_del($id, $ID, $mfd_list, $mfd_cols);
   break;
 case mfd_info:
-  echo "Info Maske:";
+//  echo "Info Maske:";
   print_mfd_info_liste($mfd_list,$id,$ID);
   break;
 case mfd_list:

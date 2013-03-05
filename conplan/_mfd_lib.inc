@@ -43,7 +43,7 @@ echo "<!--  ENDE DATEN Spalte   -->\n";
 */
 
 $mfd_list = array("mfd"=>"", "table"=>"","tite"=>"","fields"=>"","join"=>"","where"=>"", "order"=>"");
-$mfd_col = array("mfd_name"=>"", "mfd_titel"=>"", "mfd_pos"=>"", "mfd_field"=>"", "mfd_field_titel"=>"", "mfd_width"=>"");
+$mfd_col = array("mfd_name"=>"", "mfd_titel"=>"", "mfd_pos"=>"", "mfd_field"=>"", "mfd_field_titel"=>"", "mfd_width"=>"", "mfd_field_typ"=>"");
 $mfd_cols = array("0"=>$mfd_col);
 
 define("mfd_list",10);
@@ -86,6 +86,7 @@ function make_mfd_cols_default($table,$mfd_name)
 		$mfd_col["mfd_field"]	= $row[0];
 		$mfd_col["mfd_field_titel"] = $row[0];
 		$mfd_col["mfd_width"]	= get_fieldtyp_width($row[1]);
+		$mfd_col["mfd_field_typ"]	= $row[1];
 		$mfd_cols[$i] = $mfd_col;
 		$i++;
 	}
@@ -267,7 +268,7 @@ function show_mfd_cols($table,$ID)
 
 	echo "<TR> \n";
 	echo "<TD>\n";
-	echo "MFD-Referenz";
+	echo "<i>MFD-Referenz</i>";
 	echo "</TD> \n";
 	
 	echo "<TD> \n";
@@ -276,22 +277,27 @@ function show_mfd_cols($table,$ID)
 	
 	echo "<TD> \n";
 	echo "";
-			echo "</TD> \n";
-			echo "</TR> \n";
+	echo "</TD> \n";
+	echo "</TR> \n";
 	
 	echo "<TR> \n";
 	echo "<TD> \n";
-	echo "Fieldname \n";
+	echo "<i>Fieldname</i> \n";
 	echo "</TD> \n";
 
 	echo "<TD> \n";
-	echo "Titel \n";
+	echo "<i>Titel</i> \n";
 	echo "</TD> \n";
 
 	echo "<TD> \n";
-	echo "Width \n";
+	echo "<i>Width</i> \n";
+	echo "</TD> \n";
+
+	echo "<TD> \n";
+	echo "<i>Typ</i> \n";
 	echo "</TD> \n";
 	echo "</TR> \n";
+	
 	foreach ($mfd_cols as $mfd_col)
 	{
 		echo "<TR> \n";
@@ -306,6 +312,10 @@ function show_mfd_cols($table,$ID)
 		echo "<TD> \n";
 		echo $mfd_col["mfd_width"];
 		echo "</TD> \n";
+		
+		echo "<TD> \n";
+		echo $mfd_col["mfd_field_typ"];
+		echo "</TD> \n";
 		echo "</TR> \n";
 	}
 	echo "</TBODY> \n";
@@ -316,7 +326,12 @@ function show_mfd_cols($table,$ID)
 	return $mfd_cols;
 }
 
-
+/**
+ * Holt die Mfd aus der Tabelle mfd_list
+ * Die Felder sind vorgegeben !
+ * @param  $name , name des mfd , der gelesen wird
+ * @return mfd_list, array der mfd definition
+ */
 function get_mfd($name)
 {
   global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
@@ -411,7 +426,6 @@ function get_mfd_list()
 function get_mfd_result($name)
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $mfd_list;
 
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
 
@@ -492,20 +506,21 @@ function make_mfd_fieldlist($text)
 
 /**
  * Holt die Spaltendefinition fuer einen mfd_namen
- * @param unknown $name			// Referenz auf mfd
+ * die Felder von mfd_cols sind vorgegeben!
+ * @param  $name			// Referenz auf mfd
  * @return Array mit Spaltendefinitionen ($mfd_cols)
  */
-function mfd_data_cols($name)
+function get_mfd_cols($name)
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $mfd_col;
-	global $mfd_cols;
+// 	global $mfd_col;
+// 	global $mfd_cols;
 
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
 
 	mysql_select_db($DB_NAME);
 	$table = "mfd_list";
-	$fields ="mfd_name, mfd_titel, mfd_pos, mfd_field, mfd_field_titel, mfd_width ";
+	$fields ="mfd_name, mfd_titel, mfd_pos, mfd_field, mfd_field_titel, mfd_width, mfd_field_typ ";
 	$join = "join mfd_cols on mfd_cols.ref_mfm=mfd_list.ID";
 	$where ="mfd_name=\"$name\"";
 	$order = "mfd_pos";
@@ -546,7 +561,7 @@ function mfd_data_cols($name)
 function mfd_detail_result($mfd_list, $id)
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $mfd_list;
+//	global $mfd_list;
 
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
 
@@ -619,7 +634,7 @@ function mfd_delete_name($name, $id)
 {
 	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $mfd_list;
+//	global $mfd_list;
 
 	$mfd_list = get_mfm_list($name);
 	mfd_delete($mfd_list, $id);
@@ -677,7 +692,7 @@ function mfd_insert($mfd_list, $row)
  */
 function mfd_insert_name($name,$row)
 {
-	global $mfd_list;
+	//global $mfd_list;
 
 	$mfd_list = get_mfd_list($name);
 	mfdlist_insert($mfd_list, $row);
@@ -729,7 +744,7 @@ function mfd_update($mfd_list, $row)
 function mfd_update_name($name, $row)
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $mfd_list;
+	//global $mfd_list;
 
 	$mfd_list = get_mfd_list($name);
 
@@ -1039,6 +1054,94 @@ function print_mfd_liste( $ID, $mfd_list, $mfd_cols)
 
 
 /**
+ * Erstellt ein Inputfeld mit der Textlaenge
+ * die Size wird auf max 75 Zeichen begrenzt
+ *
+ * @param unknown $titel
+ * @param unknown $pos
+ * @param unknown $data
+ * @param unknown $width
+ * @param unknown $readonly
+ */
+function print_mfd_edit_spalte($titel,$pos, $data, $width, $is_readonly)
+{
+	if($is_readonly)
+	{
+		$readonly = "readonly";
+	} else
+	{
+		$readonly = "";
+	}
+
+	if($width >75)
+	{
+		$size = 75;
+	} else
+	{
+		$size = $width;
+	}
+	$titel = ucwords(strtolower($titel));
+	echo "<td width=75 ><i>$titel</i></td>\n";
+	echo "<td width=50>\n";
+	echo "<INPUT TYPE=\"TEXT\" NAME=\"row[$pos]\" SIZE=$size MAXLENGTH=$width $readonly VALUE=\"$data\"\n";
+	echo "</td>\n";
+}
+
+	/**
+	* Erstellt eine Textarea als Input. Die Textarea wird durch ckEditor ersetz
+	* bei readonly=true wird nur der Text angezeigt
+	* @param unknown $titel  des Feldes
+	* @param unknown $pos    index des $row
+	* @param unknown $data		vorhandene Daten
+	* @param unknown $is_readonly true = als Text / false = als Eingabe feld
+	*/
+	function print_mfd_edit_text($titel,$pos, $data, $is_readonly)
+	{
+	$name = "row[$pos]";  // dies ist der Name des Elementres das ersetzt werden soll
+	$titel = ucwords(strtolower($titel));
+	echo "  <td width=75px ><i>$titel</i></td>\n";
+	echo "<td >\n";
+			if ($is_readonly)
+			{
+			$anz  = count(explode("\n",$data));
+			if ($anz < 5) {
+			$anz=5;
+			}
+			$len = strlen($data) / 60;
+			if($len>$anz) {
+			$anz=$len+$anz;
+			}
+
+			echo "<textarea   name=\"$name\" readonly COLS=\"60\" ROWS=\"$anz\" >"; //class=\"ckeditor\"
+			echo $data;
+			echo "</textarea>";
+			} else
+  {
+			echo "\t<td><i>$titel</i></td>\n";
+			//  echo "\t<td><TEXTAREA NAME=\"$name\" COLS=50 ROWS=12></TEXTAREA>&nbsp;</td>\n";
+			echo "<td>\n";
+			echo "<textarea   name=\"$name\"  COLS=\"60\" ROWS=\"14\" >"; //class=\"ckeditor\"
+			echo $data;
+			echo "</textarea>";
+
+			echo "<!--  Text editor Konfiguration-->";
+    echo "  <script type=\"text/javascript\">";
+    echo " CKEDITOR.replace('$name',{
+    toolbar: 'ForumToolbar',
+    removeButtons : 'Table',
+    uiColor : '#9AB8F3',
+    height : '250px'
+			} );";
+			echo "  </script>";
+			echo "</td>\n";
+			}
+			echo "\t&nbsp;<br>\n";
+			echo "</td>\n";
+
+}
+
+
+/**
  * Erstellt eine Eingabe Detailmaske als FORM
  * $next beinhaltet die nächste zu rufende Funktion
  * @param $mfd_list	mfd definition
@@ -1106,7 +1209,7 @@ function print_mfd_maske($mfd_list, $row, $id,$next,$ID, $mfd_cols )
  * @param unknown $mfd_list
  * @param unknown $mfd_cols
  */
-function mfd_erf($id, $ID, $mfd_list, $mfd_cols)
+function print_mfd_erf($id, $ID, $mfd_list, $mfd_cols)
 //
 // $id   beinhaltet den zu bearbeitenden Datensatz
 //
@@ -1129,7 +1232,7 @@ function mfd_erf($id, $ID, $mfd_list, $mfd_cols)
  * @param unknown $mfd_list
  * @param unknown $mfd_cols
  */
-function mfd_edit($id, $ID, $mfd_list, $mfd_cols)
+function print_mfd_edit($id, $ID, $mfd_list, $mfd_cols)
 //
 //  $id   beinhaltet den zu bearbeitenden Datensatz
 //
@@ -1146,7 +1249,7 @@ function mfd_edit($id, $ID, $mfd_list, $mfd_cols)
 }
 
 
-function mfd_del($id, $ID, $mfd_list, $mfd_cols)
+function print_mfd_del($id, $ID, $mfd_list, $mfd_cols)
 {
   $next = mfd_delete;	// Datenfunktion Delete
   $result = mfd_detail_result($mfd_list, $id);

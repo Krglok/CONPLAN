@@ -79,6 +79,7 @@ function show_mfd_def($table, $ID)
 	echo "<INPUT TYPE=\"hidden\" NAME=\"row[7]\"   VALUE=\"".$mfd['join']."\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"row[8]\"   VALUE=\"".$mfd['where']."\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"row[9]\"   VALUE=\"".$mfd['order']."\">\n";
+	echo "</p>";
 	echo "<p>";
 	echo "<INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">";
 	echo "&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -109,6 +110,7 @@ function show_mfd_col_def($table, $ID)
 	echo "<FORM ACTION=\"$PHP_SELF?md=3&daten=$table&ID=$ID\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
 	//	echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$name\">\n";
+	echo "</p>";
 	echo "<p>";
 	echo "<INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">";
 	echo "&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -122,9 +124,11 @@ function show_mfd_col_def($table, $ID)
 
 /**
  * Erzeugt ein Default mfd Columns fuer eine Tabelle in der Datenbank
- * $row enthaelt den kompletten Datensatz, alle Felder
- * @param unknown $table
- * @param unknown $mfd_name
+ * Eine mfd COl Definition besteht aus mehreren Tabellenzeile. 
+ * Deshalb werden diese dynamisch erstellt und direkt aus der jeweiligen
+ * Tabelle gelesen
+ * @param  $table, name der Tabelle die gelesen wird
+ * @param  $mfd_name , name der mfd-referenz die erzeugt wird
  */
 function insert_mfd_cols($table,$mfd_name)
 {
@@ -142,6 +146,7 @@ function insert_mfd_cols($table,$mfd_name)
 		$row[3] = $mfd_col["mfd_field"];
 		$row[4] = $mfd_col["mfd_field_titel"];
 		$row[5] = $mfd_col["mfd_width"];
+		$row[6] = $mfd_col["mfd_field_typ"];
 		
 		mfd_insert($mfd_list, $row);
 		$i++;

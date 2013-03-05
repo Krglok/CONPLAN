@@ -1,5 +1,11 @@
+Als Entwicklungsumgebung wurde Eclipse gewählt. Die Projektfiles sind im repository enthalten.
+
+Das Projekt wurde umgestaltet, so dass es aus einem Unterverzeichnis der Homepage läft.
+Alle Pfade sind relativ zu diesem Verzeichnis angelegt
+
 /htdocs
     ./              index.html, index.php
+    /ckeditor       js mit Editor Tool
     /conplan        *.php, *.inc
     /layout
         ./          *.css
@@ -24,7 +30,7 @@ bereiche der applikation
 - itern/admin       bereich fuer administration der homepage und applikation
 
 scriptstruktur
-    _*.inc          sind library file mit unterschiedlichen Aufageb
+    _*.inc          sind library file mit unterschiedlichen Aufgaben
     main_*.php      scripte , die zum Bereich main bzw. oeffentlich gehören
     slogin.php      das script fuer den login in den internen bereich
     larp_*.php      scripte fuer den internen bereich user

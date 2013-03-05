@@ -35,7 +35,7 @@ Datenbank mit diversen Datentabellen fuer:
 Das Layout kann mit CSS geändert werden.
 
 Detaillierte Beschreibung der Bereiche
-<h2>Bereich Public</h2>
+<h3>Bereich Public</h3>
 - Newsliste
 - Terminliste
 - Subbereichen fuer Regeln, Orga, Land mit HTML-Seiten
@@ -45,8 +45,9 @@ Detaillierte Beschreibung der Bereiche
 - Con-Berichte
 - Download
 - Spielerliste
+- Login fuer internen Bereich
 
-<h2>interner Bereich</h2>
+<h3>Bereich Intern</h3>
 - Userverwaltung (Datenbank)
 - Spielerverwaltung (Datenbank)
 - Forum
@@ -60,15 +61,15 @@ Detaillierte Beschreibung der Bereiche
 - Bibliothek (Datenbak) 
 - Charakterverwaltung mit XP Verwaltung pro und Fertigkeiten (Datenbank)
 
-<h2>Autoren</h2>
+<h3>Autoren Zugriff</h3>
 - Bearbeitung der Subbereiche 
 - Bearbeitung der Con-Berichte
 
-<h2>SUBSL</h2>
+<h3>SUBSL Zugriff</h3>
 - Contage fuer Anmeldung (Datenbank)
 - Conplanung fuer Con-tage (Datenbank)
 
-<h2>SL</h2>
+<h3>SL Zugriff</h3>
 - Bearbeitung Regelwerk
 - Bearbeitung Spruchliste (Datenbank)
 - Bearbeitung Trankliste (Datenbank)
@@ -76,7 +77,7 @@ Detaillierte Beschreibung der Bereiche
 - Bearbeitung NSC-Verwaltung (wie Charakterverwaltung) Datenbank
 - Bearbeitung Legenden (Datenbank)
 
-<h2>ADMIN</h2>
+<h3>ADMIN Zugriff</h3>
 - User/Spielerverwaltung
 - Contageverwaltung / Contagezugriff
 - Terminverwaltung
@@ -91,3 +92,28 @@ Detaillierte Beschreibung der Bereiche
 - Configuration Datenliste
 - Configuration Subbereiche 
  
+ <h2>technische Features</h2>
+ - Steuerung der Applikation komplett in PHP
+ - Einbinden von Datenbanktabellen als Listen oder Detailansichten
+ - Einbinden von HTML-Seiten als Daten
+ - RT-Editor (ckEditor) für die HTML-Seiten und Contenttexte
+ - komplett auf CSS-Layout aufgebaut
+ - konfigurierbar Hntergrund
+ - konfigurierbare Bilder fuer Logos, Buttons
+ - Userverwaltung mit hierarchischen Zugrifssrechten
+ - Der gesamte Content ist Onluine bearbeitbar
+ - Die Applikation läuft in einem Verzeichnis
+ - erprobtes Sytem, die Applikation ist seit 2002 im Einsatz
+ 
+ <h3>Voraussetzungen</h3>
+ - PHP 5.x
+ - Datenbank MySQL 5.x Schema MyISAM
+ - ckEditor (javasript)
+ - phpMyAdmin
+  
+  <h3>locale Testversion</h3>
+  Eine lokale Testversion läuft mit XAMP.
+  Es gibt eine betriebsbereite, lokale Testinstalltion .
+   
+  ACHTUNG: Eine XAMP Installtion ist nicht fuer den Betrieb im Internet geeignet !!
+  
