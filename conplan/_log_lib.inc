@@ -23,10 +23,10 @@
 
  $style = $GLOBALS['style_datalist'];
  echo "<div $style >";
- echo "<!---  DATEN Spalte   --->\n";
+ echo "<!--  DATEN Spalte   -->\n";
 
  echo '</div>';
- echo "<!---  ENDE DATEN Spalte   --->\n";
+ echo "<!--  ENDE DATEN Spalte   -->\n";
  */
 
 include_once '_config.inc';
@@ -326,7 +326,7 @@ function print_log_data($result,$ID)
 
 	$style = $GLOBALS['style_datalist'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 
 	//  FORMULAR
 	echo "<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID\" METHOD=POST>\n";

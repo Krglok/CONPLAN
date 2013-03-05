@@ -29,10 +29,10 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 
 */
 
@@ -100,7 +100,7 @@ function print_pages_list($ID)
 	
 	$style = "id=\"menu\"";
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 	echo "<table  border=\"1\"> \n"; //width=\"100%\"
 	echo "<tbody >";
 	
@@ -136,7 +136,7 @@ function print_pages_list($ID)
 	echo "</tbody>";
 	echo "</table>\n";
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 	
 }
 
@@ -151,7 +151,7 @@ function pages_erf ($name,$ID)
   $style = $GLOBALS["style_datatable"];
   echo "<div $style >";
 
-  echo "<!---  DATEN Spalte   --->\n";
+  echo "<!--  DATEN Spalte   -->\n";
   echo "<p>";
   echo "<FORM ACTION=\"$PHP_SELF?md=3&daten=$name&ID=$ID\" METHOD=POST>\n";
   echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
@@ -179,7 +179,7 @@ function pages_erf ($name,$ID)
 	echo "  </script>";
 	echo "</p>";
 	    echo '</div>';
-	    echo "<!---  ENDE DATEN Spalte   --->\n";
+	    echo "<!--  ENDE DATEN Spalte   -->\n";
 
 }
 
@@ -194,7 +194,7 @@ function pages_edit ($name,$ID)
   echo "<div $style >";
 //  echo "Dateiname: ".$name;
   
-  echo "<!---  DATEN Spalte   --->\n";
+  echo "<!--  DATEN Spalte   -->\n";
     echo "<p>";
 	echo "<FORM ACTION=\"$PHP_SELF?md=3&daten=$name&ID=$ID\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
@@ -227,7 +227,7 @@ function pages_edit ($name,$ID)
   echo "  </script>";
     echo "</p>";
   echo '</div>';
-  echo "<!---  ENDE DATEN Spalte   --->\n";
+  echo "<!--  ENDE DATEN Spalte   -->\n";
   
 } 
 
@@ -236,10 +236,10 @@ function print_preview($name,$ID)
   $path = "./pages";
   
   print_pages_list($ID);
-  echo "<!---  Preview Spalte   --->\n";
+  echo "<!--  Preview Spalte   -->\n";
 //  echo $name;
   print_pages($name);	
-  echo "<!---  ENDE Preview Spalte   --->\n";
+  echo "<!--  ENDE Preview Spalte   -->\n";
 }
 
 // ---------------------------------------------------------------

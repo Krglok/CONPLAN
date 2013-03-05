@@ -129,7 +129,7 @@ function print_kopf ($logo_typ, $header_typ,$bereich,$anrede)
 
 function print_md()
 {
-	echo "<!---  Menu und Daten   --->\n";
+	echo "<!--  Menu und Daten   -->\n";
 	echo "<TABLE WIDTH=950px  BORDER=\"1\" CELLPADDING=\"0\" CELLSPACING=\"0\" BGColoR=\"\" BORDERCOLOR=\"#EDDBCB\"
 			BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\" >\n";
 	echo "<TR>\n";
@@ -174,7 +174,7 @@ function print_menu ($menu)
 	global $user_lvl, $lvl_admin,$lvl_sl;
 
 	//   menü spalte
-	echo "<!---  Menu Spalte   --->\n";
+	echo "<!--  Menu Spalte   -->\n";
 	//  stellt die breite der Menüspalte ein !!!
 	echo "<TD WIDTH=155>\n";
 
@@ -256,7 +256,7 @@ function print_menu ($menu)
 	echo "\t</TR>\n";
 	echo "\t</TABLE\n>";
 	echo "</TD>\n";
-	echo "<!---  Menu Spalte ENDE   --->\n\n";
+	echo "<!--  Menu Spalte ENDE   -->\n\n";
 };
 
 function print_data($html_file)
@@ -269,7 +269,7 @@ function print_data($html_file)
 		exit;
 	};
 	echo "<P>";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 	echo "<TD>\n";
 	echo "\t<TABLE  BORDER=0 BGCOLOR=\"\" BORDERCOLOR=\"#008000\" BORDERCOLORDARK=\"#008040\"
 			BORDERCOLORLIGHT=\"#008F00\">\n";
@@ -331,7 +331,7 @@ function print_data($html_file)
 	echo "\t</TR >\n";
 	echo "\t</TABLE>\n";
 	echo "</TD>\n";
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 };
 
 

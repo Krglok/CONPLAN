@@ -53,10 +53,10 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 
 $style = $GLOBALS['style_datatab'];
 echo "<div $style >";
-echo "<!---  DATEN Spalte   --->\n";
+echo "<!--  DATEN Spalte   -->\n";
 
 echo '</div>';
-echo "<!---  ENDE DATEN Spalte   --->\n";
+echo "<!--  ENDE DATEN Spalte   -->\n";
 
 */
 
@@ -72,7 +72,7 @@ function print_news_liste($ID,$limit)
 
   $style = $GLOBALS['style_datalist'];
   echo "<div $style >";
-  echo "<!---  DATEN Spalte   --->\n";
+  echo "<!--  DATEN Spalte   -->\n";
 
   echo "      <TABLE >";
   $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
@@ -102,7 +102,7 @@ function print_news_liste($ID,$limit)
   echo "    <TD>\n";
   echo "    .\n";
   echo '</div>';
-  echo "<!---  ENDE DATEN Spalte   --->\n";
+  echo "<!--  ENDE DATEN Spalte   -->\n";
 
 };
 
@@ -173,7 +173,7 @@ function print_news_maske($row, $id, $next, $ID)
 
   $style = $GLOBALS['style_datatab'];
   echo "<div $style >";
-  echo "<!---  DATEN Spalte   --->\n";
+  echo "<!--  DATEN Spalte   -->\n";
 
   //  FORMULAR
   echo "<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID\" METHOD=POST>\n";
@@ -219,7 +219,7 @@ function print_news_maske($row, $id, $next, $ID)
   echo "</FORM>\n";
 
   echo '</div>';
-  echo "<!---  ENDE DATEN Spalte   --->\n";
+  echo "<!--  ENDE DATEN Spalte   -->\n";
 };
 
 function insert($row)

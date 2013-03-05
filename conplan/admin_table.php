@@ -37,10 +37,10 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 
 $style = $GLOBALS['style_datatab'];
 echo "<div $style >";
-echo "<!---  DATEN Spalte   --->\n";
+echo "<!--  DATEN Spalte   -->\n";
 
 echo '</div>';
-echo "<!---  ENDE DATEN Spalte   --->\n";
+echo "<!--  ENDE DATEN Spalte   -->\n";
 
 */
 
@@ -64,7 +64,7 @@ function show_mfd_def($table, $ID)
 	$next = 5;	// Insert mfd Data
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 	echo "<p>";
 	echo "<FORM ACTION=\"$PHP_SELF?md=2&daten=mfd_list&ID=$ID\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
@@ -86,7 +86,7 @@ function show_mfd_def($table, $ID)
 	echo "</p>";
 	
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 	
 }
 
@@ -104,7 +104,7 @@ function show_mfd_col_def($table, $ID)
 	$next = 6;	// Insert mfd Data
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 	echo "<p>";
 	echo "<FORM ACTION=\"$PHP_SELF?md=3&daten=$table&ID=$ID\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
@@ -116,7 +116,7 @@ function show_mfd_col_def($table, $ID)
 	echo "</p>";
     echo "</form>";
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 
 }
 
@@ -167,9 +167,9 @@ function print_table_list($ID)
 
 	$style = "id=\"style_datalist\"";
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 	echo "<div $style >";
-	echo "<!---  MENU Spalte   --->\n";
+	echo "<!--  MENU Spalte   -->\n";
 
 	if (!$result) {
 		$message  = 'Invalid query: ' . mysql_error() . "\n";
@@ -197,7 +197,7 @@ function print_table_list($ID)
 
 	$style = "id=\"menu\"";
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 	echo "<table  > \n"; //width=\"100%\"
 	echo "<tbody >";
 
@@ -238,7 +238,7 @@ function print_table_list($ID)
 	echo '</div>';
 
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 
 }
 

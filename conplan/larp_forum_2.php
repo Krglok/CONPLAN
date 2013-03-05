@@ -44,10 +44,10 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 
 */
 

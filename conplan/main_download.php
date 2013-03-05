@@ -47,10 +47,10 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 
 */
 
@@ -84,7 +84,7 @@ function print_liste($ID)
 
 	$style = $GLOBALS['style_datalist'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 
 	echo "<table>\n";
 
@@ -137,7 +137,7 @@ function print_liste($ID)
 	echo "</table>";
 
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 	
 };
 

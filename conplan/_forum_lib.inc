@@ -56,7 +56,7 @@ function print_thema_liste($ID,$foren_id,$user)
 
   $style = $GLOBALS['style_datalist'];
   echo "<div $style >";
-  echo "<!---  DATEN Spalte   --->\n";
+  echo "<!--  DATEN Spalte   -->\n";
 
   echo "\t <TABLE  >\n";
 
@@ -93,7 +93,7 @@ function print_thema_liste($ID,$foren_id,$user)
   }
   echo "\t</table>\n";
   echo '</div>';
-  echo "<!---  ENDE DATEN Spalte   --->\n";
+  echo "<!--  ENDE DATEN Spalte   -->\n";
 
   mysql_close($db);
 
@@ -121,7 +121,7 @@ function print_thema($ID,$foren_id,$id,$user)
 
   $style = $GLOBALS['style_datalist'];
   echo "<div $style >";
-  echo "<!---  DATEN Spalte   --->\n";
+  echo "<!--  DATEN Spalte   -->\n";
 
   echo "\t <TABLE>\n";
   echo "\t <TBODY>\n";
@@ -217,7 +217,7 @@ function print_thema($ID,$foren_id,$id,$user)
  	echo "</table>\n";
 
  	echo '</div>';
- 	echo "<!---  ENDE DATEN Spalte   --->\n";
+ 	echo "<!--  ENDE DATEN Spalte   -->\n";
 
 };
 
@@ -347,7 +347,7 @@ function print_thema_erf($ID,$id, $foren_id, $post_id, $author, $datum, $betreff
   };
   $d = getdate();
   $datum = $d["year"]."-".$d["mon"]."-".$d["mday"];
-  echo "<!---  Daten Spalte    --->\n";
+  echo "<!--  Daten Spalte    -->\n";
 
   //  FORMULAR
   echo "\n";
@@ -393,7 +393,7 @@ function print_thema_erf($ID,$id, $foren_id, $post_id, $author, $datum, $betreff
   echo "\t</table>\n";
   echo "\t</FORM>\n";
 
-  echo "<!---  Daten Spalte ENDE   --->\n\n";
+  echo "<!--  Daten Spalte ENDE   -->\n\n";
 }
 
 /**
@@ -496,7 +496,7 @@ function print_thema_upd($ID,$id, $md)
   //
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 
   //  FORMULAR
   echo "\n";
@@ -539,7 +539,7 @@ function print_thema_upd($ID,$id, $md)
   echo "\t</FORM>\n";
 
   echo '</div>';
-  echo "<!---  ENDE DATEN Spalte   --->\n";
+  echo "<!--  ENDE DATEN Spalte   -->\n";
 }
 
 

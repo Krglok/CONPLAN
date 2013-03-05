@@ -69,10 +69,10 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 
 $style = $GLOBALS['style_datatab'];
 echo "<div $style >";
-echo "<!---  DATEN Spalte   --->\n";
+echo "<!--  DATEN Spalte   -->\n";
 
 echo '</div>';
-echo "<!---  ENDE DATEN Spalte   --->\n";
+echo "<!--  ENDE DATEN Spalte   -->\n";
 
 */
 
@@ -102,7 +102,7 @@ function print_sp_liste($id)
 
   $style = $GLOBALS['style_datatab'];
   echo "<div $style >";
-  echo "<!---  DATEN Spalte   --->\n";
+  echo "<!--  DATEN Spalte   -->\n";
 
   echo "<table >\n";
 
@@ -147,7 +147,7 @@ function print_sp_liste($id)
   }
   echo "</table>\n";
   echo '</div>';
-  echo "<!---  ENDE DATEN Spalte   --->\n";
+  echo "<!--  ENDE DATEN Spalte   -->\n";
 
 };
 
@@ -183,7 +183,7 @@ function print_spieler_edit($id,$ID)
   //
   $style = $GLOBALS['style_datatab'];
   echo "<div $style >";
-  echo "<!---  DATEN Spalte   --->\n";
+  echo "<!--  DATEN Spalte   -->\n";
 
   //  FORMULAR
   echo "<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID\" METHOD=POST>\n";
@@ -240,7 +240,7 @@ function print_spieler_edit($id,$ID)
   echo "</FORM>\n";
 
   echo '</div>';
-  echo "<!---  ENDE DATEN Spalte   --->\n";
+  echo "<!--  ENDE DATEN Spalte   -->\n";
 }
 
 /**
@@ -294,7 +294,7 @@ function print_user_edit($id,$ID)
 
   $style = $GLOBALS['style_datatab'];
   echo "<div $style >";
-  echo "<!---  DATEN Spalte   --->\n";
+  echo "<!--  DATEN Spalte   -->\n";
 
   //  FORMULAR
   echo "<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID\" METHOD=POST>\n";
@@ -354,7 +354,7 @@ function print_user_edit($id,$ID)
   echo "</FORM>";
 
   echo '</div>';
-  echo "<!---  ENDE DATEN Spalte   --->\n";
+  echo "<!--  ENDE DATEN Spalte   -->\n";
 
 }
 

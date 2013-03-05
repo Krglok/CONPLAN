@@ -51,10 +51,10 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 
 $style = $GLOBALS['style_datatab'];
 echo "<div $style >";
-echo "<!---  DATEN Spalte   --->\n";
+echo "<!--  DATEN Spalte   -->\n";
 
 echo '</div>';
-echo "<!---  ENDE DATEN Spalte   --->\n";
+echo "<!--  ENDE DATEN Spalte   -->\n";
 
 */
 
@@ -85,7 +85,7 @@ function print_sp_liste($user,$ID)
 
 	$style = $GLOBALS['style_datatable'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 
 	echo "<table >\n";
 
@@ -133,7 +133,7 @@ function print_sp_liste($user,$ID)
 	echo "</table>";
 
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 
 };
 
@@ -298,7 +298,7 @@ function print_sp_maske($id,$user,$next,$erf,$ID)
 	//
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 
 	//  FORMULAR
 	echo "<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID\" METHOD=POST>\n";
@@ -370,7 +370,7 @@ function print_sp_maske($id,$user,$next,$erf,$ID)
 	echo "</FORM>\n";
 
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 
 }
 
@@ -405,7 +405,7 @@ function print_user_maske($id,$user,$next,$erf,$ID)
 	//
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 
 	//  FORMULAR
 	echo "<FORM ACTION=\"$PHP_SELFE\" METHOD=POST>\n";
@@ -476,7 +476,7 @@ function print_user_maske($id,$user,$next,$erf,$ID)
 	echo "</FORM>";
 
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 }
 
 // ---------------------------------------------------------------

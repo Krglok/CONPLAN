@@ -106,10 +106,10 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 
 $style = $GLOBALS['style_datalist'];
 echo "<div $style >";
-echo "<!---  DATEN Spalte   --->\n";
+echo "<!--  DATEN Spalte   -->\n";
 
 echo '</div>';
-echo "<!---  ENDE DATEN Spalte   --->\n";
+echo "<!--  ENDE DATEN Spalte   -->\n";
 
 */
 
@@ -413,7 +413,7 @@ function print_main_data($ID)
 
 	$style = $GLOBALS['style_datalist'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 	
 	echo "      <TABLE WIDTH=\"100%\" BORDER=\"0\" BGCOLOR=\"\" >\n";
 	echo "        <TR>\n";
@@ -479,7 +479,7 @@ function print_main_data($ID)
 	echo "    </TD>\n";
 	
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 };
 
 function ref_ablauf($tag)

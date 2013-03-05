@@ -90,10 +90,10 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 
 $style = $GLOBALS['style_datalist'];
 echo "<div $style >";
-echo "<!---  DATEN Spalte   --->\n";
+echo "<!--  DATEN Spalte   -->\n";
 
 echo '</div>';
-echo "<!---  ENDE DATEN Spalte   --->\n";
+echo "<!--  ENDE DATEN Spalte   -->\n";
 
 */
 
@@ -130,7 +130,7 @@ function print_liste($ID)
 
   $style = $GLOBALS['style_datalist'];
   echo "<div $style >";
-  echo "<!---  DATEN Spalte   --->\n";
+  echo "<!--  DATEN Spalte   -->\n";
 
   echo "<table>\n";
 
@@ -176,7 +176,7 @@ function print_liste($ID)
   echo "</table>";
 
   echo '</div>';
-  echo "<!---  ENDE DATEN Spalte   --->\n";
+  echo "<!--  ENDE DATEN Spalte   -->\n";
 
 
 };
@@ -202,7 +202,7 @@ function tage_liste($ID)
 
   $style = $GLOBALS['style_datalist'];
   echo "<div $style >";
-  echo "<!---  DATEN Spalte   --->\n";
+  echo "<!--  DATEN Spalte   -->\n";
 
   echo "<table>\n";
 
@@ -274,7 +274,7 @@ function tage_liste($ID)
   echo "</table>";
 
   echo '</div>';
-  echo "<!---  ENDE DATEN Spalte   --->\n";
+  echo "<!--  ENDE DATEN Spalte   -->\n";
 
 };
 
@@ -304,7 +304,7 @@ function print_loeschen($ID)
 
   $style = $GLOBALS['style_datalist'];
   echo "<div $style >";
-  echo "<!---  DATEN Spalte   --->\n";
+  echo "<!--  DATEN Spalte   -->\n";
 
   echo "<table border=1 BGCOLOR=\"\">\n";
 
@@ -339,7 +339,7 @@ function print_loeschen($ID)
   echo "</table>";
 
   echo '</div>';
-  echo "<!---  ENDE DATEN Spalte   --->\n";
+  echo "<!--  ENDE DATEN Spalte   -->\n";
 
 };
 
@@ -375,7 +375,7 @@ function print_info($id,$ID)
       //Daten bereich
       $style = $GLOBALS['style_datalist'];
       echo "<div $style >";
-      echo "<!---  DATEN Spalte   --->\n";
+      echo "<!--  DATEN Spalte   -->\n";
       	
       echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST>\n";
       echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"0\">\n";
@@ -419,7 +419,7 @@ function print_info($id,$ID)
       echo "</table>";
 
       echo '</div>';
-      echo "<!---  ENDE DATEN Spalte   --->\n";
+      echo "<!--  ENDE DATEN Spalte   -->\n";
       	
 };
 
@@ -664,7 +664,7 @@ function print_ID($ID)
 
   $style = $GLOBALS['style_datalist'];
   echo "<div $style >";
-  echo "<!---  DATEN Spalte   --->\n";
+  echo "<!--  DATEN Spalte   -->\n";
   
   echo "<table >\n";
 
@@ -698,7 +698,7 @@ function print_ID($ID)
   echo "</table>";
   
   echo '</div>';
-  echo "<!---  ENDE DATEN Spalte   --->\n";
+  echo "<!--  ENDE DATEN Spalte   -->\n";
   
 };
 

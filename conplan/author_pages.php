@@ -28,10 +28,10 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 
 */
 
@@ -98,7 +98,7 @@ function print_pages_list($path,$ID,$sub)
 	
 	$style = "id=\"menu\"";
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 	echo "<table  border=\"1\"> \n"; //width=\"100%\"
 	echo "<tbody >";
 	
@@ -149,7 +149,7 @@ function print_pages_list($path,$ID,$sub)
 	echo "</tbody>";
 	echo "</table>\n";
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 	
 }
 
@@ -165,7 +165,7 @@ function pages_edit ($path,$name,$ID,$sub)
   echo "<div $style >";
 //  echo "Dateiname: ".$name;
   
-  echo "<!---  DATEN Spalte   --->\n";
+  echo "<!--  DATEN Spalte   -->\n";
     echo "<p>";
 	echo "<FORM ACTION=\"$PHP_SELF?md=3&daten=$name&ID=$ID&sub=$sub\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
@@ -197,7 +197,7 @@ function pages_edit ($path,$name,$ID,$sub)
     echo "  </script>";
   echo "</p>";
   echo '</div>';
-  echo "<!---  ENDE DATEN Spalte   --->\n";
+  echo "<!--  ENDE DATEN Spalte   -->\n";
   
 } 
 
@@ -205,11 +205,11 @@ function print_preview($path,$name,$ID,$sub)
 {
   
   print_pages_list($path,$ID,$sub);
-  echo "<!---  Preview Spalte   --->\n";
+  echo "<!--  Preview Spalte   -->\n";
 //  echo $name;
   $html_file = $path."/".$name;
   print_data($html_file);	
-  echo "<!---  ENDE Preview Spalte   --->\n";
+  echo "<!--  ENDE Preview Spalte   -->\n";
 }
 
 // ---------------------------------------------------------------

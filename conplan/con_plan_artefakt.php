@@ -48,10 +48,10 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 
 $style = $GLOBALS['style_datalist'];
 echo "<div $style >";
-echo "<!---  DATEN Spalte   --->\n";
+echo "<!--  DATEN Spalte   -->\n";
 
 echo '</div>';
-echo "<!---  ENDE DATEN Spalte   --->\n";
+echo "<!--  ENDE DATEN Spalte   -->\n";
 
 */
 
@@ -85,7 +85,7 @@ function print_liste($ID)
 
 $style = $GLOBALS['style_datalist'];
 echo "<div $style >";
-echo "<!---  DATEN Spalte   --->\n";
+echo "<!--  DATEN Spalte   -->\n";
 
 		echo "<table >\n";
 
@@ -133,7 +133,7 @@ echo "<!---  DATEN Spalte   --->\n";
 	echo "</table>";
 
 echo '</div>';
-echo "<!---  ENDE DATEN Spalte   --->\n";
+echo "<!--  ENDE DATEN Spalte   -->\n";
 	
 };
 
@@ -157,7 +157,7 @@ function print_loeschen($ID)
 
 $style = $GLOBALS['style_datalist'];
 echo "<div $style >";
-echo "<!---  DATEN Spalte   --->\n";
+echo "<!--  DATEN Spalte   -->\n";
 
 	
 	echo "<table >\n";
@@ -206,7 +206,7 @@ echo "<!---  DATEN Spalte   --->\n";
 	echo "</table>";
 
 echo '</div>';
-echo "<!---  ENDE DATEN Spalte   --->\n";
+echo "<!--  ENDE DATEN Spalte   -->\n";
 	
 };
 
@@ -237,7 +237,7 @@ function print_info($id,$ID)
 	//Daten bereich
 $style = $GLOBALS['style_datalist'];
 echo "<div $style >";
-echo "<!---  DATEN Spalte   --->\n";
+echo "<!--  DATEN Spalte   -->\n";
 	
 	echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"0\">\n";
@@ -272,7 +272,7 @@ echo "<!---  DATEN Spalte   --->\n";
 	echo "</table>";
 
 echo '</div>';
-echo "<!---  ENDE DATEN Spalte   --->\n";
+echo "<!--  ENDE DATEN Spalte   -->\n";
 	
 };
 
@@ -429,7 +429,7 @@ function print_maske($id,$ID,$next,$erf)
 
 $style = $GLOBALS['style_datalist'];
 echo "<div $style >";
-echo "<!---  DATEN Spalte   --->\n";
+echo "<!--  DATEN Spalte   -->\n";
 	
 	echo "<FORM ACTION=\"$PHP_SELF?md=0&TAG=$TAG&ID=$ID\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
@@ -495,7 +495,7 @@ echo "<!---  DATEN Spalte   --->\n";
 	
 
 echo '</div>';
-echo "<!---  ENDE DATEN Spalte   --->\n";
+echo "<!--  ENDE DATEN Spalte   -->\n";
 	
 };
 

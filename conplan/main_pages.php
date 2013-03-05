@@ -175,7 +175,7 @@ function print_tab_list($mfd, $daten)
   
   $style = $GLOBALS['style_datatab'];
   echo "<div $style >  \n";
-  echo "<!---  DATEN Spalte   --->\n";
+  echo "<!--  DATEN Spalte   -->\n";
 //  print_table_info($result);
   
   echo "<table>";
@@ -195,7 +195,7 @@ function print_tab_list($mfd, $daten)
   echo "</table>";
 
   echo "</div>\n";
-  echo "<!---  ENDE DATEN Spalte   --->\n";
+  echo "<!--  ENDE DATEN Spalte   -->\n";
   
 }
 

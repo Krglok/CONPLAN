@@ -93,18 +93,19 @@ function print_liste($ID)
 
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 	
-	echo "<table border=1 BGCOLOR=\"\">\n";
+	echo "<table>\n";
 
 	//Kopfzeile
 	echo "<tr>\n";
 	$field_num = mysql_num_fields($result);
-	for ($i=0; $i<$field_num; $i++)
+	for ($i=0; $i<$field_num-2; $i++)
 	{
-		if (($i!=0) AND ($i!=6) AND ($i!=8))
+	    $fieldname = substr(mysql_field_name($result,$i),0,5);
+		if (($i!=0) AND ($i!=6) AND ($i!=8) AND ($i!=4))
 		{
-			echo "\t<td><b>".mysql_field_name($result,$i)."</b></td>\n";
+			echo "\t<td><i>".$fieldname."</i></td>\n";
 		};
 	};
 	echo "</tr>\n";
@@ -112,31 +113,27 @@ function print_liste($ID)
 	while ($row = mysql_fetch_row($result))
 	{
 		echo "<tr>";
-		for ($i=0; $i<$field_num; $i++)
+		for ($i=0; $i<$field_num-2; $i++)
 		{
 			// aufruf der Deateildaten
 			if ($i==0)
 			{
-				//        echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=$row[$i]&KAP=$KAP\">\n";
-				//        echo "\t<IMG SRC=\"../larp/images/db.gif\" BORDER=\"0\" HEIGHT=\"25\" WIDTH=\"25\" ALT=\"Datensatz Bearbeiten\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>\n";
-				//        echo "\t</a></td>\n";
 			} else
 			{
-				if (($i!=6) AND ($i!=8))
+				if (($i!=6) AND ($i!=8) AND ($i!=4))
 				{
 					echo "\t<td>$row[$i]&nbsp;</td>\n";
 				};
 			};
 		}
 		echo "\t<td><a href=\"$PHP_SELF?md=2&ID=$ID&id=$row[0]&KAP=$KAP\">\n";
-		//echo "\t<IMG SRC=\"../larp/images/xview.gif\" BORDER=\"0\" HEIGHT=\"15\" WIDTH=\"25\" ALT=\"Thema Lesen\" HSPACE=\"0\" VSPACE=\"0\">\n";
 		print_menu_icon ("_text");
 		echo "\t</a></td>\n";
 		echo "<tr>";
 	}
 	echo "</table>";
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 	
 };
 
@@ -256,7 +253,6 @@ function print_info($id,$ID)
 				$zeile[$ii] = str_replace("  ", "&nbsp;&nbsp;", $zeile[$ii]);
 				echo "\t<FONT  COLOR=#000000  SIZE=2 FACE=\"Comic Sans MS\">$zeile[$ii]<BR>\n";
 			}
-			echo "BLOB";
 			echo "\t</td> \n";
 			echo "<tr>";
 			echo "</table>";

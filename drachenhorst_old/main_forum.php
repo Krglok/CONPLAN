@@ -392,7 +392,7 @@ function print_thema_erf($ID, $foren_id, $top_id, $post_id, $author, $datum, $be
 	//
 	$d = getdate();
 	$datum = $d[year]."-".$d[mon]."-".$d[mday];
-	echo "<!---  Daten Spalte    --->\n";
+	echo "<!--  Daten Spalte    -->\n";
 	echo "<TD>\n";/// Spalte für Datenbereich
 
 	//  FORMULAR
@@ -467,7 +467,7 @@ function print_thema_erf($ID, $foren_id, $top_id, $post_id, $author, $datum, $be
 	echo "\t</FORM>\n";
 
 	echo "</TD>\n"; //  ENDE Spalte Datenbereich
-	echo "<!---  Daten Spalte ENDE   --->\n\n";
+	echo "<!--  Daten Spalte ENDE   -->\n\n";
 }
 
 function erf_thema($ID, $foren_id, $top_id, $post_id, $author, $datum, $betreff, $text, $user_id,$user)

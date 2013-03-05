@@ -30,10 +30,10 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 
 */
 
@@ -60,9 +60,9 @@ function print_sub_list($ID,$sub)
 
   $style = "id=\"style_datalist\"";
   echo "<div $style >";
-  echo "<!---  DATEN Spalte   --->\n";
+  echo "<!--  DATEN Spalte   -->\n";
   echo "<div $style >";
-  echo "<!---  MENU Spalte   --->\n";
+  echo "<!--  MENU Spalte   -->\n";
 
   if (!$result) {
     $message  = 'Invalid query: ' . mysql_error() . "\n";
@@ -91,7 +91,7 @@ function print_sub_list($ID,$sub)
 
   $style = "id=\"menu\"";
   echo "<div $style >";
-  echo "<!---  DATEN Spalte   --->\n";
+  echo "<!--  DATEN Spalte   -->\n";
   echo "<table  border=\"1\"> \n"; //width=\"100%\"
   echo "<tbody >";
 
@@ -132,7 +132,7 @@ function print_sub_list($ID,$sub)
     echo '</div>';
 
 	echo '</div>';
-		    echo "<!---  ENDE DATEN Spalte   --->\n";
+		    echo "<!--  ENDE DATEN Spalte   -->\n";
 
 }
 

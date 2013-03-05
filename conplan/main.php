@@ -66,10 +66,10 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
  
 */
 
@@ -125,7 +125,7 @@ $menu_main = array (0=>array("icon" => "0","caption" => "Hauptseite","link" => "
 		24=>array ("icon" => "_page","caption" => "Bilder","link" => "main_bilder.php?md=0","itemtyp"=>"0"),
 		30=>array ("icon" => "0","caption" => "","link" => "","itemtyp"=>"0"),
 		31=>array ("icon" => "_link","caption" => "Liberi Effera","link" => "http://www.liberi-effera.de/","itemtyp"=>"0"),
-		32=>array ("icon" => "_link","caption" => "Draskoria","link" => "http://draskoria.game-host.org:8090/ target=\"_blank\"","itemtyp"=>"0"),
+		32=>array ("icon" => "_link","caption" => "Draskoria","link" => "http://draskoria.game-host.org:8090/ ","itemtyp"=>"0"), 
 //		33=>array ("icon" => "_zip","caption" => "Download","link" => "main_download.php","daten"=>"","itemtyp"=>"0"),
 		34=>array ("icon" => "_list","caption" => "Links","link" => "links.html","itemtyp"=>"2"),
 		50=>array ("icon" => "_help","caption" => "Ich","link" => "ich.html","itemtyp"=>"2"),

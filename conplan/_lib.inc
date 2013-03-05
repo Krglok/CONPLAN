@@ -25,10 +25,10 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 
 
 */
@@ -182,7 +182,7 @@ function print_menu ($menu)
   $menu_item_author= array ("icon" => "_tool","caption" => "Author","link" => "author_pages.php?md=0&amp;ID=$ID","itemtyp"=>"0");
   
   //   menü spalte
-  echo "<!---  Menu Spalte   -->\n";
+  echo "<!--  Menu Spalte   -->\n";
   //  stellt die breite der Menüspalte ein !!!
   $style = $GLOBALS['style_menu_tab1'];
   echo "<div $style >\n";
@@ -235,7 +235,7 @@ function print_menu ($menu)
   }
   echo "\t\t</div >\n";
   echo "\t</div >\n";
-  echo "<!---  Menu Spalte ENDE   --->\n\n";
+  echo "<!--  Menu Spalte ENDE   -->\n\n";
 };
 
 function print_menue_header($caption, $style)
@@ -258,7 +258,7 @@ function print_menu_status ($menu)
   $menu_item_author= array ("icon" => "_tool","caption" => "Author","link" => "author_pages.php?md=0&amp;ID=$ID","itemtyp"=>"0");
   
   //   menü spalte
-  echo "<!---  Menu Spalte   --->\n";
+  echo "<!--  Menu Spalte   -->\n";
   //  stellt die breite der Menüspalte ein !!!
   $style = "id=status";
   echo "<div $style >\n";
@@ -315,7 +315,7 @@ function print_menu_status ($menu)
   }
 //  echo "\t\t</div >\n";
   echo "\t</div >\n";
-  echo "<!---  Menu Spalte ENDE   --->\n\n";
+  echo "<!--  Menu Spalte ENDE   -->\n\n";
 };
 
 /**
@@ -1113,7 +1113,7 @@ function print_news()
 
   $style = $GLOBALS['style_datatab'];
   echo "<div $style >";
-  echo "<!---  DATEN Spalte   --->\n";
+  echo "<!--  DATEN Spalte   -->\n";
   echo "<CENTER>";
   
   echo "      <TABLE WIDTH=\"500\"  BORDER=\"0\" BGCOLOR=\"\" >";
@@ -1144,7 +1144,7 @@ echo "    <TD>\n";
 echo "    .\n";
 echo "</CENTER>";
 echo '</div>';
-echo "<!---  ENDE DATEN Spalte   --->\n";
+echo "<!--  ENDE DATEN Spalte   -->\n";
 
 };
 
@@ -1158,7 +1158,7 @@ function print_kalender()
 
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
     echo "<CENTER>";
 	
 	echo "<TABLE  WIDTH=\"600\" HEIGHT=\"40\" BORDER=\"1\" CELLPADDING=\"1\" BGCOLOR=\"silver\" BORDERCOLOR=\"#808080\" BORDERCOLORDARK=\"gray\" BORDERCOLORLIGHT=\"#C0C0C0\"\n";
@@ -1252,7 +1252,7 @@ function print_kalender()
 	echo '      </TABLE>';
     echo "</CENTER>";
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 	//=========== print_kalender_end ========================
 };
 
@@ -1267,7 +1267,7 @@ function print_sc_liste()
 
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 	echo "<table border=0 WIDTH=\"600\">\n";
 
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
@@ -1308,7 +1308,7 @@ function print_sc_liste()
 
 	echo "</table>\n";
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 }
 
 /**

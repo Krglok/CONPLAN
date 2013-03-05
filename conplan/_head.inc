@@ -13,15 +13,6 @@ Author  :  $author oduda
 beschreibung :	Funktonssammlung fuer den Aufbau einer
 Drachenhorst HTML Seite
 
-function admin_kopf ()
-function print_header ($NAME)
-function print_body($back_typ)
-function print_body_ende()
-function print_kopf ($logo_typ, $header_typ,$bereich,$anrede)
-function print_md()
-function print_menu_ref($typ, $ref)
-function print_menu ($menu)
-function print_data($html_file)
 
 Ver 3.0  / 06.02.2013
 Es werden CSS-Dateien verwendert. 
@@ -192,7 +183,7 @@ function print_kopf ($logo_typ, $header_typ,$bereich,$anrede, $menu_item)
  */
 function print_md()
 {
-  echo "<!---  Menu und Daten   --->\n";
+  echo "<!--  Menu und Daten   -->\n";
 };
 
 /**
@@ -200,7 +191,7 @@ function print_md()
  */
 function print_md_ende()
 {
-  echo "<!---  ENDE Menu und Daten   --->\n";
+  echo "<!--  ENDE Menu und Daten   -->\n";
 };
 
 /**
@@ -333,13 +324,13 @@ function print_data($html_file)
   // Zeilen ausgeben als datatab
   $style = $GLOBALS['style_datatab'];
   echo "<div $style >";
-  echo "<!---  DATEN Spalte   --->\n";
+  echo "<!--  DATEN Spalte   -->\n";
   for($i=0; $i<count($outline); $i++)
   {
   	echo $outline[$i];
   }
   echo "</div>\n";
-  echo "<!---  ENDE DATEN Spalte   --->\n";
+  echo "<!--  ENDE DATEN Spalte   -->\n";
 };
 
 

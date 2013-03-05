@@ -34,10 +34,10 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 
 $style = $GLOBALS['style_datatab'];
 echo "<div $style >";
-echo "<!---  DATEN Spalte   --->\n";
+echo "<!--  DATEN Spalte   -->\n";
 
 echo '</div>';
-echo "<!---  ENDE DATEN Spalte   --->\n";
+echo "<!--  ENDE DATEN Spalte   -->\n";
 
 
 */
@@ -145,7 +145,7 @@ function show_mfd($table,$ID)
 
 	$style = $GLOBALS['style_datalist'];
 	echo "<div $style > \n";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 	echo "<TABLE > \n";
 	echo "<TR> \n";
 	echo "<TD>\n";
@@ -229,7 +229,7 @@ function show_mfd($table,$ID)
 	echo "</TBODY> \n";
 	echo "</TABLE> \n";
 	echo "</div> \n";
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
   
 	return $mfd;
 }
@@ -248,7 +248,7 @@ function show_mfd_cols($table,$ID)
 
 	$style = $GLOBALS['style_datalist'];
 	echo "<div $style > \n";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 	echo "<TABLE > \n";
 	echo "<TBODY> \n";
 	echo "<TR> \n";
@@ -311,22 +311,58 @@ function show_mfd_cols($table,$ID)
 	echo "</TBODY> \n";
 	echo "</TABLE> \n";
 	echo "</div> \n";
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 
 	return $mfd_cols;
 }
 
 
+function get_mfd($name)
+{
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+
+  mysql_select_db($DB_NAME);
+  $table = "mfd_list";
+  $fields = "ID, mfd_name, mfd_table, mfd_titel, mfd_fields, mfd_join, mfd_where, mfd_order ";
+  $join = "";
+  $where =" mfd_name = \"$name\" ";
+  $order = "ID";
+
+  $q = "SELECT $fields FROM $table  $join where $where  order by $order";
+
+  $result = mysql_query($q) ;
+  if (!$result) {
+    $message  = 'Invalid query: ' . mysql_error() . "\n";
+    $message .= 'Whole query: ' . $q;
+    die($message);
+
+  } else
+  {
+    $i=0;
+    $row = mysql_fetch_row($result);
+    $mfd_list['mfd'] = $row[1];
+    $mfd_list['table'] = $row[2];
+    $mfd_list['titel'] = $row[3];
+    $mfd_list['fields'] = $row[4];
+    $mfd_list['join'] = $row[5];
+    $mfd_list['where'] = $row[6];
+    $mfd_list['order'] = $row[7];
+    return $mfd_list;
+  }
+
+}
+
+
 /**
- * Holt die Liste der mfd Daten
+ * Holt die Liste aller mfd Daten
  * @param unknown $name		// referenz des mfd
  * @return array mit mfd daten ($mfd_list)
  */
 function get_mfd_list()
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $mfd_list;
-	$mfd_lits = array(0=>$mfd_list);
 
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
 
@@ -334,7 +370,7 @@ function get_mfd_list()
 	$table = "mfd_list";
 	$fields = "ID, mfd_name, mfd_table, mfd_titel, mfd_fields, mfd_join, mfd_where, mfd_order ";
 	$join = "";
-	$where =" mfd_name = \"$name\" ";
+	$where =" id >0 ";
 	$order = "ID";
 
 	$q = "SELECT $fields FROM $table  $join where $where  order by $order";
@@ -350,7 +386,6 @@ function get_mfd_list()
 		$i=0;
 		while ($row = mysql_fetch_row($result))
 		{
-			$row = mysql_fetch_row($result);
 			// Reihenfolge der menu_item nach spalte item_sort
 			//    $mfd_list['ID'] = $row[0];
 			$mfd_list['mfd'] = $row[1];
@@ -877,7 +912,7 @@ function print_mfd_listeRef( $ID, $mfd_list, $mfd_cols,$link_call_1, $link_call_
 
 	$style = $GLOBALS['style_datalist'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 
 	echo "      <TABLE   BORDER=\"0\" BGCOLOR=\"\" >";
 	// 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
@@ -936,7 +971,7 @@ function print_mfd_listeRef( $ID, $mfd_list, $mfd_cols,$link_call_1, $link_call_
 	echo "    <TD>\n";
 	echo "    \n";
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 
 };
 
@@ -954,7 +989,7 @@ function print_mfd_liste( $ID, $mfd_list, $mfd_cols)
 
 	$style = $GLOBALS['style_datalist'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 
 	$result = mfd_data_result($mfd_list)
 	or die("Query Fehler...");
@@ -998,7 +1033,7 @@ function print_mfd_liste( $ID, $mfd_list, $mfd_cols)
 	echo "    <TD>\n";
 	echo "    \n";
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 
 };
 
@@ -1020,7 +1055,7 @@ function print_mfd_maske($mfd_list, $row, $id,$next,$ID, $mfd_cols )
 
 	$style = $GLOBALS['style_datalist'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 
 	//  FORMULAR
 	echo "<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID\" METHOD=POST>\n";
@@ -1060,7 +1095,7 @@ function print_mfd_maske($mfd_list, $row, $id,$next,$ID, $mfd_cols )
 	echo "</FORM>\n";
 
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 };
 
 /**

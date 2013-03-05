@@ -52,10 +52,10 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 
 */
 
@@ -88,7 +88,7 @@ function print_liste($user)
 
 	$style = $GLOBALS['style_datatable'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 	
 	echo "<table>\n";
 	echo "<tr>\n";
@@ -190,7 +190,7 @@ function print_liste($user)
 	}
 	echo "</table>";
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 	
 };
 
@@ -214,7 +214,7 @@ function info_liste($spieler,$ID)
 
 	$style = $GLOBALS['style_datatable'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 	
 	echo "<table\n";
 
@@ -275,7 +275,7 @@ function info_liste($spieler,$ID)
 	}
 	echo "</table>";
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 	
 };
 
@@ -300,7 +300,7 @@ function tage_liste($spieler,$ID,$TAG)
 
 	$style = $GLOBALS['style_datatable'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 	
 	echo "<table >\n";
 
@@ -372,7 +372,7 @@ function tage_liste($spieler,$ID,$TAG)
 	echo "</table>";
 
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 	
 };
 
@@ -407,7 +407,7 @@ function print_info($id,$user,$ID,$TAG)
 	//Daten bereich
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 	
 	echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"0\">\n";
@@ -493,7 +493,7 @@ function print_info($id,$user,$ID,$TAG)
 	echo "</table>";
 
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 	
 
 };
@@ -538,7 +538,7 @@ function print_loeschen($user)
 
 	$style = $GLOBALS['style_datatable'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 	
 
 	echo "<table >\n";
@@ -625,7 +625,7 @@ function print_loeschen($user)
 	echo "</table>";
 
 	echo '</div>';
-	echo "<!---  ENDE DATEN Spalte   --->\n";
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 	
 
 };
@@ -827,7 +827,7 @@ function print_anmeld($id,$user,$next,$erf,$ID)
 	/**/
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
-	echo "<!---  DATEN Spalte   --->\n";
+	echo "<!--  DATEN Spalte   -->\n";
 	if ($err != 0)
 	{
 
@@ -1030,7 +1030,7 @@ function print_anmeld($id,$user,$next,$erf,$ID)
 	
   }
   echo '</div>';
-  echo "<!---  ENDE DATEN Spalte   --->\n";
+  echo "<!--  ENDE DATEN Spalte   -->\n";
 };
 
 
