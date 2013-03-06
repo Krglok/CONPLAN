@@ -69,7 +69,7 @@ function mfd_list_edit_link($ID,$daten)
 function mfd_list_delete_link($ID,$daten)
 {
 	global $PHP_SELF;
-	$link = $PHP_SELF."?md=".mfd_del."&id=$daten&ID=$ID";
+	$link = ""; //$PHP_SELF."?md=".mfd_del."&id=$daten&ID=$ID";
 	return $link;
 }
 
@@ -83,7 +83,7 @@ function mfd_list_delete_link($ID,$daten)
 function mfd_list_info_link($ID,$daten)
 {
 	global $PHP_SELF;
-	$link = "admin_mfd_cols.php?md=0&daten=$daten&ID=$ID";
+	$link = "admin_mfd_view.php?md=0&daten=$daten&back=$PHP_SELF&ID=$ID";
 	return $link;
 }
 
@@ -111,7 +111,6 @@ function mfd_cols_edit_link($ID,$daten)
 }
 
 
-
 // ---------------------------------------------------------------
 // ---------    MAIN ---------------------------------------------
 // ----------------------------------------------------------------
@@ -131,6 +130,7 @@ $BEREICH = 'ADMIN';
 $md     = GET_md(0);
 $id     = GET_id(0);
 $daten  = GET_daten("");
+$back   = GET_back("");
 
 $ID     = GET_SESSIONID("");
 $p_md   = POST_md(0);
@@ -176,14 +176,12 @@ $menu_item = $menu_item_help;
 $anrede["name"] = $spieler_name;
 $anrede["formel"] = "Sei gegrüsst Meister ";
 
-print_kopf($admin_typ,$header_typ,"MFD Konfigurator",$anrede,$menu_item);
+print_kopf($admin_typ,$header_typ,"MFD Editor",$anrede,$menu_item);
 
-$bereich = "PUBLIC";
-$sub     = "main";
-$item		 = "regeln";
 
 // fuer die Tabellen Operationen
 $mfd_list = make_mfd_table("mfd_list", "mfd_list");
+$mfd_list["order"] = "mfd_name, id";
 // Fuer die Anzeige Listen
 $mfd_cols = make_mfd_cols_default($mfd_list['table'], $mfd_list['mfd']);
 
@@ -233,7 +231,6 @@ case mfd_info: //
 	break;
 default: // main
 	$menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=1&ID=$ID"),
-	1=>array ("icon" => "_tadd","caption" => "Erfassen","link" => "$PHP_SELF?md=".mfd_add."&ID=$ID"),
 	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_config.php?md=0&ID=$ID")
 	);
 	break;

@@ -89,10 +89,11 @@ $menu = array (
     0=>array  ("icon" => "7","caption" => "ADMIN CONFIG","link" => ""),
     13=>array ("icon" => "_list","caption" => "Log-File","link" => "admin_log.php?md=0&ID=$ID"),
     14=>array ("icon" => "_list","caption" => "DataTable","link" => "admin_table.php?md=0&ID=$ID"),
-    15=>array ("icon" => "_list","caption" => "MFD Edit","link" => "admin_mfd.php?md=0&ID=$ID"),
-    16=>array ("icon" => "_list","caption" => "Menu Edit","link" => "admin_menu.php?md=0&ID=$ID"),
-    17=>array ("icon" => "_list","caption" => "Pages","link" => "admin_pages.php?md=0&ID=$ID"),
-    20=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_main.php?md=0&ID=$ID")
+    15=>array ("icon" => "_list","caption" => "MFD Table","link" => "admin_mfd.php?md=0&ID=$ID"),
+    16=>array ("icon" => "_list","caption" => "MFD Edit","link" => "admin_mfd_edit.php?md=0&ID=$ID"),
+		20=>array ("icon" => "_list","caption" => "Menu Edit","link" => "admin_menu.php?md=0&ID=$ID"),
+    30=>array ("icon" => "_list","caption" => "Pages","link" => "admin_pages.php?md=0&ID=$ID"),
+    99=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_main.php?md=0&ID=$ID")
 );
 
 print_menu($menu);

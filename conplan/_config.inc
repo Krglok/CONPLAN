@@ -288,6 +288,16 @@ function GET_sc($value="")
 }
 
 
+function GET_back($value="")
+{
+	if (isset($_GET['back'])==true)
+	{
+		return $_GET['back'];
+	}
+	return $value;
+}
+
+
 function GET_SESSIONID($value = "")
 {
 	if (isset($_GET['ID'])==true)

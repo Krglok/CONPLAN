@@ -357,6 +357,36 @@ function show_mfd_cols($table,$ID)
 	return $mfd_cols;
 }
 
+function get_mfd_name($id)
+{
+	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+
+	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+
+	mysql_select_db($DB_NAME);
+	$table = "mfd_list";
+	$fields = "ID, mfd_name, mfd_table, mfd_titel, mfd_fields, mfd_join, mfd_where, mfd_order ";
+	$join = "";
+	$where =" id = $id ";
+	$order = "ID";
+
+	$q = "SELECT $fields FROM $table  $join where $where  order by $order";
+
+	$result = mysql_query($q) ;
+	if (!$result) {
+		$message  = 'Invalid query: ' . mysql_error() . "\n";
+		$message .= 'Whole query: ' . $q;
+		die($message);
+		log_write_error($message);
+	} else
+	{
+		$row = mysql_fetch_row($result);
+  	return  $row[1];;
+	}
+
+}
+
+
 /**
  * Holt die Mfd aus der Tabelle mfd_list
  * Die Felder sind vorgegeben !
@@ -552,7 +582,7 @@ function get_mfd_cols($name)
 	mysql_select_db($DB_NAME);
 	$table = "mfd_list";
 	$fields ="ref_mfd, mfd_pos, mfd_field, mfd_field_titel, mfd_width, mfd_field_typ ";
-	$join = "join mfd_cols on mfd_cols.ref_mfm=mfd_list.ID";
+	$join = "join mfd_cols on mfd_cols.ref_mfd=mfd_list.mfd_name";
 	$where ="ref_mfd=\"$name\"";
 	$order = "mfd_pos";
 
@@ -566,19 +596,27 @@ function get_mfd_cols($name)
 
 	} else
 	{
-		$i=0;
-		while ($row = mysql_fetch_row($result))
+		if ( mysql_num_rows($result) > 0)
 		{
-			$i++;
-			// Reihenfolge der menu_item nach spalte item_sort
-			$mfd_col['ref_mfd'] = $name;
-			$mfd_col['mfd_pos'] = $row[2];
-			$mfd_col['mfd_field'] = $row[3];
-			$mfd_col['mfd_field_titel'] = $row[4];
-			$mfd_col['mfd_width'] = $row[5];
-			$mfd_col['mfd_field_typ'] = $row[5];
-			$mfd_cols[$i] = $mfd_col;
+			$i=0;
+			while ($row = mysql_fetch_row($result))
+			{
+				// Reihenfolge der menu_item nach spalte item_sort
+				$mfd_col['ref_mfd'] = $name;
+				$mfd_col['mfd_pos'] = $row[1];
+				$mfd_col['mfd_field'] = $row[2];
+				$mfd_col['mfd_field_titel'] = $row[3];
+				$mfd_col['mfd_width'] = $row[4];
+				$mfd_col['mfd_field_typ'] = $row[5];
+				$mfd_cols[$i] = $mfd_col;
+				$i++;
+			}
+		} else 
+		{
+			global $mfd_col;
+			$mfd_cols[0] = $mfd_col;
 		}
+	
 	}
 	return $mfd_cols;
 }
@@ -609,7 +647,7 @@ function mfd_detail_result($mfd_list, $id)
 	if (!$result) {
 		$message  = 'Invalid query: ' . mysql_error() . "\n";
 		$message .= 'Whole query: ' . $q;
-		die($message);
+		log_write_error($message);
 
 	} else
 	{
@@ -845,7 +883,7 @@ function get_fieldname_list($table)
 	$list = $row[0];
 	while ($row = mysql_fetch_row($result))
 	{
-		$list = $list.",".$row[0];
+		$list = $list.", ".$row[0];
 	}
 	return $list;
 }
@@ -1127,31 +1165,28 @@ function print_mfd_edit_spalte($titel,$pos, $data, $width, $is_readonly)
 	* @param unknown $data		vorhandene Daten
 	* @param unknown $is_readonly true = als Text / false = als Eingabe feld
 	*/
-	function print_mfd_edit_text($titel,$pos, $data, $is_readonly)
+function print_mfd_edit_text($titel,$pos, $data, $is_readonly)
 	{
 	$name = "row[$pos]";  // dies ist der Name des Elementres das ersetzt werden soll
 	$titel = ucwords(strtolower($titel));
 	echo "  <td width=75px ><i>$titel</i></td>\n";
 	echo "<td >\n";
-			if ($is_readonly)
-			{
-			$anz  = count(explode("\n",$data));
-			if ($anz < 5) {
-			$anz=5;
-			}
-			$len = strlen($data) / 60;
-			if($len>$anz) {
-			$anz=$len+$anz;
-			}
+		if ($is_readonly)
+		{
+		$anz  = count(explode("\n",$data));
+		if ($anz < 5) {
+		$anz=5;
+		}
+		$len = strlen($data) / 60;
+		if($len>$anz) {
+		$anz=$len+$anz;
+		}
 
-			echo "<textarea   name=\"$name\" readonly COLS=\"60\" ROWS=\"$anz\" >"; //class=\"ckeditor\"
-			echo $data;
-			echo "</textarea>";
-			} else
-  {
-			echo "\t<td><i>$titel</i></td>\n";
-			//  echo "\t<td><TEXTAREA NAME=\"$name\" COLS=50 ROWS=12></TEXTAREA>&nbsp;</td>\n";
-			echo "<td>\n";
+		echo "<textarea   name=\"$name\" readonly COLS=\"60\" ROWS=\"$anz\" >"; //class=\"ckeditor\"
+		echo $data;
+		echo "</textarea>";
+		} else
+  	{
 			echo "<textarea   name=\"$name\"  COLS=\"60\" ROWS=\"14\" >"; //class=\"ckeditor\"
 			echo $data;
 			echo "</textarea>";
@@ -1165,7 +1200,6 @@ function print_mfd_edit_spalte($titel,$pos, $data, $width, $is_readonly)
     height : '250px'
 			} );";
 			echo "  </script>";
-			echo "</td>\n";
 			}
 			echo "\t&nbsp;<br>\n";
 			echo "</td>\n";
@@ -1174,7 +1208,7 @@ function print_mfd_edit_spalte($titel,$pos, $data, $width, $is_readonly)
 
 
 /**
- * Erstellt eine Eingabe Detailmaske als FORM
+ * Erstellt eine Eingabe Detailmaske als FORM, jedes Datenfeld in einer zeile
  * $next beinhaltet die nächste zu rufende Funktion
  * @param $mfd_list	mfd definition
  * @param $row	Datensatz mit felder als array
@@ -1183,7 +1217,7 @@ function print_mfd_edit_spalte($titel,$pos, $data, $width, $is_readonly)
  * @param $erf	Flag fuer Erfassen Modus
  * @param $ID		SessionID
  */
-function print_mfd_maske($mfd_list, $row, $id,$next,$ID, $mfd_cols )
+function print_mfd_maske($mfd_list, $row, $id,$next,$ID, $mfd_cols,$is_readonly,$daten)
 {
 	//  Fielddefs holen  bzw. defaultwerte erzeugen
 	global $PHP_SELF;
@@ -1193,10 +1227,9 @@ function print_mfd_maske($mfd_list, $row, $id,$next,$ID, $mfd_cols )
 	echo "<!--  DATEN Spalte   -->\n";
 
 	//  FORMULAR
-	echo "<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID\" METHOD=POST>\n";
+	echo "<FORM ACTION=\"$PHP_SELF?md=0&daten=$daten&ID=$ID\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"$row[0]\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"ID\"   VALUE=\"$ID\">\n";
 
 	echo "\t <TABLE>\n";
 	echo "<tr>\n";
@@ -1205,26 +1238,48 @@ function print_mfd_maske($mfd_list, $row, $id,$next,$ID, $mfd_cols )
 	echo "</tr>\n";
 	
 	echo "<tr>\n";
-	echo "\t<td WIDTH=\"175\"><i>".$mfd_cols[0]["mfd_field_titel"]."</i></td>\n";
-	echo "<td>\"$row[0]\"&nbsp;</td>\n";
+// 	echo "\t<td WIDTH=\"175\"><i>".$mfd_cols[0]["mfd_field_titel"]."</i></td>\n"; //$mfd_cols[0]["mfd_field_titel"].
+// 	echo "<td>\"$row[0]\"&nbsp;</td>\n";
+// 	echo "<tr>\n";
+	$mfd_col = $mfd_cols[0];
+	$titel 	= $mfd_col["mfd_field_titel"];
+	$pos		= $mfd_col["mfd_pos"];
+	$data		= $row[0];
+	$width	= $mfd_col["mfd_width"];
+	print_mfd_edit_spalte($titel,$pos, $data, $width, true);
+	
 	echo "</tr>\n";
 
 	for ($i = 1; $i < count($mfd_cols); $i++)
 	{
 	    $mfd_col = $mfd_cols[$i];
 	    echo "<tr>\n";
-		echo "\t<td><i>".$mfd_col["mfd_field_titel"]."</i></td>\n";
-		$width = $mfd_col["mfd_width"];
-		echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[$i]\" SIZE=\"$width\" MAXLENGTH=\"$width\" VALUE=\"".$row[$i]."\">&nbsp;</td>\n";
+	    $titel 	= $mfd_col["mfd_field_titel"];
+	    $pos		= $mfd_col["mfd_pos"];
+	    $data		= $row[$i];
+	    $width	= $mfd_col["mfd_width"];
+	    if ($mfd_col["mfd_field_typ"]=="text")
+	    {
+	    	print_mfd_edit_text($titel, $pos, $data, $is_readonly);
+	    } else 
+	    {
+	    	print_mfd_edit_spalte($titel,$pos, $data, $width, $is_readonly);
+	    }
+// 		echo "\t<td><i>".$mfd_col["mfd_field_titel"]."</i></td>\n";
+// 		$width = $mfd_col["mfd_width"];
+// 		echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[$i]\" SIZE=\"$width\" MAXLENGTH=\"$width\" VALUE=\"".$row[$i]."\">&nbsp;</td>\n";
 		echo "</tr>\n";
 	}
 
 	echo "<tr>\n";
 	echo "\t<td></td>\n";
+	if(!$is_readonly)
+	{
 	echo "<td> <INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">
 			&nbsp;&nbsp;&nbsp;&nbsp;
 			<INPUT TYPE=\"RESET\" VALUE=\"ABBRECHEN\">
 			</td>\n";
+	}
 	echo "</tr>\n";
 	echo "</table>\n";
 	echo "</FORM>\n";
@@ -1234,6 +1289,21 @@ function print_mfd_maske($mfd_list, $row, $id,$next,$ID, $mfd_cols )
 };
 
 /**
+ * Erstellt einen leeren Datensatz anhand der mfd_cols 
+ * @param unknown $mfd_cols
+ * @return number
+ */
+function make_mfd_empty_row($mfd_cols)
+{
+	for ($i=0; $i<count($mfd_cols); $i++)
+	{
+	$row[$i] = "";
+	}
+	$row[0] = 0;
+	return $row;
+}
+
+/**
  * Erstellt eine mfd Detailmaske zum erfassen eines Datensatzes (Insert)
  * HINWEIS : Im rufenden Modul muss post_md = 5 als insert ausgewertet werden
  * @param unknown $id
@@ -1241,19 +1311,20 @@ function print_mfd_maske($mfd_list, $row, $id,$next,$ID, $mfd_cols )
  * @param unknown $mfd_list
  * @param unknown $mfd_cols
  */
-function print_mfd_erf($id, $ID, $mfd_list, $mfd_cols)
+function print_mfd_erf($id, $ID, $mfd_list, $mfd_cols,$daten)
 //
 // $id   beinhaltet den zu bearbeitenden Datensatz
 //
 {
-	for ($i=1; $i<count($mfd_cols); $i++)
-	{
-		$row[$i] = "";
-	}
+// 	for ($i=1; $i<count($mfd_cols); $i++)
+// 	{
+// 		$row[$i] = "";
+// 	}
+	$row = make_mfd_empty_row(mfd_cols);
 	$row[0] = 0;
 	$next = mfd_insert;	// Datenfunktion Insert
 
-	print_mfd_maske($mfd_list,$row, $id,$next,$ID, $mfd_cols );
+	print_mfd_maske($mfd_list,$row, $id,$next,$ID, $mfd_cols,false, $daten);
 }
 
 /**
@@ -1264,7 +1335,7 @@ function print_mfd_erf($id, $ID, $mfd_list, $mfd_cols)
  * @param unknown $mfd_list
  * @param unknown $mfd_cols
  */
-function print_mfd_edit($id, $ID, $mfd_list, $mfd_cols)
+function print_mfd_edit($id, $ID, $mfd_list, $mfd_cols,$daten)
 //
 //  $id   beinhaltet den zu bearbeitenden Datensatz
 //
@@ -1276,17 +1347,27 @@ function print_mfd_edit($id, $ID, $mfd_list, $mfd_cols)
 	$row = mysql_fetch_row($result);
 
 
-	print_mfd_maske($mfd_list,$row, $id,$next,$ID, $mfd_cols );
+	print_mfd_maske($mfd_list,$row, $id,$next,$ID, $mfd_cols,false,$daten);
 
 }
 
 
-function print_mfd_del($id, $ID, $mfd_list, $mfd_cols)
+function print_mfd_del($id, $ID, $mfd_list, $mfd_cols,$daten)
 {
   $next = mfd_delete;	// Datenfunktion Delete
   $result = mfd_detail_result($mfd_list, $id);
   $row = mysql_fetch_row($result);
-  print_mfd_maske($mfd_list,$row, $id,$next,$ID, $mfd_cols );
+  print_mfd_maske($mfd_list,$row, $id,$next,$ID, $mfd_cols,false,$daten );
+
+}
+
+
+function print_mfd_info($id, $ID, $mfd_list, $mfd_cols, $daten)
+{
+	$next = 0;	// Datenfunktion Delete
+	$result = mfd_detail_result($mfd_list, $id);
+	$row = mysql_fetch_row($result);
+	print_mfd_maske($mfd_list,$row, $id,$next,$ID, $mfd_cols,true,$daten );
 
 }
 

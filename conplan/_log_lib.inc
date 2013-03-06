@@ -42,7 +42,7 @@ function log_write_info($text)
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
 
 	mysql_select_db($DB_NAME,$db);
-	$table = "sys_log";
+	$table = "syslog";
 	$fields ="id, stamp, message, typ,user ";
 	$join = ""; //$mfd_list["join"];
 	$where ="";
@@ -69,7 +69,7 @@ function log_write_error($text)
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
 
 	mysql_select_db($DB_NAME,$db);
-	$table = "sys_log";
+	$table = "syslog";
 	$fields ="id, stamp, message, typ,user ";
 	$join = ""; //$mfd_list["join"];
 	$where ="";
@@ -98,7 +98,7 @@ function log_write_debug($text)
 		$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
 
 		mysql_select_db($DB_NAME,$db);
-		$table = "sys_log";
+		$table = "syslog";
 		$fields ="id, stamp, message, typ,user ";
 		$join = "";
 		$where ="";
@@ -319,7 +319,7 @@ function print_log_data($result,$ID)
 	global $PHP_SELF;
 
 	$next = 10;
-	$table = "sys_log";
+	$table = "syslog";
 	$mfd_name = "Log-Liste";
 	$mfd_cols = make_mfd_cols_default($table, $mfd_name);
 
