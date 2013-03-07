@@ -70,6 +70,9 @@ function print_header_admin ($NAME)
   echo"  <link rel=\"stylesheet\" type=\"text/css\" href=\"$layout_path/konzept1.css\">  \n";
   echo"  <script src=\"js/test1.js\" type=\"text/javascript\"></script>  \n";
   echo"  <script src=\"/ckeditor/ckeditor.js\"></script> \n";
+  echo"  <link href=\"js/ui-lightness/jquery-ui-1.10.1.custom.css\" rel=\"stylesheet\"> ";
+  echo"  <script src=\"js/jquery-1.9.1.js\"></script> ";
+  echo"  <script src=\"js/jquery-ui-1.10.1.custom.js\"></script> ";
   echo "</HEAD>\n";
   echo "\n";
 }
