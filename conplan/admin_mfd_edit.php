@@ -83,7 +83,7 @@ function mfd_list_delete_link($ID,$daten)
 function mfd_list_info_link($ID,$daten)
 {
 	global $PHP_SELF;
-	$link = "admin_mfd_view.php?md=0&daten=$daten&back=$PHP_SELF&ID=$ID";
+	$link = "admin_mfd_view.php?md=0&daten=$daten&back=$PHP_SELF&ID=$ID".get_parentlink();;
 	return $link;
 }
 
@@ -106,7 +106,7 @@ function mfd_list_cols($table, $mfd_name)
 function mfd_cols_edit_link($ID,$daten)
 {
 	global $PHP_SELF;
-	$link = $PHP_SELF."?md=23&id=$id&daten=$daten&ID=$ID";
+	$link = $PHP_SELF."?md=23&id=$id&daten=$daten&ID=$ID".get_parentlink();;
 	return $link;
 }
 
@@ -130,7 +130,7 @@ $BEREICH = 'ADMIN';
 $md     = GET_md(0);
 $id     = GET_id(0);
 $daten  = GET_daten("");
-$back   = GET_back("");
+$parent   = GET_parent("");
 
 $ID     = GET_SESSIONID("");
 $p_md   = POST_md(0);
@@ -162,8 +162,9 @@ if (is_admin()==FALSE)
 	// Code ausgeführt wird.
 }
 
+$parent = "";
 
-print_header("Admin Bereich");
+print_header_admin("Admin Bereich");
 
 print_body(2);
 
@@ -204,34 +205,34 @@ case mfd_delete: // Delete => Loeschen
 
 	switch ($md):
 case mfd_add: // erfassen
-		$menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=0&ID=$ID"),
+		$menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=0&ID=$ID".get_parentlink().""),
 				1=>array("icon" => "1","caption" => "NEU","link" => ""),
-				2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
+				2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID".get_parentlink()."")
 		);
 		break;
 case mfd_edit:  //Bearbeiten
-	$menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=0&ID=$ID"),
+	$menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=0&ID=$ID".get_parentlink().""),
 	1=>array("icon" => "1","caption" => " EDIT ","link" => ""),
-	2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
+	2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID".get_parentlink()."")
 	);
 	break;
 case mfd_del: //
-	$menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=0&ID=$ID"),
+	$menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=0&ID=$ID".get_parentlink().""),
 	1=>array("icon" => "1","caption" => "DELETE","link" => ""),
-	2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
+	2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID".get_parentlink())
 	);
 	break;
 case mfd_info: //
 	$link = $PHP_SELF."?md=21&id=$id&ID=$ID";
-	$menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=0&ID=$ID"),
+	$menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=0&ID=$ID".get_parentlink().""),
 			1=>array("icon" => "1","caption" => "MFD COLS","link" => ""),
 			2=>array("icon" => "_tadd","caption" => "Make Cols","link" => "$link"),
-			9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
+			9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID".get_parentlink()."")
 	);
 	break;
 default: // main
-	$menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=1&ID=$ID"),
-	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_config.php?md=0&ID=$ID")
+	$menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=1&ID=$ID".get_parentlink().""),
+	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_config.php?md=0&ID=$ID".get_parentlink()."")
 	);
 	break;
 	endswitch;
@@ -243,11 +244,11 @@ case mfd_add:
 		echo "Add Maske";
 	break;
 case mfd_edit:
-	print_mfd_edit($id, $ID, $mfd_list, $mfd_cols);
+	print_mfd_edit($id, $ID, $mfd_list, $mfd_cols,$daten);
 	break;
 case mfd_del:
 	//  echo "Delete Maske";
-	print_mfd_del($id, $ID, $mfd_list, $mfd_cols);
+	print_mfd_del($id, $ID, $mfd_list, $mfd_cols,$daten);
 	break;
 case mfd_info:
 	//  echo "Info Maske:";

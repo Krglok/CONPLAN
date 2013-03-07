@@ -110,7 +110,8 @@ function print_menu_icon ($typ,$info = "Link")
  */
 function print_menu_ref($caption, $ref)
 {
-  echo "            <A HREF=\"$ref\" > ";
+	global $parent;
+  echo "            <A HREF=\"$ref".get_parentlink()."\" > ";
   echo "            $caption ";
   echo "            </A>\n";
 };

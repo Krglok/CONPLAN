@@ -48,7 +48,20 @@ $php_subsl  ="larp.php";
 $php_sl     ="con_main.php";
 $php_author ="larp.php";
 $php_intern ="larp.php";
-//$home = $main_php;
+//automtische initialisierung des parent
+$parent = GET_parent("");
+
+function get_parentlink()
+{
+	global $parent;
+	global $PHP_SELF;
+	
+  if($parent == "")
+  {
+  	$parent = $PHP_SELF;
+  }
+	return "&amp;parent=".$parent;
+}
 
 // Pfade die automatisch verwendet werden  ------------
 $path_img 		= "./images";		// Dies sind die Content Bilder
@@ -67,6 +80,7 @@ $layout_path = "layout";			// css-dateien
 $layoutButton_path = "./layout/button/";	// buttons fuer das layout
 $layoutImages_path = "./layout/images/";	// images fuer das layout
 $layoutBack_path = "./layout/back/";		// backgrnd images fuer das layout
+
 
 // pfad fuer die Login Seite wird mehrfach gebraucht und soll konfigurierbar sein
 // md = der menupunkt unter den der Login erreichbar ist
@@ -288,11 +302,11 @@ function GET_sc($value="")
 }
 
 
-function GET_back($value="")
+function GET_parent($value="")
 {
-	if (isset($_GET['back'])==true)
+	if (isset($_GET['parent'])==true)
 	{
-		return $_GET['back'];
+		return $_GET['parent'];
 	}
 	return $value;
 }

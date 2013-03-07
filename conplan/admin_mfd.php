@@ -55,7 +55,7 @@ include_once '_mfd_lib.inc';
 function mfd_list_edit_link($ID,$daten)
 {
 	global $PHP_SELF;
-	$link = $PHP_SELF."?md=".mfd_edit."&id=$daten&ID=$ID";
+	$link = $PHP_SELF."?md=".mfd_edit."&id=$daten&ID=$ID".get_parentlink();
 	return $link;
 }
 
@@ -69,7 +69,7 @@ function mfd_list_edit_link($ID,$daten)
 function mfd_list_delete_link($ID,$daten)
 {
 	global $PHP_SELF;
-	$link = $PHP_SELF."?md=".mfd_del."&id=$daten&ID=$ID";
+	$link = $PHP_SELF."?md=".mfd_del."&id=$daten&ID=$ID".get_parentlink();;
 	return $link;
 }
 
@@ -83,7 +83,7 @@ function mfd_list_delete_link($ID,$daten)
 function mfd_list_info_link($ID,$daten)
 {
 	global $PHP_SELF;
-	$link = "admin_mfd_cols.php?md=0&daten=$daten&ID=$ID";
+	$link = "admin_mfd_cols.php?md=0&daten=$daten&ID=$ID".get_parentlink();;
 	return $link;
 }
 
@@ -106,7 +106,7 @@ function mfd_list_cols($table, $mfd_name)
 function mfd_cols_edit_link($ID,$daten)
 {
 	global $PHP_SELF;
-	$link = $PHP_SELF."?md=23&id=$id&daten=$daten&ID=$ID";
+	$link = $PHP_SELF."?md=23&id=$id&daten=$daten&ID=$ID".get_parentlink();;
 	return $link;
 }
 
@@ -162,6 +162,7 @@ if (is_admin()==FALSE)
 	// Code ausgeführt wird.
 }
 
+$parent ="";
 
 print_header("Admin Bereich");
 
@@ -206,35 +207,35 @@ case mfd_delete: // Delete => Loeschen
 
 	switch ($md):
 case mfd_add: // erfassen
-		$menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=0&ID=$ID"),
+		$menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=0&ID=$ID".get_parentlink().""),
 				1=>array("icon" => "1","caption" => "NEU","link" => ""),
-				2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
+				2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID".get_parentlink()."")
 		);
 		break;
 case mfd_edit:  //Bearbeiten
-	$menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=0&ID=$ID"),
+	$menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=0&ID=$ID".get_parentlink()),
 	1=>array("icon" => "1","caption" => " EDIT ","link" => ""),
-	2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
+	2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID".get_parentlink()."")
 	);
 	break;
 case mfd_del: //
-	$menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=0&ID=$ID"),
+	$menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=0&ID=$ID".get_parentlink().""),
 	1=>array("icon" => "1","caption" => "DELETE","link" => ""),
-	2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
+	2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID".get_parentlink()."")
 	);
 	break;
 case mfd_info: //
 	$link = $PHP_SELF."?md=21&id=$id&ID=$ID";
-	$menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=0&ID=$ID"),
+	$menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=0&ID=$ID".get_parentlink().""),
 			1=>array("icon" => "1","caption" => "MFD COLS","link" => ""),
 			2=>array("icon" => "_tadd","caption" => "Make Cols","link" => "$link"),
-			9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
+			9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID".get_parentlink()."")
 	);
 	break;
 default: // main
-	$menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=1&ID=$ID"),
-	1=>array ("icon" => "_tadd","caption" => "Erfassen","link" => "$PHP_SELF?md=".mfd_add."&ID=$ID"),
-	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_config.php?md=0&ID=$ID")
+	$menu = array (0=>array("icon" => "7","caption" => "MFD","link" => "$PHP_SELF?md=1&ID=$ID".get_parentlink().""),
+	1=>array ("icon" => "_tadd","caption" => "Erfassen","link" => "$PHP_SELF?md=".mfd_add."&ID=$ID".get_parentlink().""),
+	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_config.php?md=0&ID=$ID".get_parentlink()."")
 	);
 	break;
 	endswitch;

@@ -123,7 +123,7 @@ $BEREICH = 'ADMIN';
 $md     = GET_md(0);
 $id     = GET_id(0);
 $daten  = GET_daten("");
-$back   = GET_back("");
+
 
 $ID     = GET_SESSIONID("");
 $p_md   = POST_md(0);
@@ -156,7 +156,7 @@ if (is_admin()==FALSE)
 }
 
 
-print_header("Admin Bereich");
+print_header_admin("Admin Bereich");
 
 print_body(2);
 
@@ -205,35 +205,35 @@ case mfd_add: // erfassen
     $menu = array (0=>array("icon" => "7","caption" => "MFD-COLS","link" => ""),
   			1=>array("icon" => "1","caption" =>$ref_mfd, "link" => ""),
     		2=>array("icon" => "1","caption" => "NEU","link" => ""),
-        9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID")
+        9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink()."")
     );
     break;
 case mfd_edit:  //Bearbeiten
   $menu = array (0=>array("icon" => "7","caption" => "MFD-COLS","link" => ""),
   1=>array("icon" => "1","caption" =>$ref_mfd, "link" => ""),
   2=>array("icon" => "1","caption" => " EDIT ","link" => ""),
-  9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID")
+  9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink()."")
   );
   break;
 case mfd_del: // 
     $menu = array (0=>array("icon" => "7","caption" => "MFD-COLS","link" => ""),
 	  	1=>array("icon" => "1","caption" =>$ref_mfd, "link" => ""),
 	    2=>array("icon" => "1","caption" => "DELETE","link" => ""),
-      9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID")
+      9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink()."")
     );
     break;
 case mfd_info: // 
-    $menu = array (0=>array("icon" => "7","caption" => "MFD-COLS","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID"),
+    $menu = array (0=>array("icon" => "7","caption" => "MFD-COLS","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink().""),
   	1=>array("icon" => "1","caption" =>$ref_mfd, "link" => ""),
     2=>array("icon" => "1","caption" => "MASKE","link" => ""),
-    9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID")
+    9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink()."")
     );
     break;
     default: // main
   $menu = array (0=>array("icon" => "7","caption" => "MFD-COLS","link" => ""),
   1=>array("icon" => "1","caption" =>$ref_mfd, "link" => ""),
-  2=>array ("icon" => "_tadd","caption" => "Neu","link" => "$PHP_SELF?md=".mfd_add."&amp;daten=$daten&amp;ID=$ID"),
-  5=>array ("icon" => "_stop","caption" => "Zurück","link" => "$back?md=0&amp;daten=$daten&amp;ID=$ID")
+  2=>array ("icon" => "_tadd","caption" => "Neu","link" => "$PHP_SELF?md=".mfd_add."&amp;daten=$daten&amp;ID=$ID".get_parentlink().""),
+  5=>array ("icon" => "_stop","caption" => "Zurück","link" => "$parent?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink()."")
   );
   break;
   endswitch;

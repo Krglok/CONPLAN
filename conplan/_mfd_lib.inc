@@ -1157,14 +1157,41 @@ function print_mfd_edit_spalte($titel,$pos, $data, $width, $is_readonly)
 	echo "</td>\n";
 }
 
-	/**
-	* Erstellt eine Textarea als Input. Die Textarea wird durch ckEditor ersetz
-	* bei readonly=true wird nur der Text angezeigt
-	* @param unknown $titel  des Feldes
-	* @param unknown $pos    index des $row
-	* @param unknown $data		vorhandene Daten
-	* @param unknown $is_readonly true = als Text / false = als Eingabe feld
-	*/
+function print_mfd_edit_datum($titel,$pos, $data, $width, $is_readonly)
+{
+	$name = "row[$pos]";  // dies ist der Name des Elementres das ersetzt werden soll
+	if($is_readonly)
+	{
+		$readonly = "readonly";
+	} else
+	{
+		$readonly = "";
+	}
+
+	if($width >75)
+	{
+		$size = 75;
+	} else
+	{
+		$size = $width;
+	}
+	$titel = ucwords(strtolower($titel));
+	echo "<td width=75 ><i>$titel</i></td>\n";
+	echo "<td width=50>\n";
+	echo "<INPUT TYPE=\"TEXT\" class=\"datepicker\" NAME=\"row[$pos]\" SIZE=$size MAXLENGTH=$width $readonly VALUE=\"$data\"\n";
+	echo "</td>\n";
+	//echo "<div id=\"#datepicker\"></div> ";
+	echo "<script>$( \".datepicker\" ).datepicker({ dateFormat:\"yy-mm-dd\" });</script> ";
+}
+
+/**
+* Erstellt eine Textarea als Input. Die Textarea wird durch ckEditor ersetz
+* bei readonly=true wird nur der Text angezeigt
+* @param unknown $titel  des Feldes
+* @param unknown $pos    index des $row
+* @param unknown $data		vorhandene Daten
+* @param unknown $is_readonly true = als Text / false = als Eingabe feld
+*/
 function print_mfd_edit_text($titel,$pos, $data, $is_readonly)
 	{
 	$name = "row[$pos]";  // dies ist der Name des Elementres das ersetzt werden soll
@@ -1196,7 +1223,7 @@ function print_mfd_edit_text($titel,$pos, $data, $is_readonly)
     echo " CKEDITOR.replace('$name',{
     toolbar: 'ForumToolbar',
     removeButtons : 'Table',
-    uiColor : '#9AB8F3',
+    uiColor : '#F1E8DF',
     height : '250px'
 			} );";
 			echo "  </script>";
@@ -1261,7 +1288,11 @@ function print_mfd_maske($mfd_list, $row, $id,$next,$ID, $mfd_cols,$is_readonly,
 	    if ($mfd_col["mfd_field_typ"]=="text")
 	    {
 	    	print_mfd_edit_text($titel, $pos, $data, $is_readonly);
+	    } elseif ($mfd_col["mfd_field_typ"]=="date")
+	    {
+	    	print_mfd_edit_datum($titel,$pos, $data, $width, $is_readonly);
 	    } else 
+	    	
 	    {
 	    	print_mfd_edit_spalte($titel,$pos, $data, $width, $is_readonly);
 	    }

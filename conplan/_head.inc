@@ -126,6 +126,8 @@ function print_header_icon ($typ)
 {
   global $BEREICH;
   global $ID;
+  global $parent;
+  
   $home = get_home($BEREICH)."?md=0&amp;ID=$ID";
   
   $typ = $GLOBALS['layoutImages_path'].$typ;
@@ -139,7 +141,6 @@ function print_header_icon ($typ)
 
 function print_kopf ($logo_typ, $header_typ,$bereich,$anrede, $menu_item)
 {
-  
   $info = "Login aufrufen";
   $formel = $anrede["formel"];
   $name   = $anrede["name"];
