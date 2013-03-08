@@ -25,6 +25,7 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 
 include_once "_config.inc";
 include_once "_lib.inc";
+include_once "_log_lib.inc";
 
 function header_reload($name, $md, $ID, $param)
 {

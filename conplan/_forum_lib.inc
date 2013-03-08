@@ -26,7 +26,7 @@ function print_thema_text($name,$text)
   echo " CKEDITOR.replace('$name',{	
   toolbar: 'ForumToolbar',
   removeButtons : 'Table',
-  uiColor : '#9AB8F3',
+  uiColor : '#F1E8DF',
   height : '250px'
   } );";
   echo "  </script>";
@@ -323,19 +323,8 @@ function print_thema_erf($ID,$id, $foren_id, $post_id, $author, $datum, $betreff
   $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
   mysql_select_db($DB_NAME) ;
 
-  /*
-   $q = "select spieler_id,id,username from user_liste where username=\"$user\"";
-  $result = mysql_query($q) or die("select Fehler....$q.");
-  $row = mysql_fetch_row($result);
-  $spieler_id=$row[0];
-  $q = "select id,name,vorname,charakter,email,telefon,geb,bemerkung from spieler where id=\"$spieler_id\" ";
-  $result = mysql_query($q) or die("select Fehler....$q.");
-  $row = mysql_fetch_row($result);
-  $author = $row[2]." ".$row[1];
-  */
   $author = get_spieler($_SESSION["spieler_id"]);
   $user_id = $_SESSION["user_id"];
-  //	echo "Author : $_SESSION[spieler_id] / $author user_id : $user_id";
   mysql_close($db);
   // Datenbank Ende ================================================================
 

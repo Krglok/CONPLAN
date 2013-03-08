@@ -1,6 +1,6 @@
 <?php
 /*
-Projekt : LIBRARY
+ Projekt : LIBRARY
 
 Datum    :  $date$  / 27.02.2013
 
@@ -8,8 +8,8 @@ Rev.    :  $rev$   / 1.0
 
 Author  :  $author$  / krglok
 
-beschreibung : MFD = Main Formular Data, 
-beschreibt eine Tabelle und die Daten dieser Tabelle die in einer 
+beschreibung : MFD = Main Formular Data,
+beschreibt eine Tabelle und die Daten dieser Tabelle die in einer
 Datenliste angezeigt werden sollen.
 Mit diesem Schema koennen einheitliche Anzeige- und
 Bearbeitungsfunktionen benutzt werden, da die Funktionen nicht
@@ -65,7 +65,7 @@ define("mfd_delete", 23);
  * Tabelle gelesen
  * @param  $table, name der Tabelle die gelesen wird
  * @param  $mfd_name , name der mfd-referenz die erzeugt wird
- */
+*/
 function insert_mfd_cols($table,$mfd_name)
 {
   // erzeuge mfd fuer Tabelle in die der insert gemacht werden soll
@@ -91,37 +91,37 @@ function insert_mfd_cols($table,$mfd_name)
 
 $field_item = array
 (
-		"Field" => "",
-		"Type" => "",
-		"Null" => "",
-		"Key" => "",
-		"Default" => "",
-		"Extra" => ""   //auto_increment
+    "Field" => "",
+    "Type" => "",
+    "Null" => "",
+    "Key" => "",
+    "Default" => "",
+    "Extra" => ""   //auto_increment
 );
 
 /**
  * erzeugt automatisch die col-definitionen fuer eine Tabelle
  * @param  $table  Tabellenname
- * @return $mfd_cols  column definition fuer mfd 
+ * @return $mfd_cols  column definition fuer mfd
 */
 function make_mfd_cols_default($table,$mfd_name)
 {
-	$result = get_fieldlist($table);
+  $result = get_fieldlist($table);
 
-	$i=0;
-	while ($row = mysql_fetch_row($result))
-	{
-		// 0 = Field, 1 = Type, 2 Null, 3 = Key, 4Defaault, 5=Extra
-		$mfd_col["mfd_name"]	= $mfd_name;
-		$mfd_col["mfd_pos"]		= $i;
-		$mfd_col["mfd_field"]	= $row[0];
-		$mfd_col["mfd_field_titel"] = $row[0];
-		$mfd_col["mfd_width"]	= get_fieldtyp_width($row[1]);
-		$mfd_col["mfd_field_typ"]	= $row[1];
-		$mfd_cols[$i] = $mfd_col;
-		$i++;
-	}
-	return $mfd_cols;
+  $i=0;
+  while ($row = mysql_fetch_row($result))
+  {
+    // 0 = Field, 1 = Type, 2 Null, 3 = Key, 4Defaault, 5=Extra
+    $mfd_col["mfd_name"]	= $mfd_name;
+    $mfd_col["mfd_pos"]		= $i;
+    $mfd_col["mfd_field"]	= $row[0];
+    $mfd_col["mfd_field_titel"] = $row[0];
+    $mfd_col["mfd_width"]	= get_fieldtyp_width($row[1]);
+    $mfd_col["mfd_field_typ"]	= $row[1];
+    $mfd_cols[$i] = $mfd_col;
+    $i++;
+  }
+  return $mfd_cols;
 }
 
 // /**
@@ -145,19 +145,19 @@ function make_mfd_cols_default($table,$mfd_name)
 // 	$i = 0;
 // 	$list = $row[0];
 // 	while ($row = mysql_fetch_row($result))
-// 	{
-// 		$list = $list.",".$row[0];
-// 		$mfd_col['mfd_name'] = $mfd_list["mfd"];
-// 		$mfd_col['mfd_titel'] = "MFD-LIST";
-// 		$mfd_col['mfd_pos'] = $i;
-// 		$mfd_col['mfd_field'] = $row[0];
-// 		$mfd_col['mfd_field_titel'] = $row[0];
-// 		$mfd_col['mfd_width'] = get_fieldtyp_width($row[1]);
-// 		$mfd_cols[$i] = $mfd_col;
-// 		$i++;
-// 	}
-// 	return $list;
-// }
+  // 	{
+  // 		$list = $list.",".$row[0];
+  // 		$mfd_col['mfd_name'] = $mfd_list["mfd"];
+  // 		$mfd_col['mfd_titel'] = "MFD-LIST";
+  // 		$mfd_col['mfd_pos'] = $i;
+  // 		$mfd_col['mfd_field'] = $row[0];
+  // 		$mfd_col['mfd_field_titel'] = $row[0];
+  // 		$mfd_col['mfd_width'] = get_fieldtyp_width($row[1]);
+  // 		$mfd_cols[$i] = $mfd_col;
+  // 		$i++;
+  // 	}
+  // 	return $list;
+  // }
 
 
 /**
@@ -167,224 +167,262 @@ function make_mfd_cols_default($table,$mfd_name)
  */
 function show_mfd($table,$ID)
 {
-	global $PHP_SELF;
-	$next = 5;
-	//  $name = "";
-	$sub  = "admin";
-	print_table_list($ID);
+  global $PHP_SELF;
+  $next = 5;
+  //  $name = "";
+  $sub  = "admin";
+  print_table_list($ID);
 
-	$mfd = make_mfd_table($table,$table);
+  $mfd = make_mfd_table($table,$table);
 
-	$style = $GLOBALS['style_datalist'];
-	echo "<div $style > \n";
-	echo "<!--  DATEN Spalte   -->\n";
-	echo "<TABLE > \n";
-	echo "<TR> \n";
-	echo "<TD>\n";
-	echo "Breich";
-	echo "</TD> \n";
-	echo "<TD> \n";
-	echo "<b>ADMIN</b>";
-	echo "</TD> \n";
-	echo "</TR> \n";
+  $style = $GLOBALS['style_datalist'];
+  echo "<div $style > \n";
+  echo "<!--  DATEN Spalte   -->\n";
+  echo "<TABLE > \n";
+  echo "<TR> \n";
+  echo "<TD>\n";
+  echo "Breich";
+  echo "</TD> \n";
+  echo "<TD> \n";
+  echo "<b>ADMIN</b>";
+  echo "</TD> \n";
+  echo "</TR> \n";
 
-	echo "<TBODY> \n";
-	echo "<TR> \n";
-	echo "<TD>\n";
-	echo "Sub";
-	echo "</TD> \n";
-	echo "<TD> \n";
-	echo "<b>main</b>";
-	echo "</TD> \n";
-	echo "</TR> \n";
+  echo "<TBODY> \n";
+  echo "<TR> \n";
+  echo "<TD>\n";
+  echo "Sub";
+  echo "</TD> \n";
+  echo "<TD> \n";
+  echo "<b>main</b>";
+  echo "</TD> \n";
+  echo "</TR> \n";
 
-	echo "<TR> \n";
-	echo "<TD>\n";
-	echo "Mfd";
-	echo "</TD> \n";
-	echo "<TD> \n";
-	echo "<b>".$mfd['mfd']."</b>";
-	echo "</TD> \n";
-	echo "</TR> \n";
+  echo "<TR> \n";
+  echo "<TD>\n";
+  echo "Mfd";
+  echo "</TD> \n";
+  echo "<TD> \n";
+  echo "<b>".$mfd['mfd']."</b>";
+  echo "</TD> \n";
+  echo "</TR> \n";
 
-	echo "<TR> \n";
-	echo "<TD> \n";
-	echo "Table \n";
-	echo "</TD> \n";
-	echo "<TD> \n";
-	echo $mfd['table']." \n";
-	echo "</TD> \n";
-	echo "</TR> \n";
+  echo "<TR> \n";
+  echo "<TD> \n";
+  echo "Table \n";
+  echo "</TD> \n";
+  echo "<TD> \n";
+  echo $mfd['table']." \n";
+  echo "</TD> \n";
+  echo "</TR> \n";
 
-	echo "<TR> \n";
-	echo "<TD> \n";
-	echo "Fields \n";
-	echo "</TD> \n";
-	echo "<TD> \n";
-	echo $mfd['fields']." \n";
-	echo "</TD> \n";
-	echo "</TR> \n";
+  echo "<TR> \n";
+  echo "<TD> \n";
+  echo "Fields \n";
+  echo "</TD> \n";
+  echo "<TD> \n";
+  echo $mfd['fields']." \n";
+  echo "</TD> \n";
+  echo "</TR> \n";
 
-	echo "<TR> \n";
-	echo "<TD> \n";
-	echo "Join \n";
-	echo "</TD> \n";
-		
-	echo "<TD> \n";
-	echo $mfd['join']." \n";
-	echo "</TD> \n";
+  echo "<TR> \n";
+  echo "<TD> \n";
+  echo "Join \n";
+  echo "</TD> \n";
 
-	echo "<TD> \n";
-	echo "\n";
-	echo "</TD> \n";
-	echo "</TR> \n";
+  echo "<TD> \n";
+  echo $mfd['join']." \n";
+  echo "</TD> \n";
 
-	echo "<TR> \n";
-	echo "<TD> \n";
-	echo "Where \n";
-	echo "</TD> \n";
-		
-	echo "<TD> \n";
-	echo $mfd['where']." \n";
-	echo "</TD> \n";
-	echo "</TR> \n";
+  echo "<TD> \n";
+  echo "\n";
+  echo "</TD> \n";
+  echo "</TR> \n";
 
-	echo "<TR> \n";
-	echo "<TD> \n";
-	echo "Order \n";
-	echo "</TD> \n";
-	echo "<TD> \n";
-	echo $mfd['order']." \n";
-	echo "</TD> \n";
-	echo "</TR> \n";
+  echo "<TR> \n";
+  echo "<TD> \n";
+  echo "Where \n";
+  echo "</TD> \n";
 
-	echo "</TBODY> \n";
-	echo "</TABLE> \n";
-	echo "</div> \n";
-	echo "<!--  ENDE DATEN Spalte   -->\n";
-  
-	return $mfd;
+  echo "<TD> \n";
+  echo $mfd['where']." \n";
+  echo "</TD> \n";
+  echo "</TR> \n";
+
+  echo "<TR> \n";
+  echo "<TD> \n";
+  echo "Order \n";
+  echo "</TD> \n";
+  echo "<TD> \n";
+  echo $mfd['order']." \n";
+  echo "</TD> \n";
+  echo "</TR> \n";
+
+  echo "</TBODY> \n";
+  echo "</TABLE> \n";
+  echo "</div> \n";
+  echo "<!--  ENDE DATEN Spalte   -->\n";
+
+  return $mfd;
 }
 
 /**
- * erstellt eine automatische Defition von mfd-cols 
+ * erstellt eine automatische Defition von mfd-cols
  * mfd_name = "mfd_"+<table_name>
  * fuer eine Tabelle
  * @param unknown $table
  */
 function show_mfd_cols($table,$ID)
 {
-	print_table_list($ID);
-	$mfd_name = "mfd_".$table;
-	$mfd_cols = make_mfd_cols_default($table, $mfd_name);
+  print_table_list($ID);
+  $mfd_name = "mfd_".$table;
+  $mfd_cols = make_mfd_cols_default($table, $mfd_name);
 
-	$style = $GLOBALS['style_datalist'];
-	echo "<div $style > \n";
-	echo "<!--  DATEN Spalte   -->\n";
-	echo "<TABLE > \n";
-	echo "<TBODY> \n";
-	echo "<TR> \n";
-	echo "<TD>\n";
-	echo "Tabelle";
-	echo "</TD> \n";
+  $style = $GLOBALS['style_datalist'];
+  echo "<div $style > \n";
+  echo "<!--  DATEN Spalte   -->\n";
+  echo "<TABLE > \n";
+  echo "<TBODY> \n";
+  echo "<TR> \n";
+  echo "<TD>\n";
+  echo "Tabelle";
+  echo "</TD> \n";
 
-	echo "<TD> \n";
-	echo "<b>$table</b>";
-	echo "</TD> \n";
+  echo "<TD> \n";
+  echo "<b>$table</b>";
+  echo "</TD> \n";
 
-	echo "<TD> \n";
-	echo "";
-	echo "</TD> \n";
-	echo "</TR> \n";
+  echo "<TD> \n";
+  echo "";
+  echo "</TD> \n";
+  echo "</TR> \n";
 
-	echo "<TR> \n";
-	echo "<TD>\n";
-	echo "<i>MFD-Referenz</i>";
-	echo "</TD> \n";
-	
-	echo "<TD> \n";
-	echo "<b>$mfd_name</b>";
-	echo "</TD> \n";
-	
-	echo "<TD> \n";
-	echo "";
-	echo "</TD> \n";
-	echo "</TR> \n";
-	
-	echo "<TR> \n";
-	echo "<TD> \n";
-	echo "<i>Fieldname</i> \n";
-	echo "</TD> \n";
+  echo "<TR> \n";
+  echo "<TD>\n";
+  echo "<i>MFD-Referenz</i>";
+  echo "</TD> \n";
 
-	echo "<TD> \n";
-	echo "<i>Titel</i> \n";
-	echo "</TD> \n";
+  echo "<TD> \n";
+  echo "<b>$mfd_name</b>";
+  echo "</TD> \n";
 
-	echo "<TD> \n";
-	echo "<i>Width</i> \n";
-	echo "</TD> \n";
+  echo "<TD> \n";
+  echo "";
+  echo "</TD> \n";
+  echo "</TR> \n";
 
-	echo "<TD> \n";
-	echo "<i>Typ</i> \n";
-	echo "</TD> \n";
-	echo "</TR> \n";
-	
-	foreach ($mfd_cols as $mfd_col)
-	{
-		echo "<TR> \n";
-		echo "<TD> \n";
-		echo $mfd_col["mfd_field"];
-		echo "</TD> \n";
+  echo "<TR> \n";
+  echo "<TD> \n";
+  echo "<i>Fieldname</i> \n";
+  echo "</TD> \n";
 
-		echo "<TD> \n";
-		echo $mfd_col["mfd_field_titel"];
-		echo "</TD> \n";
-			
-		echo "<TD> \n";
-		echo $mfd_col["mfd_width"];
-		echo "</TD> \n";
-		
-		echo "<TD> \n";
-		echo $mfd_col["mfd_field_typ"];
-		echo "</TD> \n";
-		echo "</TR> \n";
-	}
-	echo "</TBODY> \n";
-	echo "</TABLE> \n";
-	echo "</div> \n";
-	echo "<!--  ENDE DATEN Spalte   -->\n";
+  echo "<TD> \n";
+  echo "<i>Titel</i> \n";
+  echo "</TD> \n";
 
-	return $mfd_cols;
+  echo "<TD> \n";
+  echo "<i>Width</i> \n";
+  echo "</TD> \n";
+
+  echo "<TD> \n";
+  echo "<i>Typ</i> \n";
+  echo "</TD> \n";
+  echo "</TR> \n";
+
+  foreach ($mfd_cols as $mfd_col)
+  {
+    echo "<TR> \n";
+    echo "<TD> \n";
+    echo $mfd_col["mfd_field"];
+    echo "</TD> \n";
+
+    echo "<TD> \n";
+    echo $mfd_col["mfd_field_titel"];
+    echo "</TD> \n";
+    	
+    echo "<TD> \n";
+    echo $mfd_col["mfd_width"];
+    echo "</TD> \n";
+
+    echo "<TD> \n";
+    echo $mfd_col["mfd_field_typ"];
+    echo "</TD> \n";
+    echo "</TR> \n";
+  }
+  echo "</TBODY> \n";
+  echo "</TABLE> \n";
+  echo "</div> \n";
+  echo "<!--  ENDE DATEN Spalte   -->\n";
+
+  return $mfd_cols;
 }
 
 function get_mfd_name($id)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
 
-	mysql_select_db($DB_NAME);
-	$table = "mfd_list";
-	$fields = "ID, mfd_name, mfd_table, mfd_titel, mfd_fields, mfd_join, mfd_where, mfd_order ";
-	$join = "";
-	$where =" id = $id ";
-	$order = "ID";
+  mysql_select_db($DB_NAME);
+  $table = "mfd_list";
+  $fields = "ID, mfd_name, mfd_table, mfd_titel, mfd_fields, mfd_join, mfd_where, mfd_order ";
+  $join = "";
+  $where =" id = $id ";
+  $order = "ID";
 
-	$q = "SELECT $fields FROM $table  $join where $where  order by $order";
+  $q = "SELECT $fields FROM $table  $join where $where  order by $order";
 
-	$result = mysql_query($q) ;
-	if (!$result) {
-		$message  = 'Invalid query: ' . mysql_error() . "\n";
-		$message .= 'Whole query: ' . $q;
-		die($message);
-		log_write_error($message);
-	} else
-	{
-		$row = mysql_fetch_row($result);
-  	return  $row[1];;
-	}
+  $result = mysql_query($q) ;
+  if (!$result) {
+    $message  = 'Invalid query: ' . mysql_error() . "\n";
+    $message .= 'Whole query: ' . $q;
+    die($message);
+    log_write_error($message);
+  } else
+  {
+    $row = mysql_fetch_row($result);
+    return  $row[1];;
+  }
 
 }
+
+// function get_mfd_bereich($name,$bereich)
+// {
+//   global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+
+//   $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+
+//   mysql_select_db($DB_NAME);
+//   $table = "mfd_list";
+//   $fields = "ID, mfd_name, mfd_table, mfd_titel, mfd_fields, mfd_join, mfd_where, mfd_order,ref_bereich ";
+//   $join = "";
+//   $where =" mfd_name = \"$name\" and ref_bereich=\"$bereich\" ";
+//   $order = "ID";
+
+//   $q = "SELECT $fields FROM $table  $join where $where  order by $order";
+
+//   $result = mysql_query($q) ;
+//   if (!$result) {
+//     $message  = 'Invalid query: ' . mysql_error() . "\n";
+//     $message .= 'Whole query: ' . $q;
+//     die($message);
+
+//   } else
+  //   {
+  //     echo $bereich;
+  //     $i=0;
+  //     $row = mysql_fetch_row($result);
+  //     $mfd_list['mfd'] = $row[1];
+  //     $mfd_list['table'] = $row[2];
+  //     $mfd_list['titel'] = $row[3];
+  //     $mfd_list['fields'] = $row[4];
+  //     $mfd_list['join'] = $row[5];
+  //     $mfd_list['where'] = $row[6];
+  //     $mfd_list['order'] = $row[7];
+  //     return $mfd_list;
+  //   }
+
+  // }
 
 
 /**
@@ -438,89 +476,86 @@ function get_mfd($name)
  */
 function get_mfd_list()
 {
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
 
-	mysql_select_db($DB_NAME);
-	$table = "mfd_list";
-	$fields = "ID, mfd_name, mfd_table, mfd_titel, mfd_fields, mfd_join, mfd_where, mfd_order ";
-	$join = "";
-	$where =" id >0 ";
-	$order = "ID";
+  mysql_select_db($DB_NAME);
+  $table = "mfd_list";
+  $fields = "ID, mfd_name, mfd_table, mfd_titel, mfd_fields, mfd_join, mfd_where, mfd_order ";
+  $join = "";
+  $where =" id >0 ";
+  $order = "ID";
 
-	$q = "SELECT $fields FROM $table  $join where $where  order by $order";
+  $q = "SELECT $fields FROM $table  $join where $where  order by $order";
 
-	$result = mysql_query($q) ;
-	if (!$result) {
-		$message  = 'Invalid query: ' . mysql_error() . "\n";
-		$message .= 'Whole query: ' . $q;
-		die($message);
+  $result = mysql_query($q) ;
+  if (!$result) {
+    $message  = 'Invalid query: ' . mysql_error() . "\n";
+    $message .= 'Whole query: ' . $q;
+    die($message);
 
-	} else
-	{
-		$i=0;
-		while ($row = mysql_fetch_row($result))
-		{
-			// Reihenfolge der menu_item nach spalte item_sort
-			//    $mfd_list['ID'] = $row[0];
-			$mfd_list['mfd'] = $row[1];
-			$mfd_list['table'] = $row[2];
-			$mfd_list['titel'] = $row[3];
-			$mfd_list['fields'] = $row[4];
-			$mfd_list['join'] = $row[5];
-			$mfd_list['where'] = $row[6];
-			$mfd_list['order'] = $row[7];
-			$mfd_lists[$i] = $mfd_list;
-			$i++;
-		}
-		return $mfd_lists;
-	}
-
-}
-
-/**
- * Holt den resultset zu einer mfd referenz ($name)
- * @param unknown $name		// referenz des mfd
- * @return $result , mysql Resultset;
- */
-function get_mfd_result($name)
-{
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
-
-	mysql_select_db($DB_NAME);
-	$table = "mfd_list";
-	$fields = "ID, mfd_name, mfd_table, mfd_titel, mfd_fields, mfd_join, mfd_where, mfd_order ";
-	$join = "";
-	$where =" mfd_name = \"$name\" ";
-	$order = "ID";
-
-	$q = "SELECT $fields FROM $table  $join where $where  order by $order";
-
-	$result = mysql_query($q) ;
-	if (!$result) {
-		$message  = 'Invalid query: ' . mysql_error() . "\n";
-		$message .= 'Whole query: ' . $q;
-		die($message);
-
-	} else
-	{
-		$row = mysql_fetch_row($result);
-		// Reihenfolge der menu_item nach spalte item_sort
-		//    $mfd_list['ID'] = $row[0];
-		$mfd_list['mfd'] = $row[1];
-		$mfd_list['table'] = $row[2];
-		$mfd_list['titel'] = $row[3];
-		$mfd_list['fields'] = $row[4];
-		$mfd_list['join'] = $row[5];
-		$mfd_list['where'] = $row[6];
-		$mfd_list['order'] = $row[7];
-		return mfd_data_result($mfd_list);
-	}
+  } else
+  {
+    $i=0;
+    while ($row = mysql_fetch_row($result))
+    {
+      // Reihenfolge der menu_item nach spalte item_sort
+      //    $mfd_list['ID'] = $row[0];
+      $mfd_list['mfd'] = $row[1];
+      $mfd_list['table'] = $row[2];
+      $mfd_list['titel'] = $row[3];
+      $mfd_list['fields'] = $row[4];
+      $mfd_list['join'] = $row[5];
+      $mfd_list['where'] = $row[6];
+      $mfd_list['order'] = $row[7];
+      $mfd_lists[$i] = $mfd_list;
+      $i++;
+    }
+    return $mfd_lists;
+  }
 
 }
+
+// function get_mfd_bereich_result($name,$bereich)
+// {
+// 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+
+// 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+
+// 	mysql_select_db($DB_NAME);
+// 	$table = "mfd_list";
+// 	$fields = "ID, mfd_name, mfd_table, mfd_titel, mfd_fields, mfd_join, mfd_where, mfd_order ";
+// 	$join = "";
+// 	$where =" mfd_name = \"$name\" and ref_bereich=\"$bereich\"  ";
+// 	$order = "ID";
+
+// 	$q = "SELECT $fields FROM $table  $join where $where  order by $order";
+
+// 	$result = mysql_query($q) ;
+// 	if (!$result) {
+// 		$message  = 'Invalid query: ' . mysql_error() . "\n";
+// 		$message .= 'Whole query: ' . $q;
+// 		die($message);
+
+// 	} else
+  // 	{
+  // 		$row = mysql_fetch_row($result);
+  // 		// Reihenfolge der menu_item nach spalte item_sort
+  // 		//    $mfd_list['ID'] = $row[0];
+  // 		$mfd_list['mfd'] = $row[1];
+  // 		$mfd_list['table'] = $row[2];
+  // 		$mfd_list['titel'] = $row[3];
+  // 		$mfd_list['fields'] = $row[4];
+  // 		$mfd_list['join'] = $row[5];
+  // 		$mfd_list['where'] = $row[6];
+  // 		$mfd_list['order'] = $row[7];
+  // 		return mfd_data_result($mfd_list);
+  // 	}
+
+  // }
+
+
 
 /**
  * Holt ein mySQL resultset fuer ein mfd_list
@@ -530,38 +565,38 @@ function get_mfd_result($name)
 function mfd_data_result($mfd_list)
 {
 
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 
-	//	$mfd_list = get_mfd_list($name);
+  //	$mfd_list = get_mfd_list($name);
 
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
 
-	mysql_select_db($DB_NAME);
+  mysql_select_db($DB_NAME);
 
-	$table = $mfd_list["table"];
-	$fields = $mfd_list["fields"];
-	$join =  $mfd_list["join"];
-	$where = $mfd_list["where"];
-	$order = $mfd_list["order"];
+  $table = $mfd_list["table"];
+  $fields = $mfd_list["fields"];
+  $join =  $mfd_list["join"];
+  $where = $mfd_list["where"];
+  $order = $mfd_list["order"];
 
-	$q = "SELECT $fields FROM $table $join where $where  order by $order";
+  $q = "SELECT $fields FROM $table $join where $where  order by $order";
 
-	$result = mysql_query($q) ;
-	if (!$result)
-	{
-		$message  = 'Invalid query: ' . mysql_error() . "\n";
-		$message .= 'Whole query: ' . $q."\n";
-		die($message);
-	} else
-	{
-		return $result;
-	}
+  $result = mysql_query($q) ;
+  if (!$result)
+  {
+    $message  = 'Invalid query: ' . mysql_error() . "\n";
+    $message .= 'Whole query: ' . $q."\n";
+    die($message);
+  } else
+  {
+    return $result;
+  }
 
 }
 
 function make_mfd_fieldlist($text)
 {
-	return explode(',', $text);
+  return explode(',', $text);
 }
 
 
@@ -573,52 +608,52 @@ function make_mfd_fieldlist($text)
  */
 function get_mfd_cols($name)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-// 	global $mfd_col;
-// 	global $mfd_cols;
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  // 	global $mfd_col;
+  // 	global $mfd_cols;
 
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
 
-	mysql_select_db($DB_NAME);
-	$table = "mfd_list";
-	$fields ="ref_mfd, mfd_pos, mfd_field, mfd_field_titel, mfd_width, mfd_field_typ ";
-	$join = "join mfd_cols on mfd_cols.ref_mfd=mfd_list.mfd_name";
-	$where ="ref_mfd=\"$name\"";
-	$order = "mfd_pos";
+  mysql_select_db($DB_NAME);
+  $table = "mfd_list";
+  $fields ="ref_mfd, mfd_pos, mfd_field, mfd_field_titel, mfd_width, mfd_field_typ ";
+  $join = "join mfd_cols on mfd_cols.ref_mfd=mfd_list.mfd_name";
+  $where ="ref_mfd=\"$name\" ";
+  $order = "mfd_pos";
 
-	$q = "SELECT $fields FROM $table  $join where $where order by $order";
+  $q = "SELECT $fields FROM $table  $join where $where order by $order";
 
-	$result = mysql_query($q) ;
-	if (!$result) {
-		$message  = 'Invalid query: ' . mysql_error() . "\n";
-		$message .= 'Whole query: ' . $q;
-		die($message);
+  $result = mysql_query($q) ;
+  if (!$result) {
+    $message  = 'Invalid query: ' . mysql_error() . "\n";
+    $message .= 'Whole query: ' . $q;
+    die($message);
 
-	} else
-	{
-		if ( mysql_num_rows($result) > 0)
-		{
-			$i=0;
-			while ($row = mysql_fetch_row($result))
-			{
-				// Reihenfolge der menu_item nach spalte item_sort
-				$mfd_col['ref_mfd'] = $name;
-				$mfd_col['mfd_pos'] = $row[1];
-				$mfd_col['mfd_field'] = $row[2];
-				$mfd_col['mfd_field_titel'] = $row[3];
-				$mfd_col['mfd_width'] = $row[4];
-				$mfd_col['mfd_field_typ'] = $row[5];
-				$mfd_cols[$i] = $mfd_col;
-				$i++;
-			}
-		} else 
-		{
-			global $mfd_col;
-			$mfd_cols[0] = $mfd_col;
-		}
-	
-	}
-	return $mfd_cols;
+  } else
+  {
+    if ( mysql_num_rows($result) > 0)
+    {
+      $i=0;
+      while ($row = mysql_fetch_row($result))
+      {
+        // Reihenfolge der menu_item nach spalte item_sort
+        $mfd_col['ref_mfd'] = $name;
+        $mfd_col['mfd_pos'] = $row[1];
+        $mfd_col['mfd_field'] = $row[2];
+        $mfd_col['mfd_field_titel'] = $row[3];
+        $mfd_col['mfd_width'] = $row[4];
+        $mfd_col['mfd_field_typ'] = $row[5];
+        $mfd_cols[$i] = $mfd_col;
+        $i++;
+      }
+    } else
+    {
+      global $mfd_col;
+      $mfd_cols[0] = $mfd_col;
+    }
+
+  }
+  return $mfd_cols;
 }
 
 /**
@@ -629,30 +664,30 @@ function get_mfd_cols($name)
  */
 function mfd_detail_result($mfd_list, $id)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-//	global $mfd_list;
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  //	global $mfd_list;
 
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
 
-	mysql_select_db($DB_NAME);
-	$table = $mfd_list["table"];
-	$fields =$mfd_list["fields"];
-	$join = ""; //$mfd_list["join"];
-	$where ="ID = $id";
-	$order = "";
+  mysql_select_db($DB_NAME);
+  $table = $mfd_list["table"];
+  $fields =$mfd_list["fields"];
+  $join = ""; //$mfd_list["join"];
+  $where ="ID = $id";
+  $order = "";
 
-	$q = "SELECT $fields FROM $table $join where $where ";
+  $q = "SELECT $fields FROM $table $join where $where ";
 
-	$result = mysql_query($q) ;
-	if (!$result) {
-		$message  = 'Invalid query: ' . mysql_error() . "\n";
-		$message .= 'Whole query: ' . $q;
-		log_write_error($message);
+  $result = mysql_query($q) ;
+  if (!$result) {
+    $message  = 'Invalid query: ' . mysql_error() . "\n";
+    $message .= 'Whole query: ' . $q;
+    log_write_error($message);
 
-	} else
-	{
-		return $result;
-	}
+  } else
+  {
+    return $result;
+  }
 }
 
 
@@ -663,33 +698,33 @@ function mfd_detail_result($mfd_list, $id)
  */
 function mfd_delete($mfd_list, $id)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $mfd_list;
+  global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $mfd_list;
 
-	$table = $mfd_list["table"];
-	$fields =""; //$mfd_list["fields"];
-	$join = ""; //$mfd_list["join"];
-	$where ="id = $id";
-	$order = "";
+  $table = $mfd_list["table"];
+  $fields =""; //$mfd_list["fields"];
+  $join = ""; //$mfd_list["join"];
+  $where ="id = $id";
+  $order = "";
 
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)     or die("Fehler beim verbinden!");
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)     or die("Fehler beim verbinden!");
 
-	if (mysql_select_db($DB_NAME) != TRUE) {
-		echo "Fehler DB";
-	};
-	/**/
-	$q = "delete from $table where $where ";
-	//  echo $q;
-	$result = mysql_query($q) ;
-	if (!$result) {
-		$message  = 'Invalid query: ' . mysql_error() . "\n";
-		$message .= 'Whole query: ' . $q;
-		die($message);
-	}
-	/**/
-	mysql_close($db);
-//echo "delete ".$id;
+  if (mysql_select_db($DB_NAME) != TRUE) {
+    echo "Fehler DB";
+  };
+  /**/
+  $q = "delete from $table where $where ";
+  //  echo $q;
+  $result = mysql_query($q) ;
+  if (!$result) {
+    $message  = 'Invalid query: ' . mysql_error() . "\n";
+    $message .= 'Whole query: ' . $q;
+    die($message);
+  }
+  /**/
+  mysql_close($db);
+  //echo "delete ".$id;
 };
 
 
@@ -701,12 +736,12 @@ function mfd_delete($mfd_list, $id)
  */
 function mfd_delete_name($name, $id)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-//	global $mfd_list;
+  global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  //	global $mfd_list;
 
-	$mfd_list = get_mfm_list($name);
-	mfd_delete($mfd_list, $id);
+  $mfd_list = get_mfm_list($name);
+  mfd_delete($mfd_list, $id);
 };
 
 /**
@@ -716,41 +751,41 @@ function mfd_delete_name($name, $id)
  */
 function mfd_insert($mfd_list, $row)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 
-	$table = $mfd_list["table"];
-	$fields =$mfd_list["fields"];
-	$join = ""; //$mfd_list["join"];
-	$where ="";
-	$order = "";
-	//  echo $fields;
-	$field_name = make_mfd_fieldlist($fields);
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-	or die("Fehler beim verbinden!");
+  $table = $mfd_list["table"];
+  $fields =$mfd_list["fields"];
+  $join = ""; //$mfd_list["join"];
+  $where ="";
+  $order = "";
+  //  echo $fields;
+  $field_name = make_mfd_fieldlist($fields);
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+  or die("Fehler beim verbinden!");
 
-	$field_num = count($field_name);
-	// der PK (ID) muss in der Fieldmenge enthalten sein, als erster!!
-	$q ="insert INTO  $table  (";
-	$q = $q."$field_name[1]";
-	for ($i=2; $i<$field_num; $i++)
-	{
-		$q = $q.",$field_name[$i]";
-	};
+  $field_num = count($field_name);
+  // der PK (ID) muss in der Fieldmenge enthalten sein, als erster!!
+  $q ="insert INTO  $table  (";
+  $q = $q."$field_name[1]";
+  for ($i=2; $i<$field_num; $i++)
+  {
+    $q = $q.",$field_name[$i]";
+  };
 
-	$q = $q.") VALUES (\"$row[1]\" ";
-	for ($i=2; $i<$field_num; $i++)
-	{
-		$q = $q.",\"$row[$i]\" ";
-	};
-	$q = $q.")";
-	if (mysql_select_db($DB_NAME) != TRUE)
-	{
-		echo "Fehler DB";
-	}
-	//  echo $q;
-	$result = mysql_query($q) or die("InsertFehler..$table..$q.");
-	mysql_close($db);
+  $q = $q.") VALUES (\"$row[1]\" ";
+  for ($i=2; $i<$field_num; $i++)
+  {
+    $q = $q.",\"$row[$i]\" ";
+  };
+  $q = $q.")";
+  if (mysql_select_db($DB_NAME) != TRUE)
+  {
+    echo "Fehler DB";
+  }
+  //  echo $q;
+  $result = mysql_query($q) or die("InsertFehler..$table..$q.");
+  mysql_close($db);
 
 }
 
@@ -761,10 +796,10 @@ function mfd_insert($mfd_list, $row)
  */
 function mfd_insert_name($name,$row)
 {
-	//global $mfd_list;
+  //global $mfd_list;
 
-	$mfd_list = get_mfd_list($name);
-	mfdlist_insert($mfd_list, $row);
+  $mfd_list = get_mfd_list($name);
+  mfdlist_insert($mfd_list, $row);
 }
 
 /**
@@ -774,35 +809,35 @@ function mfd_insert_name($name,$row)
  */
 function mfd_update($mfd_list, $row)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 
-	$id = $row[0];
-	$table = $mfd_list["table"];
-	$fields =$mfd_list["fields"];
-	$join = ""; //$mfd_list["join"];
-	$where ="id = $id";
-	$order = "";
-	$field_name = make_mfd_fieldlist($fields);
-	$field_num = count($field_name);
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-	or die("Fehler beim verbinden!");
+  $id = $row[0];
+  $table = $mfd_list["table"];
+  $fields =$mfd_list["fields"];
+  $join = ""; //$mfd_list["join"];
+  $where ="id = $id";
+  $order = "";
+  $field_name = make_mfd_fieldlist($fields);
+  $field_num = count($field_name);
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+  or die("Fehler beim verbinden!");
 
-	// der PK (ID) muss in der Fieldmenge enthalten sein, als erster!!
-	$q ="update  $table  set ";
-	$q = $q.$field_name[1]."=\"".$row[1]."\"";
-	for ($i=2; $i<$field_num; $i++)
-	{
-	$q = $q.",".$field_name[$i]."=\"".$row[$i]."\" ";
-	};
-	$q = $q." where $where";
-	if (mysql_select_db($DB_NAME) != TRUE)
-	{
-	echo "Fehler DB";
-	}
-	//  echo $q;
-	$result = mysql_query($q) or die("UpdateFehler..$table..$q.");
-	mysql_close($db);
-	
+  // der PK (ID) muss in der Fieldmenge enthalten sein, als erster!!
+  $q ="update  $table  set ";
+  $q = $q.$field_name[1]."=\"".$row[1]."\"";
+  for ($i=2; $i<$field_num; $i++)
+  {
+    $q = $q.",".$field_name[$i]."=\"".$row[$i]."\" ";
+  };
+  $q = $q." where $where";
+  if (mysql_select_db($DB_NAME) != TRUE)
+  {
+    echo "Fehler DB";
+  }
+  //  echo $q;
+  $result = mysql_query($q) or die("UpdateFehler..$table..$q.");
+  mysql_close($db);
+
 };
 
 /**
@@ -812,12 +847,12 @@ function mfd_update($mfd_list, $row)
  */
 function mfd_update_name($name, $row)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	//global $mfd_list;
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  //global $mfd_list;
 
-	$mfd_list = get_mfd_list($name);
+  $mfd_list = get_mfd_list($name);
 
-	mfd_update($mfd_list, $row);
+  mfd_update($mfd_list, $row);
 };
 
 
@@ -829,13 +864,14 @@ function mfd_update_name($name, $row)
  */
 function get_fieldlist($table)
 {
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
-	mysql_select_db($DB_NAME);
-	$result = mysql_query("SHOW COLUMNS FROM $table");
-	return $result;
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
+  mysql_select_db($DB_NAME);
+  $result = mysql_query("SHOW COLUMNS FROM $table");
+  return $result;
 }
+
 
 /**
  * Ermittelt die Default Width anhand des Datentyp
@@ -845,28 +881,28 @@ function get_fieldlist($table)
 function get_fieldtyp_width($typ)
 {
   //echo $typ;
-	if (stripos($typ,"int")!== false)
-	{
-		return 8;
-	}
-	if(stripos($typ,"varchar")!== false)
-	{
-		$s =  explode("(",$typ);
-		$len = explode(")",$s[1]);
-		//echo $len[0];
-		return $len[0];
-	}
-	if(stripos($typ,"text")!== false)
-	{
-		return 35;
-	}
-	if(stripos($typ,"enum")!== false)
-	{
-		return 7;
-	} else
-	{
-		return 12;
-	}
+  if (stripos($typ,"int")!== false)
+  {
+    return 8;
+  }
+  if(stripos($typ,"varchar")!== false)
+  {
+    $s =  explode("(",$typ);
+    $len = explode(")",$s[1]);
+    //echo $len[0];
+    return $len[0];
+  }
+  if(stripos($typ,"text")!== false)
+  {
+    return 35;
+  }
+  if(stripos($typ,"enum")!== false)
+  {
+    return 7;
+  } else
+  {
+    return 12;
+  }
 }
 
 /**
@@ -876,16 +912,16 @@ function get_fieldtyp_width($typ)
  */
 function get_fieldname_list($table)
 {
-	$result = get_fieldlist($table);
+  $result = get_fieldlist($table);
 
 
-	$row = mysql_fetch_row($result);
-	$list = $row[0];
-	while ($row = mysql_fetch_row($result))
-	{
-		$list = $list.", ".$row[0];
-	}
-	return $list;
+  $row = mysql_fetch_row($result);
+  $list = $row[0];
+  while ($row = mysql_fetch_row($result))
+  {
+    $list = $list.", ".$row[0];
+  }
+  return $list;
 }
 
 
@@ -896,14 +932,14 @@ function get_fieldname_list($table)
  */
 function make_mfd_table($table, $mfd_name)
 {
-	$mfd_list['mfd'] = $mfd_name;
-	$mfd_list['table'] = $table;
-	$mfd_list['titel'] = $table;
-	$mfd_list['fields'] = get_fieldname_list($table);
-	$mfd_list['join'] = "";
-	$mfd_list['where'] = "id > 0";
-	$mfd_list['order'] = "id";
-	return $mfd_list;
+  $mfd_list['mfd'] = $mfd_name;
+  $mfd_list['table'] = $table;
+  $mfd_list['titel'] = $table;
+  $mfd_list['fields'] = get_fieldname_list($table);
+  $mfd_list['join'] = "";
+  $mfd_list['where'] = "id > 0";
+  $mfd_list['order'] = "id";
+  return $mfd_list;
 }
 
 /**
@@ -915,17 +951,17 @@ function make_mfd_table($table, $mfd_name)
  */
 function print_mfd_link_check($link,$ID,$data)
 {
-	if ($link != "")
-	{
-		echo "\t<td><a href=\"$link\">\n"; //
-		print_menu_icon_mfd ("_tcheck","Datensatz bearbeiten");
-		echo "\t</a></td>\n";
-	}else
-	{
-		echo "\t<td>\n"; //
-		echo "!".$data;
-		echo "\t</td>\n";
-	}
+  if ($link != "")
+  {
+    echo "\t<td><a href=\"$link\">\n"; //
+    print_menu_icon_mfd ("_tcheck","Datensatz bearbeiten");
+    echo "\t</a></td>\n";
+  }else
+  {
+    echo "\t<td>\n"; //
+    echo "!".$data;
+    echo "\t</td>\n";
+  }
 }
 
 function print_mfd_link_del($link,$ID,$data)
@@ -935,12 +971,12 @@ function print_mfd_link_del($link,$ID,$data)
     echo "\t<td><a href=\"$link\">\n"; //
     print_menu_icon_mfd ("_tdelete","Datensatz löschen, ACHTIUNG nicht reversibel!");
     echo "\t</a></td>\n";
-}else
-      {
-        echo "\t<td>\n"; //
-        echo "!".$data;
-		echo "\t</td>\n";
-	}
+  }else
+  {
+    echo "\t<td>\n"; //
+    echo "!".$data;
+    echo "\t</td>\n";
+  }
 }
 
 function print_mfd_link_info($link,$ID,$data)
@@ -964,22 +1000,24 @@ function print_mfd_link_info($link,$ID,$data)
  * oder alternativ ein Leerstring
  * @param unknown $ID	session ID
  * @param unknown $link_call  Funktionsname
- * @param unknown $data	Datenwert z.b. fuer 
+ * @param unknown $data	Datenwert z.b. fuer
  * @return Ambigous <string, mixed>
  */
 function make_mfd_link($link_call,$ID,$data)
 {
-	if (function_exists ($link_call))
-	{
-	    // Call user function with 2 param
-		$link = call_user_func($link_call,$ID,$data);
-	} else
-	{
-		
-	  $link = "";
-	}
-	return $link;
+  if (function_exists ($link_call))
+  {
+    // Call user function with 2 param
+    $link = call_user_func($link_call,$ID,$data);
+  } else
+  {
+
+    $link = "";
+  }
+  return $link;
 }
+
+
 
 /**
  * Erstellt eine Datenliste fuer ein mfd entsprechend dem mfd_cols
@@ -991,71 +1029,95 @@ function make_mfd_link($link_call,$ID,$data)
  */
 function print_mfd_listeRef( $ID, $mfd_list, $mfd_cols,$link_call_1, $link_call_2, $link_call_3)
 {
-	// 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $PHP_SELF;
+  // 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $PHP_SELF;
 
-	$style = $GLOBALS['style_datalist'];
-	echo "<div $style >";
-	echo "<!--  DATEN Spalte   -->\n";
+  $style = $GLOBALS['style_datalist'];
+  echo "<div $style >";
+  echo "<!--  DATEN Spalte   -->\n";
 
-	echo "      <TABLE   BORDER=\"0\" BGCOLOR=\"\" >";
-	// 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-	// 	or die("Fehler beim verbinden!");
+  echo "      <TABLE   BORDER=\"0\" BGCOLOR=\"\" >";
+  // 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+  // 	or die("Fehler beim verbinden!");
 
-	//	mysql_select_db($DB_NAME);
+  //	mysql_select_db($DB_NAME);
 
-	$result = mfd_data_result($mfd_list)
-	or die("Query Fehler...");
+  $result = mfd_data_result($mfd_list)
+  or die("Query Fehler...");
 
-	echo "\t<TR>";
-	//Print header
-	echo "\t\t<TD width=\"5\">";
-	echo "<p>";
-	echo "</p>";
-	echo "\t\t</TD>";
-	for($i=0; $i<count($mfd_cols); $i++)
-	{
-		$mfd_col = $mfd_cols[$i];
-		$width = $mfd_col["mfd_width"]*5;
-		echo "\t\t<TD width=\"$width\">";
-		echo "<p>";
-		echo $mfd_col["mfd_field_titel"];
-		echo "</p>";
-		echo "\t\t</TD>";
-		if($i > 32) exit;
-	}
-	echo "\t</TR>";
-	// Printdata
-	while ($row = mysql_fetch_row($result))
-	{
-	    //erzeuge den link_1 , im ersten Feld steht IMMER der PK
-		$link_1 = make_mfd_link($link_call_1,$ID,$row[0]);
-		// erzeuge link_2
-		$link_2 = make_mfd_link($link_call_2,$ID,$row[0]);
-		// erzeuge link_2
-		$link_3 = make_mfd_link($link_call_3,$ID,$row[0]);
-		echo "\t<TR>";
-    	print_mfd_link_info($link_3,$ID,$row[0]);
-		print_mfd_link_check($link_1,$ID,$row[0]);
-		for ($i = 1; $i < count($mfd_cols); $i++)
-		{
-			echo "\t<td>".$row[$i]."\n";
-			echo "</td>\n";
-		}
-		if ($link_2 != "")
-		{
-		  print_mfd_link_del($link_2,$ID,$row[0]);
-		}
-		echo "\t</TR>";
-	}
+  echo "\t<TR>";
+  //Print header
+  echo "\t\t<TD width=\"5\">";
+  echo "<p>";
+  echo "</p>";
+  echo "\t\t</TD>";
+  for($i=0; $i<count($mfd_cols); $i++)
+  {
+    $mfd_col = $mfd_cols[$i];
+    $width = $mfd_col["mfd_width"]*5;
+    echo "\t\t<TD width=\"$width\">";
+    echo "<p>";
+    echo $mfd_col["mfd_field_titel"];
+    echo "</p>";
+    echo "\t\t</TD>";
+    if($i > 32) exit;
+  }
+  echo "\t</TR>";
+  // Printdata
+  while ($row = mysql_fetch_row($result))
+  {
+    echo "\t<TR>";
+    if (isset($row[0]))
+    {
+      //erzeuge den link_1 , im ersten Feld steht IMMER der PK
+  		$link_1 = make_mfd_link($link_call_1,$ID,$row[0]);
+  		// erzeuge link_2
+  		$link_2 = make_mfd_link($link_call_2,$ID,$row[0]);
+  		// erzeuge link_2
+  		$link_3 = make_mfd_link($link_call_3,$ID,$row[0]);
+  		print_mfd_link_info($link_3,$ID,$row[0]);
+  		print_mfd_link_check($link_1,$ID,$row[0]);
 
-	// 	mysql_close($db);
-	echo '      </TABLE>';
-	echo "    </TD>\n";
-	echo "    <TD>\n";
-	echo "    \n";
-	echo '</div>';
-	echo "<!--  ENDE DATEN Spalte   -->\n";
+  		for ($i = 1; $i < count($mfd_cols); $i++)
+  		{
+  		  echo "\t<td>\n";
+  		  if (isset($row[$i]))
+  		  {
+          if(stripos($mfd_cols[$i]["mfd_field_typ"],"text")!== false)
+//  		    if ($mfd_cols[$i]["mfd_field_typ"]=="text")
+  		    {
+  		      $delimiter="\n";
+  		      $lines = explode($delimiter, $row[$i]);
+  		      if (isset($lines[0]))
+  		      {
+  		        echo substr($lines[0],0,100)."......";
+  		      }
+  		      
+  		    }else
+  		    {
+  		      echo $row[$i];
+  		    }
+  		  }else
+  		  {
+  		    echo "??";
+  		  }
+  		  echo "</td>\n";
+  		}
+  		if ($link_2 != "")
+  		{
+  		  print_mfd_link_del($link_2,$ID,$row[0]);
+  		}
+    }
+    echo "\t</TR>";
+  }
+
+  // 	mysql_close($db);
+  echo '      </TABLE>';
+  echo "    </TD>\n";
+  echo "    <TD>\n";
+  echo "    \n";
+  echo '</div>';
+  echo "<!--  ENDE DATEN Spalte   -->\n";
 
 };
 
@@ -1068,57 +1130,57 @@ function print_mfd_listeRef( $ID, $mfd_list, $mfd_cols,$link_call_1, $link_call_
  */
 function print_mfd_liste( $ID, $mfd_list, $mfd_cols)
 {
-	// 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $PHP_SELF;
+  // 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $PHP_SELF;
 
-	$style = $GLOBALS['style_datalist'];
-	echo "<div $style >";
-	echo "<!--  DATEN Spalte   -->\n";
+  $style = $GLOBALS['style_datalist'];
+  echo "<div $style >";
+  echo "<!--  DATEN Spalte   -->\n";
 
-	$result = mfd_data_result($mfd_list)
-	or die("Query Fehler...");
-	
-//	echo $mfd_list["table"].":".count($mfd_cols);
-	
-	echo "<TABLE >";
-	// 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-	// 	or die("Fehler beim verbinden!");
+  $result = mfd_data_result($mfd_list)
+  or die("Query Fehler...");
 
-	//	mysql_select_db($DB_NAME);
+  //	echo $mfd_list["table"].":".count($mfd_cols);
 
-	echo "\t<TR>";
-	//Print header
-	$fieldnum = count($mfd_cols);
-	for($i=0; $i<$fieldnum; $i++)
-	{
-		$mfd_col = $mfd_cols[$i];
-		$width = $mfd_col["mfd_width"]*5;
-		echo "\t\t<TD width=\"$width\">";
-		echo "<p>";
-		echo $mfd_col["mfd_field_titel"];
-		echo "</p>";
-		echo "\t\t</TD>";
-	}
-	echo "\t</TR>";
-	// Printdata
-	while ($row = mysql_fetch_row($result))
-	{
-		echo "\t<TR>";
-		for ($i = 0; $i < $fieldnum; $i++)
-		{
-			echo "\t<td>".$row[$i]."\n";
-			echo "</td>\n";
-		}
-		echo "\t</TR>";
-	}
+  echo "<TABLE >";
+  // 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+  // 	or die("Fehler beim verbinden!");
 
-	// 	mysql_close($db);
-	echo '      </TABLE>';
-	echo "    </TD>\n";
-	echo "    <TD>\n";
-	echo "    \n";
-	echo '</div>';
-	echo "<!--  ENDE DATEN Spalte   -->\n";
+  //	mysql_select_db($DB_NAME);
+
+  echo "\t<TR>";
+  //Print header
+  $fieldnum = count($mfd_cols);
+  for($i=0; $i<$fieldnum; $i++)
+  {
+    $mfd_col = $mfd_cols[$i];
+    $width = $mfd_col["mfd_width"]*5;
+    echo "\t\t<TD width=\"$width\">";
+    echo "<p>";
+    echo $mfd_col["mfd_field_titel"];
+    echo "</p>";
+    echo "\t\t</TD>";
+  }
+  echo "\t</TR>";
+  // Printdata
+  while ($row = mysql_fetch_row($result))
+  {
+    echo "\t<TR>";
+    for ($i = 0; $i < $fieldnum; $i++)
+    {
+      echo "\t<td>".$row[$i]."\n";
+      echo "</td>\n";
+    }
+    echo "\t</TR>";
+  }
+
+  // 	mysql_close($db);
+  echo '      </TABLE>';
+  echo "    </TD>\n";
+  echo "    <TD>\n";
+  echo "    \n";
+  echo '</div>';
+  echo "<!--  ENDE DATEN Spalte   -->\n";
 
 };
 
@@ -1135,101 +1197,101 @@ function print_mfd_liste( $ID, $mfd_list, $mfd_cols)
  */
 function print_mfd_edit_spalte($titel,$pos, $data, $width, $is_readonly)
 {
-	if($is_readonly)
-	{
-		$readonly = "readonly";
-	} else
-	{
-		$readonly = "";
-	}
+  if($is_readonly)
+  {
+    $readonly = "readonly";
+  } else
+  {
+    $readonly = "";
+  }
 
-	if($width >75)
-	{
-		$size = 75;
-	} else
-	{
-		$size = $width;
-	}
-	$titel = ucwords(strtolower($titel));
-	echo "<td width=75 ><i>$titel</i></td>\n";
-	echo "<td width=50>\n";
-	echo "<INPUT TYPE=\"TEXT\" NAME=\"row[$pos]\" SIZE=$size MAXLENGTH=$width $readonly VALUE=\"$data\"\n";
-	echo "</td>\n";
+  if($width >75)
+  {
+    $size = 75;
+  } else
+  {
+    $size = $width;
+  }
+  $titel = ucwords(strtolower($titel));
+  echo "<td width=75 ><i>$titel</i></td>\n";
+  echo "<td width=50>\n";
+  echo "<INPUT TYPE=\"TEXT\" NAME=\"row[$pos]\" SIZE=$size MAXLENGTH=$width $readonly VALUE=\"$data\"\n";
+  echo "</td>\n";
 }
 
 function print_mfd_edit_datum($titel,$pos, $data, $width, $is_readonly)
 {
-	$name = "row[$pos]";  // dies ist der Name des Elementres das ersetzt werden soll
-	if($is_readonly)
-	{
-		$readonly = "readonly";
-	} else
-	{
-		$readonly = "";
-	}
+  $name = "row[$pos]";  // dies ist der Name des Elementres das ersetzt werden soll
+  if($is_readonly)
+  {
+    $readonly = "readonly";
+  } else
+  {
+    $readonly = "";
+  }
 
-	if($width >75)
-	{
-		$size = 75;
-	} else
-	{
-		$size = $width;
-	}
-	$titel = ucwords(strtolower($titel));
-	echo "<td width=75 ><i>$titel</i></td>\n";
-	echo "<td width=50>\n";
-	echo "<INPUT TYPE=\"TEXT\" class=\"datepicker\" NAME=\"row[$pos]\" SIZE=$size MAXLENGTH=$width $readonly VALUE=\"$data\"\n";
-	echo "</td>\n";
-	//echo "<div id=\"#datepicker\"></div> ";
-	echo "<script>$( \".datepicker\" ).datepicker({ dateFormat:\"yy-mm-dd\" });</script> ";
+  if($width >75)
+  {
+    $size = 75;
+  } else
+  {
+    $size = $width;
+  }
+  $titel = ucwords(strtolower($titel));
+  echo "<td width=75 ><i>$titel</i></td>\n";
+  echo "<td width=50>\n";
+  echo "<INPUT TYPE=\"TEXT\" class=\"datepicker\" NAME=\"row[$pos]\" SIZE=$size MAXLENGTH=$width $readonly VALUE=\"$data\"\n";
+  echo "</td>\n";
+  //echo "<div id=\"#datepicker\"></div> ";
+  echo "<script>$( \".datepicker\" ).datepicker({ dateFormat:\"yy-mm-dd\" });</script> ";
 }
 
 /**
-* Erstellt eine Textarea als Input. Die Textarea wird durch ckEditor ersetz
-* bei readonly=true wird nur der Text angezeigt
-* @param unknown $titel  des Feldes
-* @param unknown $pos    index des $row
-* @param unknown $data		vorhandene Daten
-* @param unknown $is_readonly true = als Text / false = als Eingabe feld
-*/
+ * Erstellt eine Textarea als Input. Die Textarea wird durch ckEditor ersetz
+ * bei readonly=true wird nur der Text angezeigt
+ * @param unknown $titel  des Feldes
+ * @param unknown $pos    index des $row
+ * @param unknown $data		vorhandene Daten
+ * @param unknown $is_readonly true = als Text / false = als Eingabe feld
+ */
 function print_mfd_edit_text($titel,$pos, $data, $is_readonly)
-	{
-	$name = "row[$pos]";  // dies ist der Name des Elementres das ersetzt werden soll
-	$titel = ucwords(strtolower($titel));
-	echo "  <td width=75px ><i>$titel</i></td>\n";
-	echo "<td >\n";
-		if ($is_readonly)
-		{
-		$anz  = count(explode("\n",$data));
-		if ($anz < 5) {
-		$anz=5;
-		}
-		$len = strlen($data) / 60;
-		if($len>$anz) {
-		$anz=$len+$anz;
-		}
+{
+  $name = "row[$pos]";  // dies ist der Name des Elementres das ersetzt werden soll
+  $titel = ucwords(strtolower($titel));
+  echo "  <td width=75px ><i>$titel</i></td>\n";
+  echo "<td >\n";
+  if ($is_readonly)
+  {
+    $anz  = count(explode("\n",$data));
+    if ($anz < 5) {
+      $anz=5;
+    }
+    $len = strlen($data) / 60;
+    if($len>$anz) {
+      $anz=$len+$anz;
+    }
 
-		echo "<textarea   name=\"$name\" readonly COLS=\"60\" ROWS=\"$anz\" >"; //class=\"ckeditor\"
-		echo $data;
-		echo "</textarea>";
-		} else
-  	{
-			echo "<textarea   name=\"$name\"  COLS=\"60\" ROWS=\"14\" >"; //class=\"ckeditor\"
-			echo $data;
-			echo "</textarea>";
+    echo "<textarea   name=\"$name\" readonly COLS=\"60\" ROWS=\"$anz\" >"; //class=\"ckeditor\"
+    echo $data;
+    echo "</textarea>";
+  } else
+  {
+    echo "<textarea   name=\"$name\"  COLS=\"60\" ROWS=\"14\" >"; //class=\"ckeditor\"
+    echo $data;
+    echo "</textarea>";
 
-			echo "<!--  Text editor Konfiguration-->";
+    echo "<!--  Text editor Konfiguration-->";
     echo "  <script type=\"text/javascript\">";
     echo " CKEDITOR.replace('$name',{
     toolbar: 'ForumToolbar',
     removeButtons : 'Table',
     uiColor : '#F1E8DF',
     height : '250px'
-			} );";
-			echo "  </script>";
-			}
-			echo "\t&nbsp;<br>\n";
-			echo "</td>\n";
+  } );";
+    echo "  </script>";
+  }
+  echo "\t&nbsp;<br>\n";
+  echo "</td>\n";
 
 }
 
@@ -1246,92 +1308,92 @@ function print_mfd_edit_text($titel,$pos, $data, $is_readonly)
  */
 function print_mfd_maske($mfd_list, $row, $id,$next,$ID, $mfd_cols,$is_readonly,$daten)
 {
-	//  Fielddefs holen  bzw. defaultwerte erzeugen
-	global $PHP_SELF;
+  //  Fielddefs holen  bzw. defaultwerte erzeugen
+  global $PHP_SELF;
 
-	$style = $GLOBALS['style_datalist'];
-	echo "<div $style >";
-	echo "<!--  DATEN Spalte   -->\n";
+  $style = $GLOBALS['style_datalist'];
+  echo "<div $style >";
+  echo "<!--  DATEN Spalte   -->\n";
 
-	//  FORMULAR
-	echo "<FORM ACTION=\"$PHP_SELF?md=0&daten=$daten&ID=$ID\" METHOD=POST>\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"$row[0]\">\n";
+  //  FORMULAR
+  echo "<FORM ACTION=\"$PHP_SELF?md=0&daten=$daten&ID=$ID\" METHOD=POST>\n";
+  echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
+  echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"$row[0]\">\n";
 
-	echo "\t <TABLE>\n";
-	echo "<tr>\n";
-	echo "\t<td><b><i>".$mfd_list["mfd"]."</i></b></td>\n";
-	echo "\t<td></td>\n";
-	echo "</tr>\n";
-	
-	echo "<tr>\n";
-// 	echo "\t<td WIDTH=\"175\"><i>".$mfd_cols[0]["mfd_field_titel"]."</i></td>\n"; //$mfd_cols[0]["mfd_field_titel"].
-// 	echo "<td>\"$row[0]\"&nbsp;</td>\n";
-// 	echo "<tr>\n";
-	$mfd_col = $mfd_cols[0];
-	$titel 	= $mfd_col["mfd_field_titel"];
-	$pos		= $mfd_col["mfd_pos"];
-	$data		= $row[0];
-	$width	= $mfd_col["mfd_width"];
-	print_mfd_edit_spalte($titel,$pos, $data, $width, true);
-	
-	echo "</tr>\n";
+  echo "\t <TABLE>\n";
+  echo "<tr>\n";
+  echo "\t<td><b><i>".$mfd_list["mfd"]."</i></b></td>\n";
+  echo "\t<td></td>\n";
+  echo "</tr>\n";
 
-	for ($i = 1; $i < count($mfd_cols); $i++)
-	{
-	    $mfd_col = $mfd_cols[$i];
-	    echo "<tr>\n";
-	    $titel 	= $mfd_col["mfd_field_titel"];
-	    $pos		= $mfd_col["mfd_pos"];
-	    $data		= $row[$i];
-	    $width	= $mfd_col["mfd_width"];
-	    if ($mfd_col["mfd_field_typ"]=="text")
-	    {
-	    	print_mfd_edit_text($titel, $pos, $data, $is_readonly);
-	    } elseif ($mfd_col["mfd_field_typ"]=="date")
-	    {
-	    	print_mfd_edit_datum($titel,$pos, $data, $width, $is_readonly);
-	    } else 
-	    	
-	    {
-	    	print_mfd_edit_spalte($titel,$pos, $data, $width, $is_readonly);
-	    }
-// 		echo "\t<td><i>".$mfd_col["mfd_field_titel"]."</i></td>\n";
-// 		$width = $mfd_col["mfd_width"];
-// 		echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[$i]\" SIZE=\"$width\" MAXLENGTH=\"$width\" VALUE=\"".$row[$i]."\">&nbsp;</td>\n";
-		echo "</tr>\n";
-	}
+  echo "<tr>\n";
+  // 	echo "\t<td WIDTH=\"175\"><i>".$mfd_cols[0]["mfd_field_titel"]."</i></td>\n"; //$mfd_cols[0]["mfd_field_titel"].
+  // 	echo "<td>\"$row[0]\"&nbsp;</td>\n";
+  // 	echo "<tr>\n";
+  $mfd_col = $mfd_cols[0];
+  $titel 	= $mfd_col["mfd_field_titel"];
+  $pos		= $mfd_col["mfd_pos"];
+  $data		= $row[0];
+  $width	= $mfd_col["mfd_width"];
+  print_mfd_edit_spalte($titel,$pos, $data, $width, true);
 
-	echo "<tr>\n";
-	echo "\t<td></td>\n";
-	if(!$is_readonly)
-	{
-	echo "<td> <INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">
-			&nbsp;&nbsp;&nbsp;&nbsp;
-			<INPUT TYPE=\"RESET\" VALUE=\"ABBRECHEN\">
-			</td>\n";
-	}
-	echo "</tr>\n";
-	echo "</table>\n";
-	echo "</FORM>\n";
+  echo "</tr>\n";
 
-	echo '</div>';
-	echo "<!--  ENDE DATEN Spalte   -->\n";
+  for ($i = 1; $i < count($mfd_cols); $i++)
+  {
+    $mfd_col = $mfd_cols[$i];
+    echo "<tr>\n";
+    $titel 	= $mfd_col["mfd_field_titel"];
+    $pos		= $mfd_col["mfd_pos"];
+    $data		= $row[$i];
+    $width	= $mfd_col["mfd_width"];
+    if ($mfd_col["mfd_field_typ"]=="text")
+    {
+      print_mfd_edit_text($titel, $pos, $data, $is_readonly);
+    } elseif ($mfd_col["mfd_field_typ"]=="date")
+    {
+      print_mfd_edit_datum($titel,$pos, $data, $width, $is_readonly);
+    } else
+
+    {
+      print_mfd_edit_spalte($titel,$pos, $data, $width, $is_readonly);
+    }
+    // 		echo "\t<td><i>".$mfd_col["mfd_field_titel"]."</i></td>\n";
+    // 		$width = $mfd_col["mfd_width"];
+    // 		echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[$i]\" SIZE=\"$width\" MAXLENGTH=\"$width\" VALUE=\"".$row[$i]."\">&nbsp;</td>\n";
+    echo "</tr>\n";
+  }
+
+  echo "<tr>\n";
+  echo "\t<td></td>\n";
+  if(!$is_readonly)
+  {
+    echo "<td> <INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <INPUT TYPE=\"RESET\" VALUE=\"ABBRECHEN\">
+        </td>\n";
+  }
+  echo "</tr>\n";
+  echo "</table>\n";
+  echo "</FORM>\n";
+
+  echo '</div>';
+  echo "<!--  ENDE DATEN Spalte   -->\n";
 };
 
 /**
- * Erstellt einen leeren Datensatz anhand der mfd_cols 
+ * Erstellt einen leeren Datensatz anhand der mfd_cols
  * @param unknown $mfd_cols
  * @return number
  */
 function make_mfd_empty_row($mfd_cols)
 {
-	for ($i=0; $i<count($mfd_cols); $i++)
-	{
-	$row[$i] = "";
-	}
-	$row[0] = 0;
-	return $row;
+  for ($i=0; $i<count($mfd_cols); $i++)
+  {
+    $row[$i] = "";
+  }
+  $row[0] = 0;
+  return $row;
 }
 
 /**
@@ -1347,15 +1409,15 @@ function print_mfd_erf($id, $ID, $mfd_list, $mfd_cols,$daten)
 // $id   beinhaltet den zu bearbeitenden Datensatz
 //
 {
-// 	for ($i=1; $i<count($mfd_cols); $i++)
-// 	{
-// 		$row[$i] = "";
-// 	}
-	$row = make_mfd_empty_row(mfd_cols);
-	$row[0] = 0;
-	$next = mfd_insert;	// Datenfunktion Insert
+  // 	for ($i=1; $i<count($mfd_cols); $i++)
+    // 	{
+    // 		$row[$i] = "";
+    // 	}
+  $row = make_mfd_empty_row(mfd_cols);
+  $row[0] = 0;
+  $next = mfd_insert;	// Datenfunktion Insert
 
-	print_mfd_maske($mfd_list,$row, $id,$next,$ID, $mfd_cols,false, $daten);
+  print_mfd_maske($mfd_list,$row, $id,$next,$ID, $mfd_cols,false, $daten);
 }
 
 /**
@@ -1371,14 +1433,14 @@ function print_mfd_edit($id, $ID, $mfd_list, $mfd_cols,$daten)
 //  $id   beinhaltet den zu bearbeitenden Datensatz
 //
 {
-	//  Daten
-	//
-	$next = mfd_update;	// Datenfunktion Update
-	$result = mfd_detail_result($mfd_list, $id);
-	$row = mysql_fetch_row($result);
+  //  Daten
+  //
+  $next = mfd_update;	// Datenfunktion Update
+  $result = mfd_detail_result($mfd_list, $id);
+  $row = mysql_fetch_row($result);
 
 
-	print_mfd_maske($mfd_list,$row, $id,$next,$ID, $mfd_cols,false,$daten);
+  print_mfd_maske($mfd_list,$row, $id,$next,$ID, $mfd_cols,false,$daten);
 
 }
 
@@ -1395,10 +1457,10 @@ function print_mfd_del($id, $ID, $mfd_list, $mfd_cols,$daten)
 
 function print_mfd_info($id, $ID, $mfd_list, $mfd_cols, $daten)
 {
-	$next = 0;	// Datenfunktion Delete
-	$result = mfd_detail_result($mfd_list, $id);
-	$row = mysql_fetch_row($result);
-	print_mfd_maske($mfd_list,$row, $id,$next,$ID, $mfd_cols,true,$daten );
+  $next = 0;	// Datenfunktion Delete
+  $result = mfd_detail_result($mfd_list, $id);
+  $row = mysql_fetch_row($result);
+  print_mfd_maske($mfd_list,$row, $id,$next,$ID, $mfd_cols,true,$daten );
 
 }
 

@@ -162,14 +162,10 @@ default:
 	5=>array ("icon" => "_list","caption" => "CON-SL","link" => "admin_con.php?md=0&ID=$ID"),
 	6=>array ("icon" => "_list","caption" => "Bilder","link" => "admin_bilder.php?md=0&ID=$ID"),
 	8=>array ("icon" => "_list","caption" => "Charakter","link" => "admin_char.php?md=0&ID=$ID"),
-	9=>array ("icon" => "_list","caption" => "Download","link" => "admin_down.php?md=0&ID=$ID"),
-	10=>array ("icon" => "_list","caption" => "Kalender","link" => "admin_kal.php?md=0&ID=$ID"),
-	11=>array ("icon" => "_list","caption" => "Bibliothek","link" => "admin_bib.php?md=0&ID=$ID"),
-	12=>array ("icon" => "_list","caption" => "Bib-Zugriff","link" => "admin_bib_zugriff.php?md=0&ID=$ID"),
-	13=>array ("icon" => "_list","caption" => "Bib-Bereich","link" => "admin_bib_bereich.php?md=0&ID=$ID"),
-	14=>array ("icon" => "_list","caption" => "Bib-Thema","link" => "admin_bib_thema.php?md=0&ID=$ID"),
-	15=>array ("icon" => "_list","caption" => "Bib-Item","link" => "admin_bib_item.php?md=0&ID=$ID"),
-	16=>array ("icon" => "_list","caption" => "<b>Configuration</b>","link" => "admin_config.php?md=0&ID=$ID"),
+	9=>array ("icon" => "_list","caption" => "Download","link" => "admin_download.php?md=0&ID=$ID"),
+	10=>array ("icon" => "_list","caption" => "Kalender","link" => "admin_kalender.php?md=0&ID=$ID"),
+	11=>array ("icon" => "_folder","caption" => "<b>Bibliothek</b>","link" => "admin_bibconfig.php?md=0&ID=$ID"),
+	16=>array ("icon" => "_folder","caption" => "<b>Configuration</b>","link" => "admin_config.php?md=0&ID=$ID"),
 	20=>array ("icon" => "_stop","caption" => "Zurück","link" => "larp.php?md=0&ID=$ID")
 	);
 

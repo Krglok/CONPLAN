@@ -43,7 +43,7 @@ function print_textblock_td($lines)
     echo "\t<td>\n";
     for ($i=0; $i<count($lines); $i++)
     {
-    echo "\t$lines[$i]<br>\n";
+    echo "\t$lines[$i]\n";
     }
     echo "\t</td>\n";
 	} else

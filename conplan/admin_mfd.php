@@ -247,11 +247,11 @@ case mfd_add:
 		echo "Add Maske";
 	break;
 case mfd_edit:
-	print_mfd_edit($id, $ID, $mfd_list, $mfd_cols);
+	print_mfd_edit($id, $ID, $mfd_list, $mfd_cols,$daten);
 	break;
 case mfd_del:
 	//  echo "Delete Maske";
-	print_mfd_del($id, $ID, $mfd_list, $mfd_cols);
+	print_mfd_del($id, $ID, $mfd_list, $mfd_cols,$daten);
 	break;
 case mfd_info:
 	//  echo "Info Maske:";
