@@ -34,6 +34,16 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 */
 
 //include_once '_config.inc';
+// Standard/Main Funktionsliste
+define("main_main",0);
+define("main_data", 1);
+define("main_page",2);
+define("main_sc", 3);
+define("main_kalender", 4);
+define("main_news",5);
+define("main_sub",6);
+define("main_login",7);
+define("main_help",99);
 
 
 function print_textblock_td($lines)
@@ -142,15 +152,17 @@ function print_menu_item($item)
   {
     $ref = "$PHP_SELF?md=2&amp;daten=$link";
     
-  }  elseif ($itemtyp = "100")
-  {
-    $ref = "$PHP_SELF?md=$itemtyp&amp;daten=$link";
+  }
+//     elseif ($itemtyp = "100")
+//   {
+//     $ref = "$PHP_SELF?md=$itemtyp&amp;daten=$link";
     
-  } elseif ($itemtyp = "101")
-  {
-    $ref = "$PHP_SELF?md=$itemtyp&amp;daten=$link";
+//   } elseif ($itemtyp = "101")
+//   {
+//     $ref = "$PHP_SELF?md=$itemtyp&amp;daten=$link";
     
-  } else 
+//   } 
+  else 
   {
     $ref="";
 //    echo "$ref";

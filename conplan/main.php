@@ -78,7 +78,35 @@ include_once "_lib.inc";
 include_once "_head.inc";
 include_once '_log_lib.inc';
 
-
+function get_menu($bereich)
+{
+	// manuelles main menu
+	$menu_main = array (0=>array("icon" => "0","caption" => "Hauptseite","link" => "ss","itemtyp"=>"0"),
+			1=>array ("icon" => "_page","caption" => "Übersicht","link" => "main.html","itemtyp"=>"2"),
+			2=>array ("icon" => "_list","caption" => "News","link" => "$PHP_SELF?md=5","itemtyp"=>"0"),
+			3=>array ("icon" => "_list","caption" => "Termine","link" => "$PHP_SELF?md=4","itemtyp"=>"0"),
+			5=>array ("icon" => "_key","caption" => "Innerer Zirkel","link" => "slogin.html","itemtyp"=>"2"),
+			6=>array ("icon" => "0","caption" => "","link" => "","itemtyp"=>"0"),
+			10=>array ("icon" => "_page","caption" => "Kurzdarstellung","link" => "kurzdars.html","itemtyp"=>"2"),
+			11=>array ("icon" => "_page","caption" => "LPD","link" => "lpd.html","itemtyp"=>"2"),
+			12=>array ("icon" => "_page","caption" => "Unsere Regeln","link" => "main_regeln.php?md=0"),
+			13=>array ("icon" => "_page","caption" => "Unser Spielgebiet","link" => "weg_viet.html","itemtyp"=>"2"),
+			14=>array ("icon" => "_list","caption" => "Unsere Spieler","link" => "main_spieler.php?md=0"),
+			20=>array ("icon" => "0","caption" => "","link" => "","itemtyp"=>"0"),
+			21=>array ("icon" => "_page","caption" => "Das Land","link" => "main_land.php?md=0"),
+			22=>array ("icon" => "_page","caption" => "Neue Chronik","link" => "main_chronik.php"),
+			//		23=>array ("icon" => "_page","caption" => "Ausrüstung","link" => "main_ausruestung.php","itemtyp"=>"0"),
+			24=>array ("icon" => "_page","caption" => "Bilder","link" => "main_bilder.php?md=0","itemtyp"=>"0"),
+			30=>array ("icon" => "0","caption" => "","link" => "","itemtyp"=>"0"),
+			31=>array ("icon" => "_link","caption" => "Liberi Effera","link" => "http://www.liberi-effera.de/","itemtyp"=>"0"),
+			32=>array ("icon" => "_link","caption" => "Draskoria","link" => "http://draskoria.game-host.org:8090/ ","itemtyp"=>"0"),
+			//		33=>array ("icon" => "_zip","caption" => "Download","link" => "main_download.php","daten"=>"","itemtyp"=>"0"),
+			34=>array ("icon" => "_list","caption" => "Links","link" => "links.html","itemtyp"=>"2"),
+			50=>array ("icon" => "_help","caption" => "Ich","link" => "ich.html","itemtyp"=>"2"),
+			51=>array ("icon" => "_help","caption" => "Impressum","link" => "impressum.html","itemtyp"=>"2")
+	);
+	return $main_menu;
+}
 
 // ---------------------------------------------------------------
 // ---------    MAIN ---------------------------------------------
@@ -106,34 +134,8 @@ print_kopf($logo_typ,$header_typ,"Öffentlich",$anrede,$menu_item);
 //echo "POST : $p_md / GET : $md / THEMEN :$THEMEN ";
 
 
-// manuelles main menu
-$menu_main = array (0=>array("icon" => "0","caption" => "Hauptseite","link" => "ss","itemtyp"=>"0"),
-		1=>array ("icon" => "_page","caption" => "Übersicht","link" => "main.html","itemtyp"=>"2"),
-		2=>array ("icon" => "_list","caption" => "News","link" => "$PHP_SELF?md=5","itemtyp"=>"0"),
-		3=>array ("icon" => "_list","caption" => "Termine","link" => "$PHP_SELF?md=4","itemtyp"=>"0"),
-		5=>array ("icon" => "_key","caption" => "Innerer Zirkel","link" => "slogin.html","itemtyp"=>"2"),
-		6=>array ("icon" => "0","caption" => "","link" => "","itemtyp"=>"0"),
-		10=>array ("icon" => "_page","caption" => "Kurzdarstellung","link" => "kurzdars.html","itemtyp"=>"2"),
-		11=>array ("icon" => "_page","caption" => "LPD","link" => "lpd.html","itemtyp"=>"2"),
-		12=>array ("icon" => "_page","caption" => "Unsere Regeln","link" => "main_regeln.php?md=0"),
-		13=>array ("icon" => "_page","caption" => "Unser Spielgebiet","link" => "weg_viet.html","itemtyp"=>"2"),
-		14=>array ("icon" => "_list","caption" => "Unsere Spieler","link" => "main_spieler.php?md=0"),
-		20=>array ("icon" => "0","caption" => "","link" => "","itemtyp"=>"0"),
-		21=>array ("icon" => "_page","caption" => "Das Land","link" => "main_land.php?md=0"),
-		22=>array ("icon" => "_page","caption" => "Neue Chronik","link" => "main_chronik.php"),
-//		23=>array ("icon" => "_page","caption" => "Ausrüstung","link" => "main_ausruestung.php","itemtyp"=>"0"),
-		24=>array ("icon" => "_page","caption" => "Bilder","link" => "main_bilder.php?md=0","itemtyp"=>"0"),
-		30=>array ("icon" => "0","caption" => "","link" => "","itemtyp"=>"0"),
-		31=>array ("icon" => "_link","caption" => "Liberi Effera","link" => "http://www.liberi-effera.de/","itemtyp"=>"0"),
-		32=>array ("icon" => "_link","caption" => "Draskoria","link" => "http://draskoria.game-host.org:8090/ ","itemtyp"=>"0"), 
-//		33=>array ("icon" => "_zip","caption" => "Download","link" => "main_download.php","daten"=>"","itemtyp"=>"0"),
-		34=>array ("icon" => "_list","caption" => "Links","link" => "links.html","itemtyp"=>"2"),
-		50=>array ("icon" => "_help","caption" => "Ich","link" => "ich.html","itemtyp"=>"2"),
-		51=>array ("icon" => "_help","caption" => "Impressum","link" => "impressum.html","itemtyp"=>"2")
-);
 //prueft ob ein dynamisches menu vorhanden ist
-$sub = check_sub_item($BEREICH,"main","");
-
+  $menu = get_menu($BEREICH);
 	print_menu($menu_main);
 
 // Auswahl der Aktion durch $md

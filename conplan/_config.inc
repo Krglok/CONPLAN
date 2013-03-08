@@ -158,6 +158,7 @@ define("lvl_subsl",63);
 define("lvl_sl",15);
 define("lvl_admin",3);
 
+define("itemtyp_")
 
 function GET_md ($value = 0) 
 {
