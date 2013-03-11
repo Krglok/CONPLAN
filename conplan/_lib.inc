@@ -54,11 +54,13 @@ function print_textblock_td_bg($lines, $bgcolor = 'white')
     for ($i=0; $i<count($lines); $i++)
     {
       echo "$lines[$i]";
+     
     }
+
     echo "\t</td>\n";
   } else
   {
-  echo "\t<td>&nbsp;</td>\n";
+  echo "\t<td>&nbsp; </td>\n";
   }
 }
 

@@ -379,7 +379,7 @@ function tage_liste($spieler,$ID,$TAG)
 	
 };
 
-function print_info($id,$user,$ID,$TAG)
+function print_info($mfd_list,$id,$user,$ID,$TAG)
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $TABLE;
@@ -771,30 +771,12 @@ function check_datum()
   return false;
 }
 
-function print_anmeld_erf($id, $user, $ID)
+function print_anmeld_erf($mfd_list, $id, $user, $ID)
 {
-	//
-	//  $id   beinhaltet den zu bearbeitenden Datensatz
-	//  $user beinhaltet den User des Programms (authetifizierung)
-	//  $next beinhaltet die nächste zu rufende Funktion
-	//  $erf  steurt die Variablen initialisierung
-	//
-	// durch $next kann die Maske sowohl für Erfassen als auch Bearbeiten benutzt werden.
-	//
-	//$TABLE = "con_anmeldung";
-	//$TABLE1= "con_tage";
-
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $TAG;
-	global $ID;
 	global $PHP_SELF;
 
-	$next = 5;
-	$table = "con_anmeldung";
-	
-	
-	//Anzeigen von Contage als einfache Maske
-	//function view() {
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
 	or die("Fehler beim verbinden!");
 
@@ -805,45 +787,50 @@ function print_anmeld_erf($id, $user, $ID)
 	  exit;
 	}
 
+	$next = 5;
+	
+	$mfd_list["where"] = "id=\"0\"";
 	// Zugriff aufCON_Anmeldung
-	$q = "select * from $table where id=\"0\"";
-	$result = mysql_query($q) or die("Query ERF...");
+	
+	$result = mfd_data_result($mfd_list);
 	//
 	$row = mysql_fetch_array ($result);
-	$field_num = mysql_num_fields($result);
-	
+		
 	mysql_close($db);
 	
-	//  echo count($row);
-	/**/
-	if (count($row)==1)
+	for ($i=0; $i<12; $i++)
 	{
-		for ($i=0; $i<$field_num; $i++)
-		{
-			$row[$i] = "";
-		};
-		$row[11] = get_user_id($user);
-		$row[2] = get_author($row[11]);
-		$row[3] = get_mail($row[11]);
-		$row[6] = 1;
+		$row[$i] = "";
+	};
+	$row[11] = get_user_id($user);
+	$row[2] = get_author($row[11]);
+	$row[3] = get_mail($row[11]);
+	$row[6] = 1;
 
-	}
+	$table = "con_tage";
+	$mfd_tage = make_mfd_table($table, $table);
+	$mfd_tage["where"] = "tag = $TAG";
 	
-	print_maske($id, $ID, $next, $erf,$row);
+	$result = mfd_data_result($mfd_tage);
+	$row_tage = mysql_fetch_array ($result);
+	// Die Tage daten werden an den Datensatz angehängts 20ff
+	for ($i=0; $i<10; $i++)
+	{
+	  $row[20+$i] = $row_tage[$i];
+	};
+	
+	
+	print_maske($id, $ID, $next, $row);
 }	
 
-function print_anmeld_edit($id,$user,$ID)
+/**
+ * 
+ * @param unknown $id
+ * @param unknown $user
+ * @param unknown $ID
+ */
+function print_anmeld_edit($mfd_list,$id,$user,$ID)
 {
-  //
-  //  $id   beinhaltet den zu bearbeitenden Datensatz
-  //  $user beinhaltet den User des Programms (authetifizierung)
-  //  $next beinhaltet die nächste zu rufende Funktion
-  //  $erf  steurt die Variablen initialisierung
-  //
-  // durch $next kann die Maske sowohl für Erfassen als auch Bearbeiten benutzt werden.
-  //
-  //$TABLE = "con_anmeldung";
-  //$TABLE1= "con_tage";
 
   global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
   global $TAG;
@@ -888,10 +875,10 @@ function print_anmeld_edit($id,$user,$ID)
     $row[3] = get_mail($row[11]);
     $row[6] = 1;
   }
-  print_maske($id, $ID, $next, $erf,$row);
+  print_maske($id, $ID, $next, $row);
 }
 
-function print_maske($id, $ID, $next, $erf,$row)
+function print_maske($id, $ID, $next,$row)
 {	
 	global $TAG;
 	global $ID;
@@ -903,12 +890,9 @@ function print_maske($id, $ID, $next, $erf,$row)
 
 		echo "<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID\" METHOD=POST  >\n";
 		echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
-//		echo "<INPUT TYPE=\"hidden\" NAME=\"user\" VALUE=\"$user\">\n";
 		echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"$id\">\n";
 		echo "<INPUT TYPE=\"hidden\" NAME=\"row[1]\"   VALUE=\"$TAG\">\n";
 		echo "<INPUT TYPE=\"hidden\" NAME=\"row[11]\"   VALUE=\"$row[11]\">\n";
-// 		echo "<INPUT TYPE=\"hidden\" NAME=\"TAG\"  VALUE=\"$TAG\">\n";
-// 		echo "<INPUT TYPE=\"hidden\" NAME=\"ID\"  VALUE=\"$ID\">\n";
 
 		echo "<TABLE>\n";
 		echo "    <TR HEIGHT=\"30\">\n";
@@ -919,25 +903,25 @@ function print_maske($id, $ID, $next, $erf,$row)
 		echo "        <i>Tag : </i>\n";
 		echo "        </TD>\n";
 		echo "        <TD WIDTH=\"55\"><!-- Row:2, Col:2 -->\n";
-		echo "        <B>$TAG\n";
+		echo "        <B>$row[21]\n";
 		echo "        </TD>\n";
 		echo "        <TD WIDTH=\"55\"><!-- Row:3, Col:1 -->\n";
 		echo "        <i>vom &nbsp;</i>\n";
 		echo "        </TD>\n";
 		echo "        <TD  WIDTH=\"85\"><!-- Row:4, Col:1 -->\n";
-		echo "        <B>$row1[2]\n";
+		echo "        <B>$row[22]\n";
 		echo "        </TD>\n";
 		echo "        <TD WIDTH=55><!-- Row:5, Col:1 -->\n";
 		echo "        <i>&nbsp;bis</i>\n";
 		echo "        </TD>\n";
 		echo "        <TD WIDTH=\"85\"><!-- Row:6, Col:1 -->\n";
-		echo "        <b>$row1[3]</b>\n";
+		echo "        <b>$row[23]</b>\n";
 		echo "        </TD>\n";
 		echo "    </TR>\n";
 		echo "</TABLE>\n";
 		echo "<table> \n";
 		echo "<tr> \n";
-		$data = $row1[8];
+		$data = $row[28];
     $titel= "text";
     $pos  = 8;
 		print_mfd_edit_text($titel,$pos, $data, true);	
@@ -1208,10 +1192,10 @@ function print_maske($id, $ID, $next, $erf,$row)
 	switch ($g_md):
   case 1:
   		//
-  		print_anmeld_erf($g_id,$user,$ID);
+  		print_anmeld_erf($mfd_list,$g_id,$user,$ID);
   	break;
   case 2:
-  	Print_info($g_id, $user, $ID,$TAG);
+  	Print_info($mfd_list,$g_id, $user, $ID,$TAG);
   	break;
   case 3:
   	//
@@ -1219,7 +1203,7 @@ function print_maske($id, $ID, $next, $erf,$row)
   	break;
   case 4:
   	//
-  	print_anmeld_edit($g_id,$user,$ID);
+  	print_anmeld_edit($mfd_list,$g_id,$user,$ID);
   	break;
   case 10:
   	info_liste($spieler_id,$ID);

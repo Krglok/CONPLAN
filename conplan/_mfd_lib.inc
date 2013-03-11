@@ -53,6 +53,7 @@ define("mfd_del", 13);
 define("mfd_info", 14);
 define("mfd_check", 15);
 define("mfd_editor", 16);
+define("mfd_auswahl",17);
 
 define("mfd_insert", 21);
 define("mfd_update", 22);
@@ -305,6 +306,10 @@ function show_mfd_cols($table,$ID)
   echo "<TABLE > \n";
   echo "<TBODY> \n";
   echo "<TR> \n";
+  echo "<TD> \n";
+  echo "<i></i> \n";
+  echo "</TD> \n";
+  
   echo "<TD>\n";
   echo "Tabelle";
   echo "</TD> \n";
@@ -319,6 +324,10 @@ function show_mfd_cols($table,$ID)
   echo "</TR> \n";
 
   echo "<TR> \n";
+  echo "<TD> \n";
+  echo "<i></i> \n";
+  echo "</TD> \n";
+  
   echo "<TD>\n";
   echo "<i>MFD-Referenz</i>";
   echo "</TD> \n";
@@ -333,6 +342,10 @@ function show_mfd_cols($table,$ID)
   echo "</TR> \n";
 
   echo "<TR> \n";
+  echo "<TD> \n";
+  echo "<i>Nr</i> \n";
+  echo "</TD> \n";
+  
   echo "<TD> \n";
   echo "<i>Fieldname</i> \n";
   echo "</TD> \n";
@@ -350,10 +363,15 @@ function show_mfd_cols($table,$ID)
   echo "</TD> \n";
   echo "</TR> \n";
 
+  $i =0;
   foreach ($mfd_cols as $mfd_col)
   {
     echo "<TR> \n";
-    echo "<TD> \n";
+  	echo "<TD> \n";
+  	echo "<i>$i</i> \n";
+  	echo "</TD> \n";
+    
+  	echo "<TD> \n";
     echo $mfd_col["mfd_field"];
     echo "</TD> \n";
 
@@ -369,6 +387,7 @@ function show_mfd_cols($table,$ID)
     echo $mfd_col["mfd_field_typ"];
     echo "</TD> \n";
     echo "</TR> \n";
+    $i++;
   }
   echo "</TBODY> \n";
   echo "</TABLE> \n";
@@ -971,10 +990,10 @@ function get_fieldname_list($table)
 
 
   $row = mysql_fetch_row($result);
-  $list = $row[0];
+  $list = $table.".".$row[0];
   while ($row = mysql_fetch_row($result))
   {
-    $list = $list.", ".$row[0];
+    $list = $list.", ".$table.".".$row[0];
   }
   return $list;
 }
@@ -1339,14 +1358,13 @@ function print_mfd_edit_text($titel,$pos, $data, $is_readonly)
       echo "<td >\n";
       echo "<textarea   name=\"$name\" readonly COLS=\"60\" ROWS=\"5\" >"; //class=\"ckeditor\"
       echo $data;
-  //    echo $anz;
       echo "</textarea>";
-//      echo "area";
+      echo "area";
       echo "</td >\n";
     } else
     {
       // schreibe text als normale Ausgabe
-//      echo "block";
+      echo "block";
       print_textblock_td_bg($lines,"white");
       echo "<INPUT TYPE=\"hidden\" NAME=\"$name\"   VALUE=\"$data\">\n";
     } 
