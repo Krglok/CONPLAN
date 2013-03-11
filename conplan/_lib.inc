@@ -50,7 +50,7 @@ function print_textblock_td_bg($lines, $bgcolor = 'white')
 {
   if (count($lines)>0)
   {
-    echo "\t<td bgcolor=\"$bgcolor\" width=\"350px\">\n";
+    echo "\t<td bgcolor=\"$bgcolor\" width=\"550px\">\n";
     for ($i=0; $i<count($lines); $i++)
     {
       echo "$lines[$i]";

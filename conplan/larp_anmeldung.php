@@ -152,7 +152,7 @@ function print_liste($user)
 					echo "\t<td>\n";
 					if ($user !="gast")
 					{
-						echo "\t<a href=\"$PHP_SELF?md=4&ID=$ID&id=$row[$i]&TAG=$TAG\">\n";
+						echo "\t<a href=\"$PHP_SELF?md=".mfd_edit."&ID=$ID&id=$row[$i]&TAG=$TAG\">\n";
 					}
 					//echo "\t<IMG SRC=\"../larp/images/db.gif\" BORDER=\"0\" HEIGHT=\"25\" WIDTH=\"25\" ALT=\"Datensatz Bearbeiten\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>\n";
 					print_menu_icon ("_edit","Anmeldung bearbeiten");
@@ -185,8 +185,12 @@ function print_liste($user)
 		}
 		if ($user_id == $row[11])
 		{
-			echo "\t<td><a href=\"$PHP_SELF?md=2&ID=$ID&id=$row[0]&TAG=$TAG\">\n";
+			echo "\t<td><a href=\"$PHP_SELF?md=".mfd_info."&ID=$ID&id=$row[0]&TAG=$TAG\">\n";
 			print_menu_icon ("_text","Anmeldung ansehen");
+			echo "\t</a></td>\n";
+
+			echo "\t<td><a href=\"$PHP_SELF?md=".mfd_del."&ID=$ID&id=$row[0]&TAG=$TAG\">\n";
+			print_menu_icon ("_del","Anmeldung löschen!");
 			echo "\t</a></td>\n";
 		}
 		echo "<tr>";
@@ -202,15 +206,15 @@ function info_liste($spieler,$ID)
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $PHP_SELF;
-	global $TABLE;
 	global $TAG;
 
-
+	$table = "con_anmeldung";
+	
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
 
 	mysql_select_db($DB_NAME);
 
-	$q = "select * from $TABLE where spieler_id=\"$spieler\" order by tag DESC";
+	$q = "select * from $table where spieler_id=\"$spieler\" order by tag DESC";
 	$result = mysql_query($q)  or die("Query Fehler...");
 
 	mysql_close($db);
@@ -271,7 +275,7 @@ function info_liste($spieler,$ID)
 				echo "\t<td>$row[$i]&nbsp;</td>\n";
 			};
 		}
-		echo "\t<td><a href=\"$PHP_SELF?md=2&ID=$ID&id=$row[0]\">\n";
+		echo "\t<td><a href=\"$PHP_SELF?md=".mfd_info."&ID=$ID&id=$row[0]\">\n";
 		print_menu_icon ("_text");
 		echo "\t</a></td>\n";
 		echo "<tr>";
@@ -288,10 +292,10 @@ function tage_liste($spieler,$ID,$TAG)
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $PHP_SELF;
-	global $TABLE;
 	global $TABLE1;
 
-
+	$table = "con_anmeldung";
+	
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
 
 	mysql_select_db($DB_NAME);
@@ -379,374 +383,6 @@ function tage_liste($spieler,$ID,$TAG)
 	
 };
 
-function print_info($mfd_list,$id,$user,$ID,$TAG)
-{
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $TABLE;
-	global $TABLE1;
-    global $PHP_SELF;
-    
-	//Anzeigen von Contage als einfache Maske
-	//function view() {
-
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-	or die("Fehler beim verbinden!");
-
-	mysql_select_db($DB_NAME);
-
-	$q = "select * from $TABLE1 where tag=$TAG";
-	$result1 = mysql_query($q) or die("Query $TABLE1");
-	$row1 = mysql_fetch_array ($result1);
-
-	$q = "select * from $TABLE where id=$id";
-	$result = mysql_query($q)
-	or die("Query Fehler...".$q);
-
-	$field_num = mysql_num_fields($result);
-	$row = mysql_fetch_row($result);
-
-	mysql_close($db);
-
-	//Daten bereich
-	$style = $GLOBALS['style_datatab'];
-	echo "<div $style >";
-	echo "<!--  DATEN Spalte   -->\n";
-	
-	echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST>\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"0\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"user\" VALUE=\"$user\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$id\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"TAG\"  VALUE=\"$TAG\">\n";
-	echo "<TABLE>\n";
-	echo "<TABLE>\n";
-	echo "    <TR HEIGHT=30>\n";
-	echo "    <TD colspan=6> <CENTER><B>ANMELDUNG&nbsp;&nbsp;&nbsp;&nbsp;</TD>\n";
-	echo "    </TR>\n";
-	echo "    <TR>\n";
-	echo "        <TD WIDTH=55><!-- Row:2, Col:1 -->\n";
-	echo "        <B>Tag :\n";
-	echo "        </TD>\n";
-	echo "        <TD><!-- Row:2, Col:2 -->\n";
-	//    echo "        <INPUT TYPE=\"TEXT\" NAME=\"\" SIZE=3 MAXLENGTH=3 VALUE=\"$TAG\" READONLY>\n";
-	echo "        <B>$TAG\n";
-	echo "        </TD>\n";
-	echo "        <TD WIDTH=55><!-- Row:3, Col:1 -->\n";
-	echo "        <P ALIGN=RIGHT>\n";
-	echo "        <B>vom &nbsp;\n";
-	echo "        </TD>\n";
-	echo "        <TD><!-- Row:4, Col:1 -->\n";
-	//    echo "        <INPUT TYPE=\"TEXT\" NAME=\"\" SIZE=10 MAXLENGTH=10 VALUE=\"$row1[2]\" READONLY>\n";
-	echo "        <B>  ".print_datum($row1[2])."\n";
-	echo "        </TD>\n";
-	echo "        <TD WIDTH=55><!-- Row:5, Col:1 -->\n";
-	echo "        <P ALIGN=RIGHT>\n";
-	echo "        <B>bis&nbsp;\n";
-	echo "        </TD>\n";
-	echo "        <TD><!-- Row:6, Col:1 -->\n";
-	//    echo "        <INPUT TYPE=\"TEXT\" NAME=\"\" SIZE=10 MAXLENGTH=10 VALUE=\"$row1[3]\" READONLY>\n";
-	echo "        <B>".print_datum($row1[3])."\n";
-	echo "        </TD>\n";
-	echo "    </TR>\n";
-	echo "    <TR HEIGHT=10>\n";
-	echo "    <TD></TD>\n";
-	echo "    </TR>\n";
-	echo "    <TR>\n";
-	echo "  <TD colspan=6>\n";
-	echo "  <TEXTAREA NAME=\"text\" COLS=50 ROWS=12 READONLY>\n";
-	echo "$row1[8]\n";
-	echo "Anmeldeschluss $row1[6]\n";
-	echo "\n";
-	echo "Kosten : $row1[4] EUR\n";
-	echo "  </TEXTAREA>\n";
-	echo "  </TD>\n";
-	echo "    </TR>\n";
-	echo "</TABLE>\n";
-
-	for ($i=0; $i<$field_num; $i++)
-	{
-		$field_name[$i] =  mysql_field_name($result,$i);
-		$type[$i]       =  mysql_field_type ($result, $i);
-	}
-	for ($i=0; $i<$field_num; $i++)
-	{
-		if ($type[$i]=="date") {
-			$len[$i] = 10;
-		}
-		if ($type[$i]=="int") {
-			$len[$i] = 5;
-		}
-		if ($type[$i]=="string") {
-			$len[$i] = 60;
-		}
-
-		if ($type[$i]!="blob")
-		{
-			echo "<tr>";
-			echo "\t<td width=100>$field_name[$i]&nbsp;</td>\n";
-			echo "\t<td><input name=\"\" maxlength=$len[$i] size=$len[$i] readonly value=$row[$i]></td>\n";
-			echo "<tr>";
-		} else
-		{
-			echo "<tr>";
-			echo "\t<td><b></b></td>\n";
-			echo "\t<td><TEXTAREA NAME=\"$field_name[$i]\" COLS=50 ROWS=12 readonly>$row[$i]</TEXTAREA>&nbsp;</td>\n";
-			echo "<tr>";
-		}
-	}
-	echo "</table>";
-
-	echo '</div>';
-	echo "<!--  ENDE DATEN Spalte   -->\n";
-	
-
-};
-
-
-function print_loeschen($user)
-{
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $PHP_SELF;
-	global $TABLE;
-	global $TABLE1;
-	global $TAG;
-	global $ID;
-
-	$user_id = get_user_id($user);
-
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
-
-	mysql_select_db($DB_NAME);
-
-	// Zugriff auf CON-TAGE
-	$q = "select * from $TABLE1 where id=$TAG";
-	$result1 = mysql_query($q) or die("Query $TABLE1");
-	$row1 = mysql_fetch_array ($result1);
-
-	// Zugriff auf CON-Anmeldung
-	$q = "select * from $TABLE where tag=\"$TAG\"";
-	$result = mysql_query($q)  or die("Query Fehler...");
-
-
-	mysql_close($db);
-
-	//  Datumasuwertung für Anmeldeschluss
-	$datum = strftime("%Y-%m-%d");
-	if ($datum <= $row1[6])  // row[6]  = bis-Datum jjjj-mm-tt
-	{
-		$err = 0;
-	} else
-	{
-		$err = 1;
-	}
-
-	$style = $GLOBALS['style_datatable'];
-	echo "<div $style >";
-	echo "<!--  DATEN Spalte   -->\n";
-	
-
-	echo "<table >\n";
-
-	// Kopfzeile
-	echo "<tr>\n";
-	$field_num = mysql_num_fields($result);
-	for ($i=0; $i<$field_num-1; $i++)
-	{
-		switch ($i):
-		case 0:
-			echo "\t<td width=\"35px\"><b> </b></td>\n";
-		break;
-		case 4:
-			echo "\t<td><b>Abw</b></td>\n";
-		break;
-		case 5:
-			echo "\t<td><b>Tav</b></td>\n";
-			break;
-		case 6:
-			echo "\t<td><b> WC</b></td>\n";
-			break;
-		case 7:
-			echo "\t<td><b>NSC</b></td>\n";
-			break;
-		case 8:
-			echo "\t<td><b>Auf</b></td>\n";
-			break;
-		case 9:
-			echo "\t<td><b>Orga</b></td>\n";
-			break;
-		case 9:
-			echo "\t<td width=\"150px\"><b>Orga</b></td>\n";
-			break;
-			default:
-			echo "\t<td><b>".mysql_field_name($result,$i)."</b></td>\n";
-			break;
-			endswitch;
-	};
-	//lfdnr,name,vorname,orga}
-	echo "</tr>\n";
-	//Liste der Datensätze
-	while ($row = mysql_fetch_row($result))
-	{
-		echo "<tr>";
-		for ($i=0; $i<$field_num-1; $i++)
-		{
-			// aufruf der Deateildaten
-			if ($i==0)
-			{
-				if ($user_id == $row[11])
-				{
-					echo "\t<td>\n "; ///$user / $err";
-					if ($user !="gast")
-					{
-						if ($err == 1)    //#3
-						{
-							echo "\t<a href=\"$PHP_SELF?md=7&ID=$ID&id=$row[$i]&TAG=$TAG\">\n";
-						}
-					}
-					print_menu_icon ("_del", "Datensatz löschen, unwiederruflich");
-					echo "\t</a></td>\n";
-				} else
-				{
-					echo "\t<td></td>\n";
-				}
-			} elseif ($i == 10)
-			{
-			  echo "\t<td>\n";
-			  $lines = explode("\n", $row[$i]);
-			  print_textblock_td($lines);
-			  //print_textblock($row[$i]);
-			  echo "\t</td>\n";
-			}else
-			{
-			  echo "\t<td>$row[$i]&nbsp;</td>\n";
-			};
-		}
-		//      echo "\t<td><a href=\"$PHP_SELF?md=2&ID=$ID&id=$row[0]&TAG=$TAG\">\n";
-		//      echo "\t<IMG SRC=\"../larp/images/xview.gif\" BORDER=\"0\" HEIGHT=\"15\" WIDTH=\"25\" ALT=\"Datensatz Ansehen\" HSPACE=\"0\" VSPACE=\"0\">\n";
-		//      echo "\t</a></td>\n";
-		echo "<tr>";
-	}
-	echo "</table>";
-
-	echo '</div>';
-	echo "<!--  ENDE DATEN Spalte   -->\n";
-	
-
-};
-
-
-
-function insert($row)
-{
-	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
-	global $TABLE;
-
-	for ($i=4; $i<=9; $i++)
-	{
-		$zw = $zw + (int)$row[$i];
-	};
-	if ($zw==0) {
-		$row[6]=1;
-	};
-
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-	or die("Fehler beim verbinden!");
-	$result = mysql_list_fields($DB_NAME,$TABLE)  or die("Query ERF...");
-	$field_num = mysql_num_fields($result);
-	for ($i=0; $i<$field_num; $i++)
-	{
-		$field_name[$i] =  mysql_field_name ($result, $i);
-	}
-	$q ="insert INTO  $TABLE  (";
-	$q = $q."$field_name[1]";
-	for ($i=2; $i<$field_num; $i++)
-	{
-		$q = $q.",$field_name[$i]";
-	};
-
-	$q = $q.") VALUES (\"$row[1]\" ";
-	for ($i=2; $i<$field_num; $i++)
-	{
-		$q = $q.",\"$row[$i]\" ";
-	};
-	$q = $q.")";
-	//  echo $q;
-
-	if (mysql_select_db($DB_NAME) != TRUE) {
-		echo "Fehler DB";
-	};
-	$result = mysql_query($q) or die("InsertFehler....$q.");
-
-	mysql_close($db);
-
-};
-
-
-function update($row)
-{
-	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
-	global $TABLE;
-
-	$zw = 0;
-	for ($i=4; $i<=9; $i++)
-	{
-	  if (isset($row[$i])) 
-	  {
-	    $zw = $zw + (int)$row[$i];
-	  }
-	};
-	if ($zw==0) {
-		$row[6]=1;
-	};
-
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-	or die("Fehler beim verbinden!");
-	$result = mysql_list_fields($DB_NAME,$TABLE)  or die("Query ERF...");
-	$field_num = mysql_num_fields($result);
-	for ($i=0; $i<$field_num; $i++)
-	{
-		$field_name[$i] =  mysql_field_name ($result, $i);
-	}
-	$q ="update $TABLE  SET ";
-	$q = $q."$field_name[1]=\"$row[1]\" ";
-	for ($i=2; $i<$field_num; $i++)
-	{
-	  if (isset($row[$i])) 
-	  {
-	     $q = $q.",$field_name[$i]=\"$row[$i]\" ";
-	  }
-	};
-	$q = $q."where id=\"$row[0]\" ";
-
-	//  echo $q;
-	if (mysql_select_db($DB_NAME) != TRUE) {
-		echo "Fehler DB";
-	};
-	/**/
-	$result = mysql_query($q) or die("update Fehler....$q.");
-	/**/
-	mysql_close($db);
-
-};
-
-
-function loeschen($id,$user)
-{
-	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
-	global $TABLE;
-
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)     or die("Fehler beim verbinden!");
-
-	if (mysql_select_db($DB_NAME) != TRUE) {
-		echo "Fehler DB";
-	};
-	/**/
-	$q = "delete from $TABLE where id=\"$id\" ";
-	//  echo $q;
-	$result = mysql_query($q) or die("Delete Fehler....$q.");
-	/**/
-	mysql_close($db);
-
-};
 
 function check_datum()
 {
@@ -787,7 +423,7 @@ function print_anmeld_erf($mfd_list, $id, $user, $ID)
 	  exit;
 	}
 
-	$next = 5;
+	$next = mfd_insert;
 	
 	$mfd_list["where"] = "id=\"0\"";
 	// Zugriff aufCON_Anmeldung
@@ -796,8 +432,6 @@ function print_anmeld_erf($mfd_list, $id, $user, $ID)
 	//
 	$row = mysql_fetch_array ($result);
 		
-	mysql_close($db);
-	
 	for ($i=0; $i<12; $i++)
 	{
 		$row[$i] = "";
@@ -832,53 +466,97 @@ function print_anmeld_erf($mfd_list, $id, $user, $ID)
 function print_anmeld_edit($mfd_list,$id,$user,$ID)
 {
 
-  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
   global $TAG;
-  global $ID;
-  global $PHP_SELF;
 
-  $next = 6;
-  $table = "con_anmeldung";
+  $next = mfd_update;
+	$mfd_list["where"] = "id=$id ";
+	// Zugriff aufCON_Anmeldung
+	
+	$result = mfd_data_result($mfd_list);
+	//
+	$row = mysql_fetch_array ($result);
+	
+	
+	$table = "con_tage";
+	$mfd_tage = make_mfd_table($table, $table);
+	$mfd_tage["where"] = "tag = $TAG";
+	
+	$result = mfd_data_result($mfd_tage);
+	$row_tage = mysql_fetch_array ($result);
+	// Die Tage daten werden an den Datensatz angehängts 20ff
+	for ($i=0; $i<10; $i++)
+	{
+	  $row[20+$i] = $row_tage[$i];
+	};
   
-  //Anzeigen von Contage als einfache Maske
-  //function view() {
-  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-  or die("Fehler beim verbinden!");
-
-  mysql_select_db($DB_NAME);
-
-  if (check_datum()==true)
-  {
-    exit;
-  }
-
-  // Zugriff aufCON_Anmeldung
-  $q = "select * from $table where id=$id";
-  $result = mysql_query($q) or die("Query BEARB.");
-  $field_num = mysql_num_fields($result);
-  //
-  $row = mysql_fetch_array ($result);
-  $len = mysql_fetch_row($result);
-  $err = 0;
-
-  mysql_close($db);
-  //  echo count($row);
-  /**/
-  if (count($row)==1)
-  {
-    for ($i=0; $i<$field_num; $i++)
-    {
-      $row[$i] = "";
-    };
-    $row[11] = get_user_id($user);
-    $row[2] = get_author($row[11]);
-    $row[3] = get_mail($row[11]);
-    $row[6] = 1;
-  }
   print_maske($id, $ID, $next, $row);
 }
 
-function print_maske($id, $ID, $next,$row)
+function print_anmeld_del($mfd_list,$id,$user,$ID)
+{
+  global $TAG;
+
+  $next = mfd_delete;
+  $mfd_list["where"] = "id=$id ";
+  // Zugriff aufCON_Anmeldung
+
+  $result = mfd_data_result($mfd_list);
+  //
+  $row = mysql_fetch_array ($result);
+  
+  $table = "con_tage";
+  $mfd_tage = make_mfd_table($table, $table);
+  $mfd_tage["where"] = "tag = $TAG";
+
+  $result = mfd_data_result($mfd_tage);
+  $row_tage = mysql_fetch_array ($result);
+  // Die Tage daten werden an den Datensatz angehängts 20ff
+  for ($i=0; $i<10; $i++)
+  {
+    $row[20+$i] = $row_tage[$i];
+  };
+
+  print_maske($id, $ID, $next, $row);
+}
+
+
+function print_anmeld_info($mfd_list,$id,$user,$ID)
+{
+
+  global $TAG;
+
+  $next = 0;
+  $mfd_list["where"] = "id=$id ";
+  // Zugriff aufCON_Anmeldung
+
+  $result = mfd_data_result($mfd_list);
+  //
+  $row = mysql_fetch_array ($result);
+
+
+  $table = "con_tage";
+  $mfd_tage = make_mfd_table($table, $table);
+  $mfd_tage["where"] = "tag = $TAG";
+
+  $result = mfd_data_result($mfd_tage);
+  $row_tage = mysql_fetch_array ($result);
+  // Die Tage daten werden an den Datensatz angehängts 20ff
+  for ($i=0; $i<10; $i++)
+  {
+    $row[20+$i] = $row_tage[$i];
+  };
+
+print_maske($id, $ID, $next, $row,true);
+}
+
+/**
+ * Maske fuer Anmeldung
+ * @param unknown $id
+ * @param unknown $ID
+ * @param unknown $next
+ * @param unknown $row
+ */
+function print_maske($id, $ID, $next,$row, $is_readonly=false)
 {	
 	global $TAG;
 	global $ID;
@@ -1043,18 +721,21 @@ function print_maske($id, $ID, $next,$row)
 		echo "<td width=\"100px\"> \n";
 		echo "&nbsp;";
 		echo "</td> \n";
-		echo "    </TR>\n";
-		echo "    <TR>\n";
-  		echo "        <TD><!-- Row:5, Col:1 -->\n";
-  		echo "        </TD>\n";
-		echo "        <TD colspan=2><!-- Row:5, Col:2 -->\n";
-		echo "        <INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">\n";
-		echo "        &nbsp;&nbsp;&nbsp;&nbsp;\n";
-		echo "        <INPUT TYPE=\"RESET\" VALUE=\"ABBRECHEN\">\n";
-		echo "        </TD>\n";
-		echo "        <TD><!-- Row:5, Col:2 -->\n";
-		echo "        </TD>\n";
-		echo "    </TR>\n";
+		echo "</TR>\n";
+		if (!$is_readonly)
+		{
+    	echo "<TR>\n";
+    	echo "<TD><!-- Row:5, Col:1 -->\n";
+    	echo "</TD>\n";
+    	echo "<TD colspan=2><!-- Row:5, Col:2 -->\n";
+    	echo "<INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">\n";
+    	echo "&nbsp;&nbsp;&nbsp;&nbsp;\n";
+    	echo "<INPUT TYPE=\"RESET\" VALUE=\"ABBRECHEN\">\n";
+    	echo "</TD>\n";
+    	echo "<TD><!-- Row:5, Col:2 -->\n";
+    	echo "</TD>\n";
+    	echo "</TR>\n";
+		}
 		echo "</TABLE>\n";
 		echo "</FORM>\n";
 	echo '</div>';
@@ -1128,42 +809,45 @@ function print_maske($id, $ID, $next,$row)
 //   echo $p_row[4].$p_row[5].$p_row[6].$p_row[7]."\n";
   
   switch ($p_md):
-  case 5: // Anlegen eines neuen des DAtensatzes
+  case mfd_insert: // Anlegen eines neuen des DAtensatzes
   	//  Insert SQL
   	mfd_insert($mfd_list, $p_row);
     $g_md= 0;
     break;
-  case 6: // Update eines bestehnden Datensatzes
+  case mfd_update: // Update eines bestehnden Datensatzes
   	// Update SQL
   	mfd_update($mfd_list,$p_row);
   	$g_md= 0;
   	break;
+  case mfd_delete:
+    mfd_delete($mfd_list, $p_row[0]);
+    $g_md=0;
   default:  // MAIN-Menu
   endswitch;
   
   
  	switch ($g_md):
-  case 1: // Erfassen eines neuen Datensatzes
+  case mfd_add: // Erfassen eines neuen Datensatzes
   		$menu = array (0=>array("icon" => "7","caption" => "ERFASSEN","link" => ""),
   				2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
   		);
   		break;
-  case 2: // Ansehen / INFO eines Datensatzes
+  case mfd_info: // Ansehen / INFO eines Datensatzes
   	$menu = array (0=>array("icon" => "7","caption" => "ANSEHEN","link" => ""),
   	8=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
   	);
   	break;
-  case 3: // Delete eines bestehenden Datensatzes
+  case mfd_del: // Delete eines bestehenden Datensatzes
   	$menu = array (0=>array("icon" => "7","caption" => "LÖSCHEN","link" => ""),
   	9=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
   	);
   	break;
-  case 4: // Anzigen Bearbeiten Form
+  case mfd_edit: // Anzigen Bearbeiten Form
   	$menu = array (0=>array("icon" => "7","caption" => "BEARBEITEN","link" => ""),
   	2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
   	);
   	break;
-  case 10:  // Meine Anmelde Liste
+  case mfd_list:  // Meine Anmelde Liste
   	$menu = array (0=>array("icon" => "7","caption" => "MEINE ANMELDUNGEN","link" => ""),
   	9=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
   	);
@@ -1175,12 +859,9 @@ function print_maske($id, $ID, $next,$row)
       break;
   default:  // MAIN-Menu
   	$menu = array (0=>array("icon" => "99","caption" => "CON-ANMELDUNG","link" => ""),
-  	1=>array("icon" => "_add","caption" => "Neu","link" => "$PHP_SELF?md=1&ID=$ID&TAG=$TAG"),
-  //	2=>array("icon" => "_folder","caption" => "Dienste","link" => "larp_anmelde_dienste.php?md=0&ID=$ID&TAG=$TAG"),
-  	3=>array("icon" => "_list","caption" => "Löschen","link" => "$PHP_SELF?md=3&ID=$ID&TAG=$TAG"),
-  	5=>array("icon" => "_list","caption" => "alle Anmeldungen","link" => "$PHP_SELF?md=10&ID=$ID&TAG=$TAG"),
-  	6=>array("icon" => "_list","caption" => "Con Liste","link" => "$PHP_SELF?md=11&ID=$ID&TAG=$TAG"),
-  //	98=>array ("icon" => "_list","caption" => "Reports ","link" => "larp_anmelde_rep.php?md=0&ID=$ID"),
+  	1=>array("icon" => "_add","caption" => "Neu","link" => "$PHP_SELF?md=".mfd_add."&ID=$ID&TAG=$TAG"),
+  	5=>array("icon" => "_list","caption" => "alle Anmeldungen","link" => "$PHP_SELF?md=".mfd_list."&ID=$ID&TAG=$TAG"),
+//  	6=>array("icon" => "_list","caption" => "Con Liste","link" => "$PHP_SELF?md=".mfd_list."&ID=$ID&TAG=$TAG"),
   	9=>array("icon" => "_stop","caption" => "Zurück","link" => "larp.php?md=0&ID=$ID&TAG=$TAG")
   	);
   	endswitch;
@@ -1190,26 +871,26 @@ function print_maske($id, $ID, $next,$row)
   	//echo $TAG;
   
 	switch ($g_md):
-  case 1:
+  case mfd_add:
   		//
   		print_anmeld_erf($mfd_list,$g_id,$user,$ID);
   	break;
-  case 2:
-  	Print_info($mfd_list,$g_id, $user, $ID,$TAG);
+  case mfd_info:
+    print_anmeld_info($mfd_list,$g_id,$user,$ID);
   	break;
-  case 3:
+  case mfd_del:
   	//
-  	print_loeschen($user);
-  	break;
-  case 4:
+    print_anmeld_del($mfd_list,$g_id,$user,$ID);
+    break;
+  case mfd_edit:
   	//
   	print_anmeld_edit($mfd_list,$g_id,$user,$ID);
   	break;
-  case 10:
-  	info_liste($spieler_id,$ID);
-  	break;
-  case 11:
-  	tage_liste($spieler_id,$ID,$TAG);
+//   case 11:
+//    tage_liste($spieler_id,$ID,$TAG);
+//   	break;
+  case mfd_list:
+   	info_liste($spieler_id,$ID);
   	break;
   default:
   	print_liste($user);

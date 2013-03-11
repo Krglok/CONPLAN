@@ -1325,10 +1325,11 @@ function print_mfd_edit_datum($titel,$pos, $data, $width, $is_readonly)
 /**
  * Erstellt eine Textarea als Input. Die Textarea wird durch ckEditor ersetz
  * bei readonly=true wird nur der Text angezeigt
- * @param unknown $titel  des Feldes
- * @param unknown $pos    index des $row
- * @param unknown $data		vorhandene Daten
- * @param unknown $is_readonly true = als Text / false = als Eingabe feld
+ * $data ist ein STRING, kein ARRAY
+ * @param  $titel  des Feldes
+ * @param  $pos    index des $row
+ * @param  $data		vorhandene Daten als STRING
+ * @param  $is_readonly true = als Text / false = als Eingabe feld
  */
 function print_mfd_edit_text($titel,$pos, $data, $is_readonly)
 {
@@ -1350,24 +1351,10 @@ function print_mfd_edit_text($titel,$pos, $data, $is_readonly)
     {
       $anz=5;
     }
-//    echo count(explode("\n",$data));
     $lines = explode("\n",$data);
-    if (count(explode("\n",$data)) == 1)
-    {
-      // Zeige eine Leeres Textfeld
-      echo "<td >\n";
-      echo "<textarea   name=\"$name\" readonly COLS=\"60\" ROWS=\"5\" >"; //class=\"ckeditor\"
-      echo $data;
-      echo "</textarea>";
-      echo "area";
-      echo "</td >\n";
-    } else
-    {
-      // schreibe text als normale Ausgabe
-      echo "block";
-      print_textblock_td_bg($lines,"white");
-      echo "<INPUT TYPE=\"hidden\" NAME=\"$name\"   VALUE=\"$data\">\n";
-    } 
+    print_textblock_td_bg($lines,"white");
+    echo "<INPUT TYPE=\"hidden\" NAME=\"$name\"   VALUE=\"$data\">\n";
+//    } 
   } else
   {
     // ERstelle einen Texteditor
@@ -1378,6 +1365,8 @@ function print_mfd_edit_text($titel,$pos, $data, $is_readonly)
     echo "<td >\n";
     $size = $anz*12;
     $sizepx= $size."px";
+    $widthpx = (60*8)."px";
+    
     echo "<textarea   name=\"$name\"  COLS=\"60\" ROWS=\"$anz\" >"; //class=\"ckeditor\"
     echo $data;
     echo "</textarea>";
@@ -1388,6 +1377,7 @@ function print_mfd_edit_text($titel,$pos, $data, $is_readonly)
     toolbar: 'ForumToolbar',
     removeButtons : 'Table',
     uiColor : '#F1E8DF',
+    width  : '$widthpx',
     height : '$sizepx'
   } );";
     echo "  </script>";
