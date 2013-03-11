@@ -122,10 +122,9 @@ function print_liste($ID,$TAG,$LISTE)
 	echo "  <TD\n>"; //Daten bereich der Gesamttabelle
 
 	//  echo "<table border=0 BGCOLOR=\"\">\n";
-	echo "\t <TABLE  BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"1\" >\n";
+	echo "\t <TABLE  BORDER=\"1\"  CELLPADDING=\"0\" CELLSPACING=\"0\" BORDERCOLOR=\"#EDDBCB\" BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\" >\n";
 
 	// Kopfzeile
-	echo "<hr>\n";
 	//Liste der Datensätze
 	while ($row = mysql_fetch_row($result))
 	{
@@ -242,8 +241,7 @@ function print_info($id,$ID,$TAG,$LISTE)
 	echo "<INPUT TYPE=\"hidden\" NAME=\"id\"  VALUE=\"$id\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"TAG\" VALUE=\"$TAG\">\n";
 
-	echo "<TABLE WIDTH=\"\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"2\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\"
-			BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
+	echo "<TABLE WIDTH=\"\" BORDER=\"1\"  CELLPADDING=\"0\" CELLSPACING=\"0\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\" BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
 
 	echo "<tr>";
 	echo "\t<td width=30>$row[1]</td>\n";

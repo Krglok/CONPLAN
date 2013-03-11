@@ -90,8 +90,8 @@ function print_liste()
 
 	echo "  <TD\n>"; //Daten bereich der Gesamttabelle
 	echo "<FONT COLOR=\"#000000\" SIZE=3 FACE=\"Comic Sans MS\">";
-	//  BACKGROUND=\"images/paper.jpg\"
-	echo "<table border=1 BGCOLOR=\"\" BACKGROUND=\"images/paper.jpg\" >\n";
+	//  BACKGROUND=\"images/paper.jpg\" BACKGROUND=\"layout/back/papermiddlecenter.jpg\"
+	echo "<table border=1 BGCOLOR=\"\"  CELLPADDING=\"0\" CELLSPACING=\"0\" BORDERCOLOR=\"#EDDBCB\" BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\" >\n";
 
 	//Kopfzeile
 	echo "<tr>\n";
@@ -400,9 +400,6 @@ print_kopf($logo_typ,$header_typ,"Öffentlich",$anrede,$menu_item);
 
 $TABLE = "bib_titel";
 $TABLE1 = "bib_item";
-
-
-print_md();
 
 switch ($md):
 case 0:  // MAIN-Menu

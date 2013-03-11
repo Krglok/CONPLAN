@@ -135,7 +135,7 @@ function print_sp_liste($id)
         {
           echo "\t<td>&nbsp;</td>\n";
         }
-      }elseif ($i==5)
+      }elseif ($i==4)
       {
         echo "\t<td><a href=\"mailto:$row[$i]\"> $row[$i]</a></td>\n";
       } else
@@ -191,7 +191,7 @@ function print_spieler_edit($id,$ID)
   echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$id\">\n";
 
   echo "<table >\n";
-  echo "Bearbeiten <b>deiner</b> Spieler Daten\n";
+  echo "Bearbeiten <b>deine</b> Spieler Daten\n";
 
   echo "<tr>\n";
   echo "\t<td WIDTH=\"75\"></td>\n"; //<b>ID</b>
@@ -304,7 +304,7 @@ function print_user_edit($id,$ID)
   //	echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$id\">\n";
 
   echo "<table  >\n";
-  echo "<CAPTION>Bearbeiten <b>deiner</b> User Daten</CAPTION>\n";
+  echo "<CAPTION>Bearbeiten <b>deine</b> User Daten</CAPTION>\n";
   echo "<tr>";
   echo "  \t<td><b>Username</b></td>\n";
   echo "  <td><INPUT TYPE=\"TEXT\" NAME=\"row[2]\" SIZE=30 MAXLENGTH=30 VALUE=\"$user\">&nbsp;</td>\n";
@@ -468,17 +468,11 @@ if (is_user()==FALSE)
 switch ($p_md):
 case 3:
   update_sc($p_id,$p_row);
-  $md = 1;
-  $param = "";
-  header_reload($PHP_SELF, $md, $ID, $param);
-  exit;
+  $md = 0;
   break;
 case 5:
   update_user($p_id,$p_row);
-  $md = 1;
-  $param = "";
-  header_reload($PHP_SELF, $md, $ID, $param);
-  exit;
+  $md = 0;
   break;
 default:
   break;

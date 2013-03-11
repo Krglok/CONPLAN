@@ -101,7 +101,7 @@ $anrede = array("formel"=>"Sei gegrüsst Freund","name"=>"Gast");
 
 // Menu Icons, die Icons muesse GIF sein !!!!
 $menu_add 		= "_add";		// Insert Datensatz
-$menu_db 		= "_db";		// db zugriff
+$menu_db 		  = "_db";		// db zugriff
 $menu_del 		= "_del";   	// delete Datensatz
 $menu_edit 		= "_edit";		// edit Datensatz
 $menu_folder	= "_folder";	// Weitere Menupage
@@ -158,7 +158,9 @@ define("lvl_subsl",63);
 define("lvl_sl",15);
 define("lvl_admin",3);
 
-define("itemtyp_")
+define("itemtyp_link",0);
+define("itemtyp_pages",1);
+define("itemtyp_daten",2);
 
 function GET_md ($value = 0) 
 {

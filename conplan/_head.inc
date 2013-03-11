@@ -36,6 +36,34 @@ function header_reload($name, $md, $ID, $param)
 
 
 /**
+ * erstellt einne html Header mit css-Layout
+ * @param unknown $NAME, enthält den Seitennamen
+ */
+function print_header_admin ($NAME)
+{
+  global $grp_name ;
+  global $layout_path ;
+  global $version ;
+
+  echo "<HTML>\n";
+  echo "<!-- PHP ".phpversion()." / Drachenhorst Framework $version / 2013-->\n";
+  echo "<HEAD>\n";
+  echo "<META NAME=\"Description\" CONTENT=\"$grp_name , ADMIN_HEADER\">\n";
+  echo "<META NAME=\"Keywords\" CONTENT=\"LARP $NAME\">\n";
+  echo "<META NAME=\"Author\" CONTENT=\"Dipl. Ing. Olaf Duda\">\n";
+  echo"  <link rel=\"stylesheet\" type=\"text/css\" href=\"$layout_path/konzept1.css\">  \n";
+  echo"  <script src=\"js/test1.js\" type=\"text/javascript\"></script>  \n";
+  echo"  <script src=\"/ckeditor/ckeditor.js\"></script> \n";
+  echo " <link rel=\"stylesheet\" href=\"http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css\">";
+  echo"  <link href=\"js/jquery-ui-1.10.1.custom.css\" rel=\"stylesheet\"> ";
+  echo"  <script src=\"js/jquery-1.9.1.js\"></script> ";
+  echo"  <script src=\"js/jquery-ui-1.10.1.custom.js\"></script> ";
+  echo "</HEAD>\n";
+  echo "\n";
+}
+
+
+/**
  * erstellt einne html Header mit css-Layout 
  * @param unknown $NAME, enthält den Seitennamen
  */
@@ -52,11 +80,15 @@ function print_header ($NAME)
 	echo "<META NAME=\"Description\" CONTENT=\"$grp_name \">\n";
 	echo "<META NAME=\"Keywords\" CONTENT=\"LARP $NAME\">\n";
 	echo "<META NAME=\"Author\" CONTENT=\"Dipl. Ing. Olaf Duda\">\n";
-	echo"  <title>$grp_name $NAME </title> \n";
-	echo"  <link rel=\"stylesheet\" type=\"text/css\" href=\"$layout_path/konzept1.css\">  \n";
-    echo"  <script src=\"/ckeditor/ckeditor.js\" type=\"text/javascript\"></script> \n";
-	echo"  <script src=\"js/test1.js\" type=\"text/javascript\"></script>  \n";
-	echo "</HEAD>\n";
+  echo"  <link rel=\"stylesheet\" type=\"text/css\" href=\"$layout_path/konzept1.css\">  \n";
+  echo"  <script src=\"js/test1.js\" type=\"text/javascript\"></script>  \n";
+  echo"  <script src=\"/ckeditor/ckeditor.js\"></script> \n";
+  echo " <link rel=\"stylesheet\" href=\"http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css\">";
+  echo"  <link href=\"js/jquery-ui-1.10.1.custom.css\" rel=\"stylesheet\"> ";
+  echo"  <script src=\"js/jquery-1.9.1.js\"></script> ";
+  echo"  <script src=\"js/jquery-ui-1.10.1.custom.js\"></script> ";
+  //javascript:document.getElementsByTagName('head')[0].appendChild(document.createElement('script')).setAttribute('src','http://www.cs.huji.ac.il/~irush/scripts/antsbml.js');
+		echo "</HEAD>\n";
 	echo "\n";
 }
 
@@ -86,8 +118,29 @@ function print_body_ende()
   echo "</html>\n";
 };
 
+/**
+ * Ermittelt den Namen eines Menu-Moduls
+ * oder gibt den Uebergabewert zurueck
+ * @param unknown $bereich
+ * @return scriptname;
+ */
 function get_home($bereich)
 {
+  global $BEREICH;
+  global $PHP_SELF;
+  if ($bereich == "")
+  {
+    $bereich = $BEREICH;
+  }
+  if($bereich == "PHP_SELF")
+  {
+    return $PHP_SELF;
+  }
+  if ($bereich == "PUBLIC")
+  {
+    return $GLOBALS["php_main"];
+    
+  } 
   if ($bereich == "ADMIN")
   {
     return $GLOBALS["php_admin"];
@@ -114,8 +167,7 @@ function get_home($bereich)
     
   }else
   {
-    return $GLOBALS["php_main"];
-    
+    return $bereich;
   }
 }
 
@@ -179,14 +231,45 @@ function print_kopf ($logo_typ, $header_typ,$bereich,$anrede, $menu_item)
   echo "\n\n";
 };
 
-
-/**
- * Kommentar fuer anfang menu/daten
- */
-function print_md()
+function print_kopf_druck ($logo_typ, $header_typ)
 {
-  echo "<!--  Menu und Daten   -->\n";
+  $info = "Login aufrufen";
+//   $formel = $anrede["formel"];
+//   $name   = $anrede["name"];
+  //  echo "<div id=\"div_1\">\n";
+  $style = $GLOBALS["style_header_1"];
+  echo "  <div $style >\n";
+  $style = $GLOBALS["style_headerleft"];
+  echo "    <div $style >\n";
+  print_header_icon($logo_typ);
+  echo "    </div>\n";
+  $style = $GLOBALS['style_headermain'];
+  echo "    <div $style >\n";
+  print_header_icon($GLOBALS["header_typ"]);
+  echo "    </div>\n";
+//   $style = $GLOBALS['style_headerright'];
+//   echo "    <div $style >\n";
+//   echo "      <p>$bereich</p>\n";
+//   echo "      <p>$formel</p>\n";
+//   echo "      <p>$name</p>\n";
+//   if ($menu_item['icon'] != "0")
+//   {
+//   $style = "id=\"headermenuitem\""; //$GLOBALS['style_menu_item'];
+//   echo "      <div $style >\n";
+//   print_menu_item($menu_item);
+//   //           print_menu_icon($typ,$info);
+//   //           print_menu_ref("Login", $ref);
+//   echo "    	</div>\n";
+//   } else
+//   {
+//     $caption = $menu_item['caption'];
+//     echo "      <p>$caption</p>\n";
+//   }
+//   echo "    </div>\n";
+    echo "  </div>\n";
+  echo "\n";
 };
+
 
 /**
  * Kommentar fuer Ende Menu/Daten

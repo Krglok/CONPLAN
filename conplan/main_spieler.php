@@ -103,8 +103,6 @@ $menu = array (0=>array("icon" => "99","caption" => "SPIELER","link" => ""),
 		30=>array("icon" => "_stop","caption" => "Zurück","link" => "main.php?md=0")
 );
 
-print_md();
-
 print_menu($menu);
 
 switch ($md):

@@ -49,33 +49,6 @@ include_once '_lib.inc';
 include_once '_head.inc';
 
 
-/**
- * erstellt einne html Header mit css-Layout
- * @param unknown $NAME, enthält den Seitennamen
- */
-function print_header_admin ($NAME)
-{
-  global $grp_name ;
-  global $layout_path ;
-  global $version ;
-
-  echo "<HTML>\n";
-  echo "<!-- PHP ".phpversion()." / Drachenhorst Framework $version / 2013-->\n";
-  echo "<HEAD>\n";
-  echo "<META NAME=\"Description\" CONTENT=\"$grp_name , ADMIN_HEADER\">\n";
-  echo "<META NAME=\"Keywords\" CONTENT=\"LARP $NAME\">\n";
-  echo "<META NAME=\"Author\" CONTENT=\"Dipl. Ing. Olaf Duda\">\n";
-  echo"  <title>$grp_name $NAME </title> \n";
-  echo"  <link rel=\"stylesheet\" type=\"text/css\" href=\"$layout_path/konzept1.css\">  \n";
-  echo"  <script src=\"js/test1.js\" type=\"text/javascript\"></script>  \n";
-  echo"  <script src=\"/ckeditor/ckeditor.js\"></script> \n";
-  echo " <link rel=\"stylesheet\" href=\"http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css\">";
-  echo"  <link href=\"js/jquery-ui-1.10.1.custom.css\" rel=\"stylesheet\"> ";
-  echo"  <script src=\"js/jquery-1.9.1.js\"></script> ";
-  echo"  <script src=\"js/jquery-ui-1.10.1.custom.js\"></script> ";
-  echo "</HEAD>\n";
-  echo "\n";
-}
 
 function POST_editor1($value = "")
 {

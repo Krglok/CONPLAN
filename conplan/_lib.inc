@@ -46,6 +46,22 @@ define("main_login",7);
 define("main_help",99);
 
 
+function print_textblock_td_bg($lines, $bgcolor = 'white')
+{
+  if (count($lines)>0)
+  {
+    echo "\t<td bgcolor=\"$bgcolor\" width=\"350px\">\n";
+    for ($i=0; $i<count($lines); $i++)
+    {
+      echo "$lines[$i]";
+    }
+    echo "\t</td>\n";
+  } else
+  {
+  echo "\t<td>&nbsp;</td>\n";
+  }
+}
+
 function print_textblock_td($lines)
 {
   if (count($lines)>0)
@@ -53,7 +69,7 @@ function print_textblock_td($lines)
     echo "\t<td>\n";
     for ($i=0; $i<count($lines); $i++)
     {
-    echo "\t$lines[$i]\n";
+    echo "$lines[$i]";
     }
     echo "\t</td>\n";
 	} else

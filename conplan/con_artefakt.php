@@ -40,7 +40,7 @@ include_once '_mfd_edit.inc';
 // <script src="/ckeditor/ckeditor.js"></script>
 // </head>
 
-  $BEREICH = 'ADMIN';
+  $BEREICH = 'SL';
   
   $md     = GET_md(0);
   $id     = GET_id(0);
@@ -61,8 +61,7 @@ include_once '_mfd_edit.inc';
   if ($ID == "")
   {
     $session_id = 'FFFF';
-    echo "session";
-    //  header ("Location: main.php");  // Umleitung des Browsers
+    header ("Location: main.php");  // Umleitung des Browsers
     exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
     // Code ausgeführt wird.
   }
@@ -70,14 +69,13 @@ include_once '_mfd_edit.inc';
   if (is_admin()==FALSE)
   {
     $session_id = 'FFFF';
-    echo "Admin";
-    //  header ("Location: main.php");  // Umleitung des Browsers
+    header ("Location: main.php");  // Umleitung des Browsers
     exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
     // Code ausgeführt wird.
   }
   
   
-  print_header_admin("Admin Bereich");
+  print_header_admin("SL Bereich");
   
   print_body(2);
   
@@ -94,11 +92,11 @@ include_once '_mfd_edit.inc';
   
   
   // fuer die Tabellen Operationen
-  $ref_mfd = "download";
+  $ref_mfd = "artefakte";
   
-    $home = "admin_main.php";
-    // hier wird der Editor eingebuden
-    print_mfd_editor($ref_mfd,$md, $p_md, $p_row,$id,$daten,$sub,$home);
+  $home = "con_main.php";
+  // hier wird der Editor eingebuden
+  print_mfd_editor($ref_mfd,$md, $p_md, $p_row,$id,$daten,$sub,$home);
   
   print_md_ende();
 

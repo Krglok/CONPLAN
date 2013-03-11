@@ -284,8 +284,8 @@ $BEREICH = 'SL';
 $md     = GET_md(0);
 $daten  = GET_daten("");
 $sub    = GET_sub("main");
-$ID     = GET_SESSIONID("");
 
+$ID     = GET_SESSIONID("");
 session_start($ID);
 $user       = $_SESSION["user"];
 $user_lvl   = $_SESSION["user_lvl"];
@@ -309,7 +309,7 @@ if (is_sl()==FALSE)
 }
   
   
-print_header("Admin Bereich");
+print_header("SL Bereich");
 
 print_body(2);
 
@@ -329,9 +329,9 @@ case 10:
 	break;
 default:
 	$menu = array (0=>array("icon" => "0","caption" => "SL-MAIN","link" => ""),
-	1=>array("icon" => "_list","caption" => "Legenden","link" => "con_leg_liste.php?md=0&ID=$ID"),
-	2=>array("icon" => "_list","caption" => "Magie","link" => "con_mag_liste.php?md=0&ID=$ID"),
-	3=>array("icon" => "_list","caption" => "Artefakte","link" => "con_art_liste.php?md=0&ID=$ID"),
+	1=>array("icon" => "_list","caption" => "Legenden","link" => "con_legende.php?md=0&ID=$ID"),
+	2=>array("icon" => "_list","caption" => "Magie","link" => "con_magie.php?md=0&ID=$ID"),
+	3=>array("icon" => "_list","caption" => "Artefakte","link" => "con_artefakt.php?md=0&ID=$ID"),
 //	4=>array("icon" => "_folder","caption" => "Planung","link" => "con_liste.php?md=0&ID=$ID"),
 	5=>array("icon" => "_folder","caption" => "SL-Forum","link" => "con_forum.php?md=0&ID=$ID"),
 	6=>array("icon" => "_folder","caption" => "NSC","link" => "con_nsc_liste.php?md=0&ID=$ID"),

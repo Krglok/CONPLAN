@@ -106,7 +106,6 @@ $menu = array (0=>array("icon" => "99","caption" => "DAS LAND","link" => "land.h
 		19=>array("icon" => "_stop","caption" => "Zurück","link" => "main.php?md=0")
 );
 
-print_md();
 print_menu($menu);
 switch ($md):
 case 1:

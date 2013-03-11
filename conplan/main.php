@@ -80,8 +80,9 @@ include_once '_log_lib.inc';
 
 function get_menu($bereich)
 {
+  global $PHP_SELF;
 	// manuelles main menu
-	$menu_main = array (0=>array("icon" => "0","caption" => "Hauptseite","link" => "ss","itemtyp"=>"0"),
+	$menu = array (0=>array("icon" => "0","caption" => "Hauptseite","link" => "ss","itemtyp"=>"0"),
 			1=>array ("icon" => "_page","caption" => "Übersicht","link" => "main.html","itemtyp"=>"2"),
 			2=>array ("icon" => "_list","caption" => "News","link" => "$PHP_SELF?md=5","itemtyp"=>"0"),
 			3=>array ("icon" => "_list","caption" => "Termine","link" => "$PHP_SELF?md=4","itemtyp"=>"0"),
@@ -105,7 +106,7 @@ function get_menu($bereich)
 			50=>array ("icon" => "_help","caption" => "Ich","link" => "ich.html","itemtyp"=>"2"),
 			51=>array ("icon" => "_help","caption" => "Impressum","link" => "impressum.html","itemtyp"=>"2")
 	);
-	return $main_menu;
+	return $menu;
 }
 
 // ---------------------------------------------------------------
@@ -136,7 +137,7 @@ print_kopf($logo_typ,$header_typ,"Öffentlich",$anrede,$menu_item);
 
 //prueft ob ein dynamisches menu vorhanden ist
   $menu = get_menu($BEREICH);
-	print_menu($menu_main);
+	print_menu($menu);
 
 // Auswahl der Aktion durch $md
 // und erstellen das Datenbereiches

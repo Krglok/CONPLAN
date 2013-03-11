@@ -121,7 +121,7 @@ if ($ID != $SID)
 
 if (is_user()==FALSE)
 {
-  echo "no lvl";	
+//  echo "no lvl";	
   header ("Location: main.php?md=0&ID=$ID");  // Umleitung des Browsers
     exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
   // Code ausgeführt wird.

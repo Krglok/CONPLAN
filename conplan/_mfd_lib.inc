@@ -52,10 +52,31 @@ define("mfd_edit",12);
 define("mfd_del", 13);
 define("mfd_info", 14);
 define("mfd_check", 15);
+define("mfd_editor", 16);
 
 define("mfd_insert", 21);
 define("mfd_update", 22);
 define("mfd_delete", 23);
+
+define("mfd_col_insert", 31);
+define("mfd_col_update", 32);
+define("mfd_col_delete", 33);
+
+define("mfd_col_list",40);
+define("mfd_col_add", 41);
+define("mfd_col_edit",42);
+define("mfd_col_del", 43);
+define("mfd_col_info", 44);
+
+define("mfd_edit_insert", 51);
+define("mfd_edit_update", 52);
+define("mfd_edit_delete", 53);
+
+define("mfd_edit_list",60);
+define("mfd_edit_add", 61);
+define("mfd_edit_edit",62);
+define("mfd_edit_del", 63);
+define("mfd_edit_info", 64);
 
 
 /**
@@ -770,13 +791,19 @@ function mfd_insert($mfd_list, $row)
   $q = $q."$field_name[1]";
   for ($i=2; $i<$field_num; $i++)
   {
-    $q = $q.",$field_name[$i]";
+	  if (isset($row[$i])) 
+	  {
+	    $q = $q.",$field_name[$i]";
+	  }
   };
-
-  $q = $q.") VALUES (\"$row[1]\" ";
+  $q = $q.") VALUES (\"".sql_textcheck($row[1])."\" ";
   for ($i=2; $i<$field_num; $i++)
   {
-    $q = $q.",\"$row[$i]\" ";
+	  if (isset($row[$i])) 
+	  {
+      $row[$i] = sql_textcheck($row[$i]);
+      $q = $q.",\"$row[$i]\" ";
+	  }
   };
   $q = $q.")";
   if (mysql_select_db($DB_NAME) != TRUE)
@@ -804,6 +831,8 @@ function mfd_insert_name($name,$row)
 
 /**
  * Macht ein Tabellen update mit mfd
+ * das erste Feld muss der PK sein. das zweite Feld darf kein Checkbox-wert sein !
+ * alle nicht belegten keys werden ignoriert
  * @param unknown $mfd_list 	// mfd defintion
  * @param unknown $row		// Datensatz Row mit Datenfelder
  */
@@ -819,15 +848,26 @@ function mfd_update($mfd_list, $row)
   $order = "";
   $field_name = make_mfd_fieldlist($fields);
   $field_num = count($field_name);
+  $col_num   = count($row);
+//   if ($field_num != $col_num)
+//   {
+//     $message = "Fileder = $field_num <> Spalten $col_num ";
+//     die ($message);
+//   }
+  
   $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
   or die("Fehler beim verbinden!");
 
   // der PK (ID) muss in der Fieldmenge enthalten sein, als erster!!
   $q ="update  $table  set ";
-  $q = $q.$field_name[1]."=\"".$row[1]."\"";
+  $q = $q.$field_name[1]."=\"".sql_textcheck($row[1])."\"";
   for ($i=2; $i<$field_num; $i++)
   {
-    $q = $q.",".$field_name[$i]."=\"".$row[$i]."\" ";
+	  if (isset($row[$i])) 
+	  {
+      $row[$i] = sql_textcheck($row[$i]);
+      $q = $q.",".$field_name[$i]."=\"".$row[$i]."\" ";
+	  }
   };
   $q = $q." where $where";
   if (mysql_select_db($DB_NAME) != TRUE)
@@ -835,7 +875,15 @@ function mfd_update($mfd_list, $row)
     echo "Fehler DB";
   }
   //  echo $q;
-  $result = mysql_query($q) or die("UpdateFehler..$table..$q.");
+  $result = mysql_query($q); // or die("UpdateFehler..$table..$q.");
+  if (!$result) {
+    $message  = ' ' . mysql_error() . "\n";
+    $message .= 'Query: ' . $q;
+    die($message);
+  
+  } else
+  
+  
   mysql_close($db);
 
 };
@@ -886,6 +934,13 @@ function get_fieldtyp_width($typ)
     return 8;
   }
   if(stripos($typ,"varchar")!== false)
+  {
+    $s =  explode("(",$typ);
+    $len = explode(")",$s[1]);
+    //echo $len[0];
+    return $len[0];
+  }
+  if(stripos($typ,"char")!== false)
   {
     $s =  explode("(",$typ);
     $len = explode(")",$s[1]);
@@ -1205,17 +1260,19 @@ function print_mfd_edit_spalte($titel,$pos, $data, $width, $is_readonly)
     $readonly = "";
   }
 
-  if($width >75)
+  if($width >100)
   {
-    $size = 75;
+    $size = 100;
   } else
   {
     $size = $width;
   }
+  $isize = $size*5;
   $titel = ucwords(strtolower($titel));
-  echo "<td width=75 ><i>$titel</i></td>\n";
-  echo "<td width=50>\n";
-  echo "<INPUT TYPE=\"TEXT\" NAME=\"row[$pos]\" SIZE=$size MAXLENGTH=$width $readonly VALUE=\"$data\"\n";
+  echo "<td width=\"75px\" ><i>$titel</i></td>\n";
+  echo "<td width=\"$isize\">\n";
+  echo "<INPUT TYPE=\"TEXT\" NAME=\"row[$pos]\" SIZE=$size MAXLENGTH=$width $readonly VALUE=\"$data\">\n";
+//  echo $size."/".$isize;
   echo "</td>\n";
 }
 
@@ -1259,24 +1316,51 @@ function print_mfd_edit_text($titel,$pos, $data, $is_readonly)
   $name = "row[$pos]";  // dies ist der Name des Elementres das ersetzt werden soll
   $titel = ucwords(strtolower($titel));
   echo "  <td width=75px ><i>$titel</i></td>\n";
-  echo "<td >\n";
-  if ($is_readonly)
-  {
-    $anz  = count(explode("\n",$data));
-    if ($anz < 5) {
-      $anz=5;
-    }
-    $len = strlen($data) / 60;
-    if($len>$anz) {
-      $anz=$len+$anz;
-    }
-
-    echo "<textarea   name=\"$name\" readonly COLS=\"60\" ROWS=\"$anz\" >"; //class=\"ckeditor\"
-    echo $data;
-    echo "</textarea>";
+  $anz  = count(explode("\n",$data));
+  $len = strlen($data) / 60;
+  if($len>$anz) {
+    $anz=$len+$anz;
   } else
   {
-    echo "<textarea   name=\"$name\"  COLS=\"60\" ROWS=\"14\" >"; //class=\"ckeditor\"
+    $anz=$len;
+  }
+  // Readonly für Info Anzeige !!
+  if ($is_readonly)
+  {
+    if ($anz < 5) 
+    {
+      $anz=5;
+    }
+//    echo count(explode("\n",$data));
+    $lines = explode("\n",$data);
+    if (count(explode("\n",$data)) == 1)
+    {
+      // Zeige eine Leeres Textfeld
+      echo "<td >\n";
+      echo "<textarea   name=\"$name\" readonly COLS=\"60\" ROWS=\"5\" >"; //class=\"ckeditor\"
+      echo $data;
+  //    echo $anz;
+      echo "</textarea>";
+//      echo "area";
+      echo "</td >\n";
+    } else
+    {
+      // schreibe text als normale Ausgabe
+//      echo "block";
+      print_textblock_td_bg($lines,"white");
+      echo "<INPUT TYPE=\"hidden\" NAME=\"$name\"   VALUE=\"$data\">\n";
+    } 
+  } else
+  {
+    // ERstelle einen Texteditor
+    if ($anz < 15) 
+    {
+      $anz=15;
+    }
+    echo "<td >\n";
+    $size = $anz*12;
+    $sizepx= $size."px";
+    echo "<textarea   name=\"$name\"  COLS=\"60\" ROWS=\"$anz\" >"; //class=\"ckeditor\"
     echo $data;
     echo "</textarea>";
 
@@ -1286,12 +1370,13 @@ function print_mfd_edit_text($titel,$pos, $data, $is_readonly)
     toolbar: 'ForumToolbar',
     removeButtons : 'Table',
     uiColor : '#F1E8DF',
-    height : '250px'
+    height : '$sizepx'
   } );";
     echo "  </script>";
+//  echo $sizepx;
   }
   echo "\t&nbsp;<br>\n";
-  echo "</td>\n";
+//  echo "</td>\n";
 
 }
 

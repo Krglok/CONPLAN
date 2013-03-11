@@ -23,6 +23,7 @@ include_once "_lib.inc";
 include_once "_head.inc";
 include_once '_edit.inc';
 include_once '_mfd_lib.inc';
+include_once "_mfd_edit.inc";
 
 
 
@@ -44,6 +45,7 @@ $BEREICH = 'ADMIN';
 $md     = GET_md(0);
 $id     = GET_id(0);
 $daten  = GET_daten("");
+$sub    = GET_sub("");
 
 
 $ID     = GET_SESSIONID("");
@@ -97,8 +99,9 @@ $parent = "admin_bib_config.php";
 // fuer die Tabellen Operationen
 $ref_mfd = "bib_thema";
 
-// hier wird der Editor eingebuden
-include_once "_mfd_edit.inc";
+  $home = "admin_bibconfig.php";
+  // hier wird der Editor eingebuden
+  print_mfd_editor($ref_mfd,$md, $p_md, $p_row,$id,$daten,$sub,$home);
 
 print_md_ende();
 

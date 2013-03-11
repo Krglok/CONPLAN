@@ -62,23 +62,25 @@ Ansonsten bleibt der Inhalt der Seiten identisch.
 include_once "_config.inc";
 include_once "_lib.inc";
 include_once "_head.inc";
+include_once '_mfd_lib.inc';
 
 //-----------------------------------------------------------------------------
 function print_liste($user)
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $PHP_SELF;
-	global $TABLE;
 	global $TAG;
 	global $ID;
 
+	$table = "con_anmeldung";
+	
 	$user_id = get_user_id($user);
 
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
 
 	mysql_select_db($DB_NAME);
 
-	$q = "select * from $TABLE where tag=\"$TAG\" order by id";
+	$q = "select * from $table where tag=\"$TAG\" order by id";
 	$result = mysql_query($q)  or die("Query Fehler...");
 
 
@@ -113,25 +115,25 @@ function print_liste($user)
 			//      echo "\t<td><b>Orga</b></td>\n";
 			break;
 		case 4:
-			echo "\t<td><b>Abw</b></td>\n";
+			echo "\t<td><i>Abw</i></td>\n";
 			break;
 		case 5:
-			echo "\t<td><b>Tav</b></td>\n";
+			echo "\t<td><i>Tav</i></td>\n";
 			break;
 		case 6:
-			echo "\t<td><b> WC</b></td>\n";
+			echo "\t<td><i> WC</i></td>\n";
 			break;
 		case 7:
-			echo "\t<td><b>NSC</b></td>\n";
+			echo "\t<td><i>NSC</i></td>\n";
 			break;
 		case 8:
-			echo "\t<td><b>Auf</b></td>\n";
+			echo "\t<td><i>Auf</i></td>\n";
 			break;
 		case 9:
-			echo "\t<td><b>Orga</b></td>\n";
+			echo "\t<td><i>Orga</i></td>\n";
 			break;
 		default:
-			echo "\t<td><b>".mysql_field_name($result,$i)."</b></td>\n";
+			echo "\t<td><i>".mysql_field_name($result,$i)."</i></td>\n";
 			break;
 			endswitch;
 	};
@@ -165,14 +167,15 @@ function print_liste($user)
 				{
 					if ($i == 10)
 					{
-						$zeile=explode("\n",$row[$i]);
-						$anz  = count($zeile);
-						echo "\t<td>\n";
-						for ($ii=0; $ii<$anz; $ii++)
-						{
-							echo "\t$zeile[$ii]&nbsp;<br>\n";
-						}
-						echo "</td>\n";
+						$lines=explode("\n",$row[$i]);
+						$anz  = count($lines);
+//						echo "\t<td>\n";
+						print_textblock_td($lines);
+// 						for ($ii=0; $ii<$anz; $ii++)
+// 						{
+// 							echo "\t$zeile[$ii]&nbsp;<br>\n";
+// 						}
+//						echo "</td>\n";
 					} else
 					{
 						echo "\t<td>$row[$i]&nbsp;</td>\n";
@@ -745,8 +748,30 @@ function loeschen($id,$user)
 
 };
 
+function check_datum()
+{
+  global $TAG;
+  $table = "con_tage";
+  // Zugriff auf CON-TAGE
+  $q = "select * from $table where tag=$TAG";
+  $result1 = mysql_query($q) or die("Query $TABLE1");
+  $row1 = mysql_fetch_array ($result1);
 
-function print_anmeld($id,$user,$next,$erf,$ID)
+  $datum = strftime("%Y-%m-%d");
+  //echo "$TAG / $datum / $row1[6]\n";
+  if ($datum > $row1[6])
+  {
+    echo "  <TABLE>\n";
+    echo "    <TR HEIGHT=30>\n";
+    echo "    <TD > <CENTER><B>ANMELDUNGSCHLUSS !&nbsp;".print_datum($row1[6])."&nbsp;&nbsp;&nbsp;</TD>\n";
+    echo "    </TR>\n";
+    echo "  </TABLE>\n";
+    return true;
+  }
+  return false;
+}
+
+function print_anmeld_erf($id, $user, $ID)
 {
 	//
 	//  $id   beinhaltet den zu bearbeitenden Datensatz
@@ -760,12 +785,14 @@ function print_anmeld($id,$user,$next,$erf,$ID)
 	//$TABLE1= "con_tage";
 
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $TABLE;
-	global $TABLE1;
 	global $TAG;
 	global $ID;
 	global $PHP_SELF;
 
+	$next = 5;
+	$table = "con_anmeldung";
+	
+	
 	//Anzeigen von Contage als einfache Maske
 	//function view() {
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
@@ -773,43 +800,20 @@ function print_anmeld($id,$user,$next,$erf,$ID)
 
 	mysql_select_db($DB_NAME);
 
-	// Zugriff auf CON-TAGE
-	$q = "select * from $TABLE1 where tag=$TAG";
-	$result1 = mysql_query($q) or die("Query $TABLE1");
-	$row1 = mysql_fetch_array ($result1);
-
-	if ($erf == 0 )
+	if (check_datum()==true)
 	{
-		// Zugriff aufCON_Anmeldung
-		$q = "select * from $TABLE where id=$id";
-		$result = mysql_query($q) or die("Query BEARB.");
-		$field_num = mysql_num_fields($result);
-		//
-		$row = mysql_fetch_array ($result);
-		$len = mysql_fetch_row($result);
-		$err = 0;
-
-	} else
-	{
-		// Zugriff aufCON_Anmeldung
-		$q = "select * from $TABLE where id=\"0\"";
-		$result = mysql_query($q) or die("Query ERF...");
-		//
-		$row = mysql_fetch_array ($result);
-		$field_num = mysql_num_fields($result);
-		$datum = strftime("%Y-%m-%d");
-		//echo "$TAG / $datum / $row1[6]\n";
-		if ($datum <= $row1[6])
-		{
-			$err = 0;
-		} else
-		{
-			$err = 1;
-		}
-
+	  exit;
 	}
 
+	// Zugriff aufCON_Anmeldung
+	$q = "select * from $table where id=\"0\"";
+	$result = mysql_query($q) or die("Query ERF...");
+	//
+	$row = mysql_fetch_array ($result);
+	$field_num = mysql_num_fields($result);
+	
 	mysql_close($db);
+	
 	//  echo count($row);
 	/**/
 	if (count($row)==1)
@@ -823,82 +827,132 @@ function print_anmeld($id,$user,$next,$erf,$ID)
 		$row[3] = get_mail($row[11]);
 		$row[6] = 1;
 
-	};
-	/**/
+	}
+	
+	print_maske($id, $ID, $next, $erf,$row);
+}	
+
+function print_anmeld_edit($id,$user,$ID)
+{
+  //
+  //  $id   beinhaltet den zu bearbeitenden Datensatz
+  //  $user beinhaltet den User des Programms (authetifizierung)
+  //  $next beinhaltet die nächste zu rufende Funktion
+  //  $erf  steurt die Variablen initialisierung
+  //
+  // durch $next kann die Maske sowohl für Erfassen als auch Bearbeiten benutzt werden.
+  //
+  //$TABLE = "con_anmeldung";
+  //$TABLE1= "con_tage";
+
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+  global $TAG;
+  global $ID;
+  global $PHP_SELF;
+
+  $next = 6;
+  $table = "con_anmeldung";
+  
+  //Anzeigen von Contage als einfache Maske
+  //function view() {
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+  or die("Fehler beim verbinden!");
+
+  mysql_select_db($DB_NAME);
+
+  if (check_datum()==true)
+  {
+    exit;
+  }
+
+  // Zugriff aufCON_Anmeldung
+  $q = "select * from $table where id=$id";
+  $result = mysql_query($q) or die("Query BEARB.");
+  $field_num = mysql_num_fields($result);
+  //
+  $row = mysql_fetch_array ($result);
+  $len = mysql_fetch_row($result);
+  $err = 0;
+
+  mysql_close($db);
+  //  echo count($row);
+  /**/
+  if (count($row)==1)
+  {
+    for ($i=0; $i<$field_num; $i++)
+    {
+      $row[$i] = "";
+    };
+    $row[11] = get_user_id($user);
+    $row[2] = get_author($row[11]);
+    $row[3] = get_mail($row[11]);
+    $row[6] = 1;
+  }
+  print_maske($id, $ID, $next, $erf,$row);
+}
+
+function print_maske($id, $ID, $next, $erf,$row)
+{	
+	global $TAG;
+	global $ID;
+	global $PHP_SELF;
+  /**/
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
 	echo "<!--  DATEN Spalte   -->\n";
-	if ($err != 0)
-	{
 
-	    echo "  <TABLE>\n";
-		echo "    <TR HEIGHT=30>\n";
-		echo "    <TD > <CENTER><B>ANMELDUNGSCHLUSS !&nbsp;".print_datum($row1[6])."&nbsp;&nbsp;&nbsp;</TD>\n";
-		echo "    </TR>\n";
-		echo "  </TABLE>\n";
-		
-	}  else
-	{
-		echo "  <TD\n>";  //Daten bereich der Gesamttabelle
-
-		echo "<FORM ACTION=\"$PHP_SELF?ID=$ID\" METHOD=POST  >\n";
+		echo "<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID\" METHOD=POST  >\n";
 		echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
-		echo "<INPUT TYPE=\"hidden\" NAME=\"user\" VALUE=\"$user\">\n";
+//		echo "<INPUT TYPE=\"hidden\" NAME=\"user\" VALUE=\"$user\">\n";
 		echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"$id\">\n";
 		echo "<INPUT TYPE=\"hidden\" NAME=\"row[1]\"   VALUE=\"$TAG\">\n";
 		echo "<INPUT TYPE=\"hidden\" NAME=\"row[11]\"   VALUE=\"$row[11]\">\n";
-		echo "<INPUT TYPE=\"hidden\" NAME=\"TAG\"  VALUE=\"$TAG\">\n";
-		echo "<INPUT TYPE=\"hidden\" NAME=\"ID\"  VALUE=\"$ID\">\n";
+// 		echo "<INPUT TYPE=\"hidden\" NAME=\"TAG\"  VALUE=\"$TAG\">\n";
+// 		echo "<INPUT TYPE=\"hidden\" NAME=\"ID\"  VALUE=\"$ID\">\n";
 
 		echo "<TABLE>\n";
-		echo "    <TR HEIGHT=30>\n";
+		echo "    <TR HEIGHT=\"30\">\n";
 		echo "    <TD colspan=6> <CENTER><B>ANMELDUNG&nbsp;&nbsp;&nbsp;&nbsp;</TD>\n";
 		echo "    </TR>\n";
 		echo "    <TR>\n";
-		echo "        <TD WIDTH=55><!-- Row:2, Col:1 -->\n";
-		echo "        <B>Tag :\n";
+		echo "        <TD WIDTH=75><!-- Row:2, Col:1 -->\n";
+		echo "        <i>Tag : </i>\n";
 		echo "        </TD>\n";
-		echo "        <TD><!-- Row:2, Col:2 -->\n";
+		echo "        <TD WIDTH=\"55\"><!-- Row:2, Col:2 -->\n";
 		echo "        <B>$TAG\n";
 		echo "        </TD>\n";
-		echo "        <TD WIDTH=55><!-- Row:3, Col:1 -->\n";
-		echo "        <P ALIGN=RIGHT>\n";
-		echo "        <B>vom &nbsp;\n";
+		echo "        <TD WIDTH=\"55\"><!-- Row:3, Col:1 -->\n";
+		echo "        <i>vom &nbsp;</i>\n";
 		echo "        </TD>\n";
-		echo "        <TD><!-- Row:4, Col:1 -->\n";
+		echo "        <TD  WIDTH=\"85\"><!-- Row:4, Col:1 -->\n";
 		echo "        <B>$row1[2]\n";
 		echo "        </TD>\n";
 		echo "        <TD WIDTH=55><!-- Row:5, Col:1 -->\n";
-		echo "        <P ALIGN=RIGHT>\n";
-		echo "        <B>bis&nbsp;\n";
+		echo "        <i>&nbsp;bis</i>\n";
 		echo "        </TD>\n";
-		echo "        <TD><!-- Row:6, Col:1 -->\n";
-		echo "        <B>$row1[3]\n";
+		echo "        <TD WIDTH=\"85\"><!-- Row:6, Col:1 -->\n";
+		echo "        <b>$row1[3]</b>\n";
 		echo "        </TD>\n";
-		echo "    </TR>\n";
-		echo "    <TR HEIGHT=10>\n";
-		echo "    <TD></TD>\n";
-		echo "    </TR>\n";
-		echo "    <TR>\n";
-		echo "  <TD colspan=6>\n";
-		echo " <TEXTAREA NAME=\"text\" COLS=65 ROWS=20 READONLY>\n";
-		echo "$row1[8]\n";
-		echo "Anmeldeschluss $row1[6]\n";
-		echo "Kosten : $row1[4] EUR\n";
-		echo "  </TEXTAREA>\n";
-		echo "  </TD>\n";
 		echo "    </TR>\n";
 		echo "</TABLE>\n";
+		echo "<table> \n";
+		echo "<tr> \n";
+		$data = $row1[8];
+    $titel= "text";
+    $pos  = 8;
+		print_mfd_edit_text($titel,$pos, $data, true);	
+		echo "<td width=\"100px\"> \n";
+		echo "&nbsp;";	
+		echo "</td> \n";
+		echo "</TR>\n";
+		echo "</TABLE>\n";
 
-		echo "<TABLE >\n";
-		echo "<TR>\n";
-		echo "<TD>\n";
 		echo "    <TABLE >\n";
 		echo "    <TR HEIGHT=10>\n";
 		echo "    <TD></TD>\n";
 		echo "    </TR>\n";
 		echo "    <TR>\n";
-		echo "        <TD WIDTH=\"55\"><!-- Row:1, Col:1 -->\n";
+		echo "        <TD WIDTH=\"75\"><!-- Row:1, Col:1 -->\n";
 		echo "        Name\n";
 		echo "        </TD>\n";
 		echo "        <TD colspan=4><!-- Row:1, Col:2 -->\n";
@@ -916,7 +970,8 @@ function print_anmeld($id,$user,$next,$erf,$ID)
 		echo "</TABLE>\n";
 		echo "<TABLE >\n";
 		echo "    <TR>\n";
-		echo "        <TD WIDTH=50><!-- Row:2, Col:1 -->\n";
+		echo "        <TD WIDTH=75><!-- Row:2, Col:1 --></TD>\n";
+		echo "        <TD WIDTH=60><!-- Row:2, Col:1 -->\n";
 		echo "        WC\n";
 		echo "        </TD>\n";
 		echo "        <TD><!-- Row:2, Col:2 -->\n";
@@ -928,7 +983,7 @@ function print_anmeld($id,$user,$next,$erf,$ID)
 			echo "        <INPUT TYPE=\"checkbox\" NAME=\"row[6]\" VALUE=\"1\">\n";
 		}
 		echo "        </TD>\n";
-		echo "        <TD WIDTH=50><!-- Row:2, Col:1 -->\n";
+		echo "        <TD WIDTH=60><!-- Row:2, Col:1 -->\n";
 		echo "        Abwasch\n";
 		echo "        </TD>\n";
 		echo "        <TD><!-- Row:2, Col:2 -->\n";
@@ -940,10 +995,10 @@ function print_anmeld($id,$user,$next,$erf,$ID)
 			echo "        <INPUT TYPE=\"checkbox\" NAME=\"row[4]\" VALUE=\"1\">\n";
 		}
 		echo "        </TD>\n";
-		echo "        <TD WIDTH=50><!-- Row:2, Col:1 -->\n";
+		echo "        <TD WIDTH=60><!-- Row:2, Col:1 -->\n";
 		echo "        Taverne\n";
 		echo "        </TD>\n";
-		echo "        <TD WIDTH=50><!-- Row:2, Col:2 -->\n";
+		echo "        <TD WIDTH=60><!-- Row:2, Col:2 -->\n";
 		if ($row[5]==1)
 		{
 			echo "        <INPUT TYPE=\"checkbox\" NAME=\"row[5]\" VALUE=\"1\" CHECKED>\n";
@@ -956,7 +1011,8 @@ function print_anmeld($id,$user,$next,$erf,$ID)
 		echo "</TABLE>\n";
 		echo "<TABLE >\n";
 		echo "    <TR>\n";
-		echo "        <TD WIDTH=50><!-- Row:2, Col:1 -->\n";
+		echo "        <TD WIDTH=75><!-- Row:2, Col:1 --></TD>\n";
+		echo "        <TD WIDTH=60><!-- Row:2, Col:1 -->\n";
 		echo "        NSC\n";
 		echo "        </TD>\n";
 		echo "        <TD><!-- Row:2, Col:2 -->\n";
@@ -968,7 +1024,7 @@ function print_anmeld($id,$user,$next,$erf,$ID)
 			echo "        <INPUT TYPE=\"checkbox\" NAME=\"row[7]\" VALUE=\"1\">\n";
 		}
 		echo "        </TD>\n";
-		echo "        <TD WIDTH=50><!-- Row:2, Col:1 -->\n";
+		echo "        <TD WIDTH=60><!-- Row:2, Col:1 -->\n";
 		echo "        Aufbau\n";
 		echo "        </TD>\n";
 		echo "        <TD><!-- Row:2, Col:2 -->\n";
@@ -980,10 +1036,10 @@ function print_anmeld($id,$user,$next,$erf,$ID)
 			echo "        <INPUT TYPE=\"checkbox\" NAME=\"row[8]\" VALUE=\"1\">\n";
 		}
 		echo "        </TD>\n";
-		echo "        <TD WIDTH=50><!-- Row:2, Col:1 -->\n";
+		echo "        <TD WIDTH=60><!-- Row:2, Col:1 -->\n";
 		echo "        Orga\n";
 		echo "        </TD>\n";
-		echo "        <TD WIDTH=50><!-- Row:2, Col:2 -->\n";
+		echo "        <TD WIDTH=60><!-- Row:2, Col:2 -->\n";
 		if ($row[9]==1)
 		{
 			echo "        <INPUT TYPE=\"checkbox\" NAME=\"row[9]\" VALUE=\"1\" CHECKED>\n";
@@ -996,19 +1052,13 @@ function print_anmeld($id,$user,$next,$erf,$ID)
 		echo "</TABLE>\n";
 		echo "<TABLE >\n";
 		echo "    <TR>\n";
-		//    echo "      <TD>\n";
-		//    echo "        Bemerkung\n";
-		//    echo "        </TD>\n";
-		echo "        <TD colspan=3><!-- Row:5, Col:2 -->\n";
-		//    echo "        <INPUT TYPE=\"TEXT\" NAME=\"row[10]\" SIZE=50 MAXLENGTH=50 VALUE=\"$row[10]\">\n";
-		echo "        <TEXTAREA NAME=\"row[10]\" COLS=64 ROWS=4>$row[10]</TEXTAREA>&nbsp;</td>\n";
-		echo "        </TD>\n";
-		echo "    </TR>\n";
-		echo "    <TR>\n";
-		echo "        <TD><!-- Row:5, Col:1 -->\n";
-		echo "        </TD>\n";
-		echo "        <TD><!-- Row:5, Col:2 -->\n";
-		echo "        </TD>\n";
+		$data = $row[10];
+		$titel= "Bemerkung";
+		$pos  = 10;
+		print_mfd_edit_text($titel,$pos, $data, false);
+		echo "<td width=\"100px\"> \n";
+		echo "&nbsp;";
+		echo "</td> \n";
 		echo "    </TR>\n";
 		echo "    <TR>\n";
   		echo "        <TD><!-- Row:5, Col:1 -->\n";
@@ -1022,13 +1072,9 @@ function print_anmeld($id,$user,$next,$erf,$ID)
 		echo "        </TD>\n";
 		echo "    </TR>\n";
 		echo "</TABLE>\n";
-		echo "</TR>\n";
-		echo "</TD>\n";
-		echo "</TABLE>\n";
 		echo "</FORM>\n";
 	echo '</div>';
 	
-  }
   echo '</div>';
   echo "<!--  ENDE DATEN Spalte   -->\n";
 };
@@ -1041,162 +1087,153 @@ function print_anmeld($id,$user,$next,$erf,$ID)
 // ----------------------------------------------------------------
 // Prüfung ob User  berechtigt ist
 
-$BEREICH = 'INTERN';
-
-
-$g_md     = GET_md(0);
-$daten  = GET_daten("");
-$sub    = GET_sub("main");
-$item   = GET_item("");
-$ID     = GET_SESSIONID("");
-$g_id   = GET_id("0");
-
-$p_md   = POST_md("md");
-$p_row  = POST_row("0");
-
-session_id ($ID);
-session_start($ID);
-$user       = $_SESSION["user"];
-$user_lvl   = $_SESSION["user_lvl"];
-$spieler_id = $_SESSION["spieler_id"];
-$user_id 	= $_SESSION["user_id"];
-
-if ($ID == "")
-{
-  $session_id = 'FFFF';
-  header ("Location: main.php");  // Umleitung des Browsers
-  exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
-  // Code ausgeführt wird.
-}
-
-// 	// Prüfung des Zugriffsrecht über Lvl
-// 	//
-// 	if ($user_lvl <= $lvL_sl[14])
-// 	{
-// 		header ("Location: ../larp.html");  /* Umleitung des Browsers
-// 		zur PHP-Web-Seite. */
-// 		exit;  /* Sicher stellen, das nicht trotz Umleitung nachfolgender
-// 		Code ausgeführt wird. */
-// 	};
-
-$TAG   = get_akttag();
-$TABLE = "con_anmeldung";
-$TABLE1= "con_tage";
-
-print_header("Con Anmeldung");
-
-print_body(2);
-
-$spieler_name = get_spieler($spieler_id); //Auserwählter\n";
-
-$menu_item = $menu_item_help;
-$anrede["name"] = $spieler_name;
-print_kopf($logo_typ,$header_typ,"INTERN",$anrede,$menu_item);
-
-//echo "POST : $p_md / GET : $md / ID :$ID / Spieler = $spieler_id";
-
-
-switch ($p_md):
-case 5: // Anlegen eines neuen des DAtensatzes
-	//  Insert SQL
-	insert($p_row);
-$g_md= 0;
-break;
-case 6: // Update eines bestehnden Datensatzes
-	// Update SQL
-	update($p_row);
-	$g_md= 0;
-	break;
-default:  // MAIN-Menu
-	endswitch;
-
-	switch ($g_md):
-case 7: // Delete eines bestehenden Datensatzes
-		// SQL delete
-		loeschen($g_id,$user);
-	$g_md=3;
-	break;
-
-default:  // MAIN-Menu
-	endswitch;
-
-
-	switch ($g_md):
-case 1: // Erfassen eines neuen Datensatzes
-		$menu = array (0=>array("icon" => "7","caption" => "ERFASSEN","link" => ""),
-				2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
-		);
-		break;
-case 2: // Ansehen / INFO eines Datensatzes
-	$menu = array (0=>array("icon" => "7","caption" => "ANSEHEN","link" => ""),
-	8=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
-	);
-	break;
-case 3: // Delete eines bestehenden Datensatzes
-	$menu = array (0=>array("icon" => "7","caption" => "LÖSCHEN","link" => ""),
-	9=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
-	);
-	break;
-case 4: // Anzigen Bearbeiten Form
-	$menu = array (0=>array("icon" => "7","caption" => "BEARBEITEN","link" => ""),
-	2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
-	);
-	break;
-case 10:  // Meine Anmelde Liste
-	$menu = array (0=>array("icon" => "7","caption" => "MEINE ANMELDUNGEN","link" => ""),
-	9=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
-	);
-	break;
-case 11:  // Meine Anmelde Liste
-	$menu = array (0=>array("icon" => "7","caption" => "CON-LISTE","link" => ""),
-	9=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
-	);
+  $BEREICH = 'INTERN';
+  
+  
+  $g_md   = GET_md(0);
+  $daten  = GET_daten("");
+  $sub    = GET_sub("main");
+  $item   = GET_item("");
+  $ID     = GET_SESSIONID("");
+  $g_id   = GET_id("0");
+  
+  $p_md   = POST_md(0);
+  $p_row  = POST_row("");
+  
+  session_id ($ID);
+  session_start($ID);
+  $user       = $_SESSION["user"];
+  $user_lvl   = $_SESSION["user_lvl"];
+  $spieler_id = $_SESSION["spieler_id"];
+  $user_id 	= $_SESSION["user_id"];
+  
+  if ($ID == "")
+  {
+    $session_id = 'FFFF';
+    header ("Location: main.php");  // Umleitung des Browsers
+    exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
+    // Code ausgeführt wird.
+  }
+  
+  if (is_user()==FALSE)
+  {
+    echo "no lvl";
+    header ("Location: main.php?md=0&ID=$ID");  // Umleitung des Browsers
+    exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
+    // Code ausgeführt wird.
+  }
+  
+  $TAG   = get_akttag();
+  
+  print_header("Con Anmeldung");
+  
+  print_body(2);
+  
+  $spieler_name = get_spieler($spieler_id); //Auserwählter\n";
+  
+  $menu_item = $menu_item_help;
+  $anrede["name"] = $spieler_name;
+  print_kopf($logo_typ,$header_typ,"INTERN",$anrede,$menu_item);
+  
+  $ref_mfd = "con_anmeldung";
+  
+  $mfd_list= make_mfd_table($ref_mfd,$ref_mfd);
+  $mfd_cols = make_mfd_cols_default($ref_mfd,$ref_mfd);
+  
+//   echo $mfd_list["table"]."/".$mfd_list["fields"]."<br>\n";
+//   echo $p_row[4].$p_row[5].$p_row[6].$p_row[7]."\n";
+  
+  switch ($p_md):
+  case 5: // Anlegen eines neuen des DAtensatzes
+  	//  Insert SQL
+  	mfd_insert($mfd_list, $p_row);
+    $g_md= 0;
     break;
-default:  // MAIN-Menu
-	$menu = array (0=>array("icon" => "99","caption" => "CON-ANMELDUNG","link" => ""),
-	1=>array("icon" => "_add","caption" => "Neu","link" => "$PHP_SELF?md=1&ID=$ID&TAG=$TAG"),
-//	2=>array("icon" => "_folder","caption" => "Dienste","link" => "larp_anmelde_dienste.php?md=0&ID=$ID&TAG=$TAG"),
-	3=>array("icon" => "_list","caption" => "Löschen","link" => "$PHP_SELF?md=3&ID=$ID&TAG=$TAG"),
-	5=>array("icon" => "_list","caption" => "alle Anmeldungen","link" => "$PHP_SELF?md=10&ID=$ID&TAG=$TAG"),
-	6=>array("icon" => "_list","caption" => "Con Liste","link" => "$PHP_SELF?md=11&ID=$ID&TAG=$TAG"),
-//	98=>array ("icon" => "_list","caption" => "Reports ","link" => "larp_anmelde_rep.php?md=0&ID=$ID"),
-	9=>array("icon" => "_stop","caption" => "Zurück","link" => "larp.php?md=0&ID=$ID&TAG=$TAG")
-	);
-	endswitch;
-
-	print_menu_status($menu);
-
-	//echo $TAG;
-
+  case 6: // Update eines bestehnden Datensatzes
+  	// Update SQL
+  	mfd_update($mfd_list,$p_row);
+  	$g_md= 0;
+  	break;
+  default:  // MAIN-Menu
+  endswitch;
+  
+  
+ 	switch ($g_md):
+  case 1: // Erfassen eines neuen Datensatzes
+  		$menu = array (0=>array("icon" => "7","caption" => "ERFASSEN","link" => ""),
+  				2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
+  		);
+  		break;
+  case 2: // Ansehen / INFO eines Datensatzes
+  	$menu = array (0=>array("icon" => "7","caption" => "ANSEHEN","link" => ""),
+  	8=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
+  	);
+  	break;
+  case 3: // Delete eines bestehenden Datensatzes
+  	$menu = array (0=>array("icon" => "7","caption" => "LÖSCHEN","link" => ""),
+  	9=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
+  	);
+  	break;
+  case 4: // Anzigen Bearbeiten Form
+  	$menu = array (0=>array("icon" => "7","caption" => "BEARBEITEN","link" => ""),
+  	2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
+  	);
+  	break;
+  case 10:  // Meine Anmelde Liste
+  	$menu = array (0=>array("icon" => "7","caption" => "MEINE ANMELDUNGEN","link" => ""),
+  	9=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
+  	);
+  	break;
+  case 11:  // Meine Anmelde Liste
+  	$menu = array (0=>array("icon" => "7","caption" => "CON-LISTE","link" => ""),
+  	9=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
+  	);
+      break;
+  default:  // MAIN-Menu
+  	$menu = array (0=>array("icon" => "99","caption" => "CON-ANMELDUNG","link" => ""),
+  	1=>array("icon" => "_add","caption" => "Neu","link" => "$PHP_SELF?md=1&ID=$ID&TAG=$TAG"),
+  //	2=>array("icon" => "_folder","caption" => "Dienste","link" => "larp_anmelde_dienste.php?md=0&ID=$ID&TAG=$TAG"),
+  	3=>array("icon" => "_list","caption" => "Löschen","link" => "$PHP_SELF?md=3&ID=$ID&TAG=$TAG"),
+  	5=>array("icon" => "_list","caption" => "alle Anmeldungen","link" => "$PHP_SELF?md=10&ID=$ID&TAG=$TAG"),
+  	6=>array("icon" => "_list","caption" => "Con Liste","link" => "$PHP_SELF?md=11&ID=$ID&TAG=$TAG"),
+  //	98=>array ("icon" => "_list","caption" => "Reports ","link" => "larp_anmelde_rep.php?md=0&ID=$ID"),
+  	9=>array("icon" => "_stop","caption" => "Zurück","link" => "larp.php?md=0&ID=$ID&TAG=$TAG")
+  	);
+  	endswitch;
+  
+  	print_menu_status($menu);
+  
+  	//echo $TAG;
+  
 	switch ($g_md):
-case 1:
-		//
-		print_anmeld($g_id,$user,5,1,$ID);
-	break;
-case 2:
-	Print_info($g_id, $user, $ID,$TAG);
-	break;
-case 3:
-	//
-	print_loeschen($user);
-	break;
-case 4:
-	//
-	print_anmeld($g_id,$user,6,0,$ID);
-	break;
-case 10:
-	info_liste($spieler_id,$ID);
-	break;
-case 11:
-	tage_liste($spieler_id,$ID,$TAG);
-	break;
-default:
-	print_liste($user);
-	break;
-	endswitch;
-
-	print_md_ende();
-
-	print_body_ende();
+  case 1:
+  		//
+  		print_anmeld_erf($g_id,$user,$ID);
+  	break;
+  case 2:
+  	Print_info($g_id, $user, $ID,$TAG);
+  	break;
+  case 3:
+  	//
+  	print_loeschen($user);
+  	break;
+  case 4:
+  	//
+  	print_anmeld_edit($g_id,$user,$ID);
+  	break;
+  case 10:
+  	info_liste($spieler_id,$ID);
+  	break;
+  case 11:
+  	tage_liste($spieler_id,$ID,$TAG);
+  	break;
+  default:
+  	print_liste($user);
+  	break;
+ 	endswitch;
+  
+  	print_md_ende();
+  
+  	print_body_ende();
 
 	?>

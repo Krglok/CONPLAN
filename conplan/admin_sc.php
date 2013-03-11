@@ -1,4 +1,3 @@
-eclipse
 <?php
 
 /*
@@ -206,26 +205,35 @@ function print_ref_liste($user,$ID)
 };
 
 
-function insert_sp($name,$vorname,$charakter,$email,$telefon,$geb,$bemerkung,$ID)
+function insert_sp($row) //$name,$vorname,$charakter,$email,$telefon,$geb,$bemerkung,$ID)
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
 	mysql_select_db($DB_NAME);
 
+	$id        = $row[0];
+	$name      = $row[1];
+	$vorname   = $row[2];
+	$charakter = $row[3];
+	$email     = $row[4];
+	$telefon   = $row[5];
+	$geb       = $row[6];
+	$bemerkung = $row[7];
+	
 	$q ="insert into spieler (name,vorname,charakter,email,telefon,geb,bemerkung) VALUES (\"$name\",\"$vorname\",\"$charakter\",\"$email\",\"$telefon\",\"$geb\",\"$bemerkung\")";
 	$result = mysql_query($q) or die("insert Fehler....$q.");
 
-
 	$u_id = mysql_insert_id();
-	$pw = "_"."$vorname";
-	$q = "insert into user_liste (username,spieler_id,pword,lvl) VALUES (\"$vorname\",\"$u_id\",password(\"$pw\"),\"256\")";
+	$username = $row[8];
+	$pw = "_"."$row[8]";
+	$q = "insert into user_liste (username,spieler_id,pword,lvl) VALUES (\"$username\",\"$u_id\",password(\"$pw\"),\"".lvl_user."\")";
 	$result = mysql_query($q) or die("insert Fehler....$q.");
 	mysql_close($db);
 
 }
 
-function update_sp($id,$name,$vorname,$charakter,$email,$telefon,$geb,$bemerkung)
+function update_sp($row) //$id,$name,$vorname,$charakter,$email,$telefon,$geb,$bemerkung)
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 
@@ -233,6 +241,15 @@ function update_sp($id,$name,$vorname,$charakter,$email,$telefon,$geb,$bemerkung
 	or die("Fehler beim verbinden!");
 	mysql_select_db($DB_NAME);
 
+	$id        = $row[0];
+	$name      = $row[1];
+	$vorname   = $row[2];
+	$charakter = $row[3];
+	$email     = $row[4];
+	$telefon   = $row[5];
+	$geb       = $row[6];
+	$bemerkung = $row[7];
+	
 	$q ="update spieler SET name=\"$name\",vorname=\"$vorname\",charakter=\"$charakter\",email=\"$email\",telefon=\"$telefon\",geb=\"$geb\",bemerkung=\"$bemerkung\" where id=\"$id\"";
 	$result = mysql_query($q) or die("update Fehler....$q.");
 
@@ -303,9 +320,10 @@ function print_sp_maske($id,$user,$next,$erf,$ID)
 	//  FORMULAR
 	echo "<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"user\" VALUE=\"$user\">\n";
+//	echo "<INPUT TYPE=\"hidden\" NAME=\"user\" VALUE=\"$user\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$id\">\n";
-
+	echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"$id\">\n";
+	
 	if ($erf ==1)
 	{
 		echo "Erfassen der Spieler Daten\n";
@@ -321,37 +339,37 @@ function print_sp_maske($id,$user,$next,$erf,$ID)
 	echo "</tr>\n";
 	echo "<tr>\n";
 	echo "\t<td><b>Name</b></td>\n";
-	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"name\" SIZE=30 MAXLENGTH=30 VALUE=\"$name\">&nbsp;</td>\n";
+	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[1]\" SIZE=30 MAXLENGTH=30 VALUE=\"$name\">&nbsp;</td>\n";
 	echo "</tr>\n";
 	echo "<tr>\n";
 	echo "\t<td><b>Vorname</b></td>\n";
-	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"vorname\" SIZE=30 MAXLENGTH=30 VALUE=\"$vorname\">&nbsp;</td>\n";
+	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[2]\" SIZE=30 MAXLENGTH=30 VALUE=\"$vorname\">&nbsp;</td>\n";
 	echo "</tr>\n";
 	echo "<tr>\n";
 	echo "\t<td><b>Charakter</b></td>\n";
-	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"charakter\" SIZE=30 MAXLENGTH=30 VALUE=\"$charakter\">&nbsp;</td>\n";
+	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[3]\" SIZE=30 MAXLENGTH=30 VALUE=\"$charakter\">&nbsp;</td>\n";
 	echo "</tr>\n";
 	echo "<tr>\n";
 	echo "\t<td><b>email</b></td>\n";
-	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"email\" SIZE=30 MAXLENGTH=30 VALUE=\"$email\">&nbsp;</td>\n";
+	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[4]\" SIZE=30 MAXLENGTH=30 VALUE=\"$email\">&nbsp;</td>\n";
 	echo "</tr>\n";
 	echo "<tr>\n";
 	echo "\t<td><b>Telefon</b></td>\n";
-	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"telefon\" SIZE=30 MAXLENGTH=30 VALUE=\"$telefon\">&nbsp;</td>\n";
+	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[5]\" SIZE=30 MAXLENGTH=30 VALUE=\"$telefon\">&nbsp;</td>\n";
 	echo "</tr>\n";
 	echo "<tr>\n";
 	echo "\t<td><b>Geburtstag</b></td>\n";
-	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"geb\" SIZE=30 MAXLENGTH=30 VALUE=\"$geb\">&nbsp;</td>\n";
+	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[6]\" SIZE=30 MAXLENGTH=30 VALUE=\"$geb\">&nbsp;</td>\n";
 	echo "</tr>\n";
 	echo "<tr>\n";
 	echo "\t<td><b>Bemerkung</b></td>\n";
-	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"bemerkung\" SIZE=30 MAXLENGTH=30 VALUE=\"$bemerkung\">&nbsp;</td>\n";
+	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[7]\" SIZE=30 MAXLENGTH=30 VALUE=\"$bemerkung\">&nbsp;</td>\n";
 	echo "</tr>\n";
 	echo "<tr>\n";
 	echo "</tr>\n";
 	echo "<tr>\n";
 	echo "\t<td><b>Username</b></td>\n";
-	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"username\" SIZE=30 MAXLENGTH=30 VALUE=\"$username\">&nbsp;</td>\n";
+	echo "<td><INPUT TYPE=\"TEXT\" NAME=\"row[8]\" SIZE=30 MAXLENGTH=30 VALUE=\"$username\">&nbsp;</td>\n";
 	//  echo "<td>$username&nbsp;</td>\n";
 	echo "</tr>\n";
 	echo "<tr>\n";
@@ -540,12 +558,12 @@ print_kopf($admin_typ,$header_typ,"Admin Bereich",$anrede,$menu_item);
 
 switch ($p_md):
 case 5: // Insert SQL
-	insert_sp($name,$vorname,$charakter,$email,$telefon,$geb,$bemerkung);
+	insert_sp($p_row); //$name,$vorname,$charakter,$email,$telefon,$geb,$bemerkung
 echo "Daten gespeichert ";
 $md = 0;
 break;
 case 6:  //Update SQL
-	update_sp($id,$name,$vorname,$charakter,$email,$telefon,$geb,$bemerkung);
+	update_sp($p_row); //$id,$name,$vorname,$charakter,$email,$telefon,$geb,$bemerkung);
 	$md=0;
 	break;
 default: //

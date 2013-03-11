@@ -65,7 +65,7 @@ include_once "_planung.inc";
 
 
 //-----------------------------------------------------------------------------
-function print_liste($ID,$TAG)
+function print_liste($ID,$TAG,$ref_mfd)
 {
   global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
   global $PHP_SELF;
@@ -120,7 +120,7 @@ function print_liste($ID,$TAG)
       // aufruf der Deateildaten
       if ($i==0)
       {
-        echo "\t<td  bgcolor=\"$bgcolor\"><a href=\"$PHP_SELF?md=4&ID=$ID&id=$row[$i]\">\n";
+        echo "\t<td  bgcolor=\"$bgcolor\"><a href=\"$PHP_SELF?md=".mfd_edit."&ID=$ID&id=$row[$i]\">\n";
         print_menu_icon ("_editor","Contag Einladung bearbeiten");
         echo "\t</a></td>\n";
       } else
@@ -214,76 +214,51 @@ function print_info($id,$ID)
 };
 
 
-function insert($row)
-{
-  global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
-  global $TABLE;
+// function insert($mfd_list,$row)
+// {
+//   global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
+  
+//   $id = $row[0];
+//   $table = $mfd_list["table"];
+//   $fields =$mfd_list["fields"];
+//   $join = ""; //$mfd_list["join"];
+//   $where ="id = $id";
+//   $order = "";
+  
+//   $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+//   or die("Fehler beim verbinden!");
+//   $result = mysql_list_fields($DB_NAME,$TABLE)  or die("Query ERF...");
+//   $field_num = mysql_num_fields($result);
+//   for ($i=0; $i<$field_num; $i++)
+//   {
+//     $field_name[$i] =  mysql_field_name ($result, $i);
+//   }
+//   $q ="insert INTO  $TABLE  (";
+//   $q = $q."$field_name[1]";
+//   for ($i=2; $i<$field_num; $i++)
+//   {
+//     $q = $q.",$field_name[$i]";
+//   };
 
-  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-  or die("Fehler beim verbinden!");
-  $result = mysql_list_fields($DB_NAME,$TABLE)  or die("Query ERF...");
-  $field_num = mysql_num_fields($result);
-  for ($i=0; $i<$field_num; $i++)
-  {
-    $field_name[$i] =  mysql_field_name ($result, $i);
-  }
-  $q ="insert INTO  $TABLE  (";
-  $q = $q."$field_name[1]";
-  for ($i=2; $i<$field_num; $i++)
-  {
-    $q = $q.",$field_name[$i]";
-  };
+//   $q = $q.") VALUES (\"$row[1]\" ";
+//   for ($i=2; $i<$field_num; $i++)
+//   {
+//     $q = $q.",\"$row[$i]\" ";
+//   };
+//   $q = $q.")";
+//   //  echo $q;
 
-  $q = $q.") VALUES (\"$row[1]\" ";
-  for ($i=2; $i<$field_num; $i++)
-  {
-    $q = $q.",\"$row[$i]\" ";
-  };
-  $q = $q.")";
-  //  echo $q;
+//   if (mysql_select_db($DB_NAME) != TRUE) {
+//     echo "Fehler DB";
+//   };
+//   //  $q ="insert INTO con_tage (tag,von,bis,bemerkung,kosten,leg_id,text) VALUES ( \"$tag\",\"$von\",\"$bis\",\"$bemerkung\",\"$kosten\",\"$leg_id\",\"$text\"";
+//   $result = mysql_query($q) or die("InsertFehler....$q.");
 
-  if (mysql_select_db($DB_NAME) != TRUE) {
-    echo "Fehler DB";
-  };
-  //  $q ="insert INTO con_tage (tag,von,bis,bemerkung,kosten,leg_id,text) VALUES ( \"$tag\",\"$von\",\"$bis\",\"$bemerkung\",\"$kosten\",\"$leg_id\",\"$text\"";
-  $result = mysql_query($q) or die("InsertFehler....$q.");
+//   mysql_close($db);
 
-  mysql_close($db);
-
-};
+// };
 
 
-function update($row)
-{
-  global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
-  global $TABLE;
-
-  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-  or die("Fehler beim verbinden!");
-  $result = mysql_list_fields($DB_NAME,$TABLE)  or die("Query ERF...");
-  $field_num = mysql_num_fields($result);
-  for ($i=0; $i<$field_num; $i++)
-  {
-    $field_name[$i] =  mysql_field_name ($result, $i);
-  }
-  $q ="update $TABLE  SET ";
-  $q = $q."$field_name[1]=\"$row[1]\" ";
-  for ($i=2; $i<$field_num; $i++)
-  {
-    $q = $q.",$field_name[$i]=\"$row[$i]\" ";
-  };
-  $q = $q."where id=\"$row[0]\" ";
-
-  //  echo $q;
-  if (mysql_select_db($DB_NAME) != TRUE) {
-    echo "Fehler DB";
-  };
-  /**/
-  $result = mysql_query($q) or die("update Fehler....$q.");
-  /**/
-  mysql_close($db);
-
-};
 
 
 function print_maske($id,$ID,$next,$erf)
@@ -425,6 +400,47 @@ echo "<!--  DATEN Spalte   -->\n";
 };
 
 
+function get_menu_con_tage($md,$PHP_SELF, $ID,$titel,$id,$daten,$sub,$home)
+{
+  switch ($md):
+  case mfd_add: // Erfassen eines neuen Datensatzes
+    $menu = array (0=>array("icon" => "1","caption" => "CON-TAG","link" => ""),
+        1=>array("icon" => "1","caption" => "ERFASSEN","link" => ""),
+        2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
+    );
+    break;
+  case mfd_edit: // Ansehen des Datesatzes als Form
+    $menu = array (0=>array("icon" => "1","caption" => "CON-TAG","link" => ""),
+    1=>array("icon" => "1","caption" => "BEARBEITEN","link" => ""),
+    8=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&dd=0")
+    );
+    break;
+  case mfd_del: // Anzeigen Löschen Form
+    $menu = array (0=>array("icon" => "1","caption" => "CON-TAG","link" => ""),
+    1=>array("icon" => "1","caption" => "LÖSCHEN","link" => ""),
+    9=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&dd=0")
+    );
+    break;
+  case mfd_info: // Anzigen Bearbeiten Form
+    $menu = array (0=>array("icon" => "1","caption" => "CON-TAG","link" => ""),
+    1=>array("icon" => "1","caption" => "INFO","link" => ""),
+    2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
+    );
+    break;
+  case 10:
+    $menu = array (0=>array("icon" => "0","caption" => "CON-TAG","link" => ""),
+    2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
+    );
+    break;
+  default:  // MAIN-Menu
+    $menu = array (0=>array("icon" => "1","caption" => "CON-TAG","link" => ""),
+    1=>array("icon" => "_add","caption" => "Erfassen","link" => "$PHP_SELF?md=1&ID=$ID"),
+    9=>array("icon" => "_stop","caption" => "Zurück","link" => "$home?md=0&ID=$ID")
+    );
+  endswitch;
+  return $menu;
+}
+
 // ---------------------------------------------------------------
 // ---------    MAIN ---------------------------------------------
 //
@@ -482,90 +498,110 @@ print_kopf_planung("<b>CON Planung</b>",$anrede,$menu_item);
 
 $TAG   = get_akttag();
 
-$TABLE = "con_tage";
+//$TABLE = "con_tage";
 
-switch ($p_md):
-case 5:  // MAIN-Menu
-  insert($p_row);
+$ref_mfd = "con_tage";
+
+$mfd_list=get_mfd($ref_mfd);
+$mfd_cols = get_mfd_cols($ref_mfd);
+
+switch($p_md):
+case mfd_insert: // Insert -> Erfassen
+  mfd_insert($mfd_list, $p_row);
+$md = 0;
+break;
+case mfd_update: // Insert -> Erfassen
+  mfd_update($mfd_list, $p_row);
+  $md = 0;
+  break;
+case mfd_delete: // Delete => Loeschen
+  mfd_delete($mfd_list, $p_row[0]);
   $md=0;
   break;
-case 6: // Update eines bestehnden Datensatzes
-  // Update SQL
-  update($p_row);
-  $md=0;
-  break;
-case 7: // Delete eines bestehenden Datensatzes
-  // SQL delete
-  loeschen($id);
-  $md=0;
-  break;
-default :
+default: //
   break;
   endswitch;
 
+// switch ($p_md):
+// case 5:  // MAIN-Menu
+//   insert($p_row);
+//   $md=0;
+//   break;
+// case 6: // Update eines bestehnden Datensatzes
+//   // Update SQL
+//   update($p_row);
+//   $md=0;
+//   break;
+// case 7: // Delete eines bestehenden Datensatzes
+//   // SQL delete
+//   loeschen($id);
+//   $md=0;
+//   break;
+// default :
+//   break;
+//   endswitch;
+
+  $home = "larp.php";
+  $titel = "CON TAGE";
+  
+  $menu = get_menu_con_tage($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $home);
+
+//  print_menu_status($menu);
+
 
   switch ($md):
-case 1: // Erfassen eines neuen Datensatzes
-    $menu = array (0=>array("icon" => "1","caption" => "CON-TAG","link" => ""),
-        1=>array("icon" => "1","caption" => "ERFASSEN","link" => ""),
-        2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
-    );
+  case mfd_add:
+    print_menu_status($menu);
+  echo "Add Maske";
+  break;
+  case mfd_edit:
+    print_menu_status($menu);
+    print_mfd_edit($id, $ID, $mfd_list, $mfd_cols,$daten);
     break;
-case 2: // Ansehen des Datesatzes als Form
-  $menu = array (0=>array("icon" => "1","caption" => "CON-TAG","link" => ""),
-  1=>array("icon" => "1","caption" => "ANSEHEN","link" => ""),
-  8=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&dd=0")
-  );
-  break;
-case 3: // Anzeigen Löschen Form
-  $menu = array (0=>array("icon" => "1","caption" => "CON-TAG","link" => ""),
-  1=>array("icon" => "1","caption" => "LÖSCHEN","link" => ""),
-  9=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&dd=0")
-  );
-  break;
-case 4: // Anzigen Bearbeiten Form
-  $menu = array (0=>array("icon" => "1","caption" => "CON-TAG","link" => ""),
-  1=>array("icon" => "1","caption" => "BEARBEITEN","link" => ""),
-  2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
-  );
-  break;
-case 10:
-  $menu = array (0=>array("icon" => "0","caption" => "CON-TAG","link" => ""),
-  2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
-  );
-  break;
-default:  // MAIN-Menu
-  $menu = array (0=>array("icon" => "1","caption" => "CON-TAG","link" => ""),
-  1=>array("icon" => "_add","caption" => "Erfassen","link" => "$PHP_SELF?md=1&ID=$ID"),
-  9=>array("icon" => "_stop","caption" => "Zurück","link" => "larp.php?md=0&ID=$ID")
-  );
-  endswitch;
-
-  print_menu_status($menu);
-
-
-  switch ($md):
-case 1:
-    //
-    print_maske($id,$ID,5,1);
-  break;
-case 2:
-  print_maske($id,$ID,0,0);
-  break;
-case 3:
-  //
-  break;
-case 4:
-  //
-  print_maske($id,$ID,6,0);
-  break;
-case 10:
-  print_hilfe($ID,$item,$id);
-  break;
-default:
-  print_liste($ID,$TAG);
-  break;
-  endswitch;
+  case mfd_del:
+    //  echo "Delete Maske";
+    print_menu_status($menu);
+    print_mfd_del($id, $ID, $mfd_list, $mfd_cols,$daten);
+    break;
+  case mfd_info:
+    //  echo "Info Maske:";
+    print_menu_status($menu);
+    print_mfd_info($id, $ID, $mfd_list, $mfd_cols,$daten);
+    break;
+  case mfd_list:
+    print_menu_status($menu);
+    echo "mfd List Maske";
+    break;
+  default:
+    print_menu_status($menu);
+    print_liste($ID,$TAG,$ref_mfd);
+    //print_mfd_listeRef( $ID, $mfd_list, $mfd_cols,"mfd_list_edit_link", "mfd_list_delete_link","mfd_list_info_link");
+    break;
+    endswitch;
+  
+  
+// switch ($md):
+// case 1:
+//     //
+//     print_maske($id,$ID,5,1);
+//   break;
+// case 2:
+//   print_maske($id,$ID,0,0);
+//   break;
+// case 3:
+//   //
+//   break;
+// case 4:
+//   //
+//   print_maske($id,$ID,6,0);
+//   break;
+// case 10:
+//   print_hilfe($ID,$item,$id);
+//   break;
+// default:
+//   print_liste($ID,$TAG,$ref_mfd);
+//   break;
+//   endswitch;
 
   print_body_ende();
 
