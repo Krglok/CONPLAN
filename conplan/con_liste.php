@@ -434,7 +434,7 @@ function get_menu_con_tage($md,$PHP_SELF, $ID,$titel,$id,$daten,$sub,$home)
     break;
   default:  // MAIN-Menu
     $menu = array (0=>array("icon" => "1","caption" => "CON-TAG","link" => ""),
-    1=>array("icon" => "_add","caption" => "Erfassen","link" => "$PHP_SELF?md=1&ID=$ID"),
+    1=>array("icon" => "_add","caption" => "Erfassen","link" => "$PHP_SELF?md=".mfd_add."&ID=$ID"),
     9=>array("icon" => "_stop","caption" => "Zurück","link" => "$home?md=0&ID=$ID")
     );
   endswitch;
@@ -450,7 +450,6 @@ function get_menu_con_tage($md,$PHP_SELF, $ID,$titel,$id,$daten,$sub,$home)
 // Prüfung ob User  berechtigt ist
 
 $BEREICH = 'SUBSL';
-
 
 $md     = GET_md(0);
 $daten  = GET_daten("");
@@ -483,7 +482,6 @@ if (is_subsl()==FALSE)
   // Code ausgeführt wird.
 }
 
-
 print_header("Con Planung");
 
 print_body(2);
@@ -497,8 +495,6 @@ $anrede["formel"] = "Sei gegrüsst Meister ";
 print_kopf_planung("<b>CON Planung</b>",$anrede,$menu_item);
 
 $TAG   = get_akttag();
-
-//$TABLE = "con_tage";
 
 $ref_mfd = "con_tage";
 
@@ -522,38 +518,16 @@ default: //
   break;
   endswitch;
 
-// switch ($p_md):
-// case 5:  // MAIN-Menu
-//   insert($p_row);
-//   $md=0;
-//   break;
-// case 6: // Update eines bestehnden Datensatzes
-//   // Update SQL
-//   update($p_row);
-//   $md=0;
-//   break;
-// case 7: // Delete eines bestehenden Datensatzes
-//   // SQL delete
-//   loeschen($id);
-//   $md=0;
-//   break;
-// default :
-//   break;
-//   endswitch;
-
   $home = "larp.php";
   $titel = "CON TAGE";
   
   $menu = get_menu_con_tage($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $home);
 
-//  print_menu_status($menu);
-
-
   switch ($md):
   case mfd_add:
     print_menu_status($menu);
-  echo "Add Maske";
-  break;
+    print_mfd_erf($id, $ID, $mfd_list, $mfd_cols, $daten);
+    break;
   case mfd_edit:
     print_menu_status($menu);
     print_mfd_edit($id, $ID, $mfd_list, $mfd_cols,$daten);
@@ -579,30 +553,6 @@ default: //
     break;
     endswitch;
   
-  
-// switch ($md):
-// case 1:
-//     //
-//     print_maske($id,$ID,5,1);
-//   break;
-// case 2:
-//   print_maske($id,$ID,0,0);
-//   break;
-// case 3:
-//   //
-//   break;
-// case 4:
-//   //
-//   print_maske($id,$ID,6,0);
-//   break;
-// case 10:
-//   print_hilfe($ID,$item,$id);
-//   break;
-// default:
-//   print_liste($ID,$TAG,$ref_mfd);
-//   break;
-//   endswitch;
-
   print_body_ende();
 
   ?>

@@ -44,6 +44,7 @@ include_once "_lib.inc";
 include_once "_head.inc";
 include_once '_edit.inc';
 include_once '_mfd_lib.inc';
+include_once '_log_lib.inc';
 
 
 /**
@@ -213,35 +214,35 @@ default: //
 
   switch ($md):
 case mfd_add: // erfassen
-    $menu = array (0=>array("icon" => "7","caption" => "MFD-COLS","link" => ""),
+    $menu = array (0=>array("icon" => "7","caption" => "Kalender","link" => ""),
         1=>array("icon" => "1","caption" =>$ref_mfd, "link" => ""),
         2=>array("icon" => "1","caption" => "NEU","link" => ""),
         9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink()."")
     );
     break;
 case mfd_edit:  //Bearbeiten
-  $menu = array (0=>array("icon" => "7","caption" => "MFD-COLS","link" => ""),
+  $menu = array (0=>array("icon" => "7","caption" => "Kalender","link" => ""),
   1=>array("icon" => "1","caption" =>$ref_mfd, "link" => ""),
   2=>array("icon" => "1","caption" => " EDIT ","link" => ""),
   9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink()."")
   );
   break;
 case mfd_del: //
-  $menu = array (0=>array("icon" => "7","caption" => "MFD-COLS","link" => ""),
+  $menu = array (0=>array("icon" => "7","caption" => "Kalender","link" => ""),
   1=>array("icon" => "1","caption" =>$ref_mfd, "link" => ""),
   2=>array("icon" => "1","caption" => "DELETE","link" => ""),
   9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink()."")
   );
   break;
 case mfd_info: //
-  $menu = array (0=>array("icon" => "7","caption" => "MFD-COLS","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink().""),
+  $menu = array (0=>array("icon" => "7","caption" => "Kalender","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink().""),
   1=>array("icon" => "1","caption" =>$ref_mfd, "link" => ""),
   2=>array("icon" => "1","caption" => "MASKE","link" => ""),
   9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink()."")
   );
   break;
 default: // main
-  $menu = array (0=>array("icon" => "7","caption" => "MFD-COLS","link" => ""),
+  $menu = array (0=>array("icon" => "7","caption" => "Kalender","link" => ""),
   1=>array("icon" => "1","caption" =>$ref_mfd, "link" => ""),
   2=>array ("icon" => "_tadd","caption" => "Neu","link" => "$PHP_SELF?md=".mfd_add."&amp;daten=$daten&amp;ID=$ID".get_parentlink().""),
   5=>array ("icon" => "_stop","caption" => "Zurück","link" => get_home($BEREICH)."?md=0&amp;daten=$daten&amp;ID=$ID")

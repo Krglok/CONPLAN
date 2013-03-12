@@ -16,19 +16,19 @@ Enthält allgemiengültige Funktionen
 - Datenlisten News, Kalender, etc.
 
 Ver 3.0  / 06.02.2013
-Es werden CSS-Dateien verwendert. 
+Es werden CSS-Dateien verwendert.
 Es wird eine strikte Trennung von Content und Layout durchgefuehrt.
-Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues 
+Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues
 Layoutpfades in der config.inc
 Ansonsten bleibt der Inhalt der Seiten identisch.
 
 
-	$style = $GLOBALS['style_datatab'];
-	echo "<div $style >";
-	echo "<!--  DATEN Spalte   -->\n";
+$style = $GLOBALS['style_datatab'];
+echo "<div $style >";
+echo "<!--  DATEN Spalte   -->\n";
 
-	echo '</div>';
-	echo "<!--  ENDE DATEN Spalte   -->\n";
+echo '</div>';
+echo "<!--  ENDE DATEN Spalte   -->\n";
 
 
 */
@@ -45,49 +45,119 @@ define("main_sub",6);
 define("main_login",7);
 define("main_help",99);
 
-
+/**
+ * Erstellt einen Spalte aus einem Stringarray
+ * Es werden alle Zeilen des Array geschrieben
+ * Der Hintergrund ist weiss
+ * @param unknown $lines
+ * @param string $bgcolor
+ */
 function print_textblock_td_bg($lines, $bgcolor = 'white')
 {
-  if (count($lines)>0)
-  {
-    echo "\t<td bgcolor=\"$bgcolor\" width=\"550px\">\n";
-    for ($i=0; $i<count($lines); $i++)
-    {
-      echo "$lines[$i]";
-     
-    }
+	if (count($lines)>0)
+	{
+		echo "\t<td bgcolor=\"$bgcolor\" width=\"550px\">\n";
+		for ($i=0; $i<count($lines); $i++)
+		{
+			echo "$lines[$i]";
+			 
+		}
 
-    echo "\t</td>\n";
-  } else
-  {
-  echo "\t<td>&nbsp; </td>\n";
-  }
+		echo "\t</td>\n";
+	} else
+	{
+		echo "\t<td>&nbsp; </td>\n";
+	}
 }
 
+/**
+ * Erstellt einen Spalte aus einem Stringarray
+ * Es werden alle Zeilen des Array geschrieben
+ * @param unknown $lines
+ */
 function print_textblock_td($lines)
 {
-  if (count($lines)>0)
-  {
-    echo "\t<td>\n";
-    for ($i=0; $i<count($lines); $i++)
-    {
-    echo "$lines[$i]";
-    }
-    echo "\t</td>\n";
+	if (count($lines)>0)
+	{
+		echo "\t<td>\n";
+		for ($i=0; $i<count($lines); $i++)
+		{
+			echo "$lines[$i]";
+		}
+		echo "\t</td>\n";
 	} else
-    {
-      echo "\t<td>&nbsp;</td>\n";
-      }
-  }
+	{
+		echo "\t<td>&nbsp;</td>\n";
+	}
+}
+
+/**
+ * Erstellt eine Datenpalte aus einem Stringarray
+ * Es wird nur die erste Zeile geschrieben
+ * @param array $data, zu schreibendes textarray
+ */
+function print_textblock_td_short($data, $width=0)
+{
+	$lines=explode("\n",$data);
+	if (count($lines)>0)
+	{
+		echo "\t<td>\n";
+		echo "$lines[0]";
+		echo "\t</td>\n";
+	} else
+	{
+		echo "\t<td>&nbsp;</td>\n";
+	}
+}
+
+/**
+ * Erstellt enen Headerspalte in Kursiv Schrift
+ * @param String $data , zu schreibender Text
+ * @param number $width  minimale Spaltenbreite
+ */
+function print_header_td($data, $width=0)
+{
+	echo "\t<td width=\"$width\">\n";
+	echo "<i>$data</i> \n";
+	echo "\t</td>\n";
+}
+
+function print_bold_td($data, $width=0)
+{
+	echo "\t<td width=\"$width\">\n";
+	echo "<b>$data</b> \n";
+	echo "\t</td>\n";
+}
+
+/**
+ * Erstellt eine Datenspalte 
+ * @param String $data , zu schreibender Text
+ * @param number $width
+ */
+function print_text_td($data, $width=0)
+{
+	echo "\t<td width=\"$width\">\n";
+	echo "$data \n";
+	echo "\t</td>\n";
+}
+
+function print_text_td_bg($data, $width=0, $bgcolor = 'white' )
+{
+	echo "\t<td bgcolor=\"$bgcolor\"  width=\"$width\">\n";
+	echo "$data \n";
+	echo "\t</td>\n";
+}
+
+
 
 /**
  * Macht einen normale Datumsanzeige
  * @param unknown $datum
- */
+*/
 function print_datum($datum)
 {
-  $test = new DateTime($datum);
-  return date_format($test, 'd-m-Y');
+	$test = new DateTime($datum);
+	return date_format($test, 'd-m-Y');
 }
 
 /**
@@ -98,37 +168,37 @@ function print_datum($datum)
  */
 function print_menu_icon_mfd ($typ,$info)
 {
-  // convert int to string of icon type
-  //$typ = index2menutyp($typ);
-  $icon = $GLOBALS['layoutButton_path'].$typ.".gif";
-  $style = "style=\" width:21; height:21 \"";
-  //  echo $icon;
-  if ($typ != "")
-  {
-    echo "\t<IMG $style SRC=\"$icon\"  ALT=\"$info\" TITLE=\"$info\">";
-  } else {
-    echo "\t[X]"; // Leerzeile
-  }
+	// convert int to string of icon type
+	//$typ = index2menutyp($typ);
+	$icon = $GLOBALS['layoutButton_path'].$typ.".gif";
+	$style = "style=\" width:21; height:21 \"";
+	//  echo $icon;
+	if ($typ != "")
+	{
+		echo "\t<IMG $style SRC=\"$icon\"  ALT=\"$info\" TITLE=\"$info\">";
+	} else {
+		echo "\t[X]"; // Leerzeile
+	}
 };
 
 /**
  * Ausgabe eines Menu_icon anhand des default style
- * Fehlerbehandlung, [X] wird ausgegeben 
+ * Fehlerbehandlung, [X] wird ausgegeben
  * @param unknown $typ
  * @param string $info
  */
 function print_menu_icon ($typ,$info = "Link")
 {
-  // convert int to string of icon type  
-  //$typ = index2menutyp($typ);
-  $icon = $GLOBALS['layoutButton_path'].$typ.".gif";
-//  echo $icon;
-  if ($typ != "") 
-  {
-  	echo "\t<IMG SRC=\"$icon\"  ALT=\"$info\" TITLE=\"$info\">";
-  } else {
-  	echo "\t[X]"; // Leerzeile
-  }
+	// convert int to string of icon type
+	//$typ = index2menutyp($typ);
+	$icon = $GLOBALS['layoutButton_path'].$typ.".gif";
+	//  echo $icon;
+	if ($typ != "")
+	{
+		echo "\t<IMG SRC=\"$icon\"  ALT=\"$info\" TITLE=\"$info\">";
+	} else {
+		echo "\t[X]"; // Leerzeile
+	}
 };
 
 /**
@@ -139,64 +209,64 @@ function print_menu_icon ($typ,$info = "Link")
 function print_menu_ref($caption, $ref)
 {
 	global $parent;
-  echo "            <A HREF=\"$ref".get_parentlink()."\" > ";
-  echo "            $caption ";
-  echo "            </A>\n";
+	echo "            <A HREF=\"$ref".get_parentlink()."\" > ";
+	echo "            $caption ";
+	echo "            </A>\n";
 };
 
 function print_menu_item($item)
 {
-  global $PHP_SELF;
-  
-  $caption = $item["caption"];
-  $link=$item["link"];
-//  $ref = $link;
-  // Reftyp zusammenbauen
-  if (isset($item["itemtyp"])==false)
-  {
-    $item["itemtyp"] = "0";
-  }
-  $itemtyp = $item["itemtyp"];
-  //echo "$itemtyp";
-  if ($itemtyp == "0")
-  {
-    $ref = $link;
-    
-  } elseif ($itemtyp == "1")
-  {
-    $ref = "main_pages.php?md=0&amp;daten=$link";
-    
-  } elseif ($itemtyp == "2")
-  {
-    $ref = "$PHP_SELF?md=2&amp;daten=$link";
-    
-  }
-//     elseif ($itemtyp = "100")
-//   {
-//     $ref = "$PHP_SELF?md=$itemtyp&amp;daten=$link";
-    
-//   } elseif ($itemtyp = "101")
-//   {
-//     $ref = "$PHP_SELF?md=$itemtyp&amp;daten=$link";
-    
-//   } 
-  else 
-  {
-    $ref="";
-//    echo "$ref";
-  }
-  if ($item["icon"] != "0")
-  {
-    echo "          <p>  \n";
-    echo "            <a HREF=\"$ref\" > ";
-    print_menu_icon($item["icon"]);
-    echo "            $caption ";
-    echo "            </a>\n";
-    echo "          </p>  \n";
-  } else 
-  {
-    echo "\t\t<hr> \n";
-  }
+	global $PHP_SELF;
+
+	$caption = $item["caption"];
+	$link=$item["link"];
+	//  $ref = $link;
+	// Reftyp zusammenbauen
+	if (isset($item["itemtyp"])==false)
+	{
+		$item["itemtyp"] = "0";
+	}
+	$itemtyp = $item["itemtyp"];
+	//echo "$itemtyp";
+	if ($itemtyp == "0")
+	{
+		$ref = $link;
+
+	} elseif ($itemtyp == "1")
+	{
+		$ref = "main_pages.php?md=0&amp;daten=$link";
+
+	} elseif ($itemtyp == "2")
+	{
+		$ref = "$PHP_SELF?md=2&amp;daten=$link";
+
+	}
+	//     elseif ($itemtyp = "100")
+	//   {
+	//     $ref = "$PHP_SELF?md=$itemtyp&amp;daten=$link";
+
+	//   } elseif ($itemtyp = "101")
+	//   {
+	//     $ref = "$PHP_SELF?md=$itemtyp&amp;daten=$link";
+
+	//   }
+	else
+	{
+		$ref="";
+		//    echo "$ref";
+	}
+	if ($item["icon"] != "0")
+	{
+		echo "          <p>  \n";
+		echo "            <a HREF=\"$ref\" > ";
+		print_menu_icon($item["icon"]);
+		echo "            $caption ";
+		echo "            </a>\n";
+		echo "          </p>  \n";
+	} else
+	{
+		echo "\t\t<hr> \n";
+	}
 
 }
 
@@ -206,74 +276,74 @@ function print_menu_item($item)
  */
 function print_menu ($menu)
 {
-  global $ID;
-  $menu_item_subsl= array ("icon" => "_tool","caption" => "Planung","link" => "con_liste.php?md=0&amp;ID=$ID","itemtyp"=>"0");
-  $menu_item_sl 	= array ("icon" => "_tool","caption" => "SL","link" => "con_main.php?md=0&amp;ID=$ID","itemtyp"=>"0");
-  $menu_item_admin= array ("icon" => "_tool","caption" => "Admin","link" => "admin_main.php?md=0&amp;ID=$ID","itemtyp"=>"0");
-  $menu_item_author= array ("icon" => "_tool","caption" => "Author","link" => "author_pages.php?md=0&amp;ID=$ID","itemtyp"=>"0");
-  
-  //   menü spalte
-  echo "<!--  Menu Spalte   -->\n";
-  //  stellt die breite der Menüspalte ein !!!
-  $style = $GLOBALS['style_menu_tab1'];
-  echo "<div $style >\n";
+	global $ID;
+	$menu_item_subsl= array ("icon" => "_tool","caption" => "Planung","link" => "con_liste.php?md=0&amp;ID=$ID","itemtyp"=>"0");
+	$menu_item_sl 	= array ("icon" => "_tool","caption" => "SL","link" => "con_main.php?md=0&amp;ID=$ID","itemtyp"=>"0");
+	$menu_item_admin= array ("icon" => "_tool","caption" => "Admin","link" => "admin_main.php?md=0&amp;ID=$ID","itemtyp"=>"0");
+	$menu_item_author= array ("icon" => "_tool","caption" => "Author","link" => "author_pages.php?md=0&amp;ID=$ID","itemtyp"=>"0");
 
-  //  separate div pro Menu item
-  //   $style = $GLOBALS['style_menu_head'];
-  //   echo "\t<div  ><!-- Row:1, Col:1 -->\n";
-  //   echo "\t</div >\n";
-  $item = $menu[0];
-  $is_sub = $item["icon"];
-  $caption = $item["caption"];
-  $style = $GLOBALS['style_menu_head'];
-  echo "\t <div $style >\n";
-  echo "$caption \n";
-  echo "\t </div >\n";
+	//   menü spalte
+	echo "<!--  Menu Spalte   -->\n";
+	//  stellt die breite der Menüspalte ein !!!
+	$style = $GLOBALS['style_menu_tab1'];
+	echo "<div $style >\n";
 
-  $style = $GLOBALS['style_menu_item'];
-  echo "\t\t<div $style ><!-- Row:1, Col:1 -->\n";
+	//  separate div pro Menu item
+	//   $style = $GLOBALS['style_menu_head'];
+	//   echo "\t<div  ><!-- Row:1, Col:1 -->\n";
+	//   echo "\t</div >\n";
+	$item = $menu[0];
+	$is_sub = $item["icon"];
+	$caption = $item["caption"];
+	$style = $GLOBALS['style_menu_head'];
+	echo "\t <div $style >\n";
+	echo "$caption \n";
+	echo "\t </div >\n";
 
-  reset ($menu);
-  $i = 0;
-  foreach ($menu as $item)
-  {
-    // das erste Ellement ist der Header !!
-    if ($i > 0)
-    {
-      //echo $i;
-      print_menu_item($item);
-    }
-    $i++;
-  }
-  if ($is_sub == "0")
-  {
-    if (is_author()==TRUE)
-    {
-      print_menu_item($menu_item_author);
-    }
-    if (is_subsl()==TRUE)
-    {
-      print_menu_item($menu_item_subsl);
-    }
-    if (is_sl()==TRUE)
-    {
-      print_menu_item($menu_item_sl);
-    }
-    if (is_admin()==TRUE)
-    {
-      print_menu_item($menu_item_admin);
-    }
-  }
-  echo "\t\t</div >\n";
-  echo "\t</div >\n";
-  echo "<!--  Menu Spalte ENDE   -->\n\n";
+	$style = $GLOBALS['style_menu_item'];
+	echo "\t\t<div $style ><!-- Row:1, Col:1 -->\n";
+
+	reset ($menu);
+	$i = 0;
+	foreach ($menu as $item)
+	{
+		// das erste Ellement ist der Header !!
+		if ($i > 0)
+		{
+			//echo $i;
+			print_menu_item($item);
+		}
+		$i++;
+	}
+	if ($is_sub == "0")
+	{
+		if (is_author()==TRUE)
+		{
+			print_menu_item($menu_item_author);
+		}
+		if (is_subsl()==TRUE)
+		{
+			print_menu_item($menu_item_subsl);
+		}
+		if (is_sl()==TRUE)
+		{
+			print_menu_item($menu_item_sl);
+		}
+		if (is_admin()==TRUE)
+		{
+			print_menu_item($menu_item_admin);
+		}
+	}
+	echo "\t\t</div >\n";
+	echo "\t</div >\n";
+	echo "<!--  Menu Spalte ENDE   -->\n\n";
 };
 
 function print_menue_header($caption, $style)
 {
-  echo "\t <div $style >\n";
-  echo "$caption \n";
-  echo "\t </div >\n";
+	echo "\t <div $style >\n";
+	echo "$caption \n";
+	echo "\t </div >\n";
 }
 
 /**
@@ -282,78 +352,78 @@ function print_menue_header($caption, $style)
  */
 function print_menu_status ($menu)
 {
-  global $ID;
-  $menu_item_subsl= array ("icon" => "_tool","caption" => "Planung","link" => "con_liste.php?md=0&amp;ID=$ID","itemtyp"=>"0");
-  $menu_item_sl   = array ("icon" => "_tool","caption" => "SL","link" => "con_main.php?md=0&amp;ID=$ID","itemtyp"=>"0");
-  $menu_item_admin= array ("icon" => "_tool","caption" => "Admin","link" => "admin_main.php?md=0&amp;ID=$ID","itemtyp"=>"0");
-  $menu_item_author= array ("icon" => "_tool","caption" => "Author","link" => "author_pages.php?md=0&amp;ID=$ID","itemtyp"=>"0");
-  
-  //   menü spalte
-  echo "<!--  Menu Spalte   -->\n";
-  //  stellt die breite der Menüspalte ein !!!
-  $style = "id=status";
-  echo "<div $style >\n";
+	global $ID;
+	$menu_item_subsl= array ("icon" => "_tool","caption" => "Planung","link" => "con_liste.php?md=0&amp;ID=$ID","itemtyp"=>"0");
+	$menu_item_sl   = array ("icon" => "_tool","caption" => "SL","link" => "con_main.php?md=0&amp;ID=$ID","itemtyp"=>"0");
+	$menu_item_admin= array ("icon" => "_tool","caption" => "Admin","link" => "admin_main.php?md=0&amp;ID=$ID","itemtyp"=>"0");
+	$menu_item_author= array ("icon" => "_tool","caption" => "Author","link" => "author_pages.php?md=0&amp;ID=$ID","itemtyp"=>"0");
 
-  //  separate div pro Menu item
-  //   $style = $GLOBALS['style_menu_head'];
-  //   echo "\t<div  ><!-- Row:1, Col:1 -->\n";
-  //   echo "\t</div >\n";
-  $item = $menu[0];
-  $is_sub = $item["icon"];
-  $caption = $item["caption"];
-  $styleheader = "id=statusheader";
-  print_menue_header($caption, $styleheader);
-  
-  $style = "id=statusitem";
+	//   menü spalte
+	echo "<!--  Menu Spalte   -->\n";
+	//  stellt die breite der Menüspalte ein !!!
+	$style = "id=status";
+	echo "<div $style >\n";
 
-  reset ($menu);
-  $i = 0;
-  foreach ($menu as $item)
-  {
-    echo "\t\t<div $style ><!-- Row:1, Col:1 -->\n";
-    // das erste Ellement ist der Header !!
-    if ($i > 0)
-    {
-      //echo $i;
-      if ($item["icon"] == "1")
-      {
-        print_menue_header($item["caption"], $styleheader);
-      } else {
-        print_menu_item($item);
-      }
-    }
-    echo "\t\t</div >\n";
-    $i++;
-  }
-  if ($is_sub == "0")    // Codierung des Menuheader Icon
-  {
-    if (is_author()==TRUE)
-    {
-      print_menu_item($menu_item_author);
-    }
-    if (is_subsl()==TRUE)
-    {
-      print_menu_item($menu_item_subsl);
-    }
-    if (is_sl()==TRUE)
-    {
-      print_menu_item($menu_item_sl);
-    }
-    if (is_admin()==TRUE)
-    {
-      print_menu_item($menu_item_admin);
-    }
-  }
-//  echo "\t\t</div >\n";
-  echo "\t</div >\n";
-  echo "<!--  Menu Spalte ENDE   -->\n\n";
+	//  separate div pro Menu item
+	//   $style = $GLOBALS['style_menu_head'];
+	//   echo "\t<div  ><!-- Row:1, Col:1 -->\n";
+	//   echo "\t</div >\n";
+	$item = $menu[0];
+	$is_sub = $item["icon"];
+	$caption = $item["caption"];
+	$styleheader = "id=statusheader";
+	print_menue_header($caption, $styleheader);
+
+	$style = "id=statusitem";
+
+	reset ($menu);
+	$i = 0;
+	foreach ($menu as $item)
+	{
+		echo "\t\t<div $style ><!-- Row:1, Col:1 -->\n";
+		// das erste Ellement ist der Header !!
+		if ($i > 0)
+		{
+			//echo $i;
+			if ($item["icon"] == "1")
+			{
+				print_menue_header($item["caption"], $styleheader);
+			} else {
+				print_menu_item($item);
+			}
+		}
+		echo "\t\t</div >\n";
+		$i++;
+	}
+	if ($is_sub == "0")    // Codierung des Menuheader Icon
+	{
+		if (is_author()==TRUE)
+		{
+			print_menu_item($menu_item_author);
+		}
+		if (is_subsl()==TRUE)
+		{
+			print_menu_item($menu_item_subsl);
+		}
+		if (is_sl()==TRUE)
+		{
+			print_menu_item($menu_item_sl);
+		}
+		if (is_admin()==TRUE)
+		{
+			print_menu_item($menu_item_admin);
+		}
+	}
+	//  echo "\t\t</div >\n";
+	echo "\t</div >\n";
+	echo "<!--  Menu Spalte ENDE   -->\n\n";
 };
 
 /**
  * Wird fuer die pages verwaltung benutzt
  * Zerlegt einen Pfad_Datei in Sub Item elemente
  * Bis zu 3 elemente werden ausgewertet.
- * Sind mehr elemente enthalten wird nichts zurueckgegeben 
+ * Sind mehr elemente enthalten wird nichts zurueckgegeben
  * @param unknown $daten
  * @return multitype:string unknown Ambigous <>
  */
@@ -364,7 +434,7 @@ function get_sub_item_name($daten)
 	$sub_item = explode("/", $daten);
 	if (count($sub_item)==1)
 	{
-		$sub_item_name["name"] = $sub_item[0]; 
+		$sub_item_name["name"] = $sub_item[0];
 	}
 	if (count($sub_item)==2)
 	{
@@ -377,14 +447,14 @@ function get_sub_item_name($daten)
 		$sub_item_name["item"] = $sub_item[1];
 		$sub_item_name["name"] = $sub_item[2];
 	}
-	
+
 	return  $sub_item_name;
 }
 
 /**
  * Wird fuer die pages verwaltung benutzt
  * Baut einen Pfad Datei aus den 3 elemente zusammen.
- * 
+ *
  * @param unknown $sub
  * @param unknown $item
  * @param unknown $name
@@ -395,12 +465,12 @@ function set_sub_item_name($sub, $item, $name)
 	if ($sub != "")
 	{
 		if ($item == "")
-			{
-				return $sub."/".$name;
-			} else
-			{
-				return $sub."/".$item."/".$name;
-			}
+		{
+			return $sub."/".$name;
+		} else
+		{
+			return $sub."/".$item."/".$name;
+		}
 	} else
 	{
 		return $name;
@@ -610,20 +680,22 @@ function check_sub_item($bereich,$sub,$item)
  * 16-63  = sub_sl
  * 64-255 = author
  * 256-511  = user
- * 512....  = public  
+ * 512....  = public
  * @return boolean
  */
 function is_admin()
 {
-  global $user_lvl;
-  if (!isset($_SESSION["user_lvl"])) { return FALSE; }
-  $user_lvl   = $_SESSION["user_lvl"];
-  if ($user_lvl < 1) return FALSE;
-  if ($user_lvl < 4)
-  {
-    return TRUE;
-  }
-  return FALSE;
+	global $user_lvl;
+	if (!isset($_SESSION["user_lvl"])) {
+		return FALSE;
+	}
+	$user_lvl   = $_SESSION["user_lvl"];
+	if ($user_lvl < 1) return FALSE;
+	if ($user_lvl < 4)
+	{
+		return TRUE;
+	}
+	return FALSE;
 }
 
 /**
@@ -633,22 +705,24 @@ function is_admin()
  * 16-63  = sub_sl
  * 64-255 = author
  * 256-511  = user
- * 512....  = public  
- * 
+ * 512....  = public
+ *
  * @return boolean
  */
 function is_sl()
 {
-  global $user_lvl;
-  if (!isset($_SESSION["user_lvl"])) { return FALSE; }
-  
-  $user_lvl   = $_SESSION["user_lvl"];
-  if ($user_lvl < 1) return FALSE;
-    if ($user_lvl < 16)
-  {
-    return TRUE;
-  }
-  return FALSE;
+	global $user_lvl;
+	if (!isset($_SESSION["user_lvl"])) {
+		return FALSE;
+	}
+
+	$user_lvl   = $_SESSION["user_lvl"];
+	if ($user_lvl < 1) return FALSE;
+	if ($user_lvl < 16)
+	{
+		return TRUE;
+	}
+	return FALSE;
 }
 
 /**
@@ -658,21 +732,23 @@ function is_sl()
  * 16-63  = sub_sl
  * 64-255 = author
  * 256-511  = user
- * 512....  = public  
- * 
+ * 512....  = public
+ *
  * @return boolean
  */
 function is_subsl()
 {
-  global $user_lvl;
-  if (!isset($_SESSION["user_lvl"])) { return FALSE; }
-  $user_lvl   = $_SESSION["user_lvl"];
-  if ($user_lvl < 1) return FALSE;
-  if ($user_lvl < 64)
-  {
-    return TRUE;
-  }
-  return FALSE;
+	global $user_lvl;
+	if (!isset($_SESSION["user_lvl"])) {
+		return FALSE;
+	}
+	$user_lvl   = $_SESSION["user_lvl"];
+	if ($user_lvl < 1) return FALSE;
+	if ($user_lvl < 64)
+	{
+		return TRUE;
+	}
+	return FALSE;
 }
 
 /**
@@ -682,45 +758,23 @@ function is_subsl()
  * 16-63  = sub_sl
  * 64-255 = author
  * 256-511  = user
- * 512....  = public  
- * 
+ * 512....  = public
+ *
  * @return boolean
  */
 function is_author()
 {
-  global $user_lvl;
-  if (!isset($_SESSION["user_lvl"])) { return FALSE; }
-  $user_lvl   = $_SESSION["user_lvl"];
-  if ($user_lvl < 1) return FALSE;
-  if ($user_lvl < 256)
-  {
-    return TRUE;
-  }
-  return FALSE;
-}
-
-/**
-  * prueft ob user Lvl den entsprechenden Wert hat
- * 1-3    = admin
- * 4-15   = sl
- * 16-63  = sub_sl
- * 64-255 = author
- * 256-511  = user
- * 512....  = public  
-* 
- * @return boolean
- */
-function is_user()
-{
-  global $user_lvl;
-  if (!isset($_SESSION["user_lvl"])) { return FALSE; }
-  $user_lvl   = $_SESSION["user_lvl"];
-  if ($user_lvl < 1) return FALSE;
-  if ($user_lvl < 512)
-  {
-    return TRUE;
-  }
-  return FALSE;
+	global $user_lvl;
+	if (!isset($_SESSION["user_lvl"])) {
+		return FALSE;
+	}
+	$user_lvl   = $_SESSION["user_lvl"];
+	if ($user_lvl < 1) return FALSE;
+	if ($user_lvl < 256)
+	{
+		return TRUE;
+	}
+	return FALSE;
 }
 
 /**
@@ -730,21 +784,49 @@ function is_user()
  * 16-63  = sub_sl
  * 64-255 = author
  * 256-511  = user
- * 512....  = public  
- * 
+ * 512....  = public
+ *
+ * @return boolean
+ */
+function is_user()
+{
+	global $user_lvl;
+	if (!isset($_SESSION["user_lvl"])) {
+		return FALSE;
+	}
+	$user_lvl   = $_SESSION["user_lvl"];
+	if ($user_lvl < 1) return FALSE;
+	if ($user_lvl < 512)
+	{
+		return TRUE;
+	}
+	return FALSE;
+}
+
+/**
+ * prueft ob user Lvl den entsprechenden Wert hat
+ * 1-3    = admin
+ * 4-15   = sl
+ * 16-63  = sub_sl
+ * 64-255 = author
+ * 256-511  = user
+ * 512....  = public
+ *
  * @return boolean
  */
 function is_public()
 {
-  global $user_lvl;
-  if (!isset($_SESSION["user_lvl"])) { return FALSE; }
-  if ($user_lvl < 1) return FALSE;
-  
-  if ($user_lvl > 511)
-  {
-    return TRUE;
-  }
-  return FALSE;
+	global $user_lvl;
+	if (!isset($_SESSION["user_lvl"])) {
+		return FALSE;
+	}
+	if ($user_lvl < 1) return FALSE;
+
+	if ($user_lvl > 511)
+	{
+		return TRUE;
+	}
+	return FALSE;
 }
 
 
@@ -762,7 +844,7 @@ function get_spieler_id($user_id)
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
 
 	mysql_select_db($DB_NAME);
-    $table = $GLOBALS['TBL_USER'];
+	$table = $GLOBALS['TBL_USER'];
 	$q = 'select spieler_id from $table where id=\"$user_id\"';
 	$result = mysql_query($q) or die("select Fehler....$q.");
 	$row1 = mysql_fetch_row($result);
@@ -772,7 +854,7 @@ function get_spieler_id($user_id)
 };
 
 /**
- * DB-Funktion, Gibt die Spieler_id zu einem UserNAme zurück 
+ * DB-Funktion, Gibt die Spieler_id zu einem UserNAme zurück
  * @param unknown $user
  * @return unknown
  */
@@ -784,7 +866,7 @@ function get_user_id($user)
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
 
 	mysql_select_db($DB_NAME);
-    $table = $GLOBALS['TBL_USER'];
+	$table = $GLOBALS['TBL_USER'];
 	$q = "select spieler_id,id,username from $table where username=\"$user\"";
 	$result = mysql_query($q) or die("select Fehler....$q.");
 	$row1 = mysql_fetch_row($result);
@@ -795,7 +877,7 @@ function get_user_id($user)
 
 /**
  * DB Funktion
- * Gibt den Realnamen (Vorname + Name zu einer spieler_id zurück 
+ * Gibt den Realnamen (Vorname + Name zu einer spieler_id zurück
  * @param unknown $user_id
  * @return string
  */
@@ -836,7 +918,7 @@ function get_mail($user_id)
 };
 
 /**
- * DB-Funktion, Gibt den Charakternamen zu einer Spieler_id zurück 
+ * DB-Funktion, Gibt den Charakternamen zu einer Spieler_id zurück
  * @param unknown $user_id
  * @return Ambigous <>
  */
@@ -856,7 +938,7 @@ function get_charname($user_id)
 };
 
 /**
- * DB-Funktion, Gibt den Namen des Spielers zu einer spieler_id zurück 
+ * DB-Funktion, Gibt den Namen des Spielers zu einer spieler_id zurück
  * @param unknown $user_id
  * @return string
  */
@@ -878,7 +960,7 @@ function get_spieler($user_id)
 
 
 /**
- * Gibt den aktuellen Contag zurück 
+ * Gibt den aktuellen Contag zurück
  * @return int
  */
 function get_akttag()
@@ -915,7 +997,7 @@ function get_sltag($user,$tag)
 		$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
 		or die( "Fehler beim Verbinden".$DB_HOST."-".$DB_USER."-".$DB_PASS);
 
-	    mysql_select_db($DB_NAME);
+		mysql_select_db($DB_NAME);
 		// User_id ermitteln
 		$Q = "select id,username,lvl from $TBL_USER where username=\"$user\"";
 		$result = mysql_query($Q) or die( "Fehler bei User");
@@ -980,7 +1062,7 @@ function get_hilfe_item($item,$id)
 }
 
 /**
- * Sucht ein Hilfe Referenz (item) 
+ * Sucht ein Hilfe Referenz (item)
  * Zeigt eine Hilfeseite an im default style fuer html
  * @param unknown $ID
  * @param unknown $item
@@ -991,7 +1073,7 @@ function  print_hilfe($ID,$item,$id)
 	if ($id=='')
 	{
 		$result = get_hilfe($item);
-        $style = $GLOBALS['style_datatab'];
+		$style = $GLOBALS['style_datatab'];
 		echo "<div $style \n>";
 		print_menu_icon (10);
 		echo "\t<p> <b>Hilfeindex : $item </b> </p>\n";
@@ -1005,9 +1087,9 @@ function  print_hilfe($ID,$item,$id)
 				// aufruf der Deateildaten
 				if ($i==0)
 				{
-//					echo "\t<td><a href=\"$PHP_SELF?md=10&amp;ID=$ID&amp;id=$row[$i]&amp;item=$item\">\n";
-                    $style = $GLOBALS['style_balken_menu_r'];
-                    echo "\t\t<div $style > \n";
+					//					echo "\t<td><a href=\"$PHP_SELF?md=10&amp;ID=$ID&amp;id=$row[$i]&amp;item=$item\">\n";
+					$style = $GLOBALS['style_balken_menu_r'];
+					echo "\t\t<div $style > \n";
 					print_menu_icon ($GLOBALS['menu_stop']);
 					echo "\t\t</div> \n";
 				} else
@@ -1021,7 +1103,7 @@ function  print_hilfe($ID,$item,$id)
 	} else
 	{
 		$result = get_hilfe_item($item,$id);
-        $style = $GLOBALS['style_datatab'];
+		$style = $GLOBALS['style_datatab'];
 		echo "<div $style \n>";
 		print_menu_icon (10);
 		echo "\t<p> <b>Hilfeindex : $item </b> </p>\n";
@@ -1035,10 +1117,10 @@ function  print_hilfe($ID,$item,$id)
 				// aufruf der Deateildaten
 				if ($i==0)
 				{
-//					echo "\t<td><a href=\"$PHP_SELF?md=10&ID=$ID&id=$row[$i]&item=$item\">\n";
-                    $style = $GLOBALS['style_balken_menu_r'];
-                    echo "\t\t<div $style > \n";
-                    $img = $GLOBALS['menu_stop']; 
+					//					echo "\t<td><a href=\"$PHP_SELF?md=10&ID=$ID&id=$row[$i]&item=$item\">\n";
+					$style = $GLOBALS['style_balken_menu_r'];
+					echo "\t\t<div $style > \n";
+					$img = $GLOBALS['menu_stop'];
 					print_menu_icon ($img);
 					echo "\t\t</div> \n";
 				} else
@@ -1110,7 +1192,7 @@ function get_monat_name($m)
  * im Kalender
  * 	['contag','aufbau',"orange",'basteln',"orange", 'vv',default]
  * @param unknown $typ
- * @return string colorName or colorHex 
+ * @return string colorName or colorHex
  */
 function get_typ_color($typ)
 {
@@ -1140,42 +1222,42 @@ function get_typ_color($typ)
  */
 function print_news()
 {
-  global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
+	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
 
-  $style = $GLOBALS['style_datatab'];
-  echo "<div $style >";
-  echo "<!--  DATEN Spalte   -->\n";
-  echo "<CENTER>";
-  
-  echo "      <TABLE WIDTH=\"500\"  BORDER=\"0\" BGCOLOR=\"\" >";
-  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-  or die("Fehler beim verbinden!");
+	$style = $GLOBALS['style_datatab'];
+	echo "<div $style >";
+	echo "<!--  DATEN Spalte   -->\n";
+	echo "<CENTER>";
 
-  mysql_select_db($DB_NAME);
+	echo "      <TABLE WIDTH=\"500\"  BORDER=\"0\" BGCOLOR=\"\" >";
+	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+	or die("Fehler beim verbinden!");
 
-  $result = mysql_query("SELECT datum,text_1,text_2,Text_3 from news order by id DESC LIMIT 10")
-  or die("Query Fehler...");
+	mysql_select_db($DB_NAME);
 
-  while ($row = mysql_fetch_row($result))
-  {
-    echo "        <TR>";
-    echo "        <FONT FACE=\"Comic Sans MS\" SIZE=\"2\">\n";
-    echo "\t<td width=\"95\">".$row[0]."<br><br><br><br>";
-    echo "</td>\n";
-    echo "\t<td>$row[1]<BR>$row[2]<BR>$row[3]<BR>";
-          echo "<HR>";
-    echo "</td>\n";
-    echo '        </TR>';
-}
+	$result = mysql_query("SELECT datum,text_1,text_2,Text_3 from news order by id DESC LIMIT 10")
+	or die("Query Fehler...");
 
-mysql_close($db);
-echo '      </TABLE>';
-echo "    </TD>\n";
-echo "    <TD>\n";
-echo "    .\n";
-echo "</CENTER>";
-echo '</div>';
-echo "<!--  ENDE DATEN Spalte   -->\n";
+	while ($row = mysql_fetch_row($result))
+	{
+		echo "        <TR>";
+		echo "        <FONT FACE=\"Comic Sans MS\" SIZE=\"2\">\n";
+		echo "\t<td width=\"95\">".$row[0]."<br><br><br><br>";
+		echo "</td>\n";
+		echo "\t<td>$row[1]<BR>$row[2]<BR>$row[3]<BR>";
+		echo "<HR>";
+		echo "</td>\n";
+		echo '        </TR>';
+	}
+
+	mysql_close($db);
+	echo '      </TABLE>';
+	echo "    </TD>\n";
+	echo "    <TD>\n";
+	echo "    .\n";
+	echo "</CENTER>";
+	echo '</div>';
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 
 };
 
@@ -1190,14 +1272,14 @@ function print_kalender()
 	$style = $GLOBALS['style_datatab'];
 	echo "<div $style >";
 	echo "<!--  DATEN Spalte   -->\n";
-    echo "<CENTER>";
-	
+	echo "<CENTER>";
+
 	echo "<TABLE  WIDTH=\"600\" HEIGHT=\"40\" BORDER=\"1\" CELLPADDING=\"1\" BGCOLOR=\"silver\" BORDERCOLOR=\"#808080\" BORDERCOLORDARK=\"gray\" BORDERCOLORLIGHT=\"#C0C0C0\"\n";
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
 	or die("Fehler beim verbinden!");
 
 	mysql_select_db($DB_NAME);
-    
+
 	// aktuelles Datum ermitteln fr STartwoche
 	$t = date("j");
 	$m = date("n");
@@ -1206,7 +1288,7 @@ function print_kalender()
 	$j1 = $j+1;
 
 	$where = " where (jahr=".$j." OR jahr=".$j1." ) AND monat=".$m." AND (mo=".$t." OR di=".$t." OR mi=".$t." OR do=".$t." OR fr=".$t." OR sa=".$t." OR so=".$t.")" ;
-	$result = mysql_query("SELECT kal_id from kalender ".$where)
+	$result = mysql_query("SELECT id from kalender ".$where)
 	or die("Query Fehler...tag");
 	$row = mysql_fetch_row($result);
 
@@ -1214,7 +1296,7 @@ function print_kalender()
 	$kw1 = $row[0];        // untere Grenze aktuelle Woche
 	$kw2 = $row[0]+105;     // obere Grenze relativ
 
-	//  $where = " where kal_id>=".$kw1." and kal_id<=".$kw2 ;
+	//  $where = " where id>=".$kw1." and id<=".$kw2 ;
 	$where = "where (jahr = extract(year from CurDate()) )  and (monat = extract(month from Curdate()) "
 			." OR monat > extract(month from Curdate()) "
 			." OR monat = extract(month from Curdate())-1) "
@@ -1227,12 +1309,12 @@ function print_kalender()
 	$row = mysql_fetch_row($result);
 	echo "<TR HEIGHT=\"40\" >";
 	echo "\t<TD colspan=10  bgcolor=\"#A0A0C0\" ><FONT COLOR=\"black\">";
-//	echo "<FONT FACE=\"Comic Sans MS\" SIZE=\"3\">\n";
+	//	echo "<FONT FACE=\"Comic Sans MS\" SIZE=\"3\">\n";
 	echo "<CENTER>Drachenhorst Kalender ".$j;
 	echo "\t</TD>\n";
 	echo "</TR>\n";
 	echo "<TR  HEIGHT=\"25\" >";
-//	echo "<FONT FACE=\"Comic Sans MS\" SIZE=\"2\">\n";
+	//	echo "<FONT FACE=\"Comic Sans MS\" SIZE=\"2\">\n";
 	echo "\t<td width=\"15\" bgcolor=\"#A0A0C0\" ><FONT COLOR=\"black\">Monat&nbsp;<BR>";
 	echo "</td>\n";
 	echo "\t<td width=\"15\" bgcolor=\"#A0A0C0\" ><FONT COLOR=\"black\">KW </td>\n";
@@ -1281,7 +1363,7 @@ function print_kalender()
 
 	mysql_close($db);
 	echo '      </TABLE>';
-    echo "</CENTER>";
+	echo "</CENTER>";
 	echo '</div>';
 	echo "<!--  ENDE DATEN Spalte   -->\n";
 	//=========== print_kalender_end ========================
@@ -1290,7 +1372,7 @@ function print_kalender()
 
 /**
  *  erstellt eine Spielerliste als Tabelle
- *  kann direkt in das Datatab geschrieben werden 
+ *  kann direkt in das Datatab geschrieben werden
  */
 function print_sc_liste()
 {
@@ -1343,7 +1425,7 @@ function print_sc_liste()
 }
 
 /**
- * 
+ *
  * @param unknown $bild_url
  * @param unknown $zieldir
  * @param unknown $max_x
@@ -1374,9 +1456,9 @@ function tumb_erzeugen($bild_url,$zieldir,$max_x,$max_y,$type)
 {
 
 	$PicPathIn=$zieldir; // Dein Verzeichnis des Original Bildes z.B.bilder/
-//	$PicPathOut=realpath($zieldir."thumb")."/"; // Dein Tumb Ziel Verzeichnis
+	//	$PicPathOut=realpath($zieldir."thumb")."/"; // Dein Tumb Ziel Verzeichnis
 	$PicPathOut=realpath($GLOBALS['path_thumbnail']); // Dein Tumb Ziel Verzeichnis
-	
+
 	if ($max_x == 0) {
 		$max_x = 100;
 	}
@@ -1467,7 +1549,7 @@ function tumb_erzeugen($bild_url,$zieldir,$max_x,$max_y,$type)
 
 /**
  * Speichert ein hochgeladenes Bild in der Gallerie (Verzeichnis)
- * Der Bildtyp wird anhand der fileendung erkannt, gif, jpg, png, swf, bmp 
+ * Der Bildtyp wird anhand der fileendung erkannt, gif, jpg, png, swf, bmp
  * (hmm... unbefriedigende Loesung)
  * Es wird ein thunmbnail erzeugt
  * @param unknown $bild   Bildaten
@@ -1519,7 +1601,7 @@ function bild_speichern($bild,$name,$imagepath)
 
 /**
  * Erzeugt ein Thumbnail
- * 
+ *
  * @param unknown $bild_url
  * @param unknown $zieldir
  * @param unknown $max_x

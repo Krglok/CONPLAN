@@ -46,7 +46,7 @@ function mfd_list_delete_link($ID,$id)
   global $PHP_SELF;
   global $daten;  // Referenz auf mfd, das bearbeitet wird
 
-  $link = $PHP_SELF."?md=".mfd_del."&id=$id&daten=$daten&ID=$ID";
+  $link = $PHP_SELF."?md=".mfd_edit_del."&id=$id&daten=$daten&ID=$ID";
   return $link;
 }
 
@@ -62,7 +62,7 @@ function mfd_list_info_link($ID,$id)
   global $PHP_SELF;
   global $daten;// Referenz auf mfd, das bearbeitet wird
 
-  $link = $PHP_SELF."?md=".mfd_info."&id=$id&daten=$daten&ID=$ID";
+  $link = $PHP_SELF."?md=".mfd_edit_info."&id=$id&daten=$daten&ID=$ID";
   return $link;
 }
 
@@ -131,7 +131,6 @@ function print_mfd_editor($ref_mfd,$md, $p_md, $p_row,$id,$daten,$sub,$home)
   global $spieler_id ;
   global $user_id 	;
   
-  
   $mfd_list=get_mfd($ref_mfd);
   //$mfd_list = make_mfd_table("mfd_cols", "mfd_cols");
   //$mfd_list["where"]="ref_mfd=\"$ref_mfd\" ";
@@ -155,10 +154,8 @@ function print_mfd_editor($ref_mfd,$md, $p_md, $p_row,$id,$daten,$sub,$home)
   default: //
     break;
     endswitch;
-
-
+  echo $home;
   $menu = get_menu_mfd_editor($md, $PHP_SELF, $ID,$ref_mfd,$id,$daten,$sub,$home);
-
 
   switch ($md):
   case mfd_add:

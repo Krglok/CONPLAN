@@ -1,5 +1,4 @@
 <?php
-
 /*
  Projekt : ADMIN
 
@@ -184,7 +183,10 @@ function print_liste($mfd_list,$ID)
 
 };
 
-//-----------------------------------------------------------------------------
+/**
+ * Erstellt einen Datenliste mit den Anmeldetagen des SC
+ * @param  $ID  , SessionID
+ */
 function tage_liste($ID)
 {
   global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
@@ -471,6 +473,18 @@ function print_auswahl($ID)
   
 };
 
+/**
+ * Erstellt das Menu zu der jeweiligen $md Funktion
+ * @param  $md  , Funktionsnummer
+ * @param  $PHP_SELF , Name des Scriptes
+ * @param  $ID	, SessionID
+ * @param  $titel , Titeltext fuer das Menu
+ * @param  $id , id Parameter , standardmaessig steht der PK hier drin
+ * @param  $daten, Daten parameter
+ * @param  $sub	, Subdatenbereich
+ * @param  $home,  link fuer Zurueck
+ * @return array[$menu_item] $menu
+ */
 function get_menu_con_tage($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $home)
 {
 	switch ($md):
@@ -518,7 +532,7 @@ function get_menu_con_tage($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $home
 		break;
 	default:  // MAIN-Menu
 		$menu = array (0=>array("icon" => "99","caption" => "CON-SL","link" => ""),
-		1=>array("icon" => "_add","caption" => "Erfassen","link" => "$PHP_SELF?md=".mfd_add."&ID=$ID"),
+		1=>array("icon" => "_add","caption" => "Erfassen","link" => "$PHP_SELF?md=".mfd_auswahl."&ID=$ID"),
 		3=>array("icon" => "_db","caption" => "CON-Tag setzen ","link" => "$PHP_SELF?md=8&ID=$ID&id=1"),
 		4=>array("icon" => "_list","caption" => "CON-Liste","link" => "$PHP_SELF?md=".mfd_list."&ID=$ID&id=0"),
 		9=>array("icon" => "_stop","caption" => "Zurück","link" => "admin_main.php?md=0&ID=$ID")

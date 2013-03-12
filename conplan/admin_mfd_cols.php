@@ -139,7 +139,7 @@ function get_menu_mfd_cols($md,$PHP_SELF, $ID,$titel,$id,$daten,$sub,$home)
       $menu = array (0=>array("icon" => "7","caption" => "MFD-COLS","link" => ""),
       1=>array("icon" => "1","caption" =>$titel, "link" => ""),
       2=>array ("icon" => "_tinfo","caption" => "View","link" => "$PHP_SELF?md=".mfd_editor."&amp;daten=$daten&amp;ID=$ID"),
-      5=>array ("icon" => "_stop","caption" => "Zurück","link" => get_home($home)."?md=0&amp;ID=$ID")
+      5=>array ("icon" => "_stop","caption" => "Zurück","link" => $home."?md=0&amp;ID=$ID")
       );
       break;
       endswitch;
@@ -224,15 +224,15 @@ function get_menu_mfd_cols($md,$PHP_SELF, $ID,$titel,$id,$daten,$sub,$home)
   $mfd_cols = make_mfd_cols_default($mfd_list['table'], $mfd_list['mfd']);
   
   switch($p_md):
-  case mfd_col_insert: // Insert -> Erfassen
+  case mfd_insert: // Insert -> Erfassen
     mfd_insert($mfd_list, $p_row);
     $md = 0;
     break;
-  case mfd_col_update: // Insert -> Erfassen
+  case mfd_update: // Insert -> Erfassen
     mfd_update($mfd_list, $p_row);
     $md = 0;
     break;
-  case mfd_col_delete: // Delete => Loeschen
+  case mfd_delete: // Delete => Loeschen
     mfd_delete($mfd_list, $p_row[0]);
     $md=0;
     break;
@@ -269,6 +269,7 @@ function get_menu_mfd_cols($md,$PHP_SELF, $ID,$titel,$id,$daten,$sub,$home)
     echo "mfd List Maske";
     break;
   case mfd_editor:
+  	$home = "PHP_SELF";
     print_mfd_editor($ref_mfd,$md, $p_md, $p_row,$id,$daten,$sub,$home);
     break;
   default:

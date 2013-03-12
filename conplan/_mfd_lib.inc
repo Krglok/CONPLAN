@@ -990,10 +990,10 @@ function get_fieldname_list($table)
 
 
   $row = mysql_fetch_row($result);
-  $list = $table.".".$row[0];
+  $list = "$table.".$row[0];
   while ($row = mysql_fetch_row($result))
   {
-    $list = $list.", ".$table.".".$row[0];
+    $list = $list.", $table.".$row[0];
   }
   return $list;
 }
@@ -1157,7 +1157,8 @@ function print_mfd_listeRef( $ID, $mfd_list, $mfd_cols,$link_call_1, $link_call_
   		  echo "\t<td>\n";
   		  if (isset($row[$i]))
   		  {
-          if(stripos($mfd_cols[$i]["mfd_field_typ"],"text")!== false)
+          //Textblock 
+  		  	if(stripos($mfd_cols[$i]["mfd_field_typ"],"text")!== false)
 //  		    if ($mfd_cols[$i]["mfd_field_typ"]=="text")
   		    {
   		      $delimiter="\n";
@@ -1168,12 +1169,14 @@ function print_mfd_listeRef( $ID, $mfd_list, $mfd_cols,$link_call_1, $link_call_
   		      }
   		      
   		    }else
+  		    
   		    {
   		      echo $row[$i];
   		    }
   		  }else
   		  {
-  		    echo "??";
+  		  	// nicht belegte Spalte
+  		    echo " ";
   		  }
   		  echo "</td>\n";
   		}
@@ -1506,7 +1509,7 @@ function print_mfd_erf($id, $ID, $mfd_list, $mfd_cols,$daten)
     // 	{
     // 		$row[$i] = "";
     // 	}
-  $row = make_mfd_empty_row(mfd_cols);
+  $row = make_mfd_empty_row($mfd_cols);
   $row[0] = 0;
   $next = mfd_insert;	// Datenfunktion Insert
 

@@ -118,6 +118,7 @@ include_once "_config.inc";
 include_once "_lib.inc";
 include_once "_head.inc";
 include_once "_planung.inc";
+include_once '_mfd_lib.inc';
 
 
 function get_tag_name($tag)
@@ -139,41 +140,44 @@ function get_ablauf($tag)
 
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 
-	$TABLE = "con_ablauf";
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
-	mysql_select_db($DB_NAME);
-	$q = "select * from $TABLE where S0=\"$tag\" order by S1,S2";
-	$result = mysql_query($q) or die("Query Fehler...");
-	mysql_close($db);
+	$table = "con_ablauf";
+	
+	$mfd_list['mfd'] = $table;
+	$mfd_list['table'] = $table;
+	$mfd_list['titel'] = $table;
+	$mfd_list['fields'] = " con_ablauf.S1, con_ablauf.S2, con_ablauf.S3, con_ablauf.NAME, con_ablauf.KURZ, con_ablauf.R_GRP, con_ablauf.R_NSC, con_ablauf.BESCHREIBUNG";
+	$mfd_list['join'] = "";
+	$mfd_list['where'] = " S0=$tag";
+	$mfd_list['order'] = "con_ablauf.S1, con_ablauf.S2, con_ablauf.S3";
+	
+// 	$q = "select  from $TABLE where S0=\"$tag\" order by S1,S2";
+	$result = mfd_data_result($mfd_list);
+
 	echo "<table>\n";
 	//Kopfzeile
 	echo "<tr>\n";
-	echo "<td>\n";
-	echo "<b>S1</b> \n";
-	echo "</td>\n";
-	echo "<td>\n";
-	echo "<b>S2</b> \n";
-	echo "</td>\n";
-	echo "<td>\n";
-	echo "</td>\n";
-	echo "<td>\n";
-	echo "<b>Titel</b> \n";
-	echo "</td>\n";
-	echo "<td>\n";
-	echo "<b>Text</b> \n";
-	echo "</td>\n";
+	print_header_td("S1", 0);
+	print_header_td("S2", 0);
+	print_header_td("S3", 0);
+	print_header_td("Name", 50);
+	print_header_td("Kurz", 150);
+	print_header_td("Grp", 50);
+	print_header_td("NSC", 50);
+	print_header_td("Text", 250);
 	echo "</tr>\n";
-	
+	$field_num = 8;
 	//Liste der Datensätze
 	while ($row = mysql_fetch_row($result))
 	{
 		echo "<tr>";
-		for ($i=2; $i<7; $i++)
+		print_text_td_bg($row[0],0);
+		for ($i=1; $i<$field_num-1; $i++)
 		{
 			// aufruf der Deateildaten
-			echo "\t<td>$row[$i]&nbsp;</td>\n";
+			print_text_td($row[$i],0);
 		}
-		echo "<tr>";
+		print_textblock_td_short($row[$i]);
+		echo "</tr>";
 	}
 	echo "</table>";
 }
@@ -189,40 +193,43 @@ function get_orte($tag)
 
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 
-	$TABLE = "con_orte";
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
-	mysql_select_db($DB_NAME);
-	$q = "select * from $TABLE where S0=\"$tag\" order by S1,S2";
-	$result = mysql_query($q) or die("Query Fehler...");
-	mysql_close($db);
+	$table = "con_orte";
+	
+	$mfd_list['mfd'] = $table;
+	$mfd_list['table'] = $table;
+	$mfd_list['titel'] = $table;
+	$mfd_list['fields'] = " con_orte.S1, con_orte.S2, con_orte.Name, con_orte.r_nsc, con_orte.r_art, con_orte.r_buch, con_orte.Bezeichnung";
+	$mfd_list['join'] = "";
+	$mfd_list['where'] = " S0=$tag";
+	$mfd_list['order'] = "con_orte.S1, con_orte.S2";
+	
+	$result = mfd_data_result($mfd_list);
+	$field_num = 7;	
 	echo "<table >\n";
 	//Kopfzeile
 	echo "<tr>\n";
-	echo "<td>\n";
-	echo "<b>S1</b> \n";
-	echo "</td>\n";
-	echo "<td>\n";
-	echo "<b>S2</b> \n";
-	echo "</td>\n";
-	echo "<td>\n";
-	echo "<b>Name</b> \n";
-	echo "</td>\n";
-	echo "<td>\n";
-	echo "<b>Text</b> \n";
-	echo "</td>\n";
+	print_header_td("S1", 0);
+	print_header_td("S2", 0);
+	print_header_td("Name", 75);
+	print_header_td("NSC", 75);
+	print_header_td("Artefakt", 75);
+	print_header_td("Buch", 75);
+	print_header_td("Beschreibung", 250);
 	echo "</tr>\n";
 	
 	//Liste der Datensätze
 	while ($row = mysql_fetch_row($result))
 	{
 		echo "<tr>";
-		for ($i=2; $i<6; $i++)
+		print_text_td_bg($row[0],0);
+		for ($i=1; $i<$field_num-1; $i++)
 		{
 			// aufruf der Deateildaten
-			$s = substr($row[$i],0,50);
-			echo "\t<td>$s&nbsp;</td>\n";
+			print_text_td($row[$i],0);
 		}
-		echo "<tr>";
+		print_textblock_td_short($row[6]);		
+		//print_textblock_td_short($row[7]);
+		echo "</tr>";
 	}
 	echo "</table>";
 }
@@ -236,42 +243,43 @@ function get_orte($tag)
 function get_nsc($tag)
 {
 
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-
-	$TABLE = "con_nsc";
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
-	mysql_select_db($DB_NAME);
-	$q = "select * from $TABLE where S0=\"$tag\" order by S1";
-	$result = mysql_query($q) or die("Query Fehler...");
-	mysql_close($db);
+	$table = "con_nsc";
+	
+	$mfd_list['mfd'] = $table;
+	$mfd_list['table'] = $table;
+	$mfd_list['titel'] = $table;
+	$mfd_list['fields'] = "con_nsc.S1, con_nsc.S2, con_nsc.Name, con_nsc.kurz, con_nsc.r_grp, con_nsc.r_ort,con_nsc.Hintergrund";
+	$mfd_list['join'] = "";
+	$mfd_list['where'] = " S0=$tag";
+	$mfd_list['order'] = "con_nsc.S1, con_nsc.S2";
+	
+	$result = mfd_data_result($mfd_list);
+	$field_num = 7;
+		
 	echo "<table border=1 BGCOLOR=\"\">\n";
 	echo "<tr>\n";
-	echo "<td>\n";
-	echo "<b>S1</b> \n";
-	echo "</td>\n";
-	echo "<td>\n";
-	echo "<b>S2</b> \n";
-	echo "</td>\n";
-	echo "<td>\n";
-	echo "<b>Name</b> \n";
-	echo "</td>\n";
-	echo "<td>\n";
-	echo "<b>Kurz</b> \n";
-	echo "</td>\n";
+	print_header_td("S1", 0);
+	print_header_td("S2", 0);
+	print_header_td("Name", 175);
+	print_header_td("Kurz", 200);
+	print_header_td("Grp", 50);
+	print_header_td("Ort", 50);
+	print_header_td("Beschreibung", 200);
 	echo "</tr>\n";
 	
 	//Liste der Datensätze
 	while ($row = mysql_fetch_row($result))
 	{
 		echo "<tr>";
-		for ($i=2; $i<6; $i++)
+		print_text_td_bg($row[0],0);
+		for ($i=1; $i<$field_num-1; $i++)
 		{
 			// aufruf der Deateildaten
-			$s = substr($row[$i],0,50);
-			echo "\t<td>$s&nbsp;</td>\n";
-			//        echo "\t<td>$row[$i]&nbsp;</td>\n";
+			print_text_td($row[$i],0);
 		}
-		echo "<tr>";
+		print_textblock_td_short($row[6]);		
+//		print_textblock_td_short($row[7]);
+		echo "</tr>";
 	}
 	echo "</table>";
 }
@@ -281,88 +289,84 @@ function get_geruecht($tag)
 
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 
-	$TABLE = "con_geruecht";
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
-	mysql_select_db($DB_NAME);
-	$q = "select * from $TABLE where S0=\"$tag\" order by S1";
-	$result = mysql_query($q) or die("Query Fehler...");
-	mysql_close($db);
+	$table = "con_geruecht";
+	
+	$mfd_list['mfd'] = $table;
+	$mfd_list['table'] = $table;
+	$mfd_list['titel'] = $table;
+	$mfd_list['fields'] = "con_geruecht.S1, con_geruecht.S2, con_geruecht.Name, con_geruecht.r_nsc, con_geruecht.frage, con_geruecht.antwort_1, con_geruecht.antwort_2";
+	$mfd_list['join'] = "";
+	$mfd_list['where'] = " S0=$tag";
+	$mfd_list['order'] = "con_geruecht.S1, con_geruecht.S2";
+	
+	$result = mfd_data_result($mfd_list);
+	$field_num = 7;
+		
 	echo "<table border=1 BGCOLOR=\"\">\n";
 	echo "<tr>\n";
-	echo "<td>\n";
-	echo "<b>S1</b> \n";
-	echo "</td>\n";
-	echo "<td>\n";
-	echo "<b>S2</b> \n";
-	echo "</td>\n";
-	echo "<td>\n";
-	echo "<b>Name</b> \n";
-	echo "</td>\n";
-	echo "<td>\n";
-	echo "<b>NSC</b> \n";
-	echo "</td>\n";
+	print_header_td("S1", 0);
+	print_header_td("S2", 0);
+	print_header_td("Name", 175);
+	print_header_td("NSC", 75);
+	print_header_td("Frage", 150);
+	print_header_td("Antwort_1", 200);
+	print_header_td("Antwort_2", 200);
 	echo "</tr>\n";
 	
 	//Liste der Datensätze
 	while ($row = mysql_fetch_row($result))
 	{
 		echo "<tr>";
-    	echo "<td>\n";
-    	echo " \n";
-    	echo "</td>\n";
-    	echo "<td>\n";
-    	echo " \n";
-    	echo "</td>\n";
-	    for ($i=1; $i<3; $i++)
+		print_text_td_bg($row[0],0);
+		for ($i=1; $i<$field_num-2; $i++)
 		{
 			// aufruf der Deateildaten
-			$s = substr($row[$i],0,50);
-			echo "\t<td>$s&nbsp;</td>\n";
-			//        echo "\t<td>$row[$i]&nbsp;</td>\n";
+			print_text_td($row[$i],0);
 		}
-		echo "<tr>";
+		print_textblock_td_short($row[5]);		
+		print_textblock_td_short($row[6]);
+		echo "</tr>";
 	}
 	echo "</table>";
 }
 
 function get_buch($tag)
 {
-
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-
-	$TABLE = "con_buch";
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
-	mysql_select_db($DB_NAME);
-	$q = "select * from $TABLE where S0=\"$tag\" order by S1";
-	$result = mysql_query($q) or die("Query Fehler...");
-	mysql_close($db);
+	$table = "con_buch";
+	
+	$mfd_list['mfd'] = $table;
+	$mfd_list['table'] = $table;
+	$mfd_list['titel'] = $table;
+	$mfd_list['fields'] = "con_buch.S1, con_buch.S2, con_buch.Name, con_buch.Kurz, con_buch.r_nsc, con_buch.r_ort, con_buch.Text";
+	$mfd_list['join'] = "";
+	$mfd_list['where'] = " S0=$tag";
+	$mfd_list['order'] = "con_buch.S1, con_buch.S2";
+	
+	$result = mfd_data_result($mfd_list);
+	$field_num = 7;
 	echo "<table border=1 BGCOLOR=\"\">\n";
 	echo "<tr>\n";
-	echo "<td>\n";
-	echo "<b>S1</b> \n";
-	echo "</td>\n";
-	echo "<td>\n";
-	echo "<b>S2</b> \n";
-	echo "</td>\n";
-	echo "<td>\n";
-	echo "<b>Titel</b> \n";
-	echo "</td>\n";
-	echo "<td>\n";
-	echo "<b>Kurz</b> \n";
-	echo "</td>\n";
+	print_header_td("S1", 0);
+	print_header_td("S2", 0);
+	print_header_td("Name", 175);
+	print_header_td("kurz", 275);
+	print_header_td("NSC", 75);
+	print_header_td("Ort", 75);
+	print_header_td("Text", 200);
 	echo "</tr>\n";
 	
 	//Liste der Datensätze
 	while ($row = mysql_fetch_row($result))
 	{
 		echo "<tr>";
-		for ($i=2; $i<6; $i++)
+		print_text_td_bg($row[0],0);
+		for ($i=1; $i<$field_num-1; $i++)
 		{
 			// aufruf der Deateildaten
-			$s = substr($row[$i],0,50);
-			echo "\t<td>$s&nbsp;</td>\n";
-			//        echo "\t<td>$row[$i]&nbsp;</td>\n";
+			print_text_td($row[$i],0);
 		}
+//		print_textblock_td_short($row[5]);		
+		print_textblock_td_short($row[6]);
 		echo "<tr>";
 	}
 	echo "</table>";
@@ -415,68 +419,84 @@ function print_main_data($ID)
 	echo "<div $style >";
 	echo "<!--  DATEN Spalte   -->\n";
 	
-	echo "      <TABLE WIDTH=\"100%\" BORDER=\"0\" BGCOLOR=\"\" >\n";
-	echo "        <TR>\n";
-	echo "          <TD><!-- Row:1, Col:1 -->\n";
-	echo "            <FONT size=+0>\n";
-	echo "            &nbsp; Dies ist das Planungsübersicht für den CON-Tag \n";
-	echo "            <B>$TAG &nbsp;&nbsp;".get_tag_name($TAG)."<B>";
-	echo "            <BR>\n";
-	echo "            <BR>\n";
-	echo "            <TABLE  >\n";
-	echo "            <TR>\n";
-	echo "            <TD>\n";// item
-	echo "            <LI><b>Ablauf</b>\n";
-	echo "            </TD>\n";
-	echo "            <TD>\n";// Erklärung zu item
+	echo "<TABLE WIDTH=\"100%\" BORDER=\"0\" BGCOLOR=\"\" >\n";
+	echo "<TR>\n";
+	echo "<TD><!-- Row:1, Col:1 -->\n";
+	echo "<FONT size=+0>\n";
+	echo "&nbsp; Dies ist das Planungsübersicht für den CON-Tag \n";
+	echo "<B>$TAG &nbsp;&nbsp;".get_tag_name($TAG)."<B>";
+	echo "<BR>\n";
+	echo "<BR>\n";
+	echo "<TABLE  >\n";
+	echo "<TR>\n";
+	print_bold_td("Ablauf");
+	echo "</tr>";
+	
+	echo "<tr>";
+	echo "<TD>\n";// Erklärung zu item
 	get_ablauf($TAG);
-	echo "            </TD>\n";
-	echo "            </TR>\n";
-	echo "            <TR>\n";
-	echo "            <TD>\n";// item
-	echo "            <LI><b>Orte</b>\n";
-	echo "            </TD>\n";
-	echo "            <TD>\n";// Erklärung zu item
+	echo "</TD>\n";
+	echo "</TR>\n";
+	
+	echo "<TR>\n";
+	print_bold_td("Orte");
+	echo "</tr>";
+	echo "<tr>";
+	echo "<TD>\n";// Erklärung zu item
 	get_orte($TAG);
-	echo "            </TD>\n";
-	echo "            </TR>\n";
-	echo "            <TR>\n";
-	echo "            <TD>\n";// item
-	echo "            <LI><b>NSC</b>\n";
-	echo "            </TD>\n";
-	echo "            <TD>\n";// Erklärung zu item
+	echo "</TD>\n";
+	echo "</TR>\n";
+	
+	echo "<TR>\n";
+	print_bold_td("NSC");
+	echo "</tr>";
+	
+	echo "<tr>";
+	echo "<TD>\n";// Erklärung zu item
 	get_nsc($TAG);
-	echo "            </TD>\n";
-	echo "            </TR>\n";
-	echo "            <TR>\n";
-	echo "            <TD>\n";// item
-	echo "            <LI><b>Gerüchte</b>\n";
-	echo "            </TD>\n";
-	echo "            <TD>\n";// Erklärung zu item
+	echo "</TD>\n";
+	echo "</TR>\n";
+	
+	echo "<TR>\n";
+	echo "<TD>\n";// item
+	echo "<b>Gerüchte</b>\n";
+	echo "</TD>\n";
+	echo "</tr>";
+	
+	echo "<tr>";
+	echo "<TD>\n";// Erklärung zu item
 	get_geruecht($TAG);
-	echo "            </TD>\n";
-	echo "            </TR>\n";
-	echo "            <TR>\n";
-	echo "            <TD>\n";// item
-	echo "            <LI><b>Bücher</b> \n";
-	echo "            </TD>\n";
-	echo "            <TD>\n";// Erklärung zu item
+	echo "</TD>\n";
+	echo "</TR>\n";
+
+	echo "<TR>\n";
+	echo "<TD>\n";// item
+	echo "<b>Bücher</b> \n";
+	echo "</TD>\n";
+	echo "</tr>";
+	
+	echo "<tr>";
+	echo "<TD>\n";// Erklärung zu item
 	get_buch($TAG);
-	echo "            </TD>\n";
-	echo "            </TR>\n";
-	echo "            <TR>\n";
-	echo "            <TD>\n";// item
-	echo "            <LI><b>Artefakte</b> \n";
-	echo "            </TD>\n";
-	echo "            <TD>\n";// Erklärung zu item
+	echo "</TD>\n";
+	echo "</TR>\n";
+
+	echo "<TR>\n";
+	echo "<TD>\n";// item
+	echo "<b>Artefakte</b> \n";
+	echo "</TD>\n";
+	echo "</tr>";
+	
+	echo "<tr>";
+	echo "<TD>\n";// Erklärung zu item
 	get_artefakte($TAG);
-	echo "            </TD>\n";
-	echo "            </TR>\n";
-	echo "            </TABLE  >\n";
-	echo "          </TD>\n";
-	echo "        </TR>\n";
-	echo "      </TABLE>\n";
-	echo "    </TD>\n";
+	echo "</TD>\n";
+	echo "</TR>\n";
+	echo "</TABLE  >\n";
+	echo "</TD>\n";
+	echo "</TR>\n";
+	echo "</TABLE>\n";
+	echo "</TD>\n";
 	
 	echo '</div>';
 	echo "<!--  ENDE DATEN Spalte   -->\n";
@@ -568,6 +588,7 @@ function ref_nsc($tag,$ref)
 	$q = "select * from $TABLE where S0=\"$tag\" AND s1=\"$ref\" order by S1";
 	$result = mysql_query($q) or die("Query Fehler...");
 	mysql_close($db);
+		
 	echo "<tr>";
 	echo "<td>";
 	echo "</td>";
@@ -624,7 +645,7 @@ function ref_geruecht($tag,$ref)
 			echo "\t<td>$s&nbsp;</td>\n";
 			//        echo "\t<td>$row[$i]&nbsp;</td>\n";
 		}
-		echo "<tr>";
+		echo "</tr>";
 	}
 	echo "</table>";
 	echo "</td>";
