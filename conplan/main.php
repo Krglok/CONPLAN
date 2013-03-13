@@ -78,9 +78,11 @@ include_once "_lib.inc";
 include_once "_head.inc";
 include_once '_log_lib.inc';
 
-function get_menu($bereich)
+
+
+
+function get_menu_main($md,$PHP_SELF, $ID,$titel,$id,$daten,$sub,$home)
 {
-  global $PHP_SELF;
 	// manuelles main menu
 	$menu = array (0=>array("icon" => "0","caption" => "Hauptseite","link" => "ss","itemtyp"=>"0"),
 			1=>array ("icon" => "_page","caption" => "Übersicht","link" => "main.html","itemtyp"=>"2"),
@@ -140,35 +142,19 @@ print_kopf($logo_typ,$header_typ,"Öffentlich",$anrede,$menu_item);
 	print_menu($menu);
 
 // Auswahl der Aktion durch $md
+if (do_standard_md($md, $daten, $sub, $ID) == false)
+{
 // und erstellen das Datenbereiches
-switch ($md):
-case 0: // MAIN MENU
-  	$daten='main.html';
-    print_pages($daten);
-    break;
-case 1: // html die in pages liegen
-    print_data($daten);
-    break;
-case 2: // html der nicht in pages liegt
-    log_write_info($PHP_SELF."?md=$md&daten=$daten  /  print_pages($daten);");
-	print_pages($daten);
-	break;
-case 3: // MAIN MENU
-	print_sc_liste();
-	break;
-case 4: // MAIN MENU
-	print_kalender();
-	break;
-case 5:
-	print_news();
-	break;
-default: // MAIN MENU    
-	print_news();
-	break;
-endswitch;
-
-	// Abschluss der Tabelle fuer Bereich Menue / Daten
-	print_md_ende();
+	switch ($md):
+	case 0: // MAIN MENU
+	  	$daten='main.html';
+	    print_pages($daten);
+	    break;
+	default: // MAIN MENU    
+		print_news();
+		break;
+	endswitch;
+}
 	// Erstellt Body Ende
 	print_body_ende();
 

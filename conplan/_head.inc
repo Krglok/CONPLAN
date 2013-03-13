@@ -439,4 +439,42 @@ function print_data_html($lines)
 
 }
 
+/**
+ * fuehrt die Standard funktionen aus
+ * @param  $md
+ * @param  $daten
+ * @param  $sub
+ * @param  $ID
+ * @return boolean
+ */
+function do_standard_md($md, $daten, $sub, $ID)
+{
+	switch ($md):
+	case 1: // html die NICHT in pages liegen
+		print_data($daten);
+	return true;
+	break;
+	case 2: // html der in pages liegt
+		log_write_info($PHP_SELF."?md=$md&daten=$daten  /  print_pages($daten);");
+		print_pages($daten);
+		return true;
+		break;
+	case 10: // MAIN MENU
+		print_sc_liste();
+		return true;
+		break;
+	case 11: // MAIN MENU
+		print_kalender();
+		return true;
+		break;
+	case 12:
+		print_news();
+		return true;
+		break;
+	default:
+		return false;
+		break;
+		endswitch;
+}
+
 ?>
