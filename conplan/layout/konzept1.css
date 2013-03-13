@@ -28,17 +28,20 @@ body {
       
 #page {
 	width: 1000px;
-  	margin: 0 auto;
-   	width: 1000px;
-   	height: 100%;
+  margin: 0 auto;
+  width: 1000px;
+  height: 100%;
 /*   	background-image:url("back/back.jpg");*/
 }
 
 #headertab {
 	width: 100%;
 	height: 100px;
-	padding: 10px;
-    border: solid 0px silver;
+	padding-top: 10px;
+  padding-bottom: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border: solid 0px silver;
 }
 
 #headertableft {
