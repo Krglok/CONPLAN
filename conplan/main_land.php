@@ -12,8 +12,7 @@ Rev.    :  3.0
 Author  :  Olaf Duda
 
 beschreibung :
-Ueber das Script wird die Subseite fuer den Bereich Land
-abgewickelt.
+Ueber das Script wird die Subbereich Land abgewickelt.
 Es gibt keine Zugriffsverwaltung und keine Rechte !
 Es werden HTML Seiten angezeigt,
 die folgenden Subdir  werden werden relativ benutzt

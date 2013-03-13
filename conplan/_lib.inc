@@ -46,6 +46,64 @@ define("main_login",7);
 define("main_help",99);
 
 /**
+ * Erstellt eine Liste vin files in einem Directory
+ * Es wird nach einer Fileendung gesucht
+ * @param unknown $dir
+ * @param unknown $file_extend
+ * @return Ambigous <unknown, string>
+ */
+function get_pagesdir($dir,$file_extend)
+{
+	if ($handle = opendir($dir))
+	{
+		/* This is the correct way to loop over the directory. */
+		$i = 0;
+		$dir_entry[$i] = $dir;
+		while (false !== ($entry = readdir($handle)))
+		{
+			$pos = stripos($entry,$file_extend);
+			//          echo $file_extend."/".$entry.":".$pos."<br>\n";
+			if ( $pos === false )
+			{
+				//echo $file_extend."/".$entry."\n";
+			} else
+			{
+				$i++;
+				$dir_entry[$i] = $entry;
+				//    		echo "$entry <br>\n";
+			}
+		}
+		closedir($handle);
+	}
+	return $dir_entry;
+}
+
+/**
+ * 
+ * @param unknown $path
+ * @return Ambigous <Ambigous, unknown, string>
+ */
+function get_pages_htm($path)
+{
+	//	$dir = './pages';
+	$file_extend = "htm";
+	$pages =  get_pagesdir($path,$file_extend);
+	return $pages;
+}
+
+/**
+ * Erstellt einen Liste von images im Standard Image verzeichnis
+ * @return Array [String] $images , Namenliste der Images
+ */
+function get_images_list()
+{
+	$dir = './images';
+	$file_extend = "";
+	$images =  get_pagesdir($dir,$file_extend);
+	return $images;
+}
+
+/**
  * Erstellt einen Spalte aus einem Stringarray
  * Es werden alle Zeilen des Array geschrieben
  * Der Hintergrund ist weiss
@@ -640,6 +698,8 @@ function get_sub_bereich($bereich)
 	}
 	return $menu_sub_bereich;
 }
+
+
 
 /**
  * Prueft ob das menu zu $item vorhanden ist und gibt es zuruck

@@ -35,11 +35,6 @@ include_once '_mfd_edit.inc';
 // ----------------------------------------------------------------
 // Prüfung ob User  berechtigt ist
 
-// <head>
-// ...
-// <script src="/ckeditor/ckeditor.js"></script>
-// </head>
-
   $BEREICH = 'SL';
   
   $md     = GET_md(0);
