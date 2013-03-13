@@ -97,7 +97,7 @@ function get_menu_subbereich($md,$PHP_SELF, $ID,$titel,$id,$daten,$sub,$home)
 	print_header("Subbereich");
 	print_body();
 	
-	$menu_item = array("icon" => $menu_help, "caption" => "Help","link" => "javascript:openHelp()");
+	$menu_item = $menu_item_help;
 	print_kopf($logo_typ,$header_typ,"Öffentlich",$anrede,$menu_item);
 	
 	$titel = ucfirst($sub);

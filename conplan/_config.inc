@@ -440,12 +440,19 @@ function sql_textcheck($text)
   return str_replace($char," ",$text);
 }
 
+function get_script_name($PHP_SELF)
+{
+  $len = strlen($PHP_SELF);
+  return substr($PHP_SELF,strrpos($PHP_SELF,"/")+1,$len);
+}
 
 $PHP_SELF = $_SERVER['PHP_SELF'];  // Globale Variable fuer den Scriptnamen
+$help_name = get_script_name($PHP_SELF);
+$help_link = "help_view.php?md=0&item=$help_name";
 $ID="";  // default wert fuer Session ID
 $menu_item_header = array ("icon" => "1", "caption" => "Default","link" => "","itemtyp"=>"0");
 $menu_item_pages = array ("icon" => "1", "caption" => "Pages","link" => "","itemtyp"=>"0");
-$menu_item_help = array ("icon" => $menu_help, "caption" => "Hilfe","link" => "javascript:openHelp()","itemtyp"=>"0");
+$menu_item_help = array ("icon" => $menu_help, "caption" => "Hilfe","link" => "javascript:openHelp('$help_link')","itemtyp"=>"0");
 $menu_item_ich 	= array ("icon" => "$menu_page","caption" => "Ich","link" => "ich.html","itemtyp"=>"2");
 $menu_item_imp 	= array ("icon" => "$menu_help","caption" => "Impressum","link" => "impressum.html","itemtyp"=>"2");
 $menu_item_login= array ("icon" => "$menu_key","caption" => "Innerer Zirkel","link" => "slogin.html","itemtyp"=>"2");

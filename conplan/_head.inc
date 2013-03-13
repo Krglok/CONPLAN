@@ -449,6 +449,8 @@ function print_data_html($lines)
  */
 function do_standard_md($md, $daten, $sub, $ID)
 {
+  global $PHP_SELF;
+  
 	switch ($md):
 	case 1: // html die NICHT in pages liegen
 		print_data($daten);

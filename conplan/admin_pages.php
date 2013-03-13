@@ -42,31 +42,31 @@ include_once "_head.inc";
 include_once '_edit.inc';
 
 
-function get_pagesdir($dir,$file_extend)
-{
-	if ($handle = opendir($dir)) 
-	{
-		/* This is the correct way to loop over the directory. */
-		$i = 0;
-		$dir_entry[$i] = $dir;
-		while (false !== ($entry = readdir($handle))) 
-		{
-		  $pos = stripos($entry,$file_extend);
-//          echo $file_extend."/".$entry.":".$pos."<br>\n";
-		  if ( $pos === false )
-		  {
-		    //echo $file_extend."/".$entry."\n";
-		  } else
-		  {
-   			$i++;
-    		$dir_entry[$i] = $entry;
-    		//    		echo "$entry <br>\n";
-		  }
-		}
-		closedir($handle);
-	}
-	return $dir_entry;
-}
+// function get_pagesdir($dir,$file_extend)
+// {
+// 	if ($handle = opendir($dir)) 
+// 	{
+// 		/* This is the correct way to loop over the directory. */
+// 		$i = 0;
+// 		$dir_entry[$i] = $dir;
+// 		while (false !== ($entry = readdir($handle))) 
+// 		{
+// 		  $pos = stripos($entry,$file_extend);
+// //          echo $file_extend."/".$entry.":".$pos."<br>\n";
+// 		  if ( $pos === false )
+// 		  {
+// 		    //echo $file_extend."/".$entry."\n";
+// 		  } else
+// 		  {
+//    			$i++;
+//     		$dir_entry[$i] = $entry;
+//     		//    		echo "$entry <br>\n";
+// 		  }
+// 		}
+// 		closedir($handle);
+// 	}
+// 	return $dir_entry;
+// }
 
 
 function get_pages_list($path)
@@ -77,13 +77,13 @@ function get_pages_list($path)
 	return $pages;
 }
 
-function get_images_list()
-{
-	$dir = './images';
-	$file_extend = "";
-	$images =  get_pagesdir($dir,$file_extend);
-	return $images;
-}
+// function get_images_list()
+// {
+// 	$dir = './images';
+// 	$file_extend = "";
+// 	$images =  get_pagesdir($dir,$file_extend);
+// 	return $images;
+// }
 
 function print_pages_list($ID)
 {

@@ -1,0 +1,129 @@
+/*
+Datum   :  $date$  / 09.02.2013
+
+Rev.    :  $rev$   / 3.0
+
+Author  :  $author$  / Olaf Duda
+
+*/
+@CHARSET "ISO-8859-1";
+
+a {
+	color: gray;
+    text-decoration: none;
+    font-weight: normal;
+    display: block;
+    border: solid 0px silver;
+}
+
+body {
+    background-color: transparent;
+	font-family: Calibri;
+	font-size: normal;
+    color: #000000;
+   	background-image:url("back/paper.jpg");
+/*	background-image: url("back/paper.jpg");    /*url("back/bground_karte.jpg");*/
+}
+
+p{
+  text-align: left;
+  margin: 0.1em;
+}
+
+      
+#page {
+	width: 390px;
+  margin: 0 auto;
+  height: 90%;
+/*   	background-image:url("back/back.jpg");*/
+}
+
+
+#status {
+  width: 390px;
+  margin: 0 auto;
+	height:25px;
+	border: solid 1px silver;
+}
+
+#statusheader {
+	float: left;
+	margin-top: 1px;
+	margin-left: 3px;
+	margin-right: 3px;
+	margin-bottom: 1px;
+	padding-left: 3px;
+	padding-right: 3px;
+	border: solid 0px silver;
+/*    width:100px; */
+	height:25px;
+	font-size: medium;
+    text-align: center;
+	font-weight: bold;
+}
+
+#statusheader p {
+	text-align: center;
+	font-weight: bold;
+}
+
+#statusheader img {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  border: solid 0px silver;
+  margin-right: 1px;
+}
+
+
+#statusitem {
+	float: left;
+	color: black;
+	border: solid 0px silver;
+/*    width:50px;*/
+}
+
+#statusitem p {
+	margin-top: 1px;
+	margin-left: 3px;
+	margin-right: 3px;
+	margin-bottom: 1px;
+	padding-left: 3px;
+	padding-right: 3px;
+	text-align: left;
+	font-weight: normal;
+}
+
+#statusitem p a {
+	color: gray;
+    text-decoration: none;
+    font-weight: normal;
+    display: block;
+    border: solid 0px silver;
+}
+
+/*  will not do in ie9, so disabled */
+#statusitem p:hover {
+/*	background-color: silver; */
+/*    border: solid 1px black;*/
+}
+#statusitem p a:hover {
+	color: black;
+    border: solid 1px black;
+}
+
+#statusitem img {
+	width: 21px;
+	height: 21px;
+	vertical-align: middle;
+    border: solid 0px silver;
+    margin-right: 1px;
+}
+
+
+#help_1 {
+      	margin-top: 5px;
+      	margin-bottom: 5px; 
+      	background-image:url("back/paper.jpg");
+	
+}

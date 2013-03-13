@@ -1,16 +1,17 @@
-function openHelp () {
+function openHelp (link) {
 	var Fenster
 	var ns4up = (document.layers) ? 1 : 0
 	var ie4up = (document.all) ? 1 : 0
-	var xsize = window.pageXOffset + window.innerWidth
+	var xsize = (window.pageXOffset + window.innerWidth)
 	/*var xsize = screen.width */
 	var ysize = screen.height
 	var breite=400 /*xsize/3*/
-	var hoehe=ysize
-	var xpos=  window.pageXOffset + 1000 /*(xsize-breite-30)*/
+	var hoehe=(ysize - 150)
+	var xpos= (window.innerWidth - 250)  /* (xsize-breite-30)*/
 	var ypos=0 /*(ysize-hoehe-50) */
 /*	Fenster = window.open("pages/slogin.html", helpText, "width=600,height=300,left=100, top=100");*/
-	Fenster=window.open("help/help.html","HilfeSystem","scrollbars=no,status=no,toolbar=no,location=no,directories=no,resizable=yes,menubar=no,width="+breite+",height="+hoehe+",screenX="+xpos+",screenY="+ypos+",top="+ypos+",left="+xpos);
+/* screenX="+xpos+",screenY="+ypos+",*/	
+	Fenster=window.open(link,"HilfeSystem","scrollbars=no,status=no,toolbar=no,location=no,directories=no,resizable=yes,menubar=no,width="+breite+",height="+hoehe+",top="+ypos+",left="+xpos);
 	Fenster.focus();
 /*	
   alert("Name des kleinen Fensters: " + Fenster.name);

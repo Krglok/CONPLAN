@@ -86,8 +86,8 @@ function get_menu_main($md,$PHP_SELF, $ID,$titel,$id,$daten,$sub,$home)
 	// manuelles main menu
 	$menu = array (0=>array("icon" => "0","caption" => "Hauptseite","link" => "ss","itemtyp"=>"0"),
 			1=>array ("icon" => "_page","caption" => "Übersicht","link" => "main.html","itemtyp"=>"2"),
-			2=>array ("icon" => "_list","caption" => "News","link" => "$PHP_SELF?md=5","itemtyp"=>"0"),
-			3=>array ("icon" => "_list","caption" => "Termine","link" => "$PHP_SELF?md=4","itemtyp"=>"0"),
+			2=>array ("icon" => "_list","caption" => "News","link" => "$PHP_SELF?md=12","itemtyp"=>"0"),
+			3=>array ("icon" => "_list","caption" => "Termine","link" => "$PHP_SELF?md=11","itemtyp"=>"0"),
 			5=>array ("icon" => "_key","caption" => "Innerer Zirkel","link" => "slogin.html","itemtyp"=>"2"),
 			6=>array ("icon" => "0","caption" => "","link" => "","itemtyp"=>"0"),
 			10=>array ("icon" => "_page","caption" => "Kurzdarstellung","link" => "kurzdars.html","itemtyp"=>"2"),
@@ -95,6 +95,7 @@ function get_menu_main($md,$PHP_SELF, $ID,$titel,$id,$daten,$sub,$home)
 			12=>array ("icon" => "_page","caption" => "Unsere Regeln","link" => "main_sub.php?md=0&sub=regeln"),
 			13=>array ("icon" => "_page","caption" => "Unser Spielgebiet","link" => "weg_viet.html","itemtyp"=>"2"),
 			14=>array ("icon" => "_list","caption" => "Unsere Spieler","link" => "main_sub.php?md=0&sub=spieler"),
+//			15=>array ("icon" => "_list","caption" => "Unsere Spieler","link" => "$PHP_SELF?md=10&sub=spieler"),
 			20=>array ("icon" => "0","caption" => "","link" => "","itemtyp"=>"0"),
 			21=>array ("icon" => "_page","caption" => "Das Land","link" => "main_sub.php?md=0&sub=land"),
 			22=>array ("icon" => "_page","caption" => "Neue Chronik","link" => "main_chronik.php"),
@@ -128,17 +129,21 @@ $md     =GET_md(0);
 $daten  =GET_daten("");
 $item   =GET_item("");
 $sub    =GET_sub("main");
+$id     =GET_id(0);
+
 $ID     =GET_SESSIONID("0");
 
-$menu_item = $menu_item_help;
+$link = "help_view.php?md=$md&item=$item&sub=$sub&daten=$daten";
+$menu_item = array ("icon" => $menu_help, "caption" => "Hilfe","link" => "javascript:openHelp('$link')","itemtyp"=>"0");
+
 
 print_kopf($logo_typ,$header_typ,"Öffentlich",$anrede,$menu_item);
 
 //echo "POST : $p_md / GET : $md / THEMEN :$THEMEN ";
 
-
+$home = "main.php";
 //prueft ob ein dynamisches menu vorhanden ist
-  $menu = get_menu($BEREICH);
+  $menu = get_menu_main($md,$PHP_SELF, $ID,"Hauptseite",$id,$daten,$sub,$home);
 	print_menu($menu);
 
 // Auswahl der Aktion durch $md

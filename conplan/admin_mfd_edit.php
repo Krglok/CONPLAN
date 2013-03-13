@@ -213,6 +213,9 @@ function get_menu_mfd_edit($md,$PHP_SELF, $ID,$titel,$id,$daten,$sub,$home)
   $spieler_name = get_spieler($spieler_id); //Auserwählter\n";
   
   $menu_item = $menu_item_help;
+//   $link = "help_view.php?md=$md&item=admin_mfd_edit.php&sub=$sub&daten=$daten";
+//   $menu_item = array ("icon" => $menu_help, "caption" => "Hilfe","link" => "javascript:openHelp('$link')","itemtyp"=>"0");
+  
   $anrede["name"] = $spieler_name;
   $anrede["formel"] = "Sei gegrüsst Meister ";
   
@@ -247,33 +250,35 @@ function get_menu_mfd_edit($md,$PHP_SELF, $ID,$titel,$id,$daten,$sub,$home)
 
 
 	switch ($md):
-  case mfd_edit_add:
+  case mfd_add:
 	  print_menu_status($menu);
 	  echo "Add Maske";
   	break;
-  case mfd_edit_edit:
+  case mfd_edit:
 	  print_menu_status($menu);
     print_mfd_edit($id, $ID, $mfd_list, $mfd_cols,$daten);
   	break;
   case mfd_del:
   	//  echo "Delete Maske";
 	  print_menu_status($menu);
-    print_mfd_edit_del($id, $ID, $mfd_list, $mfd_cols,$daten);
+    print_mfd_del($id, $ID, $mfd_list, $mfd_cols,$daten);
   	break;
-  case mfd_edit_info:
+  case mfd_info:
   	//  echo "Info Maske:";
 	  print_menu_status($menu);
-    print_mfd_info_liste($mfd_list,$id,$ID);
+    print_mfd_info($mfd_list,$id,$ID);
   	break;
+  case mfd_edit_add:
+  case mfd_edit_edit:
+  case mfd_edit_del:
+  case mfd_edit_info:
   case mfd_editor:
     $ref_mfd = get_mfd_name($daten);
     $home = "PHP_SELF";
-    print_mfd_editor($ref_mfd,$md, $p_md, $p_row,$id,$daten,$sub,$home);
+    $fields = "";
+    echo $ref_mfd;
+    print_mfd_editor($ref_mfd,$md, $p_md, $p_row,$id,$daten,$sub,$home,$fields);
     break;
-	case mfd_edit_list:
-	echo "mfd List Maske";
-		print_menu_status($menu);
-	break;
   default:
   	//  print_table_list($ID);
 	  print_menu_status($menu);

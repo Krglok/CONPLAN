@@ -26,7 +26,7 @@
  * @param unknown $daten
  * @return string
  */
-function mfd_list_edit_link($ID,$id)
+function mfd_editor_edit_link($ID,$id)
 {
   global $PHP_SELF;
   global $daten;// Referenz auf mfd, das bearbeitet wird
@@ -41,7 +41,7 @@ function mfd_list_edit_link($ID,$id)
  * @param unknown $id, PK des Datensatz
  * @return string
  */
-function mfd_list_delete_link($ID,$id)
+function mfd_editor_delete_link($ID,$id)
 {
   global $PHP_SELF;
   global $daten;  // Referenz auf mfd, das bearbeitet wird
@@ -57,7 +57,7 @@ function mfd_list_delete_link($ID,$id)
  * @param unknown $id, PK des Datensatz
  * @return string
  */
-function mfd_list_info_link($ID,$id)
+function mfd_editor_info_link($ID,$id)
 {
   global $PHP_SELF;
   global $daten;// Referenz auf mfd, das bearbeitet wird
@@ -140,7 +140,7 @@ function print_mfd_editor($ref_mfd,$md, $p_md, $p_row,$id,$daten,$sub,$home,$fie
   
   $mfd_list=get_mfd($ref_mfd);
   $mfd_cols = get_mfd_cols($ref_mfd);
-
+  
   switch($p_md):
   case mfd_insert: // Insert -> Erfassen
     mfd_insert($mfd_list, $p_row);
@@ -186,7 +186,7 @@ function print_mfd_editor($ref_mfd,$md, $p_md, $p_row,$id,$daten,$sub,$home,$fie
     break;
   default:
     print_menu_status($menu);
-    print_mfd_liste_field( $ID, $mfd_list, $mfd_cols,"mfd_list_edit_link", "mfd_list_delete_link","mfd_list_info_link",$fields);
+    print_mfd_liste_field( $ID, $mfd_list, $mfd_cols,"mfd_editor_edit_link", "mfd_editor_delete_link","mfd_editor_info_link",$fields);
     break;
   endswitch;
 

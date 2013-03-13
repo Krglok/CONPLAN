@@ -1140,11 +1140,11 @@ function print_mfd_liste_field($ID, $mfd_list, $mfd_cols,$link_call_1, $link_cal
   // Link am Anfang der Zeile
   if ($link_call_3 != "")
   {  
-    print_header_td("", 5);
+    print_header_td(" ", 5);
   }
-  if ($link_call_1 != "")
+  if ($link_call_1 != " ")
   {  
-    print_header_td("", 5);
+    print_header_td(" ", 5);
   }
   for($i=1; $i<$field_num; $i++)
   {
@@ -1157,7 +1157,7 @@ function print_mfd_liste_field($ID, $mfd_list, $mfd_cols,$link_call_1, $link_cal
   // Link am Ende der Zeile
   if ($link_call_2 != "")
   {
-    print_header_td("", 5);
+    print_header_td(" ", 5);
   }
   
   echo "\t</TR>";
@@ -1168,19 +1168,28 @@ function print_mfd_liste_field($ID, $mfd_list, $mfd_cols,$link_call_1, $link_cal
     echo "\t<TR>";
     if (isset($row["id"]))
     {
+      $id = $row["id"]; 
+    }
+    if (isset($row["ID"]))
+    {
+      $id = $row["ID"];
+    }
+    if ($id > 0)
+    {
+      
       //erzeuge den link_1 , im ersten Feld steht IMMER der PK
-      $link_1 = make_mfd_link($link_call_1,$ID,$row["id"]);
+      $link_1 = make_mfd_link($link_call_1,$ID,$id);
       // erzeuge link_2
-      $link_2 = make_mfd_link($link_call_2,$ID,$row["id"]);
+      $link_2 = make_mfd_link($link_call_2,$ID,$id);
       // erzeuge link_2
-      $link_3 = make_mfd_link($link_call_3,$ID,$row["id"]);
+      $link_3 = make_mfd_link($link_call_3,$ID,$id);
       if ($link_1 != "")
       {
-        print_mfd_link_info($link_3,$ID,$row["id"]);
+        print_mfd_link_info($link_3,$ID,$id);
       }
       if ($link_3 != "")
       {
-        print_mfd_link_check($link_1,$ID,$row["id"]);
+        print_mfd_link_check($link_1,$ID,$id);
       }
     }
     
@@ -1199,14 +1208,14 @@ function print_mfd_liste_field($ID, $mfd_list, $mfd_cols,$link_call_1, $link_cal
 		    }
       } else
       {
-        print_text_td(" ",0);
+        print_text_td("!".$field_list[$i],0);
       }
     }
-    if (isset($row["id"]))
+    if ($id > 0)
     {
-      if ($link_2 != "")
+      if ($link_2 != " ")
       {
-        print_mfd_link_del($link_2,$ID,$row["id"]);
+        print_mfd_link_del($link_2,$ID,$id);
       }
     }
     echo "\t</TR>";
@@ -1520,7 +1529,7 @@ function print_mfd_maske($mfd_list, $row, $id,$next,$ID, $mfd_cols,$is_readonly,
   echo "<!--  DATEN Spalte   -->\n";
 
   //  FORMULAR
-  echo "<FORM ACTION=\"$PHP_SELF?md=0&daten=$daten&ID=$ID\" METHOD=POST>\n";
+  echo "<FORM ACTION=\"$PHP_SELF?md=".mfd_editor."&daten=$daten&ID=$ID\" METHOD=POST>\n";
   echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
   echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"$row[0]\">\n";
 
