@@ -95,8 +95,10 @@ include_once '_mfd_edit.inc';
   $ref_mfd = "artefakte";
   
   $home = "con_main.php";
+  $fields = "id,S0,name,kurz,wert,r_sc,r_nsc,r_ort";
+  
   // hier wird der Editor eingebuden
-  print_mfd_editor($ref_mfd,$md, $p_md, $p_row,$id,$daten,$sub,$home);
+  print_mfd_editor($ref_mfd,$md, $p_md, $p_row,$id,$daten,$sub,$home,$fields);
   
   print_md_ende();
 

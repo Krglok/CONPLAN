@@ -30,7 +30,7 @@ function mfd_list_edit_link($ID,$id)
 {
   global $PHP_SELF;
   global $daten;// Referenz auf mfd, das bearbeitet wird
-  $link = $PHP_SELF."?md=".mfd_edit."&id=$id&daten=$daten&ID=$ID";
+  $link = $PHP_SELF."?md=".mfd_edit_edit."&id=$id&daten=$daten&ID=$ID";
   return $link;
 }
 
@@ -80,31 +80,38 @@ function print_info($daten,$ID)
 function get_menu_mfd_editor($md,$PHP_SELF, $ID,$titel,$id,$daten,$sub,$home)
 {
   switch ($md):
-  case mfd_add: // erfassen
+  case mfd_edit_add: // erfassen
     $menu = array (0=>array("icon" => "7","caption" => "MFD-EDITOR","link" => ""),
         1=>array("icon" => "1","caption" =>$titel, "link" => ""),
         2=>array("icon" => "1","caption" => "NEU","link" => ""),
         9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink()."")
     );
     break;
-  case mfd_edit:  //Bearbeiten
+  case mfd_edit_edit:  //Bearbeiten
     $menu = array (0=>array("icon" => "7","caption" => "MFD-EDITOR","link" => ""),
     1=>array("icon" => "1","caption" =>$titel, "link" => ""),
     2=>array("icon" => "1","caption" => " EDIT ","link" => ""),
     9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink()."")
     );
     break;
-  case mfd_del: //
+  case mfd_edit_del: //
     $menu = array (0=>array("icon" => "7","caption" => "MFD-EDITOR","link" => ""),
     1=>array("icon" => "1","caption" =>$titel, "link" => ""),
     2=>array("icon" => "1","caption" => "DELETE","link" => ""),
     9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink()."")
     );
     break;
-  case mfd_info: //
+  case mfd_edit_info: //
     $menu = array (0=>array("icon" => "7","caption" => "MFD-EDITOR","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink().""),
     1=>array("icon" => "1","caption" =>$titel, "link" => ""),
     2=>array("icon" => "1","caption" => "MASKE","link" => ""),
+    9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink()."")
+    );
+    break;
+  case mfd_edit_list: //
+    $menu = array (0=>array("icon" => "7","caption" => "MFD-EDITOR","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink().""),
+    1=>array("icon" => "1","caption" =>$titel, "link" => ""),
+    2=>array("icon" => "1","caption" => "LISTE","link" => ""),
     9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink()."")
     );
     break;
@@ -121,7 +128,7 @@ function get_menu_mfd_editor($md,$PHP_SELF, $ID,$titel,$id,$daten,$sub,$home)
   return $menu;
 }
 
-function print_mfd_editor($ref_mfd,$md, $p_md, $p_row,$id,$daten,$sub,$home)
+function print_mfd_editor($ref_mfd,$md, $p_md, $p_row,$id,$daten,$sub,$home,$fields = "")
 {
   global $PHP_SELF;
   global $BEREICH;
@@ -132,10 +139,6 @@ function print_mfd_editor($ref_mfd,$md, $p_md, $p_row,$id,$daten,$sub,$home)
   global $user_id 	;
   
   $mfd_list=get_mfd($ref_mfd);
-  //$mfd_list = make_mfd_table("mfd_cols", "mfd_cols");
-  //$mfd_list["where"]="ref_mfd=\"$ref_mfd\" ";
-  //$mfd_list["order"]=" mfd_pos";
-  // Fuer die Anzeige Listen
   $mfd_cols = get_mfd_cols($ref_mfd);
 
   switch($p_md):
@@ -153,36 +156,37 @@ function print_mfd_editor($ref_mfd,$md, $p_md, $p_row,$id,$daten,$sub,$home)
     break;
   default: //
     break;
-    endswitch;
-  echo $home;
+  endswitch;
+
   $menu = get_menu_mfd_editor($md, $PHP_SELF, $ID,$ref_mfd,$id,$daten,$sub,$home);
 
   switch ($md):
-  case mfd_add:
+  case mfd_edit_add:
       print_menu_status($menu);
-      echo "Add Maske";
+      print_mfd_erf($id, $ID, $mfd_list, $mfd_cols,$daten);
+//      echo "Add Maske";
     break;
-  case mfd_edit:
+  case mfd_edit_edit:
     print_menu_status($menu);
     print_mfd_edit($id, $ID, $mfd_list, $mfd_cols,$daten);
     break;
-  case mfd_del:
+  case mfd_edit_del:
     //  echo "Delete Maske";
     print_menu_status($menu);
     print_mfd_del($id, $ID, $mfd_list, $mfd_cols,$daten);
     break;
-  case mfd_info:
+  case mfd_edit_info:
     //  echo "Info Maske:";
     print_menu_status($menu);
     print_mfd_info($id, $ID, $mfd_list, $mfd_cols,$daten);
     break;
-  case mfd_list:
+  case mfd_edit_list:
     print_menu_status($menu);
     echo "mfd List Maske";
     break;
   default:
     print_menu_status($menu);
-    print_mfd_listeRef( $ID, $mfd_list, $mfd_cols,"mfd_list_edit_link", "mfd_list_delete_link","mfd_list_info_link");
+    print_mfd_liste_field( $ID, $mfd_list, $mfd_cols,"mfd_list_edit_link", "mfd_list_delete_link","mfd_list_info_link",$fields);
     break;
   endswitch;
 

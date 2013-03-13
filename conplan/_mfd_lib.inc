@@ -710,10 +710,11 @@ function mfd_detail_result($mfd_list, $id)
   $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
 
   mysql_select_db($DB_NAME);
+  
   $table = $mfd_list["table"];
   $fields =$mfd_list["fields"];
   $join = ""; //$mfd_list["join"];
-  $where ="ID = $id";
+  $where ="id = $id";
   $order = "";
 
   $q = "SELECT $fields FROM $table $join where $where ";
@@ -739,8 +740,6 @@ function mfd_detail_result($mfd_list, $id)
 function mfd_delete($mfd_list, $id)
 {
   global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
-  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-  global $mfd_list;
 
   $table = $mfd_list["table"];
   $fields =""; //$mfd_list["fields"];
@@ -758,7 +757,7 @@ function mfd_delete($mfd_list, $id)
   //  echo $q;
   $result = mysql_query($q) ;
   if (!$result) {
-    $message  = 'Invalid query: ' . mysql_error() . "\n";
+    $message  = 'Invalid Delete: ' . mysql_error() . "\n";
     $message .= 'Whole query: ' . $q;
     die($message);
   }
@@ -1091,6 +1090,135 @@ function make_mfd_link($link_call,$ID,$data)
   return $link;
 }
 
+function find_mfd_col($field, $mfd_cols)
+{
+  $field_num = count($mfd_cols);
+  for ($i=0; $i<$field_num; $i++)
+  {
+    if (isset($mfd_cols[$i]))
+    {
+      if ($mfd_cols[$i]["mfd_field"] == $field)
+      {
+        return $mfd_cols[$i];
+      }
+    }
+  }
+  return false;
+}
+/**
+ * Eruegt einen Datenliste / Tabelle anhand einer Feldliste
+ * Die Spaltenbreite wird eingestellt
+ * Die Links werden mit einer Callback Funktion erzeugt
+ * Wird eine Callback Funktionen nicht uebergeben, dann fehlt der entsprechende die Button 
+ * @param  $ID  , Session ID
+ * @param  $mfd_list  , Tabellen definition
+ * @param  $mfd_cols  , Spalten definition
+ * @param  $link_call_1  , Callbal Funktion fuer Info
+ * @param  $link_call_2  , Callback fuer Edit
+ * @param  $link_call_3  , Callback Funktion fuer Delete
+ * @param  $fields, Liste der zu druckenden Felder
+ */
+function print_mfd_liste_field($ID, $mfd_list, $mfd_cols,$link_call_1, $link_call_2, $link_call_3, $fields)
+{
+  $result = mfd_data_result($mfd_list)
+  or die("Query Fehler...");
+  //echo $fields;
+  
+  if ($fields == "")
+  {
+    $fields = $mfd_list["fields"];
+  }
+  $field_list = make_mfd_fieldlist($fields);
+  $field_num = count($field_list);
+  
+  $style = $GLOBALS['style_datalist'];
+  echo "<div $style >";
+  echo "<!--  DATEN Spalte   -->\n";
+  echo "<TABLE>";
+  echo "\t<TR>";
+  //Print header
+  // Link am Anfang der Zeile
+  if ($link_call_3 != "")
+  {  
+    print_header_td("", 5);
+  }
+  if ($link_call_1 != "")
+  {  
+    print_header_td("", 5);
+  }
+  for($i=1; $i<$field_num; $i++)
+  {
+    if ( find_mfd_col($field_list[$i], $mfd_cols) !== false )
+    {
+      $width = $mfd_cols[$i]["mfd_width"]*5;
+      print_header_td($mfd_cols[$i]["mfd_field_titel"], $width);
+    }
+  }
+  // Link am Ende der Zeile
+  if ($link_call_2 != "")
+  {
+    print_header_td("", 5);
+  }
+  
+  echo "\t</TR>";
+  // Printdata
+  
+  while ($row = mysql_fetch_assoc($result))
+  {
+    echo "\t<TR>";
+    if (isset($row["id"]))
+    {
+      //erzeuge den link_1 , im ersten Feld steht IMMER der PK
+      $link_1 = make_mfd_link($link_call_1,$ID,$row["id"]);
+      // erzeuge link_2
+      $link_2 = make_mfd_link($link_call_2,$ID,$row["id"]);
+      // erzeuge link_2
+      $link_3 = make_mfd_link($link_call_3,$ID,$row["id"]);
+      if ($link_1 != "")
+      {
+        print_mfd_link_info($link_3,$ID,$row["id"]);
+      }
+      if ($link_3 != "")
+      {
+        print_mfd_link_check($link_1,$ID,$row["id"]);
+      }
+    }
+    
+    for ($i=1; $i<$field_num; $i++)
+    {
+      if (isset($row[$field_list[$i]]))
+      {
+        
+		    //Textblock
+		    if(stripos($mfd_cols[$i]["mfd_field_typ"],"text")!== false)
+		    {
+		      print_textblock_td_short($row[$field_list[$i]]);
+		    }else
+		    {
+		      print_text_td($row[$field_list[$i]],0);
+		    }
+      } else
+      {
+        print_text_td(" ",0);
+      }
+    }
+    if (isset($row["id"]))
+    {
+      if ($link_2 != "")
+      {
+        print_mfd_link_del($link_2,$ID,$row["id"]);
+      }
+    }
+    echo "\t</TR>";
+  }
+  echo '      </TABLE>';
+  echo "    </TD>\n";
+  echo "    <TD>\n";
+  echo "    \n";
+  echo '</div>';
+  echo "<!--  ENDE DATEN Spalte   -->\n";
+  
+}
 
 
 /**
@@ -1106,34 +1234,21 @@ function print_mfd_listeRef( $ID, $mfd_list, $mfd_cols,$link_call_1, $link_call_
   // 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
   global $PHP_SELF;
 
+  $result = mfd_data_result($mfd_list)
+  or die("Query Fehler...");
+  
   $style = $GLOBALS['style_datalist'];
   echo "<div $style >";
   echo "<!--  DATEN Spalte   -->\n";
-
   echo "      <TABLE   BORDER=\"0\" BGCOLOR=\"\" >";
-  // 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-  // 	or die("Fehler beim verbinden!");
-
-  //	mysql_select_db($DB_NAME);
-
-  $result = mfd_data_result($mfd_list)
-  or die("Query Fehler...");
-
   echo "\t<TR>";
   //Print header
-  echo "\t\t<TD width=\"5\">";
-  echo "<p>";
-  echo "</p>";
-  echo "\t\t</TD>";
+  print_header_td("", 5);
   for($i=0; $i<count($mfd_cols); $i++)
   {
     $mfd_col = $mfd_cols[$i];
     $width = $mfd_col["mfd_width"]*5;
-    echo "\t\t<TD width=\"$width\">";
-    echo "<p>";
-    echo $mfd_col["mfd_field_titel"];
-    echo "</p>";
-    echo "\t\t</TD>";
+    print_header_td($mfd_col["mfd_field_titel"], $width);
     if($i > 32) exit;
   }
   echo "\t</TR>";
@@ -1149,36 +1264,29 @@ function print_mfd_listeRef( $ID, $mfd_list, $mfd_cols,$link_call_1, $link_call_
   		$link_2 = make_mfd_link($link_call_2,$ID,$row[0]);
   		// erzeuge link_2
   		$link_3 = make_mfd_link($link_call_3,$ID,$row[0]);
+  		
   		print_mfd_link_info($link_3,$ID,$row[0]);
   		print_mfd_link_check($link_1,$ID,$row[0]);
 
   		for ($i = 1; $i < count($mfd_cols); $i++)
   		{
-  		  echo "\t<td>\n";
   		  if (isset($row[$i]))
   		  {
           //Textblock 
   		  	if(stripos($mfd_cols[$i]["mfd_field_typ"],"text")!== false)
-//  		    if ($mfd_cols[$i]["mfd_field_typ"]=="text")
   		    {
-  		      $delimiter="\n";
-  		      $lines = explode($delimiter, $row[$i]);
-  		      if (isset($lines[0]))
-  		      {
-  		        echo substr($lines[0],0,100)."......";
-  		      }
-  		      
+  		      print_textblock_td_short($row[6]);
   		    }else
-  		    
   		    {
-  		      echo $row[$i];
+            print_text_td($row[$i],0);
   		    }
   		  }else
   		  {
   		  	// nicht belegte Spalte
-  		    echo " ";
+          print_text_td(" ",0);
   		  }
-  		  echo "</td>\n";
+  		  if($i > 32) exit;
+  		  
   		}
   		if ($link_2 != "")
   		{
@@ -1535,7 +1643,6 @@ function print_mfd_edit($id, $ID, $mfd_list, $mfd_cols,$daten)
   $result = mfd_detail_result($mfd_list, $id);
   $row = mysql_fetch_row($result);
 
-
   print_mfd_maske($mfd_list,$row, $id,$next,$ID, $mfd_cols,false,$daten);
 
 }
@@ -1546,6 +1653,7 @@ function print_mfd_del($id, $ID, $mfd_list, $mfd_cols,$daten)
   $next = mfd_delete;	// Datenfunktion Delete
   $result = mfd_detail_result($mfd_list, $id);
   $row = mysql_fetch_row($result);
+
   print_mfd_maske($mfd_list,$row, $id,$next,$ID, $mfd_cols,false,$daten );
 
 }

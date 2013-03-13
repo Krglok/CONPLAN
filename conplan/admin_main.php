@@ -155,15 +155,15 @@ print_kopf($admin_typ,$header_typ,"<b>Admin Bereich</b>",$anrede,$menu_item);
 switch ($md):
 default:
 	$menu = array (0=>array("icon" => "7","caption" => "ADMIN","link" => ""),
-	1=>array ("icon" => "_list","caption" => "Spieler","link" => "admin_sc.php?md=0&ID=$ID"),
+	1=>array ("icon" => "_user","caption" => "Spieler","link" => "admin_sc.php?md=0&ID=$ID"),
 	2=>array ("icon" => "_list","caption" => "News","link" => "admin_news.php?md=0&ID=$ID"),
 	3=>array ("icon" => "_list","caption" => "Anmeldung","link" => "admin_anmelde.php?md=0&ID=$ID"),
 	4=>array ("icon" => "_list","caption" => "Hilfe","link" => "admin_hilfe.php?md=0&ID=$ID"),
 	5=>array ("icon" => "_list","caption" => "CON-SL","link" => "admin_con.php?md=0&ID=$ID"),
 	6=>array ("icon" => "_list","caption" => "Bilder","link" => "admin_bilder.php?md=0&ID=$ID"),
-	8=>array ("icon" => "_list","caption" => "Charakter","link" => "admin_char.php?md=0&ID=$ID"),
-	9=>array ("icon" => "_list","caption" => "Download","link" => "admin_download.php?md=0&ID=$ID"),
-	10=>array ("icon" => "_list","caption" => "Kalender","link" => "admin_kalender.php?md=0&ID=$ID"),
+	8=>array ("icon" => "_char","caption" => "Charakter","link" => "admin_char.php?md=0&ID=$ID"),
+	9=>array ("icon" => "_down","caption" => "Download","link" => "admin_download.php?md=0&ID=$ID"),
+	10=>array ("icon" => "_kalender","caption" => "Kalender","link" => "admin_kalender.php?md=0&ID=$ID"),
 	11=>array ("icon" => "_folder","caption" => "<b>Bibliothek</b>","link" => "admin_bibconfig.php?md=0&ID=$ID"),
 	16=>array ("icon" => "_folder","caption" => "<b>Configuration</b>","link" => "admin_config.php?md=0&ID=$ID"),
 	20=>array ("icon" => "_stop","caption" => "Zurück","link" => "larp.php?md=0&ID=$ID")

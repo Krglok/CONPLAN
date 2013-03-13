@@ -370,9 +370,10 @@ function read_html_page($html_file)
   } else
   {
   	$style = $GLOBALS['style_datatab'];
-  	echo "<p $style > n";
-  	echo "<p $style>Datei konnte nicht ge&ouml;ffnet werden.</p>\n";
-  	echo "</p> \n";
+  	echo "<div $style >";
+  	echo "<p> Datei:  $html_file </p> \n";
+  	echo "<p>Datei konnte nicht ge&ouml;ffnet werden.</p>\n";
+  	echo "</div> \n";
   	return false;
   };
 }

@@ -344,6 +344,7 @@ function get_buch($tag)
 	
 	$result = mfd_data_result($mfd_list);
 	$field_num = 7;
+	
 	echo "<table border=1 BGCOLOR=\"\">\n";
 	echo "<tr>\n";
 	print_header_td("S1", 0);
@@ -367,7 +368,7 @@ function get_buch($tag)
 		}
 //		print_textblock_td_short($row[5]);		
 		print_textblock_td_short($row[6]);
-		echo "<tr>";
+		echo "</tr>";
 	}
 	echo "</table>";
 }
@@ -375,37 +376,44 @@ function get_buch($tag)
 function get_artefakte($tag)
 {
 
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+	$table = "artefakte";
 
-	$TABLE = "artefakte";
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
-	mysql_select_db($DB_NAME);
-	$q = "select * from $TABLE where S0=\"$tag\" order by name";
-	$result = mysql_query($q) or die("Query Fehler...");
-	mysql_close($db);
+	$mfd_list['mfd'] = $table;
+	$mfd_list['table'] = $table;
+	$mfd_list['titel'] = $table;
+	$mfd_list['fields'] = "artefakte.S0, artefakte.name, artefakte.r_sc, artefakte.r_nsc, artefakte.r_ort,artefakte.kurz, artefakte.bezeichnung";
+	$mfd_list['join'] = "";
+	$mfd_list['where'] = " S0=$tag";
+	$mfd_list['order'] = "artefakte.S0, artefakte.name";
+	
+	$result = mfd_data_result($mfd_list);
+	$field_num = 7;
+	
 	echo "<table border=1 BGCOLOR=\"\">\n";
 	echo "<tr>\n";
-	echo "<td>\n";
-	echo "<b>Titel</b> \n";
-	echo "</td>\n";
-	echo "<td>\n";
-	echo "<b>Kurz</b> \n";
-	echo "</td>\n";
-	echo "</tr>\n";
+	print_header_td("__", 0);
+	print_header_td("Name", 100);
+	print_header_td("SC", 50);
+	print_header_td("NSC", 50);
+	print_header_td("Ort", 50);
+	print_header_td("Kurz", 200);
+	print_header_td("Text", 200);
+		echo "</tr>\n";
 	
 	//Liste der Datensätze
 	while ($row = mysql_fetch_row($result))
 	{
 		echo "<tr>";
-		for ($i=2; $i<5; $i++)
+		print_text_td_bg("",0);
+		for ($i=1; $i<$field_num-1; $i++)
 		{
 			// aufruf der Deateildaten
-			$s = substr($row[$i],0,50);
-			echo "\t<td>$s&nbsp;</td>\n";
-			//        echo "\t<td>$row[$i]&nbsp;</td>\n";
+			print_text_td($row[$i],0);
 		}
-		echo "<tr>";
-	}
+//		print_textblock_td_short($row[5]);		
+		print_textblock_td_short($row[6]);
+		echo "</tr>";
+	  	}
 	echo "</table>";
 }
 
@@ -851,6 +859,24 @@ function print_ref_data($ID)
 	echo "    </TD>\n";
 };
 
+function get_menu_con_plan($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $home)
+{
+  global $TAG;
+  $menu = array (0=>array("icon" => "99","caption" => $titel,"link" => ""),
+      1=>array("icon" => "_con_ablauf","caption" => "Ablauf","link" => "con_plan_ablauf.php?md=0&ID=$ID&TAG=$TAG"),
+      2=>array("icon" => "_editor","caption" => "Orte","link" => "con_plan_orte.php?md=0&ID=$ID&TAG=$TAG"),
+      3=>array("icon" => "_con_nsc","caption" => "Nsc","link" => "con_plan_nsc.php?md=0&ID=$ID&TAG=$TAG"),
+      4=>array("icon" => "_con_geruecht","caption" => "Gerüchte","link" => "con_plan_geruechte.php?md=0&ID=$ID&TAG=$TAG"),
+      5=>array("icon" => "_con_buch","caption" => "Bücher","link" => "con_plan_buch.php?md=0&ID=$ID&TAG=$TAG"),
+      6=>array("icon" => "_con_sc","caption" => "SC","link" => "con_plan_sc.php?md=0&ID=$ID&TAG=$TAG"),
+      7=>array("icon" => "_con_artefakt","caption" => "Artefakte","link" => "con_plan_artefakt.php?md=0&ID=$ID&TAG=$TAG"),
+      8=>array("icon" => "_db","caption" => "Referenz","link" => "$PHP_SELF?md=5&ID=$ID&TAG=$TAG"),
+      9=>array("icon" => "_db","caption" => "Liste","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG"),
+      11=>array("icon" => "_stop","caption" => "Zurück","link" => "con_liste.php?md=0&ID=$ID")
+  );
+  
+  return $menu;
+}
 
 // ---------------------------------------------------------------
 // ---------    MAIN ---------------------------------------------
@@ -863,6 +889,7 @@ $BEREICH = 'SUBSL';
 
 
 $md     = GET_md(0);
+$id     = GET_id("");
 $daten  = GET_daten("");
 $sub    = GET_sub("main");
 $ID     = GET_SESSIONID("");
@@ -912,30 +939,14 @@ $anrede["formel"] = "Sei gegrüsst Meister ";
 
 print_kopf_planung("<b>CON Planung</b>",$anrede,$menu_item);
 
-if ($TAG==0) {
+if ($TAG==0) 
+{
 	$TAG=15;
 };
+  
+  $home = "con_list.php";
 
-switch ($md):
-case 10:
-	$menu = array (0=>array("icon" => "99","caption" => "HILFE","link" => ""),
-			2=>array("icon" => "6","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
-	);
-	break;
-default:
-	$menu = array (0=>array("icon" => "99","caption" => "TAG $TAG","link" => ""),
-	1=>array("icon" => "_editor","caption" => "Ablauf","link" => "con_plan_ablauf.php?md=0&ID=$ID&TAG=$TAG"),
-	2=>array("icon" => "_editor","caption" => "Orte","link" => "con_plan_orte.php?md=0&ID=$ID&TAG=$TAG"),
-	3=>array("icon" => "_editor","caption" => "Nsc","link" => "con_plan_nsc.php?md=0&ID=$ID&TAG=$TAG"),
-	4=>array("icon" => "_editor","caption" => "Gerüchte","link" => "con_plan_geruechte.php?md=0&ID=$ID&TAG=$TAG"),
-	5=>array("icon" => "_editor","caption" => "Bücher","link" => "con_plan_buch.php?md=0&ID=$ID&TAG=$TAG"),
-	6=>array("icon" => "_editor","caption" => "SC","link" => "con_plan_sc.php?md=0&ID=$ID&TAG=$TAG"),
-	7=>array("icon" => "_editor","caption" => "Artefakte","link" => "con_plan_artefakt.php?md=0&ID=$ID&TAG=$TAG"),
-	8=>array("icon" => "_db","caption" => "Referenz","link" => "$PHP_SELF?md=5&ID=$ID&TAG=$TAG"),
-	9=>array("icon" => "_db","caption" => "Liste","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG"),
-	11=>array("icon" => "_stop","caption" => "Zurück","link" => "con_liste.php?md=0&ID=$ID")
-	);
-	endswitch;
+  $menu = get_menu_con_plan($md, $PHP_SELF, $ID, "Tag $TAG" , $id, $daten, $sub, $home);
 
 	print_menu_status($menu);
 
