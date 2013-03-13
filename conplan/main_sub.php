@@ -40,20 +40,26 @@ include "_head.inc";
 
 
 
-function print_pages_list($path,$ID,$sub,$menu)
+function print_pages_list($sub,$ID,$menu)
 {
 	global $PHP_SELF;
-	$pages = get_pages_htm($path,".html");
-
-	for($i=0; $i<count($pages); $i++)
+	$path=$sub;
+	$pages = get_pages_htm($path);
+//  echo $path.":".$pages[1];
+	for($i=1; $i<count($pages); $i++)
 	{
-		$name = $pages[$i];
+// 	  if ($i==1)
+// 	  {
+// 	    $pages[$i] = $pages[$i].".html";
+// 	  }
+	  $name = substr($pages[$i],0,strpos($pages[$i],"."));
 		$menuitem["icon"] 		= "_text";
 		$menuitem["caption"] 	= ucfirst($name);
-		$menuitem["link"] 		= $PHP_SELF."md=1&amp;daten=$name&amp;sub$sub&amp;ID=$ID";
+		$menuitem["link"] 		= $PHP_SELF."?md=1&amp;daten=$pages[$i]&amp;sub=$path&amp;ID=$ID";
 		$menuitem["itemtyp"] 	= "0";
-		$meu[$i+1] = $menuitem;
+		$menu[$i+1] = $menuitem;
 	}
+	return $menu;
 }
 
 
@@ -69,9 +75,11 @@ function get_menu_subbereich($md,$PHP_SELF, $ID,$titel,$id,$daten,$sub,$home)
 	default:  // MAIN-Menu
 		$menu = array (
 		0=>array("icon" => "0","caption" => $titel,"link" => ""),
-		2=>array("icon" => "_stop","caption" => "Zurück","link" => get_home($home)."?md=0&amp;ID=$ID")
+		99=>array("icon" => "_stop","caption" => "Zurück","link" => get_home($home)."?md=0&amp;ID=$ID")
 		);
-		endswitch;
+		$menu=print_pages_list($sub,$ID,$menu);
+		break;
+	endswitch;
 		return $menu;
 }
 
@@ -104,7 +112,7 @@ function get_menu_subbereich($md,$PHP_SELF, $ID,$titel,$id,$daten,$sub,$home)
 	break;
 	
 	default: // MAIN MENÜ
-		$page=$sub.'/'.$sub;
+		$page=$sub.'/'.$sub.".html";
 		print_data($page);
 		break;
 	endswitch;
