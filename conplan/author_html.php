@@ -1,7 +1,7 @@
 <?php
 
 /*
- Projekt :  ADMIN
+ Projekt :  AUTHOR
 
 Datei   :  author_pages.php
 

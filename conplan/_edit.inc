@@ -76,7 +76,6 @@ function get_template_header()
 	$template[5] = "<META NAME=\"Description\" CONTENT=\"$grp_name \">\n";
 	$template[6] = "<META NAME=\"Keywords\" CONTENT=\"Pages Template\">\n";
 	$template[7] = "<META NAME=\"Author\" CONTENT=\"Dipl. Ing. Olaf Duda\">\n";
-	$template[8] = "<title>Pages Template</title> \n";
 	$template[9] = "<link rel=\"stylesheet\" type=\"text/css\" href=\"$layout_path/konzept1.css\">  \n";
 	$template[10] = "</HEAD>\n";
 	$template[11] = "\n";
@@ -174,6 +173,7 @@ function write_html_file($filename, $page)
 		return TRUE;
 	
 }
+
 
 function schreibe_hmtl_lines($path,$name,$data)
 {
