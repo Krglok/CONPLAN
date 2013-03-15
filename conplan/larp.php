@@ -91,15 +91,16 @@ function get_menu_larp_main($md,$PHP_SELF, $ID,$titel,$id,$daten,$sub,$home)
 	$menu = array (
 	"0"=>array("icon" => "0","caption" => $titel,"link" => "","itemtyp"=>"0"),
 	"1"=>array ("icon" => "_user","caption" => "Spieler","link" => "larp_sc.php?md=1&ID=$ID","itemtyp"=>"0"),
-	"2"=>array ("icon" => "_buble","caption" => "Forum Intern","link" => "larp_forum_1.php?md=1&ID=$ID","itemtyp"=>"0"),
-	"3"=>array ("icon" => "_buble","caption" => "Forum Draskoria","link" => "larp_forum_2.php?md=1&ID=$ID","itemtyp"=>"0"),
-	"4"=>array ("icon" => "_anmeld","caption" => "Anmeldung","link" => "larp_anmeldung.php?md=0&ID=$ID","itemtyp"=>"0"),
-	"5"=>array ("icon" => "_folder","caption" => "Bilder 1-99","link" => "larp_bilder.php?md=0&ID=$ID","itemtyp"=>"0"),
-	"6"=>array ("icon" => "_folder","caption" => "Bilder ab 100","link" => "larp_bilder1.php?md=0&ID=$ID","itemtyp"=>"0"),
-	"7"=>array ("icon" => "_kalender","caption" => "Termine","link" => "$PHP_SELF?md=1&ID=$ID","itemtyp"=>"0"),
-	"8"=>array ("icon" => "_con_geruecht","caption" => "News","link" => "$PHP_SELF?md=0&ID=$ID","itemtyp"=>"0"),
+	"2"=>array ("icon" => "_kalender","caption" => "Termine","link" => "$PHP_SELF?md=1&ID=$ID","itemtyp"=>"0"),
+	"3"=>array ("icon" => "_buble_f","caption" => "News","link" => "$PHP_SELF?md=0&ID=$ID","itemtyp"=>"0"),
+	"4"=>array ("icon" => "_buble_bla","caption" => "Forum Intern","link" => "larp_forum_1.php?md=1&ID=$ID","itemtyp"=>"0"),
+	"5"=>array ("icon" => "_buble_bla","caption" => "Forum Draskoria","link" => "larp_forum_2.php?md=1&ID=$ID","itemtyp"=>"0"),
+	"10"=>array ("icon" => "0","caption" => "","link" => "","itemtyp"=>"0"),
+	"11"=>array ("icon" => "_folder","caption" => "Anmeldung","link" => "larp_anmeldung.php?md=0&ID=$ID","itemtyp"=>"0"),
+	"12"=>array ("icon" => "_folder","caption" => "Bilder 1-99","link" => "larp_bilder.php?md=0&ID=$ID","itemtyp"=>"0"),
+	"13"=>array ("icon" => "_folder","caption" => "Bilder ab 100","link" => "larp_bilder1.php?md=0&ID=$ID","itemtyp"=>"0"),
 	//	"8"=>array ("icon" => "$menu_zip","caption" => "Download","link" => "larp_download.php?md=0&ID=$ID","itemtyp"=>"0"),
-	"9"=>array ("icon" => "_folder","caption" => "Regelwerk","link" => "larp_regeln.php?md=0&ID=$ID","itemtyp"=>"0"),
+	"14"=>array ("icon" => "_folder","caption" => "Regelwerk","link" => "larp_regeln.php?md=0&ID=$ID","itemtyp"=>"0"),
 	"20"=>array ("icon" => "0","caption" => "","link" => "","itemtyp"=>"0"),
 	//	"21"=>array ("icon" => "$menu_folder","caption" => "Charakter","link" => "char_liste.php?md=0&ID=$ID","itemtyp"=>"0"),
 	"23"=>array ("icon" => "_list","caption" => "Legenden","link" => "larp_legende.php?md=0&ID=$ID","itemtyp"=>"0"),
@@ -170,7 +171,8 @@ function get_menu_larp_main($md,$PHP_SELF, $ID,$titel,$id,$daten,$sub,$home)
 	$titel = "INTERN";
 	$home = "larp.php";
 	
-	$menu = get_menu_larp_main($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $home);
+	$menu = get_menu_larp_main($md, $PHP_SELF, $ID, $titel, $i
+	    , $daten, $sub, $home);
 	
 	print_menu($menu);
 	

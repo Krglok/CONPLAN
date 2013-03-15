@@ -243,42 +243,32 @@ function get_menu_mfd_editor($md,$PHP_SELF, $ID,$titel,$id,$daten,$sub,$home)
 {
   switch ($md):
   case mfd_add: // erfassen
-    $menu = array (0=>array("icon" => "7","caption" => "MAGIE","link" => ""),
-        1=>array("icon" => "1","caption" =>$titel, "link" => ""),
+    $menu = array (0=>array("icon" => "7","caption" => "$titel","link" => ""),
         2=>array("icon" => "1","caption" => "NEU","link" => ""),
         9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink()."")
     );
     break;
   case mfd_edit:  //Bearbeiten
-    $menu = array (0=>array("icon" => "7","caption" => "MAGIE","link" => ""),
-    1=>array("icon" => "1","caption" =>$titel, "link" => ""),
+    $menu = array (0=>array("icon" => "7","caption" => "$titel","link" => ""),
     2=>array("icon" => "1","caption" => " EDIT ","link" => ""),
     9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink()."")
     );
     break;
   case mfd_del: //
-    $menu = array (0=>array("icon" => "7","caption" => "MAGIE","link" => ""),
-    1=>array("icon" => "1","caption" =>$titel, "link" => ""),
+    $menu = array (0=>array("icon" => "7","caption" => "$titel","link" => ""),
     2=>array("icon" => "1","caption" => "DELETE","link" => ""),
     9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink()."")
     );
     break;
   case mfd_info: //
-    $menu = array (0=>array("icon" => "7","caption" => "MAGIE","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink().""),
-    1=>array("icon" => "1","caption" =>$titel, "link" => ""),
-    2=>array("icon" => "1","caption" => "MASKE","link" => ""),
+    $menu = array (0=>array("icon" => "7","caption" => "$titel","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink().""),
+    2=>array("icon" => "1","caption" => "INFO","link" => ""),
     9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink()."")
     );
     break;
-    //     default: // main
-    //       $menu = array (0=>array("icon" => "7","caption" => "MAGIE","link" => ""),
-    //       1=>array("icon" => "1","caption" =>$titel, "link" => ""),
-    //       2=>array ("icon" => "_tadd","caption" => "Neu","link" => "$PHP_SELF?md=".mfd_add."&amp;daten=$daten&amp;ID=$ID".get_parentlink().""),
-    //       5=>array ("icon" => "_stop","caption" => "Zurück","link" => get_home($home)."?md=0&amp;daten=$daten&amp;ID=$ID")
-    //       );
   default:  // MAIN-Menu
-    $menu = array (0=>array("icon" => "99","caption" => "MAGIE","link" => ""),
-    1=>array("icon" => "_tadd","caption" => "Erfassen","link" => "$PHP_SELF?md=1&ID=$ID&sub=$$sub"),
+    $menu = array (0=>array("icon" => "99","caption" => "$titel","link" => ""),
+    1=>array("icon" => "_tadd","caption" => "Erfassen","link" => "$PHP_SELF?md=".mfd_add."&ID=$ID&sub=$$sub"),
     40=>array("icon" => "_stop","caption" => "Zurück","link" => "con_main.php?md=0&ID=$ID&sub=$sub")
     );
     break;
@@ -349,13 +339,13 @@ $menu_item = $menu_item_help;
 $anrede["name"] = $spieler_name;
 $anrede["formel"] = "Sei gegrüsst Meister ";
 
-if($md == mfd_info)
-{
-  print_kopf_druck ("penta.gif", $header_typ);
-}  else
-{
+// if($md == mfd_info)
+// {
+//   print_kopf_druck ("penta.gif", $header_typ);
+// }  else
+// {
   print_kopf($admin_typ,$header_typ,"MFD Viewer",$anrede,$menu_item);
-}
+// }
 
 
 // fuer die Tabellen Operationen
@@ -388,9 +378,10 @@ default: //
   $menu = get_menu_mfd_editor($md, $PHP_SELF, $ID,$ref_mfd,$id,$daten,$sub,$home);
 
 
-  switch ($md):
+switch ($md):
 case mfd_add:
-    print_menu_status($menu);
+  print_menu_status($menu);
+  print_mfd_erf($id, $ID, $mfd_list, $mfd_cols, $daten);
   echo "Add Maske";
   break;
 case mfd_edit:
@@ -405,6 +396,7 @@ case mfd_del:
 case mfd_info:
   //  echo "Info Maske:";
 //  print_menu_status($menu);
+  print_menu_status($menu);
   print_mfd_info($id, $ID, $mfd_list, $mfd_cols,$daten);
   break;
 case mfd_list:
