@@ -23,62 +23,127 @@ KEINE Session Verwaltung !!
 
 include "_db.inc";
 include "_config.inc";
-//include "login.inc";
+include "_login.inc";
 //include "head.inc";
 
-function checkuser_xml($user, $pw)
+
+function GET_cmd($value="")
 {
-/*
-  Die Funktion prüft die übergebenen  Daten
-  $user
-  $pw
-  gegen die Userdatennbank
-  und gibt TRUE zurück
-*/
-  global $DB_HOST,$DB_USER,$DB_PASS,$DB_INTERN,$TBL_USER;
-  global $user_lvl   ;
-  global $spieler_id ;
-  global $user_id    ;
-
-  if ($user!='')
+  if (isset($_GET['cmd'])==true)
   {
-    $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-            or die( "Fehler beim Verbinden".$DB_HOST."-".$DB_USER."-".$DB_PASS);
-
-    mysql_select_db($DB_INTERN);
-    $Q = "select username,pword,lvl,spieler_id,id from $TBL_USER where username=\"$user\"";
-    $result = mysql_query($Q)
-            or die( "Fehler ".$DB_NAME." query ".$Q);
-    $row = mysql_fetch_row($result);
-    $check      = $row[1];
-    $user_lvl   = $row[2];
-    $spieler_id = $row[3];
-    $user_id    = $row[4];
-    
-    if ($row[0] == $user)
-    {
-     $q = "select old_password(\"$pw\");";
-     $result = mysql_query($q) or die("PW: $q");
-     $row = mysql_fetch_row($result) ;
-//     echo ">$row[0] / $check";
-     if ($row[0] == $check)
-     {
-        return "TRUE";
-     } else
-     {
-       return "FALSE";
-     };
-    }
-    else
-    {
-      return "FALSE";
-    }
+    return $_GET['cmd'];
   }
-  else
-  {
-    return "FALSE";
-  }
+  return $value;
 }
+
+function GET_user($value="")
+{
+  if (isset($_GET['user'])==true)
+  {
+    return $_GET['user'];
+  }
+  return $value;
+}
+
+function GET_pw($value="")
+{
+  if (isset($_GET['pw'])==true)
+  {
+    return $_GET['pw'];
+  }
+  return $value;
+}
+
+function GET_mode($value="0")
+{
+  if (isset($_GET['mode'])==true)
+  {
+    return $_GET['mode'];
+  }
+  return $value;
+}
+
+function GET_name($value="")
+{
+  if (isset($_GET['name'])==true)
+  {
+    return $_GET['name'];
+  }
+  return $value;
+}
+
+
+function POST_data($value=0)
+{
+  if (isset($_POST['data'])==true)
+  {
+    return $_POST['data'];
+  }
+  return $value;
+}
+
+function POST_sql($value="")
+{
+  if (isset($_POST['sql'])==true)
+  {
+    return $_POST['sql'];
+  }
+  return $value;
+}
+
+// function checkuser_xml($user, $pw)
+// {
+// /*
+//   Die Funktion prüft die übergebenen  Daten
+//   $user
+//   $pw
+//   gegen die Userdatennbank
+//   und gibt TRUE zurück
+// */
+//   global $DB_HOST,$DB_USER,$DB_PASS,$DB_INTERN,$TBL_USER;
+//   global $user_lvl   ;
+//   global $spieler_id ;
+//   global $user_id    ;
+
+//   if ($user!='')
+//   {
+//     $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+//             or die( "Fehler beim Verbinden".$DB_HOST."-".$DB_USER."-".$DB_PASS);
+
+//     mysql_select_db($DB_INTERN);
+//     $Q = "select username,pword,lvl,spieler_id,id from $TBL_USER where username=\"$user\"";
+//     $result = mysql_query($Q)
+//             or die( "Fehler ".$DB_NAME." query ".$Q);
+//     $row = mysql_fetch_row($result);
+//     $check      = $row[1];
+//     $user_lvl   = $row[2];
+//     $spieler_id = $row[3];
+//     $user_id    = $row[4];
+    
+//     if ($row[0] == $user)
+//     {
+//      $q = "select old_password(\"$pw\");";
+//      $result = mysql_query($q) or die("PW: $q");
+//      $row = mysql_fetch_row($result) ;
+// //     echo ">$row[0] / $check";
+//      if ($row[0] == $check)
+//      {
+//         return "TRUE";
+//      } else
+//      {
+//        return "FALSE";
+//      };
+//     }
+//     else
+//     {
+//       return "FALSE";
+//     }
+//   }
+//   else
+//   {
+//     return "FALSE";
+//   }
+// }
 
 
 function db2xml($query,$mode)
@@ -168,27 +233,33 @@ function decodeSQLPost($sql)
 // keinerlei Ausgabe vor  der header() Zeile !!!!!!!!!!!!!!!!!!!!!
 // ----------------------------------------------------------------
 // Prüfung ob User  berechtigt ist
-  $cmd  = $_GET['cmd'];
-  $user = $_GET['user'];
-  $pw   = $_GET['pw'];
-  $mode = $_GET['mode'];
-  $name = $_GET['name'];
-  $TAG = $_GET['TAG'];
+  $cmd  = GET_cmd('0');
+  $user = GET_user('user');
+  $pw   = GET_pw('pw');
+  $mode = GET_mode('mode');
+  $name = GET_name('name');
+  $TAG  = GET_TAG('0');
 
-  $sql  = $_POST['sql'];
-  $data  = $_POST['data'];
+  $sql  = POST_sql('sql');
+  $data  = POST_data('data');
 
 
-  global $user_lvl   ;
-  global $spieler_id ;
-  global $user_id    ;
+//   global $user_lvl   ;
+//   global $spieler_id ;
+//   global $user_id    ;
 
   echo "<HTML>";
   echo "<HEAD>";
 
-if (checkuser_xml($user,$pw) == "TRUE")
+if (checkuser($user,$pw) == "TRUE")
 {
-
+  session_start();
+  $user       = $_SESSION["user"];
+  $user_lvl   = $_SESSION["user_lvl"];
+  $spieler_id = $_SESSION["spieler_id"];
+  $user_id 	= $_SESSION["user_id"];
+  $SID        = $_SESSION["ID"];
+  
   echo "cmd: $cmd\r\n";
 
   switch ($cmd):
