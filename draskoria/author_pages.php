@@ -41,6 +41,99 @@ include_once "_head.inc";
 include_once '_edit.inc';
 
 
+function print_image($path,$ID,$name)
+{
+	$path ="./images";
+	print_image_list($path, $ID, "");
+
+	echo "<!--  Preview Spalte   -->\n";
+	//  echo $name;
+	$style = $GLOBALS['style_datatab'];
+	echo "<div $style >";
+	echo "<!--  DATEN Spalte   -->\n";
+	echo "";
+	$filename = $path."/".$name;
+	//style="width: 240px; height: 180px"
+	echo "<img alt=\"\" src=\"$filename\"  title=\"Preview eines Bildes\" />";
+	echo "";
+	echo "</div>\n";
+
+	echo "<!--  ENDE Preview Spalte   -->\n";
+
+}
+
+
+
+function print_image_list($path,$ID,$sub)
+{
+	global $PHP_SELF;
+	$path ="./images";
+	
+	$pages = get_images_list();
+
+	echo "<div >";
+	echo "<p>";
+	echo " ";
+	echo "</p >";
+	echo "</div >";
+
+
+	$style = "id=\"menu\"";
+	echo "<div $style >";
+	echo "<!--  DATEN Spalte   -->\n";
+	echo "<table  border=\"1\"> \n"; //width=\"100%\"
+	echo "<tbody >";
+
+	for($i=0; $i<count($pages); $i++)
+	{
+		$name = $pages[$i];
+		echo "\t<tr> \n";
+		echo "\t\t<td width=\"25\"> \n";
+		if ($i>0)
+		{
+// 			echo "<a href=\"$PHP_SELF?md=5&daten=$name&ID=$ID&sub=$sub \" >";
+// 			print_menu_icon("_editor","Edit Html Datei");
+// 			echo "</a>";
+			echo "\t\t</td> \n";
+			echo "\t\t<td> \n";
+			echo "$name";
+			echo "";
+			echo "\t\t</td> \n";
+			echo "\t\t<td> \n";
+			if ($i>0)
+			{
+				echo "<a href=\"$PHP_SELF?md=5&daten=$name&ID=$ID&sub=$sub \"> ";
+				print_menu_icon("_text","Preview Image Datei in separatem Fenster");
+				echo "</a>";
+			}
+			echo "";
+			echo "";
+			echo "\t\t</td> \n";
+			echo "\t</tr> \n";
+		} else
+		{
+//			echo "<a href=\"$PHP_SELF?md=1&ID=$ID&sub=$sub \" >";
+//			print_menu_icon("_folder","Images");
+			echo "</a>";
+			echo "\t\t</td> \n";
+			echo "\t\t<td> \n";
+			echo "<b>Images</b>";
+			echo "";
+			echo "\t\t</td> \n";
+			echo "\t\t<td> \n";
+			echo "";
+			echo "";
+			echo "\t\t</td> \n";
+			echo "\t</tr> \n";
+		}
+	}
+
+	echo "</tbody>";
+	echo "</table>\n";
+	echo '</div>';
+	echo "<!--  ENDE DATEN Spalte   -->\n";
+
+}
 
 
 function print_pages_list($path,$ID,$sub)
@@ -136,24 +229,42 @@ function pages_edit ($path,$name,$ID,$sub)
 	echo "&nbsp;&nbsp;&nbsp;&nbsp;";
 	echo "<INPUT TYPE=\"RESET\" VALUE=\"Reset\">";
 	echo "</p>";
-
+	$name = 'editor1';
 	$text = $lines[0];
 	for ($i=1; $i<count($lines); $i++)
 	{
-		$text = $text.$lines[$i];
+	$text = $text.$lines[$i];
 	}
-	echo "<textarea   name=\"editor1\"  COLS=\"80\" ROWS=\"34\" >"; //class=\"ckeditor\"
+	echo "<textarea   name=\"$name\"  COLS=\"80\" ROWS=\"4\" >"; //class=\"ckeditor\"
 	echo $text;
 	echo "</textarea>";
-
-	echo "<!--  Text editor Konfiguration-->";
-	echo "  <script type=\"text/javascript\">";
-	echo " CKEDITOR.replace('editor1',{
-			toolbar: 'Full',
-			uiColor : '#9AB8F3',
-			height : '450px'
-} );";
+	
+			echo "<!--  Text editor Konfiguration-->";
+  echo "  <script type=\"text/javascript\">";
+  echo " CKEDITOR.replace('$name',{
+	  toolbar: 'Full',
+	  uiColor : '#9AB8F3',
+	  width : '850px',
+	  height : '450px'
+	} );";
 	echo "  </script>";
+// 	$text = $lines[0];
+// 	for ($i=1; $i<count($lines); $i++)
+// 	{
+// 		$text = $text.$lines[$i];
+// 	}
+// 	echo "<textarea   name=\"editor1\"  COLS=\"80\" ROWS=\"34\" >"; //class=\"ckeditor\"
+// 	echo $text;
+// 	echo "</textarea>";
+
+// 	echo "<!--  Text editor Konfiguration-->";
+// 	echo "  <script type=\"text/javascript\">";
+// 	echo " CKEDITOR.replace('editor1',{
+// 			toolbar: 'Full',
+// 			uiColor : '#9AB8F3',
+// 			height : '450px'
+//  } );";
+// 	echo "  </script>";
 	echo "</p>";
 	echo '</div>';
 	echo "<!--  ENDE DATEN Spalte   -->\n";
@@ -296,6 +407,7 @@ default: // main
 	3=>array("icon" => "_list","caption" => "SPIELER","link" => "$PHP_SELF?md=0&sub=spieler&ID=$ID"),
 	4=>array("icon" => "_list","caption" => "LAND","link" => "$PHP_SELF?md=0&sub=land&ID=$ID"),
 	5=>array("icon" => "_list","caption" => "HELP","link" => "$PHP_SELF?md=0&sub=help&ID=$ID"),
+	9=>array("icon" => "_list","caption" => "Images","link" => "$PHP_SELF?md=4&sub=help&ID=$ID"),
 	10=>array ("icon" => "_stop","caption" => "Zurück","link" => "larp.php?md=0&ID=$ID")
 	);
 	break;
@@ -315,7 +427,12 @@ case 3:
 	// preview
 	print_preview($path,$daten,$ID,$sub);
 	break;
-
+case 4:
+	print_image_list($path, $ID, $daten);
+	break;
+case 5:
+	print_image($path, $ID, $daten);
+	break;
 default:
 	print_pages_list($path,$ID,$sub);
 	break;

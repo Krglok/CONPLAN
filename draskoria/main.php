@@ -133,7 +133,7 @@ $id     =GET_id(0);
 
 $ID     =GET_SESSIONID("0");
 
-$link = "help_view.php?md=$md&item=$item&sub=$sub&daten=$daten";
+$link = "help_view.php?md=0&item=$item&sub=$sub&daten=$daten";
 $menu_item = array ("icon" => $menu_help, "caption" => "Hilfe","link" => "javascript:openHelp('$link')","itemtyp"=>"0");
 
 

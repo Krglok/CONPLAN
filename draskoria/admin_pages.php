@@ -41,6 +41,101 @@ include_once "_lib.inc";
 include_once "_head.inc";
 include_once '_edit.inc';
 
+function print_image($path,$ID,$name)
+{
+	$path ="./images";
+	print_image_list($path, $ID, "");
+
+	echo "<!--  Preview Spalte   -->\n";
+	//  echo $name;
+	$style = $GLOBALS['style_datatab'];
+	echo "<div $style >";
+	echo "<!--  DATEN Spalte   -->\n";
+	echo "";
+	$filename = $path."/".$name;
+	//style="width: 240px; height: 180px"
+	echo "<img alt=\"\" src=\"$filename\"  title=\"Preview eines Bildes\" />";
+	echo "";
+	echo "</div>\n";
+
+	echo "<!--  ENDE Preview Spalte   -->\n";
+
+}
+
+
+
+function print_image_list($path,$ID,$sub)
+{
+	global $PHP_SELF;
+	$path ="./images";
+
+	$pages = get_images_list();
+
+	echo "<div >";
+	echo "<p>";
+	echo " ";
+	echo "</p >";
+	echo "</div >";
+
+
+	$style = "id=\"menu\"";
+	echo "<div $style >";
+	echo "<!--  DATEN Spalte   -->\n";
+	echo "<table  border=\"1\"> \n"; //width=\"100%\"
+	echo "<tbody >";
+
+	for($i=0; $i<count($pages); $i++)
+	{
+		$name = $pages[$i];
+		echo "\t<tr> \n";
+		echo "\t\t<td width=\"25\"> \n";
+		if ($i>0)
+		{
+			// 			echo "<a href=\"$PHP_SELF?md=5&daten=$name&ID=$ID&sub=$sub \" >";
+			// 			print_menu_icon("_editor","Edit Html Datei");
+			// 			echo "</a>";
+			echo "\t\t</td> \n";
+			echo "\t\t<td> \n";
+			echo "$name";
+			echo "";
+			echo "\t\t</td> \n";
+			echo "\t\t<td> \n";
+			if ($i>0)
+			{
+				echo "<a href=\"$PHP_SELF?md=5&daten=$name&ID=$ID&sub=$sub \"> ";
+				print_menu_icon("_text","Preview Image Datei in separatem Fenster");
+				echo "</a>";
+			}
+			echo "";
+			echo "";
+			echo "\t\t</td> \n";
+			echo "\t</tr> \n";
+		} else
+		{
+			//			echo "<a href=\"$PHP_SELF?md=1&ID=$ID&sub=$sub \" >";
+			//			print_menu_icon("_folder","Images");
+			echo "</a>";
+			echo "\t\t</td> \n";
+			echo "\t\t<td> \n";
+			echo "<b>Images</b>";
+			echo "";
+			echo "\t\t</td> \n";
+			echo "\t\t<td> \n";
+			echo "";
+			echo "";
+			echo "\t\t</td> \n";
+			echo "\t</tr> \n";
+		}
+	}
+
+	echo "</tbody>";
+	echo "</table>\n";
+	echo '</div>';
+	echo "<!--  ENDE DATEN Spalte   -->\n";
+
+}
+
+
 
 // function get_pagesdir($dir,$file_extend)
 // {
@@ -302,7 +397,7 @@ $spieler_name = get_spieler($spieler_id); //Auserwählter\n";
 
 $menu_item = $menu_item_help;
 $anrede["name"] = $spieler_name;
-$anrede["formel"] = "Sei gegrüsst Author ";
+$anrede["formel"] = "Sei gegrüsst Admin ";
 
 print_kopf($admin_typ,$header_typ,"HTML Pages",$anrede,$menu_item);
 
@@ -354,30 +449,37 @@ case 3:  //Bearbeiten
 	default: // main
 	$menu = array (0=>array("icon" => "7","caption" => "HTML Pages","link" => ""),
 	1=>array ("icon" => "_plus","caption" => "Neue Page","link" => "$PHP_SELF?md=1&ID=$ID"),
-	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_config.php?md=0&ID=$ID")
+	9=>array("icon" => "_list","caption" => "Images","link" => "$PHP_SELF?md=4&sub=help&ID=$ID"),
+	10=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_config.php?md=0&ID=$ID")
 	);
 	break;
 	endswitch;
 
 	print_menu_status($menu,$ID);
 
-switch ($md):
-case 1:
-	pages_erf($daten,$ID);
-	break;
-case 2:
-    // Edit
-	pages_edit($daten,$ID);
-	break;
-case 3:
+	switch ($md):
+	case 1:
+		pages_erf($daten,$ID);
+		break;
+	case 2:
+	    // Edit
+		pages_edit($daten,$ID);
+		break;
+	case 3:
     // preview  
 	print_preview($daten,$ID);
 	break;
+	case 4:
+		print_image_list($path, $ID, $daten);
+		break;
+	case 5:
+		print_image($path, $ID, $daten);
+		break;
 	
-default:
-	print_pages_list($ID);
-	break;
-endswitch;
+	default:
+		print_pages_list($ID);
+		break;
+	endswitch;
 
 	print_md_ende();
 

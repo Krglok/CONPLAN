@@ -91,6 +91,23 @@ function get_pages_htm($path)
 	return $pages;
 }
 
+function concat_array($array1, $array2)
+{
+	$max = count($array1);
+	$index = count($array2);
+	if ($index > 0)
+	{ 
+		$max = $max;
+		$array1[$max] = current($array2);
+		for ($i = 1; $i < $index; $i++) 
+		{
+			$max = $max+1;
+			$array1[$max] = next($array2);
+		}
+	}
+	return $array1; 
+}
+
 /**
  * Erstellt einen Liste von images im Standard Image verzeichnis
  * @return Array [String] $images , Namenliste der Images
@@ -98,9 +115,16 @@ function get_pages_htm($path)
 function get_images_list()
 {
 	$dir = './images';
-	$file_extend = "";
+	$file_extend = "jpg";
 	$images =  get_pagesdir($dir,$file_extend);
-	return $images;
+	$imageList = $images;
+ 	$file_extend = "png";
+ 	$images =  get_pagesdir($dir,$file_extend);
+	$imageList = 	concat_array($imageList, $images);
+ 	$file_extend = "gif";
+ 	$images =  get_pagesdir($dir,$file_extend);
+	$imageList = 	concat_array($imageList, $images);
+ 	return $imageList;
 }
 
 /**
