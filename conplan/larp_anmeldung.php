@@ -88,23 +88,28 @@ function print_liste($user)
 
 	$anzahl    = mysql_num_rows($result);
 
-	$style = $GLOBALS['style_datatable'];
+	$style = $GLOBALS['style_datalist'];
 	echo "<div $style >";
 	echo "<!--  DATEN Spalte   -->\n";
 	
 	echo "<table>\n";
+	echo "<tbody>\n";
 	echo "<tr>\n";
-	echo "<td colspan=4>\n";
+	echo "<td width=\"200px\" >\n";
 	echo "<B>ANMELDUNG für TAG $TAG\n";
 	echo "</td>\n";
 	echo "<td>\n";
 	echo "</td>\n";
-	echo "<td>\n";
+	echo "<td width=\"25px\">\n";
 	echo "$anzahl \n";
 	echo "</td>\n";
 
 	echo "</tr>\n";
-
+	echo "</tbody>\n";
+	echo "</table>\n";
+	
+	echo "<table>\n";
+	echo "<tbody>\n";
 	//Kopfzeile
 	echo "<tr>\n";
 	$field_num = mysql_num_fields($result);
@@ -115,22 +120,22 @@ function print_liste($user)
 			//      echo "\t<td><b>Orga</b></td>\n";
 			break;
 		case 4:
-			echo "\t<td><i>Abw</i></td>\n";
+			echo "\t<td width=\"25px\"><i>Abw</i></td>\n";
 			break;
 		case 5:
-			echo "\t<td><i>Tav</i></td>\n";
+			echo "\t<td width=\"25px\"><i>Tav</i></td>\n";
 			break;
 		case 6:
-			echo "\t<td><i> WC</i></td>\n";
+			echo "\t<td width=\"25px\"><i> WC</i></td>\n";
 			break;
 		case 7:
-			echo "\t<td><i>NSC</i></td>\n";
+			echo "\t<td width=\"25px\"><i>NSC</i></td>\n";
 			break;
 		case 8:
-			echo "\t<td><i>Auf</i></td>\n";
+			echo "\t<td width=\"25px\"><i>Auf</i></td>\n";
 			break;
 		case 9:
-			echo "\t<td><i>Orga</i></td>\n";
+			echo "\t<td width=\"25px\"><i>Orga</i></td>\n";
 			break;
 		default:
 			echo "\t<td><i>".mysql_field_name($result,$i)."</i></td>\n";
@@ -193,8 +198,9 @@ function print_liste($user)
 			print_menu_icon ("_del","Anmeldung löschen!");
 			echo "\t</a></td>\n";
 		}
-		echo "<tr>";
+	  echo "</tr>\n";
 	}
+	echo "</tbody>\n";
 	echo "</table>";
 	echo '</div>';
 	echo "<!--  ENDE DATEN Spalte   -->\n";
@@ -219,7 +225,7 @@ function info_liste($spieler,$ID)
 
 	mysql_close($db);
 
-	$style = $GLOBALS['style_datatable'];
+	$style = $GLOBALS['style_datalist'];
 	echo "<div $style >";
 	echo "<!--  DATEN Spalte   -->\n";
 	

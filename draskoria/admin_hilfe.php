@@ -12,7 +12,7 @@
  * Author  :  Olaf Duda
  * 
 beschreibung : MFD = Main Formular Data Editor
-Das modul realisiert die Bearbeitungsfunktionen für die MFD <download>.
+Das modul realisiert die Bearbeitungsfunktionen für die MFD <bilder_topic>.
 
 Die Realisation des Editors liegt im include "_mfd_edit.inc"
 
@@ -35,7 +35,12 @@ include_once '_mfd_edit.inc';
 // ----------------------------------------------------------------
 // Prüfung ob User  berechtigt ist
 
-  $BEREICH = 'SL';
+// <head>
+// ...
+// <script src="/ckeditor/ckeditor.js"></script>
+// </head>
+
+  $BEREICH = 'ADMIN';
   
   $md     = GET_md(0);
   $id     = GET_id(0);
@@ -56,7 +61,8 @@ include_once '_mfd_edit.inc';
   if ($ID == "")
   {
     $session_id = 'FFFF';
-    header ("Location: main.php");  // Umleitung des Browsers
+    echo "session";
+    //  header ("Location: main.php");  // Umleitung des Browsers
     exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
     // Code ausgeführt wird.
   }
@@ -64,13 +70,14 @@ include_once '_mfd_edit.inc';
   if (is_admin()==FALSE)
   {
     $session_id = 'FFFF';
-    header ("Location: main.php");  // Umleitung des Browsers
+    echo "Admin";
+    //  header ("Location: main.php");  // Umleitung des Browsers
     exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
     // Code ausgeführt wird.
   }
   
   
-  print_header_admin("SL Bereich");
+  print_header_admin("Admin Bereich");
   
   print_body(2);
   
@@ -87,14 +94,12 @@ include_once '_mfd_edit.inc';
   
   
   // fuer die Tabellen Operationen
-  $ref_mfd = "artefakte";
+  $ref_mfd = "hilfe";
   
-  $home = "con_main.php";
-  $fields = "id,S0,name,kurz,wert,r_sc,r_nsc,r_ort";
-  
+  $home = "admin_main.php";
   // hier wird der Editor eingebuden
-  print_mfd_editor($ref_mfd,$md, $p_md, $p_row,$id,$daten,$sub,$home,$fields);
+  print_mfd_editor($ref_mfd,$md, $p_md, $p_row,$id,$daten,$sub,$home);
   
-  print_body_ende();
-  
+  print_md_ende();
+
 ?>
