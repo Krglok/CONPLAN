@@ -352,6 +352,15 @@ function POST_row($value=0)
 	return $value;
 }
 
+function POST_userfile($value="")
+{
+  if (isset($_POST['userfile'])==true)
+  {
+    return $_POST['userfile'];
+  }
+  return $value;
+}
+
 function POST_top_id($value = "0")
 {  if (isset($_POST['top_id'])==true)
 {

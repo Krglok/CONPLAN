@@ -251,8 +251,9 @@ function get_menu_mfd_edit($md,$PHP_SELF, $ID,$titel,$id,$daten,$sub,$home)
 
 	switch ($md):
   case mfd_add:
-	  print_menu_status($menu);
-	  echo "Add Maske";
+      print_menu_status($menu);
+      print_mfd_erf($id, $ID, $mfd_list, $mfd_cols,$daten);
+	echo "Add Maske";
   	break;
   case mfd_edit:
 	  print_menu_status($menu);
