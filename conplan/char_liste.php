@@ -936,30 +936,35 @@ default :
 	$home = "larp.php";
 	
 	$menu = get_menu_char_list($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $home);
-	print_menu($menu);
 	
 	switch ($md):
   case 0:  // MAIN-Menu
+	  print_menu($menu);
 		print_liste($ID);
 		break;
-case 1: // Erfassen eines neuen Datensatzes
-	print_maske($id,$ID,5,1);
-	break;
-case 2: // ANSEHEN Form
-	Print_info($id, $ID,$TAG);
-	break;
-case 3: // Delete eines bestehenden Datensatzes
-	print_loeschen($ID);
-	break;
-case 4: // Bearbeiten Form
-	print_maske($id,$ID,6,0);
-	break;
-case 8: // Aktivieren des aktuellen Char
-	print_aktiv($ID);
-	break;
-default:  //
-	print_main($ID);
-	break;
+	case 1: // Erfassen eines neuen Datensatzes
+	  print_menu_status($menu);
+		print_maske($id,$ID,5,1);
+		break;
+	case 2: // ANSEHEN Form
+	  print_menu_status($menu);
+		Print_info($id, $ID,$TAG);
+		break;
+	case 3: // Delete eines bestehenden Datensatzes
+		print_loeschen($ID);
+		break;
+	case 4: // Bearbeiten Form
+	  print_menu_status($menu);
+		print_maske($id,$ID,6,0);
+		break;
+	case 8: // Aktivieren des aktuellen Char
+	  print_menu_status($menu);
+		print_aktiv($ID);
+		break;
+	default:  //
+		print_menu($menu);
+		print_main($ID);
+		break;
 	endswitch;
 
 	print_md_ende();
