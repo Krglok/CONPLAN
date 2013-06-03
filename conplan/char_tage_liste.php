@@ -40,6 +40,20 @@ einen veraenderte Konfiguration eingestellt
 - LOGO Mitte
 - Text1, Text2  fuer rechte Seite
 
+Ver 3.0  / 06.02.2013
+Es werden CSS-Dateien verwendert.
+Es wird eine strikte Trennung von Content und Layout durchgefuehrt.
+Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues
+Layoutpfades in der config.inc
+Ansonsten bleibt der Inhalt der Seiten identisch.
+
+  $style = $GLOBALS['style_datatab'];
+  echo "<div $style >";
+  echo "<!--  DATEN Spalte   -->\n";
+  
+  echo '</div>';
+  echo "<!--  ENDE DATEN Spalte   -->\n";
+
 */
 
 
@@ -79,7 +93,9 @@ function print_liste($char,$ID)
 	mysql_close($db);
 
 
-	echo "  <TD\n>"; //Daten bereich der Gesamttabelle
+  $style = $GLOBALS['style_datatab'];
+  echo "<div $style >";
+  echo "<!--  DATEN Spalte   -->\n";
 	echo "<table border=1 BGCOLOR=\"\">\n";
 
 	//Kopfzeile
@@ -102,22 +118,24 @@ function print_liste($char,$ID)
 			{
 				echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=$row[$i]&char=$char\">\n";
 				//echo "\t<IMG SRC=\"../larp/images/db.gif\" BORDER=\"0\" HEIGHT=\"25\" WIDTH=\"25\" ALT=\"Datensatz Bearbeiten\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>\n";
-				print_menu_icon (3);
+				print_menu_icon ("_edit");
 				echo "\t</a></td>\n";
 			} else
 			{
 				echo "\t<td>$row[$i]&nbsp;</td>\n";
 			};
 		}
-		echo "\t<td><a href=\"$PHP_SELF?md=2&ID=$ID&id=$row[0]&char=$char\">\n";
-		//echo "\t<IMG SRC=\"../larp/images/xview.gif\" BORDER=\"0\" HEIGHT=\"15\" WIDTH=\"25\" ALT=\"Thema Lesen\" HSPACE=\"0\" VSPACE=\"0\">\n";
-		print_menu_icon (7);
-		echo "\t</a></td>\n";
+// 		echo "\t<td><a href=\"$PHP_SELF?md=2&ID=$ID&id=$row[0]&char=$char\">\n";
+// 		//echo "\t<IMG SRC=\"../larp/images/xview.gif\" BORDER=\"0\" HEIGHT=\"15\" WIDTH=\"25\" ALT=\"Thema Lesen\" HSPACE=\"0\" VSPACE=\"0\">\n";
+// 		print_menu_icon ("_info");
+// 		echo "\t</a></td>\n";
 		echo "<tr>";
 	}
 	echo "</table>";
-	echo " </TD\n>"; //ENDE Daten bereich der Gesamttabelle
-
+  
+  echo '</div>';
+  echo "<!--  ENDE DATEN Spalte   -->\n";
+	
 };
 
 function print_loeschen($ID)
@@ -430,6 +448,7 @@ function print_maske($id,$ID,$next,$erf,$ref)
 	//==========================================================================
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $TABLE;
+	global $PHP_SELF;
 
 	if ($erf == 0 )
 	{
@@ -476,12 +495,14 @@ function print_maske($id,$ID,$next,$erf,$ref)
 		$row[8] = 'N';
 	}
 	/**/
-	echo "  <TD\n>";  //Daten bereich der Gesamttabelle
-	echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST>\n";
+	$style = $GLOBALS['style_datatab'];
+	echo "<div $style >";
+	echo "<!--  DATEN Spalte   -->\n";
+	
+	echo "<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"ID\" VALUE=\"$ID\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"$id\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"TAG\"  VALUE=\"$TAG\">\n";
 	echo "<TABLE WIDTH=\"400\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"2\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\"
 			BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
 	echo "\t<tr>\n";
@@ -539,10 +560,49 @@ function print_maske($id,$ID,$next,$erf,$ref)
 	echo "\t</tr>\n";
 
 	echo "</table>";
-	echo "  </TD\n>"; //ENDE  Datenbereich der Gesamttabelle
 
+	echo '</div>';
+	echo "<!--  ENDE DATEN Spalte   -->\n";
+	
 };
 
+
+function get_menu_char_tage($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $home)
+{
+  switch ($md):
+  case 1: // Erfassen eines neuen Datensatzes
+    $menu = array (0=>array("icon" => "99","caption" => "CON-TAGE","link" => ""),
+    1=>array("icon" => "0","caption" => "ERFASSEN","link" => ""),
+    2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
+    );
+    break;
+  case 2: // ANSEHEN Form
+    $menu = array (0=>array("icon" => "99","caption" => "CON-TAGE","link" => ""),
+    1=>array("icon" => "0","caption" => "ANSEHEN","link" => ""),
+    2=>array("icon" => "6_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
+    );
+    break;
+  case 3: // Delete eines bestehenden Datensatzes
+    $menu = array (0=>array("icon" => "99","caption" => "CON-TAGE","link" => ""),
+    1=>array("icon" => "0","caption" => "LÖSCHEN","link" => ""),
+    9=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
+    );
+    break;
+  case 4: // Bearbeiten Form
+    $menu = array (0=>array("icon" => "99","caption" => "CON-TAGE","link" => ""),
+    1=>array("icon" => "0","caption" => "BEARBEITEN","link" => ""),
+    2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
+    );
+    break;
+  default:  // die einzelnen Bildseiten 11-xx
+      $menu = array (0=>array("icon" => "99","caption" => "CON-TAGE","link" => ""),
+          2=>array("icon" => "_add","caption" => "NeuerCon Tag","link" => "$PHP_SELF?md=1&ID=$ID&daten=$daten"),
+          9=>array("icon" => "_stop","caption" => "Zurück","link" => "$home?md=0&ID=$ID&")
+      );
+    break;
+  endswitch;
+  return  $menu;
+}
 
 // ---------------------------------------------------------------
 // ---------    MAIN ---------------------------------------------
@@ -591,22 +651,28 @@ function print_maske($id,$ID,$next,$erf,$ref)
 	$char = get_char_aktiv();
 	
 	switch ($p_md):
-	case 5:  // MAIN-Menu
+	case char_insert:  // MAIN-Menu
 		insert($p_row,$bild,$userfile_name);
-	header ("Location: $PHP_SELF?md=0&ID=$ID&char=$char");  /* Auf sich Selbst*/
-	exit;  /* Sicher stellen, das nicht nachfolgender Code ausgeführt wird. */
-	break;
-	case 6: // Update eines bestehnden Datensatzes
+	  header ("Location: $PHP_SELF?md=0&ID=$ID");  /* Auf sich Selbst*/
+	  exit;  /* Sicher stellen, das nicht nachfolgender Code ausgeführt wird. */
+	  break;
+	case char_update: // Update eines bestehnden Datensatzes
 		// Update SQL
 		update($p_row);
-		header ("Location: $PHP_SELF?md=0&ID=$ID&char=$char");  /* Auf sich Selbst*/
+		header ("Location: $PHP_SELF?md=0&ID=$ID");  /* Auf sich Selbst*/
+		exit;  /* Sicher stellen, das nicht nachfolgender Code ausgeführt wird. */
+		break;
+	case char_delete: // Update eines bestehnden Datensatzes
+		// Update SQL
+		delete($p_row);
+		header ("Location: $PHP_SELF?md=0&ID=$ID");  /* Auf sich Selbst*/
 		exit;  /* Sicher stellen, das nicht nachfolgender Code ausgeführt wird. */
 		break;
 	default :
 		break;
-		endswitch;
+	endswitch;
 	
-		switch ($md):
+	switch ($md):
 	case 7: // Delete eines bestehenden Datensatzes
 			// SQL delete
 			loeschen($id);
@@ -624,54 +690,32 @@ function print_maske($id,$ID,$next,$erf,$ref)
 	$spieler_name = get_spieler($spieler_id); //Auserwählter\n";
 
 	print_cbasis($char,$ID);
+	
+	$home = "char_liste.php";
+	$titel = "Con Tage";
+	
+	$menu = get_menu_char_tage($md, $PHP_SELF, $ID, $titel, $id, $char, $sub, $home);
 
 	switch ($md):
-	case 0:  // MAIN-Menu
-			$menu = array (0=>array("icon" => "99","caption" => "CON-TAGE","link" => ""),
-					2=>array("icon" => "2","caption" => "NeuerCon Tag","link" => "$PHP_SELF?md=1&ID=$ID&char=$char"),
-					9=>array("icon" => "6","caption" => "Zurück","link" => "char_liste.php?md=0&ID=$ID&id=$char")
-			);
-			print_menu($menu);
-			//      print_char_menu($menu);
-	
-			print_liste($char,$ID);
-			break;
 	case 1: // Erfassen eines neuen Datensatzes
-		$menu = array (0=>array("icon" => "99","caption" => "CON-TAGE","link" => ""),
-		1=>array("icon" => "99","caption" => "ERFASSEN","link" => ""),
-		2=>array("icon" => "6","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&char=$char")
-		);
-		print_menu($menu);
-		print_maske($char,$ID,5,1,$ref);
+		print_menu_status($menu);
+		print_maske($char,$ID,char_insert,1,0);
 		break;
 	case 2: // ANSEHEN Form
-		$menu = array (0=>array("icon" => "99","caption" => "CON-TAGE","link" => ""),
-		1=>array("icon" => "99","caption" => "ANSEHEN","link" => ""),
-		2=>array("icon" => "6","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&char=$char")
-		);
-		print_menu($menu);
+		print_menu_status($menu);
 		Print_info($id, $ID,$char);
 		break;
 	case 3: // Delete eines bestehenden Datensatzes
-		$menu = array (0=>array("icon" => "99","caption" => "CON-TAGE","link" => ""),
-		1=>array("icon" => "99","caption" => "LÖSCHEN","link" => ""),
-		9=>array("icon" => "6","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&char=$char")
-		);
-		print_menu($menu);
+		print_menu_status($menu);
 		break;
 	case 4: // Bearbeiten Form
-		$menu = array (0=>array("icon" => "99","caption" => "CON-TAGE","link" => ""),
-		1=>array("icon" => "99","caption" => "BEARBEITEN","link" => ""),
-		2=>array("icon" => "6","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&char=$char")
-		);
-		print_menu($menu);
-		print_maske($id,$ID,6,0,$char);
+		print_menu_status($menu);
+		print_maske($id,$ID,char_update,0,$char);
 		break;
 	default:  // die einzelnen Bildseiten 11-xx
-		$menu = make_bild_menu();
 		print_menu($menu);
-		print_main($ID);
-		break;
+		print_liste($char,$ID);
+	  break;
 	endswitch;
 
 

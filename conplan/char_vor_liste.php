@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  Projekt :  CCHARRAKTER
 
@@ -40,14 +40,26 @@ einen veraenderte Konfiguration eingestellt
 - LOGO Mitte
 - Text1, Text2  fuer rechte Seite
 
+Ver 3.0  / 06.02.2013
+Es werden CSS-Dateien verwendert.
+Es wird eine strikte Trennung von Content und Layout durchgefuehrt.
+Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues
+Layoutpfades in der config.inc
+Ansonsten bleibt der Inhalt der Seiten identisch.
+
+  $style = $GLOBALS['style_datatab'];
+  echo "<div $style >";
+  echo "<!--  DATEN Spalte   -->\n";
+  
+  echo '</div>';
+  echo "<!--  ENDE DATEN Spalte   -->\n";
 */
 
 
-include "config.inc";
-include "login.inc";
-include "lib.inc";
-include "head.inc";
-include "char_lib.inc";
+include "_config.inc";
+include "_lib.inc";
+include "_head.inc";
+include "_char_lib.inc";
 
 
 //-----------------------------------------------------------------------------
@@ -104,7 +116,7 @@ function print_liste($char,$ID)
 			{
 				echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=$row[$i]&char=$char\">\n";
 				//echo "\t<IMG SRC=\"../larp/images/db.gif\" BORDER=\"0\" HEIGHT=\"25\" WIDTH=\"25\" ALT=\"Datensatz Bearbeiten\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>\n";
-				print_menu_icon (3);
+				print_menu_icon ("_point_g");
 				echo "\t</a></td>\n";
 			} else
 			{
@@ -401,7 +413,7 @@ function loeschen($id)
 
 };
 
-function print_maske($id,$ID,$next,$erf,$ref)
+function print_maske($id,$ID,$next,$iserf,$ref,$daten)
 {
 	//==========================================================================
 	// Function     :  print_maske
@@ -428,8 +440,9 @@ function print_maske($id,$ID,$next,$erf,$ref)
 	//==========================================================================
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $TABLE;
-
-	if ($erf == 0 )
+	global $PHP_SELF;
+	
+	if ($iserf == false )
 	{
 		$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
 		or die("Fehler beim verbinden!");
@@ -466,7 +479,8 @@ function print_maske($id,$ID,$next,$erf,$ref)
 		$row = mysql_fetch_array ($result);
 		$field_num = mysql_num_fields($result);
 		$muk =  get_char_klasse($id);
-		$row[1] = $id;
+		$row[0] = 0;
+		$row[1] = $daten;
 		$row[2] = $row1[5];
 		$row[3] = $row1[9];
 		if ($muk=='MUK')
@@ -487,13 +501,14 @@ function print_maske($id,$ID,$next,$erf,$ref)
 	};
 	/**/
 
-	echo "  <TD\n>";  //Daten bereich der Gesamttabelle
-
-	echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST>\n";
+  $style = $GLOBALS['style_datatab'];
+  echo "<div $style >";
+  echo "<!--  DATEN Spalte   -->\n";
+	
+	echo "<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID&daten=$daten\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"ID\" VALUE=\"$ID\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"$id\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"TAG\"  VALUE=\"$TAG\">\n";
+//	echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"$id\">\n";
 	echo "<TABLE WIDTH=\"400\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"2\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\"
 			BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
 	echo "\t<tr>\n";
@@ -555,8 +570,10 @@ function print_maske($id,$ID,$next,$erf,$ref)
 	echo "\t</tr>\n";
 
 	echo "</table>";
-	echo "  </TD\n>"; //ENDE  Datenbereich der Gesamttabelle
-
+  
+  echo '</div>';
+  echo "<!--  ENDE DATEN Spalte   -->\n";
+	
 };
 
 //==========================================================================
@@ -611,8 +628,8 @@ function print_fert($ID,$char)
 			// aufruf der Deateildaten
 			if ($i==0)
 			{
-				echo "\t<td><a href=\"$PHP_SELF?md=1&id=$id&ID=$ID&ref=$row[0]&char=$char\">\n";
-				print_menu_icon (9);
+				echo "\t<td><a href=\"$PHP_SELF?md=1&ID=$ID&auswahl=$row[0]&daten=$char\">\n";
+				print_menu_icon ("_point");
 				echo "\t</a></td>\n";
 			} else
 			{
@@ -626,94 +643,121 @@ function print_fert($ID,$char)
 
 };
 
+function get_menu_char_vor($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $home)
+{
+  switch ($md):
+  case 1: // Erfassen eines neuen Datensatzes
+    $menu = array (0=>array("icon" => "99","caption" => "VORTEILE","link" => ""),
+    1=>array("icon" => "1","caption" => "ERFASSEN","link" => ""),
+    2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&daten=$daten")
+    );
+    break;
+  case 2: // ANSEHEN Form
+    $menu = array (0=>array("icon" => "99","caption" => "VORTEILE","link" => ""),
+    1=>array("icon" => "1","caption" => "ANSEHEN","link" => ""),
+    2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&daten=$daten")
+    );
+    break;
+  case 3: // Delete eines bestehenden Datensatzes
+    $menu = array (0=>array("icon" => "99","caption" => "VORTEILE","link" => ""),
+    1=>array("icon" => "1","caption" => "LÖSCHEN","link" => ""),
+    9=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&daten=$daten")
+    );
+    break;
+  case 4: // Bearbeiten Form
+    $menu = array (0=>array("icon" => "99","caption" => "VORTEILE","link" => ""),
+    1=>array("icon" => "1","caption" => "BEARBEITEN","link" => ""),
+    2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&daten=$daten")
+    );
+    break;
+  case char_auswahl: // Erfassen eines neuen Datensatzes
+    $menu = array (0=>array("icon" => "99","caption" => "VORTEILE","link" => ""),
+    1=>array("icon" => "1","caption" => "AUSWAHL","link" => ""),
+    2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&daten=$daten")
+    );
+    break;
+  default:  // die einzelnen Bildseiten 11-xx
+    $menu = array (0=>array("icon" => "99","caption" => "VORTEILE","link" => ""),
+    				2=>array("icon" => "_tadd","caption" => "Erfassen","link" => "$PHP_SELF?md=".char_auswahl."&ID=$ID&daten=$daten"),
+//    				3=>array("icon" => "4","caption" => "Löschen","link" => "$PHP_SELF?md=3&ID=$ID&id=$id"),
+    				9=>array("icon" => "_stop","caption" => "Zurück","link" => "char_kopf_liste.php?md=0&ID=$ID&id=$daten")
+    );
+    break;
+  endswitch;
+  
+    return $menu;
+}
 
 // ---------------------------------------------------------------
 // ---------    MAIN ---------------------------------------------
 //
 // keinerlei Ausgabe vor  der header() Zeile !!!!!!!!!!!!!!!!!!!!!
 // ----------------------------------------------------------------
-$c_md 	= $_COOKIE['md'];
-
-$p_md 	= $_POST['md'];
-$p_id 	= $_POST['id'];
-$p_row 	= $_POST['row'];
-
-$md = $_GET['md'];
-$ID = $_GET['ID'];
-$id = $_GET['id'];
-$char = $_GET['char'];  // Referenz auf den Char_Kopf_Satz
-$ref  = $_GET['ref'];
-
-
-session_start ($ID);
-$user       = $_SESSION[user];
-$user_lvl   = $_SESSION[user_lvl];
-$spieler_id = $_SESSION[spieler_id];
-$user_id 		= $_SESSION[user_id];
-
-if ($ID == "")
-{
-	$session_id = 'FFFF';
-	header ("Location: main.php");  // Umleitung des Browsers
-	exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
-	// Code ausgeführt wird.
-}
-
-// Prüfung ob User  berechtigt ist
-if (getuser($user,$pw) != "TRUE")
-{
-	$session_id = 'FFFF';
-	//  echo "ID:$session_id ";
-	chdir("..");
-	//  Bei fehlendem oder falscher Rechten ins ROOT HTML
-	header ("Location: ../larp.html");  /* Umleitung des Browsers
-	zur PHP-Web-Seite. */
-	exit;  /* Sicher stellen, das nicht trotz Umleitung nachfolgender
-	Code ausgeführt wird. */
-}
-else
-{
-	// Prüfung des Zugriffsrecht über Lvl
-	//
-	if ($user_lvl <= $lvL_sl[14])
+	$BEREICH = 'INTERN';
+	
+	$md     = GET_md(0);
+	$daten  = GET_daten("");
+	$sub    = GET_sub("");
+	$id     = GET_id(0);
+	$auswahl= GET_auswahl(0);
+	
+	$p_md   = POST_md(0);
+	$p_id 	= POST_id(0);
+	$p_row 	= POST_row("");
+	//$p_editor1 = POST_editor1("");
+	
+	
+	$ID     = GET_SESSIONID("");
+	session_id ($ID);
+	session_start();
+	$user       = $_SESSION["user"];
+	$user_lvl   = $_SESSION["user_lvl"];
+	$spieler_id = $_SESSION["spieler_id"];
+	$user_id 	= $_SESSION["user_id"];
+	$SID        = $_SESSION["ID"];
+	
+	if ($ID != $SID)
 	{
-		header ("Location: ../larp.html?$user_lvl&$lvl_sl[14]");  /* Umleitung des Browsers
-		zur PHP-Web-Seite. */
-		exit;  /* Sicher stellen, das nicht trotz Umleitung nachfolgender
-		Code ausgeführt wird. */
-	};
-	$session_id = '01';
-	//  echo "ID:$session_id  Remote $REMOTE_ADDR";
-};
+		header ("Location: main.php?md=0&ID=$ID");  // Umleitung des Browsers
+		exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
+		// Code ausgeführt wird.
+	}
+	
+	if (is_user()==FALSE)
+	{
+	//  echo "no lvl";	
+	  header ("Location: main.php?md=0&ID=$ID");  // Umleitung des Browsers
+	    exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
+	  // Code ausgeführt wird.
+	}
 
+  $TABLE = "char_vor";
 
-$TABLE = "char_vor";
-
-switch ($p_md):
-case 5:  // MAIN-Menu
-	insert($p_row);
-header ("Location: $PHP_SELF?md=0&ID=$ID&char=$char");  /* Auf sich Selbst*/
-exit;  /* Sicher stellen, das nicht nachfolgender Code ausgeführt wird. */
-break;
-case 6: // Update eines bestehnden Datensatzes
-	// Update SQL
-	update($p_row);
-	header ("Location: $PHP_SELF?md=0&ID=$ID&char=$char");  /* Auf sich Selbst*/
-	exit;  /* Sicher stellen, das nicht nachfolgender Code ausgeführt wird. */
-	break;
-default :
-	break;
-	endswitch;
-
-	switch ($md):
-case 7: // Delete eines bestehenden Datensatzes
-		// SQL delete
-		loeschen($id);
-	header ("Location: $PHP_SELF?md=3&ID=$ID&&char=$char");  /* Auf sich Selbst*/
-	exit;  /* Sicher stellen, das nicht nachfolgender Code ausgeführt wird. */
-	break;
-default :
-	break;
+  switch ($p_md):
+  case char_insert:  // MAIN-Menu
+  	insert($p_row);
+  header ("Location: $PHP_SELF?md=0&ID=$ID&daten=$daten");  /* Auf sich Selbst*/
+  exit;  /* Sicher stellen, das nicht nachfolgender Code ausgeführt wird. */
+  break;
+  case char_update: // Update eines bestehnden Datensatzes
+  	// Update SQL
+  	update($p_row);
+  	header ("Location: $PHP_SELF?md=0&ID=$ID&daten=$daten");  /* Auf sich Selbst*/
+  	exit;  /* Sicher stellen, das nicht nachfolgender Code ausgeführt wird. */
+  	break;
+  default :
+  	break;
+  	endswitch;
+  
+  	switch ($md):
+  case char_delete: // Delete eines bestehenden Datensatzes
+  		// SQL delete
+  		loeschen($id);
+  	header ("Location: $PHP_SELF?md=3&ID=$ID&daten=$daten");  /* Auf sich Selbst*/
+  	exit;  /* Sicher stellen, das nicht nachfolgender Code ausgeführt wird. */
+  	break;
+  default :
+  	break;
 	endswitch;
 
 	print_header("Charakterliste");
@@ -723,65 +767,45 @@ default :
 	$spieler_name = get_spieler($spieler_id); //Auserwählter\n";
 
 
-	//echo "POST : $p_md / GET : $md / id = $id / char = $char";
-
-	print_cbasis($char,$ID);
-
-	print_md();
-
+	$isnsc = print_kopf_liste($daten,$ID);
+	
+	if($isnsc == true)
+	{
+	  $home = "con_nsc_liste.php";
+	}else
+	{
+	  $home = "char_kopf_liste.php";
+	}
+  $titel = "Charakterdaten";
+	
+	$menu = get_menu_char_vor($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $home);
+	
 	switch ($md):
-case 0:  // MAIN-Menu
-		$menu = array (0=>array("icon" => "99","caption" => "VORTEILE","link" => ""),
-				2=>array("icon" => "2","caption" => "Erfassen","link" => "$PHP_SELF?md=8&ID=$ID&id=$id&char=$char"),
-				3=>array("icon" => "4","caption" => "Löschen","link" => "$PHP_SELF?md=3&ID=$ID&id=$id&char=$char"),
-				9=>array("icon" => "6","caption" => "Zurück","link" => "char_kopf_liste.php?md=0&ID=$ID&id=$char")
-		);
-		print_menu($menu);
-		print_liste($char,$ID);
-		break;
-case 1: // Erfassen eines neuen Datensatzes
-	$menu = array (0=>array("icon" => "99","caption" => "VORTEILE","link" => ""),
-	1=>array("icon" => "99","caption" => "ERFASSEN","link" => ""),
-	2=>array("icon" => "6","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&char=$char")
-	);
-	print_menu($menu);
-	print_maske($char,$ID,5,1,$ref);
-	break;
-case 2: // ANSEHEN Form
-	$menu = array (0=>array("icon" => "99","caption" => "VORTEILE","link" => ""),
-	1=>array("icon" => "99","caption" => "ANSEHEN","link" => ""),
-	2=>array("icon" => "6","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&char=$char")
-	);
-	print_menu($menu);
-	Print_info($id, $ID,$char);
-	break;
-case 3: // Delete eines bestehenden Datensatzes
-	$menu = array (0=>array("icon" => "99","caption" => "VORTEILE","link" => ""),
-	1=>array("icon" => "99","caption" => "LÖSCHEN","link" => ""),
-	9=>array("icon" => "6","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&char=$char")
-	);
-	print_menu($menu);
-	print_loeschen($char,$ID);
-	break;
-case 4: // Bearbeiten Form
-	$menu = array (0=>array("icon" => "99","caption" => "VORTEILE","link" => ""),
-	1=>array("icon" => "99","caption" => "BEARBEITEN","link" => ""),
-	2=>array("icon" => "6","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&char=$char")
-	);
-	print_menu($menu);
-	//      print_char_menu($menu);
-	print_maske($id,$ID,6,0,$char);
-	break;
-case 8: // Erfassen eines neuen Datensatzes
-	$menu = array (0=>array("icon" => "99","caption" => "VORTEILE","link" => ""),
-	1=>array("icon" => "99","caption" => "AUSWAHL","link" => ""),
-	2=>array("icon" => "6","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&char=$char")
-	);
-	print_menu($menu);
-	print_fert($ID,$char);
-	break;
-default:  // die einzelnen Bildseiten 11-xx
-	break;
+  case 1: // Erfassen eines neuen Datensatzes
+  	print_menu_status($menu);
+  	print_maske($id,$ID,char_insert,true,$auswahl,$daten);
+  	break;
+  case 2: // ANSEHEN Form
+  	print_menu_status($menu);
+  	Print_info($id, $ID,$daten);
+  	break;
+  case 3: // Delete eines bestehenden Datensatzes
+  	print_menu_status($menu);
+  	print_loeschen($id,$ID,$daten);
+  	break;
+  case 4: // Bearbeiten Form
+  	print_menu_status($menu);
+  	//      print_char_menu($menu);
+  	print_maske($id,$ID,char_update,false,0,$daten);
+  	break;
+   case char_auswahl: // Erfassen eines neuen Datensatzes
+   	print_menu_status($menu);
+   	print_fert($ID,$daten);
+   	break;
+  default:  // die einzelnen Bildseiten 11-xx
+  	print_menu($menu);
+  	print_liste($daten,$ID);
+    break;
 	endswitch;
 
 

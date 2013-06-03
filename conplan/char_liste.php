@@ -41,6 +41,20 @@ einen veraenderte Konfiguration eingestellt
 - LOGO Mitte
 - Text1, Text2  fuer rechte Seite
 
+Ver 3.0  / 06.02.2013
+Es werden CSS-Dateien verwendert.
+Es wird eine strikte Trennung von Content und Layout durchgefuehrt.
+Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues
+Layoutpfades in der config.inc
+Ansonsten bleibt der Inhalt der Seiten identisch.
+
+  $style = $GLOBALS['style_datatab'];
+  echo "<div $style >";
+  echo "<!--  DATEN Spalte   -->\n";
+  
+  echo '</div>';
+  echo "<!--  ENDE DATEN Spalte   -->\n";
+
 */
 
 include "_config.inc";
@@ -78,8 +92,11 @@ function print_liste($ID)
 	mysql_close($db);
 
 
-	echo "  <TD\n>"; //Daten bereich der Gesamttabelle
-	echo "<table border=1 BGCOLOR=\"\">\n";
+  $style = $GLOBALS['style_datatab'];
+  echo "<div $style >";
+  echo "<!--  DATEN Spalte   -->\n";
+
+  echo "<table border=1 BGCOLOR=\"\">\n";
 
 	//Kopfzeile
 	echo "<tr>\n";
@@ -132,8 +149,10 @@ function print_liste($ID)
 		echo "</tr>";
 	}
 	echo "</table>";
-	echo " </TD\n>"; //ENDE Daten bereich der Gesamttabelle
-
+  
+  echo '</div>';
+  echo "<!--  ENDE DATEN Spalte   -->\n";
+	
 };
 
 function print_loeschen($ID)
@@ -507,6 +526,7 @@ function print_maske($id,$ID,$next,$erf)
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $TABLE;
 	global $spieler_id;
+	global $PHP_SELF;
 
 	if ($erf == 0 )
 	{
@@ -551,9 +571,11 @@ function print_maske($id,$ID,$next,$erf)
 	};
 	/**/
 
-	echo "  <TD\n>";  //Daten bereich der Gesamttabelle
-
-	echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST enctype=\"multipart/form-data\">\n";
+  $style = $GLOBALS['style_datatab'];
+  echo "<div $style >";
+  echo "<!--  DATEN Spalte   -->\n";
+  
+	echo "<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID\" METHOD=POST enctype=\"multipart/form-data\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"ID\" VALUE=\"$ID\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"$id\">\n";
@@ -593,7 +615,7 @@ function print_maske($id,$ID,$next,$erf)
 			{
 				echo "<tr>";
 				echo "\t<td><b>$field_name[$i]&nbsp;</b></td>\n";
-				echo "\t<td><TEXTAREA NAME=\"row[$i]\" COLS=70 ROWS=12>$row[$i]</TEXTAREA>&nbsp;</td>\n";
+				echo "\t<td><TEXTAREA NAME=\"row[$i]\" COLS=80 ROWS=12>$row[$i]</TEXTAREA>&nbsp;</td>\n";
 				echo "<tr>";
 			}
 		} else
@@ -670,8 +692,11 @@ function print_maske($id,$ID,$next,$erf)
 	echo "\t</tr>\n";
 
 	echo "</table>";
-	echo "  </TD\n>"; //ENDE  Datenbereich der Gesamttabelle
 
+	echo '</div>';
+  echo "<!--  ENDE DATEN Spalte   -->\n";
+	
+	
 };
 
 function aktiv($id)
@@ -756,8 +781,10 @@ function print_aktiv($ID)
 	mysql_close($db);
 
 
-	echo "  <TD\n>"; //Daten bereich der Gesamttabelle
-
+  $style = $GLOBALS['style_datatab'];
+  echo "<div $style >";
+  echo "<!--  DATEN Spalte   -->\n";
+	
 	echo "<table border=1 BGCOLOR=\"\">\n";
 
 	// Kopfzeile
@@ -792,8 +819,10 @@ function print_aktiv($ID)
 		echo "<tr>";
 	}
 	echo "</table>";
-	echo " </TD\n>"; //ENDE Daten bereich der Gesamttabelle
-
+  
+  echo '</div>';
+  echo "<!--  ENDE DATEN Spalte   -->\n";
+	
 };
 
 function get_menu_char_list($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $home)
@@ -801,19 +830,19 @@ function get_menu_char_list($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $hom
   
   switch ($md):
   case 1: // Erfassen eines neuen Datensatzes
-    $menu = array (0=>array("icon" => "0","caption" => "NEUER CHARAKTER","link" => ""),
+    $menu = array (0=>array("icon" => "99","caption" => "NEUER CHARAKTER","link" => ""),
     1=>array("icon" => "0","caption" => "ERFASSEN","link" => ""),
     2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
     );
     break;
   case 2: // ANSEHEN Form
-    $menu = array (0=>array("icon" => "0","caption" => "ANSEHEN","link" => ""),
+    $menu = array (0=>array("icon" => "99","caption" => "ANSEHEN","link" => ""),
     1=>array("icon" => "0","caption" => "ANSEHEN","link" => ""),
     2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG&LISTE=$LISTE")
     );
     break;
   case 3: // Delete eines bestehenden Datensatzes
-    $menu = array (0=>array("icon" => "0","caption" => "LÖSCHEN","link" => ""),
+    $menu = array (0=>array("icon" => "99","caption" => "LÖSCHEN","link" => ""),
     1=>array("icon" => "0","caption" => "LÖSCHEN","link" => ""),
     9=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
     );
@@ -821,7 +850,7 @@ function get_menu_char_list($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $hom
   case 4: // Bearbeiten Form
     $menu = array (0=>array("icon" => "99","caption" => "BEARBEITEN","link" => ""),
     1=>array("icon" => "0","caption" => "BEARBEITEN","link" => ""),
-    2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
+    2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
     );
     break;
   case 8: // Aktivieren des aktuellen Char
@@ -884,8 +913,6 @@ function get_menu_char_list($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $hom
 	  // Code ausgeführt wird.
 	}
 	
-
-
   $TABLE = "char_basis";
 
 

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  Projekt :  CHARAKTER
 
@@ -40,14 +40,27 @@ einen veraenderte Konfiguration eingestellt
 - LOGO Mitte
 - Text1, Text2  fuer rechte Seite
 
+Ver 3.0  / 06.02.2013
+Es werden CSS-Dateien verwendert.
+Es wird eine strikte Trennung von Content und Layout durchgefuehrt.
+Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues
+Layoutpfades in der config.inc
+Ansonsten bleibt der Inhalt der Seiten identisch.
+
+  $style = $GLOBALS['style_datatab'];
+  echo "<div $style >";
+  echo "<!--  DATEN Spalte   -->\n";
+  
+  echo '</div>';
+  echo "<!--  ENDE DATEN Spalte   -->\n";
+
 */
 
 
-include "config.inc";
-include "login.inc";
-include "lib.inc";
-include "head.inc";
-include "char_lib.inc";
+include "_config.inc";
+include "_lib.inc";
+include "_head.inc";
+include "_char_lib.inc";
 
 
 //-----------------------------------------------------------------------------
@@ -73,8 +86,10 @@ function print_liste($id,$ID)
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $PHP_SELF;
 
-	echo "  <TD\n>"; //Daten bereich der Gesamttabelle
-
+  $style = $GLOBALS['style_datatab'];
+  echo "<div $style >";
+  echo "<!--  DATEN Spalte   -->\n";
+  
 	echo "<TABLE width=750  border=0 BGCOLOR=\"\">\n";
 	echo "<TR>";
 	echo "<TD>";
@@ -114,18 +129,29 @@ function print_liste($id,$ID)
 	echo "</TR>";
 	echo "</TABLE>";
 
-	echo "<TABLE width=750  border=0 BGCOLOR=\"\">\n";
-	echo "<TR>";
-	echo "<TD>";
-	list_ctage($id,$ID);
-	echo "</TD>";
-	echo "</TR>";
-	echo "<TR>";
-	echo "<TD>";
-	echo "</TD>";
-	echo "</TR>";
-	echo "</TABLE>";
+	echo '</div>';
+	echo "<!--  ENDE DATEN Spalte   -->\n";
 
+	
+	$style = $GLOBALS['style_datatab'];
+	echo "<div $style >";
+	echo "<!--  DATEN Spalte   -->\n";
+	
+// 	echo "<TABLE width=750  border=0 BGCOLOR=\"\">\n";
+// 	echo "<TR>";
+// 	echo "<TD>";
+	list_ctage($id,$ID);
+// 	echo "</TD>";
+// 	echo "</TR>";
+// 	echo "<TR>";
+// 	echo "<TD>";
+// 	echo "</TD>";
+// 	echo "</TR>";
+// 	echo "</TABLE>";
+
+	echo '</div>';
+	echo "<!--  ENDE DATEN Spalte   -->\n";
+	
 
 };
 
@@ -444,6 +470,7 @@ function print_maske($id,$ID,$next,$erf)
 	//==========================================================================
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $TABLE;
+	global $PHP_SELF;;
 
 	if ($erf == 0 )
 	{
@@ -486,9 +513,11 @@ function print_maske($id,$ID,$next,$erf)
 		};
 	};
 	/**/
-	echo "  <TD\n>";  //Daten bereich der Gesamttabelle
-
-	echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST>\n";
+  $style = $GLOBALS['style_datatab'];
+  echo "<div $style >";
+  echo "<!--  DATEN Spalte   -->\n";
+	
+	echo "<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"ID\" VALUE=\"$ID\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"$row[0]\">\n";
@@ -561,9 +590,53 @@ function print_maske($id,$ID,$next,$erf)
 	echo "\t</tr>\n";
 
 	echo "</table>";
-	echo "  </TD\n>"; //ENDE  Datenbereich der Gesamttabelle
-
+  
+  echo '</div>';
+  echo "<!--  ENDE DATEN Spalte   -->\n";
+	
 };
+
+function get_menu_char_kopf($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $home)
+{
+  switch ($md):
+  case char_add: // Erfassen eines neuen Datensatzes
+    $menu = array (0=>array("icon" => "99","caption" => "ERFASSEN","link" => ""),
+    				2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&id=$id")
+    );
+    break;
+  case char_info: // ANSEHEN Form
+    $menu = array (0=>array("icon" => "99","caption" => "ANSEHEN","link" => ""),
+    2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&id=$id")
+    );
+    break;
+  case char_del: // Delete eines bestehenden Datensatzes
+    $menu = array (0=>array("icon" => "99","caption" => "LÖSCHEN","link" => ""),
+    9=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&id=$id")
+    );
+    break;
+  case char_edit: // Bearbeiten Form
+    $menu = array (0=>array("icon" => "99","caption" => "BEARBEITEN","link" => ""),
+    2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&id=$id")
+    );
+    break;
+  
+  default:  // MAIN MENUE
+		$menu = array (0=>array("icon" => "99","caption" => "ÜBERSICHT","link" => ""),
+    2=>array("icon" => "_char","caption" => "Basiswerte","link" => "$PHP_SELF?md=".char_edit."&ID=$ID&id=$id"),
+    3=>array("icon" => "_db","caption" => "Check","link" => "$PHP_SELF?md=".char_check."&ID=$ID&id=$id"),
+    4=>array("icon" => "_folder","caption" => "Vorteile","link" => "char_vor_liste.php?md=0&ID=$ID&daten=$id"),
+    5=>array("icon" => "_folder","caption" => "Nachteile","link" => "char_nach_liste.php?md=0&ID=$ID&daten=$id"),
+    6=>array("icon" => "_folder","caption" => "Fertigkeiten","link" => "char_fert_liste.php?md=0&ID=$ID&daten=$id"),
+    7=>array("icon" => "_folder","caption" => "Waffen","link" => "char_waf_liste.php?md=0&ID=$ID&daten=$id"),
+    8=>array("icon" => "_folder","caption" => "Magie .","link" => "char_mag_liste.php?md=0&ID=$ID&daten=$id"),
+    9=>array("icon" => "_folder","caption" => "Alchimie","link" => "char_alch_liste.php?md=0&ID=$ID&daten=$id"),
+    10=>array("icon" => "_stop","caption" => "Zurück","link" => "$home?md=0&ID=$ID")
+		);
+    break;
+ 	endswitch;
+  
+  return $menu;
+}
 
 
 // ---------------------------------------------------------------
@@ -571,78 +644,78 @@ function print_maske($id,$ID,$next,$erf)
 //
 // keinerlei Ausgabe vor  der header() Zeile !!!!!!!!!!!!!!!!!!!!!
 // ----------------------------------------------------------------
-$c_md 	= $_COOKIE['md'];
-
-$p_md 	= $_POST['md'];
-$p_id 	= $_POST['id'];
-$p_row 	= $_POST['row'];
-
-$md = $_GET['md'];
-$ID = $_GET['ID'];
-$id = $_GET['id'];
-
-
-session_start ($ID);
-$user       = $_SESSION[user];
-$user_lvl   = $_SESSION[user_lvl];
-$spieler_id = $_SESSION[spieler_id];
-$user_id 		= $_SESSION[user_id];
-
-if ($ID == "")
-{
-	$session_id = 'FFFF';
-	header ("Location: main.php");  // Umleitung des Browsers
-	exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
-	// Code ausgeführt wird.
-}
-
-// Prüfung ob User  berechtigt ist
-if (getuser($user,$pw) != "TRUE")
-{
-	//  echo "ID:$session_id ";
-	chdir("..");
-	//  Bei fehlendem oder falscher Rechten ins ROOT HTML
-	header ("Location: ../larp.html");  /* Umleitung des Browsers
-	zur PHP-Web-Seite. */
-	exit;  /* Sicher stellen, das nicht trotz Umleitung nachfolgender
-	Code ausgeführt wird. */
-}
-
-$TABLE = "char_kopf";
-
-switch ($p_md):
-case 5:  // MAIN-Menu
-	insert($p_row);
-header ("Location: $PHP_SELF?md=0&ID=$ID&id=$id");  /* Auf sich Selbst*/
-exit;  /* Sicher stellen, das nicht nachfolgender Code ausgeführt wird. */
-break;
-case 6: // Update eines bestehnden Datensatzes
-	// Update SQL
-	update($p_row);
-	header ("Location: $PHP_SELF?md=0&ID=$ID&id=$id");  /* Auf sich Selbst*/
-	exit;  /* Sicher stellen, das nicht nachfolgender Code ausgeführt wird. */
-	break;
-default :
-	break;
-	endswitch;
-
-	// automatische Rechenfunktion
-	switch ($md):
-case 8: // automatische Charakter prüfung
-		// SQL Select and Update
-		check_char($id,$ID);
-	header ("Location: $PHP_SELF?md=0&ID=$ID&id=$id");  /* Auf sich Selbst*/
-	exit;  /* Sicher stellen, das nicht nachfolgender Code ausgeführt wird. */
-	break;
-case 7: // Delete eines bestehenden Datensatzes
-	// SQL delete
-	loeschen($p_id);
-	header ("Location: $PHP_SELF?md=3&ID=$ID&id=$id");  /* Auf sich Selbst*/
-	exit;  /* Sicher stellen, das nicht nachfolgender Code ausgeführt wird. */
-	break;
-default :
-	break;
-	endswitch;
+	$BEREICH = 'INTERN';
+	
+	$md     = GET_md(0);
+	$daten  = GET_daten("");
+	$sub    = GET_sub("");
+	$id     = GET_id(0);
+	
+	$p_md   = POST_md(0);
+	$p_id 	= POST_id(0);
+	$p_row 	= POST_row("");
+	//$p_editor1 = POST_editor1("");
+	
+	
+	$ID     = GET_SESSIONID("");
+	session_id ($ID);
+	session_start();
+	$user       = $_SESSION["user"];
+	$user_lvl   = $_SESSION["user_lvl"];
+	$spieler_id = $_SESSION["spieler_id"];
+	$user_id 	= $_SESSION["user_id"];
+	$SID        = $_SESSION["ID"];
+	
+	if ($ID != $SID)
+	{
+		header ("Location: main.php?md=0&ID=$ID");  // Umleitung des Browsers
+		exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
+		// Code ausgeführt wird.
+	}
+	
+	if (is_user()==FALSE)
+	{
+	//  echo "no lvl";	
+	  header ("Location: main.php?md=0&ID=$ID");  // Umleitung des Browsers
+	    exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
+	  // Code ausgeführt wird.
+	}
+	
+  $TABLE = "char_kopf";
+  
+  switch ($p_md):
+  case char_insert:  // MAIN-Menu
+  	insert($p_row);
+  header ("Location: $PHP_SELF?md=0&ID=$ID&id=$id");  /* Auf sich Selbst*/
+  exit;  /* Sicher stellen, das nicht nachfolgender Code ausgeführt wird. */
+  break;
+  case char_update: // Update eines bestehnden Datensatzes
+  	// Update SQL
+  	update($p_row);
+  	header ("Location: $PHP_SELF?md=0&ID=$ID&id=$id");  /* Auf sich Selbst*/
+  	exit;  /* Sicher stellen, das nicht nachfolgender Code ausgeführt wird. */
+  	break;
+  default :
+  	break;
+  endswitch;
+  
+  	// automatische Rechenfunktion
+  switch ($md):
+  case char_check: // automatische Charakter prüfung
+  	// SQL Select and Update
+  	check_char($id,$ID);
+  	header ("Location: $PHP_SELF?md=0&ID=$ID&id=$id");  /* Auf sich Selbst*/
+  	exit;  /* Sicher stellen, das nicht nachfolgender Code ausgeführt wird. */
+  	break;
+  case 7: // Delete eines bestehenden Datensatzes
+  	// SQL delete
+  	loeschen($p_id);
+  	header ("Location: $PHP_SELF?md=3&ID=$ID&id=$id");  /* Auf sich Selbst*/
+  	exit;  /* Sicher stellen, das nicht nachfolgender Code ausgeführt wird. */
+  	break;
+  default :
+  	break;
+ 	endswitch;
 
 	print_header("Charakterliste");
 
@@ -650,85 +723,41 @@ default :
 
 	$spieler_name = get_spieler($spieler_id); //Auserwählter\n";
 
-	//echo "POST : $p_md / GET : $md / ID :$ID / id = $id";
+	$isnsc = print_kopf_liste($id,$ID);
+	
+	if($isnsc == true)
+	{
+	  $home = "con_nsc_liste.php";
+	}else
+	{
+	  $home = "char_liste.php";
+	}
+  $titel = "Charakterdaten";
+	
+	$menu = get_menu_char_kopf($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $home);
 
-	echo "<TABLE width=950  border=0 BGCOLOR=\"\">\n";
-	echo "<TR>";
-	echo "<TD>";
-	print_cbasis($id,$ID);
-	echo "</TD>";
-	echo "</TR>";
-	echo "<TR>";
-	echo "<TD>";
-	print_ckopf($id,$ID);
-	echo "</TD>";
-	echo "</TR>";
-	echo "</TABLE>";
-
-
-	print_md();
-
-	switch ($md):
-case 1: // Erfassen eines neuen Datensatzes
-		$menu = array (0=>array("icon" => "99","caption" => "ERFASSEN","link" => ""),
-				2=>array("icon" => "6","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&id=$id")
-		);
-		print_menu($menu);
+  switch ($md):
+  case char_add: // Erfassen eines neuen Datensatzes
+		print_menu_status($menu);
 		print_maske($id,$ID,5,1);
 		break;
-case 2: // ANSEHEN Form
-	$menu = array (0=>array("icon" => "99","caption" => "ANSEHEN","link" => ""),
-	2=>array("icon" => "6","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&id=$id")
-	);
-	print_menu($menu);
-	Print_info($id, $ID);
-	break;
-case 3: // Delete eines bestehenden Datensatzes
-	$menu = array (0=>array("icon" => "99","caption" => "LÖSCHEN","link" => ""),
-	9=>array("icon" => "6","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&id=$id")
-	);
-	print_menu($menu);
-	break;
-case 4: // Bearbeiten Form
-	$menu = array (0=>array("icon" => "99","caption" => "BEARBEITEN","link" => ""),
-	2=>array("icon" => "6","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&id=$id")
-	);
-	print_menu($menu);
-	print_maske($id,$ID,6,0);
-	break;
-
-default:  // MAIN MENUE
-	if ($nsc_char=='false' )
-	{
-		$menu = array (0=>array("icon" => "99","caption" => "KOPF","link" => ""),
-				2=>array("icon" => "3","caption" => "Basiswerte","link" => "$PHP_SELF?md=4&ID=$ID&id=$id"),
-				3=>array("icon" => "9","caption" => "Check","link" => "$PHP_SELF?md=8&ID=$ID&id=$id"),
-				4=>array("icon" => "3","caption" => "Vorteile","link" => "char_vor_liste.php?md=0&ID=$ID&char=$id"),
-				5=>array("icon" => "3","caption" => "Nachteile","link" => "char_nach_liste.php?md=0&ID=$ID&char=$id"),
-				6=>array("icon" => "3","caption" => "Fertigkeiten","link" => "char_fert_liste.php?md=0&ID=$ID&char=$id"),
-				7=>array("icon" => "3","caption" => "Waffen","link" => "char_waf_liste.php?md=0&ID=$ID&id=$id&char=$id"),
-				8=>array("icon" => "3","caption" => "Magie .","link" => "char_mag_liste.php?md=0&ID=$ID&id=$id&char=$id"),
-				9=>array("icon" => "3","caption" => "Alchimie","link" => "char_alch_liste.php?md=0&ID=$ID&id=$id&char=$id"),
-				10=>array("icon" => "6","caption" => "Zurück","link" => "char_liste.php?md=0&ID=$ID")
-		);
-	} else
-	{
-		$menu = array (0=>array("icon" => "99","caption" => "KOPF","link" => ""),
-				2=>array("icon" => "3","caption" => "Bearbeiten","link" => "$PHP_SELF?md=4&ID=$ID&id=$id"),
-				3=>array("icon" => "9","caption" => "Check","link" => "$PHP_SELF?md=8&ID=$ID&id=$id"),
-				4=>array("icon" => "3","caption" => "Vorteile","link" => "char_vor_liste.php?md=0&ID=$ID&char=$id"),
-				5=>array("icon" => "3","caption" => "Nachteile","link" => "char_nach_liste.php?md=0&ID=$ID&char=$id"),
-				6=>array("icon" => "3","caption" => "Fertigkeiten","link" => "char_fert_liste.php?md=0&ID=$ID&char=$id"),
-				7=>array("icon" => "3","caption" => "Waffen","link" => "char_waf_liste.php?md=0&ID=$ID&id=$id&char=$id"),
-				8=>array("icon" => "3","caption" => "Magie .","link" => "char_mag_liste.php?md=0&ID=$ID&id=$id&char=$id"),
-				9=>array("icon" => "3","caption" => "Alchimie","link" => "char_alch_liste.php?md=0&ID=$ID&id=$id&char=$id"),
-				10=>array("icon" => "6","caption" => "Zurück","link" => "con_nsc_liste.php?md=0&ID=$ID")
-		);
-	};
-	print_menu($menu);
-	print_liste($id,$ID);
-	break;
-	endswitch;
+  case char_info: // ANSEHEN Form
+  	print_menu_status($menu);
+  	Print_info($id, $ID);
+  	break;
+  case char_del: // Delete eines bestehenden Datensatzes
+  	print_menu_status($menu);
+  	break;
+  case char_edit: // Bearbeiten Form
+  	print_menu_status($menu);
+  	print_maske($id,$ID,6,0);
+  	break;
+  
+  default:  // MAIN MENUE
+  	print_menu($menu);
+  	print_liste($id,$ID);
+  	break;
+ 	endswitch;
 
 	print_md_ende();
 

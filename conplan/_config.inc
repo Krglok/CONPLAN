@@ -315,6 +315,15 @@ function GET_parent($value="")
 	return $value;
 }
 
+function GET_auswahl($value = 0)
+{
+  if (isset($_GET['auswahl'])==true)
+  {
+    return $_GET['auswahl'];
+  }
+  return $value;
+}
+
 
 function GET_SESSIONID($value = "")
 {

@@ -25,7 +25,35 @@ PHP3 -File geloescht
 Revision 1.2  2002/02/26 18:41:39  windu
 keyword aktiviert
 
+Ver 3.0  / 06.02.2013
+Es werden CSS-Dateien verwendert.
+Es wird eine strikte Trennung von Content und Layout durchgefuehrt.
+Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues
+Layoutpfades in der config.inc
+Ansonsten bleibt der Inhalt der Seiten identisch.
+
+$style = $GLOBALS['style_datatab'];
+echo "<div $style >";
+echo "<!--  DATEN Spalte   -->\n";
+
+echo '</div>';
+echo "<!--  ENDE DATEN Spalte   -->\n";
+
+
 */
+
+define("char_list",10);
+define("char_add", 11);
+define("char_edit",12);
+define("char_del", 13);
+define("char_info", 14);
+define("char_check", 15);
+define("char_editor", 16);
+define("char_auswahl",17);
+
+define("char_insert", 21);
+define("char_update", 22);
+define("char_delete", 23);
 
 function print_char_kopf ()
 {
@@ -75,6 +103,12 @@ function print_char_kopf ()
 };
 
 
+/**
+ * Erstellt eine Tabelle fuer die CharKopf Daten
+ * @param unknown $id
+ * @param unknown $ID
+ * @return string
+ */
 function print_cbasis($id,$ID)
 //==========================================================================
 // Function     : print_basis
@@ -96,7 +130,6 @@ function print_cbasis($id,$ID)
 
 	$TABLE = 'char_basis';
 
-
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
 
 	mysql_select_db($DB_NAME);
@@ -116,16 +149,19 @@ function print_cbasis($id,$ID)
 
 	if ($row[7]=='J')
 	{
-		$nsc_char='true';
+		$isnsc='true';
 		$row[9] = "ork2.gif";
 	} else
 	{
-		$nsc_char='false';
+		$isnsc='false';
 	};
 
-	echo "<table border=1 width=950 BGCOLOR=\"\">\n";
+	$style = $GLOBALS["style_header_1"];
+	echo "  <div $style >\n";
+	
+	echo "<table border=1 width=950 BGCOLOR=\"\" bordercolor=\"silver\">\n";
 	echo "<tr>";
-	echo "<td rowspan=2 width=90>";
+	echo "<td rowspan=2 width=90 >";
 	echo "\t<IMG SRC=\"chars/thumb/$row[9]\" BORDER=\"0\" HEIGHT=\"100\" ALT=\"Bild des Charakters\" title=\"Bild $row[9]\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>\n";
 	echo "</td>";
 	echo "<td width=150 style=\"font-size:75%\"> ";
@@ -143,8 +179,8 @@ function print_cbasis($id,$ID)
 	echo "<td rowspan=2 width=90>";
 	echo "\t<IMG SRC=\"chars/thumb/$row[8]\" BORDER=\"0\" HEIGHT=\"100\" ALT=\"Wappen des Charakters\" title=\"Wappen $row[8]\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>\n";
 	echo "</td>";
-	echo "<td >";
-	echo "</td>";
+// 	echo "<td >";
+// 	echo "</td>";
 	echo "</tr>";
 
 	echo "<tr>";
@@ -166,9 +202,16 @@ function print_cbasis($id,$ID)
 	echo "</td>";
 	echo "</tr>";
 	echo "</table>";
-
+	echo "</div>\n";
+	
+	return $isnsc;
 };
 
+/**
+ * erstellt eine Tabelle fuer die Basis Daten
+ * @param unknown $id
+ * @param unknown $ID
+ */
 function print_ckopf($id,$ID)
 //==========================================================================
 // Function     : print_ckopf
@@ -206,7 +249,9 @@ function print_ckopf($id,$ID)
 	$row = mysql_fetch_row($result);
 	$row1 = mysql_fetch_row($result1);
 
-
+	$style = $GLOBALS["style_header_1"];
+	echo "  <div $style >\n";
+	
 	echo "<table width=950  border=1 BGCOLOR=\"\">\n";
 	echo "<tr>";
 	echo "<td rowspan=2 Width=90>";
@@ -269,8 +314,8 @@ function print_ckopf($id,$ID)
 	echo "<td width=40>";
 	echo "EP Rest";
 	echo "</td>";
-	echo "<td width=\"10%\" >";
-	echo "</td>";
+// 	echo "<td width=\"10%\" >";
+// 	echo "</td>";
 	echo "</tr>";
 
 	echo "<tr>";
@@ -326,11 +371,24 @@ function print_ckopf($id,$ID)
 	echo " $row[17]";
 	echo "</td>";
 	echo "</tr>";
-	echo "<td >";
-	echo "</td>";
 	echo "</table>";
 
+	echo "</div>\n";
+	
 };
+
+/**
+ * Erstellt den Charakter Kopfteil komplett aus den beiden Subtabellen.
+ * @param unknown $id
+ * @param unknown $ID
+ * @return unknown
+ */
+function print_kopf_liste($id,$ID)
+{
+  print_cbasis($id,$ID);
+  $isnsc = print_ckopf($id,$ID);
+  return $isnsc;
+}
 
 
 function list_cfert($id,$ID)
@@ -384,8 +442,8 @@ function list_cfert($id,$ID)
 			// aufruf der Deateildaten
 			if ($i==0)
 			{
-				echo "\t<td><a href=\"char_fert_liste.php?md=4&ID=$ID&id=$row[$i]&char=$id\">\n";
-				print_menu_icon (3);
+				echo "\t<td><a href=\"char_fert_liste.php?md=4&ID=$ID&id=$row[$i]&daten=$id\">\n";
+				print_menu_icon ("_point");
 				echo "\t</a></td>\n";
 			} else
 			{
@@ -439,7 +497,7 @@ function list_cnach($id,$ID)
 	{
 		if ($i==1)
 		{
-			echo "\t<td width=220><b>NACHTEIL</b></td>\n";
+			echo "\t<td width=224><b>NACHTEIL</b></td>\n";
 		} else
 		{
 			echo "\t<td width=25><b>".mysql_field_name($result,$i)."</b></td>\n";
@@ -455,8 +513,8 @@ function list_cnach($id,$ID)
 			// aufruf der Deateildaten
 			if ($i==0)
 			{
-				echo "\t<td><a href=\"char_nach_liste.php?md=4&ID=$ID&id=$row[$i]&char=$id\">\n";
-				print_menu_icon (3);
+				echo "\t<td><a href=\"char_nach_liste.php?md=4&ID=$ID&id=$row[$i]&daten=$id\">\n";
+				print_menu_icon ("_point_o");
 				echo "\t</a></td>\n";
 			} else
 			{
@@ -510,7 +568,7 @@ function list_cvor($id,$ID)
 	{
 		if ($i==1)
 		{
-			echo "\t<td width=200><b>VORTEIL</b></td>\n";
+			echo "\t<td width=224><b>VORTEIL</b></td>\n";
 		} else
 		{
 			echo "\t<td width=25><b>".mysql_field_name($result,$i)."</b></td>\n";
@@ -526,8 +584,8 @@ function list_cvor($id,$ID)
 			// aufruf der Deateildaten
 			if ($i==0)
 			{
-				echo "\t<td><a href=\"char_vor_liste.php?md=4&ID=$ID&id=$row[$i]&char=$id\">\n";
-				print_menu_icon (3);
+				echo "\t<td><a href=\"char_vor_liste.php?md=4&ID=$ID&id=$row[$i]&daten=$id\">\n";
+				print_menu_icon ("_point_g");
 				echo "\t</a></td>\n";
 			} else
 			{
@@ -598,8 +656,8 @@ function list_cwaf($id,$ID)
 			// aufruf der Deateildaten
 			if ($i==0)
 			{
-				echo "\t<td><a href=\"char_waf_liste.php?md=4&ID=$ID&id=$row[$i]&char=$id\">\n";
-				print_menu_icon (3);
+				echo "\t<td><a href=\"char_waf_liste.php?md=4&ID=$ID&id=$row[$i]&daten=$id\">\n";
+				print_menu_icon ("_point");
 				echo "\t</a></td>\n";
 			} else
 			{
@@ -673,8 +731,8 @@ function list_cmag($id,$ID)
 				// aufruf der Deateildaten
 				if ($i==0)
 				{
-					echo "\t<td><a href=\"char_mag_liste.php?md=4&ID=$ID&id=$row[$i]&char=$id\">\n";
-					print_menu_icon (3);
+					echo "\t<td><a href=\"char_mag_liste.php?md=4&ID=$ID&id=$row[$i]&daten=$id\">\n";
+					print_menu_icon ("_point");
 					echo "\t</a></td>\n";
 				} else
 				{
@@ -749,8 +807,8 @@ function list_ctrank($id,$ID)
 				// aufruf der Deateildaten
 				if ($i==0)
 				{
-					echo "\t<td><a href=\"char_alch_liste.php?md=4&ID=$ID&id=$row[$i]&char=$id\">\n";
-					print_menu_icon (3);
+					echo "\t<td><a href=\"char_alch_liste.php?md=4&ID=$ID&id=$row[$i]&daten=$id\">\n";
+					print_menu_icon ("_point");
 					echo "\t</a></td>\n";
 				} else
 				{
@@ -825,8 +883,8 @@ function list_ctage($id,$ID)
 				// aufruf der Deateildaten
 				if ($i==0)
 				{
-					echo "\t<td><a href=\"char_tage_liste.php?md=4&ID=$ID&id=$row[$i]&char=$id\">\n";
-					print_menu_icon (3);
+					echo "\t<td><a href=\"char_tage_liste.php?md=4&ID=$ID&id=$row[$i]&daten=$id\">\n";
+					print_menu_icon ("_con_ablauf");
 					echo "\t</a></td>\n";
 				} else
 				{
