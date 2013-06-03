@@ -101,7 +101,16 @@ function print_liste($char,$ID)
 	$field_num = mysql_num_fields($result);
 	for ($i=0; $i<$field_num; $i++)
 	{
-		echo "\t<td><b>".mysql_field_name($result,$i)."</b></td>\n";
+		if($i != 1)
+		{
+			if ($i==2)
+			{
+				echo "\t<td width=\"220px\"><b>".mysql_field_name($result,$i)."</b></td>\n";
+			} else
+			{
+				echo "\t<td><b>".mysql_field_name($result,$i)."</b></td>\n";
+			}
+		}
 	};
 	echo "</tr>\n";
 	//  echo "<hr>\n";
@@ -114,17 +123,20 @@ function print_liste($char,$ID)
 			// aufruf der Deateildaten
 			if ($i==0)
 			{
-				echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=$row[$i]&char=$char\">\n";
+				echo "\t<td><a href=\"$PHP_SELF?md=".char_edit."&ID=$ID&id=$row[$i]&daten=$char\">\n";
 				//echo "\t<IMG SRC=\"../larp/images/db.gif\" BORDER=\"0\" HEIGHT=\"25\" WIDTH=\"25\" ALT=\"Datensatz Bearbeiten\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>\n";
 				print_menu_icon ("_point_o");
 				echo "\t</a></td>\n";
 			} else
 			{
-				echo "\t<td>$row[$i]&nbsp;</td>\n";
+				if($i != 1)
+				{
+					echo "\t<td>$row[$i]&nbsp;</td>\n";
+				}
 			};
 		}
-		echo "\t<td><a href=\"$PHP_SELF?md=2&ID=$ID&id=$row[0]&char=$char\">\n";
-		//echo "\t<IMG SRC=\"../larp/images/xview.gif\" BORDER=\"0\" HEIGHT=\"15\" WIDTH=\"25\" ALT=\"Thema Lesen\" HSPACE=\"0\" VSPACE=\"0\">\n";
+		echo "\t<td><a href=\"$PHP_SELF?md=".char_delete."&ID=$ID&id=$row[0]&daten=$char\">\n";
+		print_menu_icon ("_del");
 		echo "\t</a></td>\n";
 		echo "<tr>";
 	}
@@ -628,7 +640,7 @@ function print_fert($ID,$char)
 			// aufruf der Deateildaten
 			if ($i==0)
 			{
-				echo "\t<td><a href=\"$PHP_SELF?md=1&ID=$ID&auswahl=$row[0]&daten=$char\">\n";
+				echo "\t<td><a href=\"$PHP_SELF?md=".char_add."&ID=$ID&auswahl=$row[0]&daten=$char\">\n";
 				print_menu_icon ("_point");
 				echo "\t</a></td>\n";
 			} else
@@ -643,28 +655,16 @@ function print_fert($ID,$char)
 
 };
 
-function get_menu_char_vor($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $home)
+function get_menu_char_fert($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $home)
 {
   switch ($md):
-  case 1: // Erfassen eines neuen Datensatzes
+  case char_add: // Erfassen eines neuen Datensatzes
     $menu = array (0=>array("icon" => "99","caption" => "FERTIGKEITEN","link" => ""),
     1=>array("icon" => "1","caption" => "ERFASSEN","link" => ""),
     2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&daten=$daten")
     );
     break;
-  case 2: // ANSEHEN Form
-    $menu = array (0=>array("icon" => "99","caption" => "FERTIGKEITEN","link" => ""),
-    1=>array("icon" => "1","caption" => "ANSEHEN","link" => ""),
-    2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&daten=$daten")
-    );
-    break;
-  case 3: // Delete eines bestehenden Datensatzes
-    $menu = array (0=>array("icon" => "99","caption" => "FERTIGKEITEN","link" => ""),
-    1=>array("icon" => "1","caption" => "LÖSCHEN","link" => ""),
-    9=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&daten=$daten")
-    );
-    break;
-  case 4: // Bearbeiten Form
+  case char_edit: // Bearbeiten Form
     $menu = array (0=>array("icon" => "99","caption" => "FERTIGKEITEN","link" => ""),
     1=>array("icon" => "1","caption" => "BEARBEITEN","link" => ""),
     2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&daten=$daten")
@@ -753,7 +753,7 @@ function get_menu_char_vor($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $home
   case char_delete: // Delete eines bestehenden Datensatzes
   		// SQL delete
   		loeschen($id);
-  	header ("Location: $PHP_SELF?md=3&ID=$ID&daten=$daten");  /* Auf sich Selbst*/
+  	header ("Location: $PHP_SELF?md=0&ID=$ID&daten=$daten");  /* Auf sich Selbst*/
   	exit;  /* Sicher stellen, das nicht nachfolgender Code ausgeführt wird. */
   	break;
   default :
@@ -778,22 +778,14 @@ function get_menu_char_vor($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $home
 	}
   $titel = "Charakterdaten";
 	
-	$menu = get_menu_char_vor($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $home);
+	$menu = get_menu_char_fert($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $home);
 	
 	switch ($md):
-  case 1: // Erfassen eines neuen Datensatzes
+  case char_add: // Erfassen eines neuen Datensatzes
   	print_menu_status($menu);
   	print_maske($id,$ID,char_insert,true,$auswahl,$daten);
   	break;
-  case 2: // ANSEHEN Form
-  	print_menu_status($menu);
-  	Print_info($id, $ID,$daten);
-  	break;
-  case 3: // Delete eines bestehenden Datensatzes
-  	print_menu_status($menu);
-  	print_loeschen($id,$ID,$daten);
-  	break;
-  case 4: // Bearbeiten Form
+  case char_edit: // Bearbeiten Form
   	print_menu_status($menu);
   	//      print_char_menu($menu);
   	print_maske($id,$ID,char_update,false,0,$daten);

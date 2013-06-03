@@ -227,87 +227,6 @@ function print_loeschen($ID)
 
 };
 
-function print_info($id,$ID)
-//==========================================================================
-// Function     : print_info
-//--------------------------------------------------------------------------
-// Beschreibun  : Anzeige der Detail der Bildergalerie  mit
-//                - Tag = Topid_id
-//                - Sortiernummer
-//                - Lfdnummer des Bildes
-//                - Name des Bildes
-//                - Image des Bildes
-//                - Beschreibung als Langtext
-//                Anzeige als Tabelle
-//
-// Argumente    : $id = recordnummer des Bildes
-//                $ID = Session_ID
-//
-// Returns      : --
-//==========================================================================
-{
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $TABLE;
-	global $TAG;
-
-
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-	or die("Fehler beim verbinden!");
-
-	mysql_select_db($DB_NAME);
-
-	$q = "select * from $TABLE where id=$id";
-	$result = mysql_query($q)
-	or die("Query Fehler...");
-
-	$field_num = mysql_num_fields($result);
-	$row = mysql_fetch_row($result);
-
-	mysql_close($db);
-
-	//Daten bereich
-	echo "  <TD\n>";  //Daten bereich der Gesamttabelle
-
-	echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST>\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"0\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"ID\" VALUE=\"$ID\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"id\"   VALUE=\"$id\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"TAG\"  VALUE=\"$TAG\">\n";
-	echo "<TABLE WIDTH=\"700\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"2\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\"
-			BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
-
-	for ($i=0; $i<$field_num; $i++)
-	{
-		$field_name[$i] =  mysql_field_name($result,$i);
-		$type[$i]       =  mysql_field_type ($result, $i);
-	}
-	for ($i=0; $i<$field_num; $i++)
-	{
-		if ($type[$i]=="date") {
-			$len[$i] = 10;
-		}
-		if ($type[$i]=="int") {
-			$len[$i] = 5;
-		}
-		if ($type[$i]!="blob")
-		{
-			echo "<tr>";
-			echo "\t<td width=100>$field_name[$i]&nbsp;</td>\n";
-			echo "\t<td><input name=\"\" maxlength=$len[$i] size=$len[$i] readonly value=$row[$i]></td>\n";
-			//        echo "\t<td width=100>$type[$i]&nbsp;</td>\n";
-			echo "<tr>";
-		} else
-		{
-			echo "<tr>";
-			echo "\t<td><b></b></td>\n";
-			echo "\t<td><TEXTAREA NAME=\"$field_name[$i]\" COLS=50 ROWS=12 readonly>$row[$i]</TEXTAREA>&nbsp;</td>\n";
-			echo "<tr>";
-		}
-	}
-	echo "</table>";
-	echo "  </TD\n>"; //ENDE Daten bereich der Gesamttabelle
-
-};
 
 
 function insert($row)
@@ -504,6 +423,15 @@ function print_maske($id,$ID,$next,$erf)
 		$row = mysql_fetch_array ($result);
 		$field_num = mysql_num_fields($result);
 
+		$row[9] = 60;
+		$row[10] = 0;
+		$row[11] = 0;
+		$row[12] = 0;
+		$row[13] = 0;
+		$row[14] = 0;
+		$row[15] = 0;
+		$row[16] = 0;
+		
 	}
 	if (count($row)==1)
 	{
@@ -517,7 +445,7 @@ function print_maske($id,$ID,$next,$erf)
   echo "<div $style >";
   echo "<!--  DATEN Spalte   -->\n";
 	
-	echo "<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID\" METHOD=POST>\n";
+	echo "<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID&id=$id\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"ID\" VALUE=\"$ID\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"$row[0]\">\n";
@@ -723,41 +651,56 @@ function get_menu_char_kopf($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $hom
 
 	$spieler_name = get_spieler($spieler_id); //Auserwählter\n";
 
-	$isnsc = print_kopf_liste($id,$ID);
-	
-	if($isnsc == true)
+	if (check_char($id,$ID) == false)
 	{
-	  $home = "con_nsc_liste.php";
-	}else
-	{
-	  $home = "char_liste.php";
-	}
-  $titel = "Charakterdaten";
-	
-	$menu = get_menu_char_kopf($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $home);
-
-  switch ($md):
-  case char_add: // Erfassen eines neuen Datensatzes
+		$isnsc = print_kopf_liste($id,$ID);
+		if($isnsc == true)
+		{
+			$home = "con_nsc_liste.php";
+		}else
+		{
+			$home = "char_liste.php";
+		}
+		$titel = "Charakterdaten";
+		
+		$md  = char_add;
+		$menu = get_menu_char_kopf($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $home);
 		print_menu_status($menu);
-		print_maske($id,$ID,5,1);
+		print_maske($id,$ID,char_insert,1);
+	} else
+	{
+		$isnsc = print_kopf_liste($id,$ID);
+		
+		if($isnsc == true)
+		{
+			$home = "con_nsc_liste.php";
+		}else
+		{
+			$home = "char_liste.php";
+		}
+		$titel = "Charakterdaten";
+		
+		$menu = get_menu_char_kopf($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $home);
+		
+		switch ($md):
+		case char_add: // Erfassen eines neuen Datensatzes
+			print_menu_status($menu);
+  		print_maske($id,$ID,char_insert,1);
 		break;
-  case char_info: // ANSEHEN Form
-  	print_menu_status($menu);
-  	Print_info($id, $ID);
-  	break;
-  case char_del: // Delete eines bestehenden Datensatzes
-  	print_menu_status($menu);
-  	break;
-  case char_edit: // Bearbeiten Form
-  	print_menu_status($menu);
-  	print_maske($id,$ID,6,0);
-  	break;
-  
-  default:  // MAIN MENUE
-  	print_menu($menu);
-  	print_liste($id,$ID);
-  	break;
- 	endswitch;
+		case char_del: // Delete eines bestehenden Datensatzes
+			print_menu_status($menu);
+			break;
+		case char_edit: // Bearbeiten Form
+			print_menu_status($menu);
+			print_maske($id,$ID,char_update,0);
+			break;
+		
+		default:  // MAIN MENUE
+			print_menu($menu);
+			print_liste($id,$ID);
+			break;
+			endswitch;
+	}
 
 	print_md_ende();
 

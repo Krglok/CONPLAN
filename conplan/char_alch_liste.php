@@ -1,12 +1,12 @@
-<?
+	<?php
 /*
- Projekt : CONPLAN
+ Projekt :  CCHARRAKTER
 
-Datei   :  $RCSfile: alch_liste.php,v $
+Datei   :  vor_liste.php
 
-Datum   :  $Date: 2002/06/01 10:31:54 $  / 05.02.02
+Datum   :  2002/06/01
 
-Rev.    :   $Rev$   / 1.0
+Rev.    :   2.0
 
 Author  :  $Author: windu $  / duda
 
@@ -16,7 +16,6 @@ beschreibung : realisiert die Bearbeitungsfunktionen für die Datei <$TABLE>
 - Bearbeiten vorhandener Datensätze
 - Anzeige der Details ohne Bearbeitung
 - Löschen  eines Datensatzes
-
 
 Es wird eine Session Verwaltung benutzt, die den User prueft.
 Es werden Subseiten mit eigenen PHP-scripten aufgerufen.
@@ -41,16 +40,26 @@ einen veraenderte Konfiguration eingestellt
 - LOGO Mitte
 - Text1, Text2  fuer rechte Seite
 
-#3  03.07.2008  Alchimiefertigkeitenliste an neues Regelwerk angepasst
+Ver 3.0  / 06.02.2013
+Es werden CSS-Dateien verwendert.
+Es wird eine strikte Trennung von Content und Layout durchgefuehrt.
+Es gibt die Moeglichkeit das Layout zu aendern durch setzen eins neues
+Layoutpfades in der config.inc
+Ansonsten bleibt der Inhalt der Seiten identisch.
 
-
+  $style = $GLOBALS['style_datatab'];
+  echo "<div $style >";
+  echo "<!--  DATEN Spalte   -->\n";
+  
+  echo '</div>';
+  echo "<!--  ENDE DATEN Spalte   -->\n";
 */
 
-include "config.inc";
-include "login.inc";
-include "lib.inc";
-include "head.inc";
-include "char_lib.inc";
+
+include "_config.inc";
+include "_lib.inc";
+include "_head.inc";
+include "_char_lib.inc";
 
 
 //-----------------------------------------------------------------------------
@@ -92,7 +101,16 @@ function print_liste($char,$ID)
 	$field_num = mysql_num_fields($result);
 	for ($i=0; $i<$field_num; $i++)
 	{
-		echo "\t<td><b>".mysql_field_name($result,$i)."</b></td>\n";
+		if($i != 1)
+		{
+			if ($i==2)
+			{
+				echo "\t<td width=\"220px\"><b>".mysql_field_name($result,$i)."</b></td>\n";
+			} else
+			{
+				echo "\t<td><b>".mysql_field_name($result,$i)."</b></td>\n";
+			}
+		}
 	};
 	echo "</tr>\n";
 	//  echo "<hr>\n";
@@ -105,14 +123,21 @@ function print_liste($char,$ID)
 			// aufruf der Deateildaten
 			if ($i==0)
 			{
-				echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=$row[$i]&char=$char\">\n";
-				print_menu_icon (3);
+				echo "\t<td><a href=\"$PHP_SELF?md=".char_edit."&ID=$ID&id=$row[$i]&daten=$char\">\n";
+				//echo "\t<IMG SRC=\"../larp/images/db.gif\" BORDER=\"0\" HEIGHT=\"25\" WIDTH=\"25\" ALT=\"Datensatz Bearbeiten\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>\n";
+				print_menu_icon ("_point_o");
 				echo "\t</a></td>\n";
 			} else
 			{
-				echo "\t<td>$row[$i]&nbsp;</td>\n";
+				if($i != 1)
+				{
+					echo "\t<td>$row[$i]&nbsp;</td>\n";
+				}
 			};
 		}
+		echo "\t<td><a href=\"$PHP_SELF?md=".char_delete."&ID=$ID&id=$row[0]&daten=$char\">\n";
+		print_menu_icon ("_del");
+		echo "\t</a></td>\n";
 		echo "<tr>";
 	}
 	echo "</table>";
@@ -135,59 +160,6 @@ function print_loeschen($char,$ID)
 // Returns      : --
 //==========================================================================
 {
-	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
-	global $PHP_SELF;
-	global $TABLE;
-	global $TAG;
-
-
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
-
-	mysql_select_db($DB_NAME);
-
-	$q = "select * from $TABLE where char_id=\"$char\"";
-	$result = mysql_query($q)  or die("Query Fehler...");
-
-	mysql_close($db);
-
-
-	echo "  <TD\n>"; //Daten bereich der Gesamttabelle
-
-	echo "<table border=1 BGCOLOR=\"\">\n";
-
-	// Kopfzeile
-	echo "<tr>\n";
-	$field_num = mysql_num_fields($result);
-	for ($i=0; $i<$field_num; $i++)
-	{
-		echo "\t<td><b>".mysql_field_name($result,$i)."</b></td>\n";
-	};
-	//lfdnr,name,vorname,orga}
-	echo "</tr>\n";
-	echo "<hr>\n";
-	//Liste der Datensätze
-	while ($row = mysql_fetch_row($result))
-	{
-		echo "<tr>";
-		for ($i=0; $i<$field_num; $i++)
-		{
-			// aufruf der Deateildaten
-			if ($i==0)
-			{
-				echo "\t<td><a href=\"$PHP_SELF?md=7&ID=$ID&id=$row[$i]&char=$char\">\n";
-				print_menu_icon (4);
-				echo "\t</a></td>\n";
-			} else
-			{
-				echo "\t<td>$row[$i]&nbsp;</td>\n";
-			};
-		}
-		echo "\t<td>\n";
-		echo "\t</td>\n";
-		echo "<tr>";
-	}
-	echo "</table>";
-	echo " </TD\n>"; //ENDE Daten bereich der Gesamttabelle
 
 };
 
@@ -402,7 +374,7 @@ function loeschen($id)
 
 };
 
-function print_maske($id,$ID,$next,$erf,$ref)
+function print_maske($id,$ID,$next,$iserf,$ref,$daten)
 {
 	//==========================================================================
 	// Function     :  print_maske
@@ -429,8 +401,9 @@ function print_maske($id,$ID,$next,$erf,$ref)
 	//==========================================================================
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $TABLE;
-
-	if ($erf == 0 )
+	global $PHP_SELF;
+	
+	if ($iserf == false )
 	{
 		$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
 		or die("Fehler beim verbinden!");
@@ -467,7 +440,8 @@ function print_maske($id,$ID,$next,$erf,$ref)
 		$row = mysql_fetch_array ($result);
 		$field_num = mysql_num_fields($result);
 		$muk =  get_char_klasse($id);
-		$row[1] = $id;
+		$row[0] = 0;
+		$row[1] = $daten;
 		$row[2] = $row1[5];
 		$row[3] = $row1[9];
 		if ($muk=='MUK')
@@ -488,13 +462,14 @@ function print_maske($id,$ID,$next,$erf,$ref)
 	};
 	/**/
 
-	echo "  <TD\n>";  //Daten bereich der Gesamttabelle
-
-	echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST>\n";
+  $style = $GLOBALS['style_datatab'];
+  echo "<div $style >";
+  echo "<!--  DATEN Spalte   -->\n";
+	
+	echo "<FORM ACTION=\"$PHP_SELF?md=0&ID=$ID&daten=$daten\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"ID\" VALUE=\"$ID\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"$id\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"TAG\"  VALUE=\"$TAG\">\n";
+//	echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"$id\">\n";
 	echo "<TABLE WIDTH=\"400\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"2\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\"
 			BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
 	echo "\t<tr>\n";
@@ -516,29 +491,33 @@ function print_maske($id,$ID,$next,$erf,$ref)
 		if ($type[$i]=="int") {
 			$len[$i] = 5;
 		}
-		if (($i!=0) AND ($i!=1) AND ($i!=5))
+		// Welche Felder sollen NICHT angezeigt werden !!!
+		if ( ($i!=5)) //($i!=3)  AND
 		{
-			if ($type[$i]!="blob")
+			if (($i!=0) AND ($i!=1) AND ($i!=5))
 			{
-				echo "<tr>";
-				echo "\t<td width=100>$field_name[$i]&nbsp;</td>\n";
+				if ($type[$i]!="blob")
+				{
+					echo "<tr>";
+					echo "\t<td width=100>$field_name[$i]&nbsp;</td>\n";
 
-				echo "<td><input type=\"text\" name=\"row[$i]\" SIZE=$len[$i] MAXLENGTH=$len[$i] VALUE=\"$row[$i]\"></td>\n";
+					echo "<td><input type=\"text\" name=\"row[$i]\" SIZE=$len[$i] MAXLENGTH=$len[$i] VALUE=\"$row[$i]\"></td>\n";
 
-				echo "<tr>";
+					echo "<tr>";
+				} else
+				{
+					echo "<tr>";
+					echo "\t<td><b></b></td>\n";
+					echo "\t<td><TEXTAREA NAME=\"row[$i]\" COLS=50 ROWS=12>$row[$i]</TEXTAREA>&nbsp;</td>\n";
+					echo "<tr>";
+				}
 			} else
 			{
 				echo "<tr>";
-				echo "\t<td><b></b></td>\n";
-				echo "\t<td><TEXTAREA NAME=\"row[$i]\" COLS=50 ROWS=12>$row[$i]</TEXTAREA>&nbsp;</td>\n";
+				echo "\t<td width=100>$field_name[$i]&nbsp;</td>\n";
+				echo "<td><input type=\"text\" name=\"row[$i]\" SIZE=$len[$i] MAXLENGTH=$len[$i] VALUE=\"$row[$i]\" readonly></td>\n";
 				echo "<tr>";
 			}
-		} else
-		{
-			echo "<tr>";
-			echo "\t<td width=100>$field_name[$i]&nbsp;</td>\n";
-			echo "<td><input type=\"text\" name=\"row[$i]\" SIZE=$len[$i] MAXLENGTH=$len[$i] VALUE=\"$row[$i]\" readonly></td>\n";
-			echo "<tr>";
 		}
 	}
 
@@ -552,11 +531,24 @@ function print_maske($id,$ID,$next,$erf,$ref)
 	echo "\t</tr>\n";
 
 	echo "</table>";
-	echo "  </TD\n>"; //ENDE  Datenbereich der Gesamttabelle
-
+  
+  echo '</div>';
+  echo "<!--  ENDE DATEN Spalte   -->\n";
+	
 };
 
-function print_bereich($ID,$char)
+//==========================================================================
+// Function     :  print_fert
+//--------------------------------------------------------------------------
+// Beschreibung : Zeigt eine Auswahlliste
+//
+// Argumente    : $ID = Session_ID
+//                $char beinhaltet di Referenz auf den Charakter
+//
+// Returns      : --
+//
+//==========================================================================
+function print_fert($ID,$char)
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $PHP_SELF;
@@ -568,16 +560,18 @@ function print_bereich($ID,$char)
 
 	mysql_select_db($DB_NAME);
 
-	$where = ' where kapitel="9" AND absatz<>"0" AND item="0"';
+	$where = ' where kapitel="9" AND absatz="1" AND item<>"0" ';
 
-	$q = "select id,kapitel,absatz,kurz,muk,mk from $TABLE $where  order by kapitel,absatz";
+	$q = "select id,item,kurz,muk,mk from $TABLE $where order by absatz, item";
 	$result = mysql_query($q)  or die("Query Fert...$q");
 
 	mysql_close($db);
 
+  $style = $GLOBALS['style_datatable'];
+  echo "<div $style >";
+  echo "<!--  DATEN Spalte   -->\n";
 
-	echo "  <TD\n>"; //Daten bereich der Gesamttabelle
-	echo "<table border=1 BGCOLOR=\"\">\n";
+  echo "<table border=1 BGCOLOR=\"\">\n";
 
 	//Kopfzeile
 	echo "<tr>\n";
@@ -587,7 +581,6 @@ function print_bereich($ID,$char)
 		echo "\t<td><b>".mysql_field_name($result,$i)."</b></td>\n";
 	};
 	echo "</tr>\n";
-	echo "<hr>\n";
 	//Liste der Datensätze
 	while ($row = mysql_fetch_row($result))
 	{
@@ -597,8 +590,8 @@ function print_bereich($ID,$char)
 			// aufruf der Deateildaten
 			if ($i==0)
 			{
-				echo "\t<td><a href=\"$PHP_SELF?md=9&id=$id&ID=$ID&char=$char&kapitel=$row[1]&absatz=$row[2]\">\n";
-				print_menu_icon (9);
+				echo "\t<td><a href=\"$PHP_SELF?md=".char_add."&ID=$ID&auswahl=$row[0]&daten=$char\">\n";
+				print_menu_icon ("_point");
 				echo "\t</a></td>\n";
 			} else
 			{
@@ -608,11 +601,13 @@ function print_bereich($ID,$char)
 		echo "<tr>";
 	}
 	echo "</table>";
-	echo " </TD\n>"; //ENDE Daten bereich der Gesamttabelle
-
+  
+  echo '</div>';
+  echo "<!--  ENDE DATEN Spalte   -->\n";
+	
 };
 
-function print_fert($ID,$char,$kapitel,$absatz)
+function print_fertmagie($ID,$char,$kapitel,$absatz)
 {
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $PHP_SELF;
@@ -633,13 +628,15 @@ function print_fert($ID,$char,$kapitel,$absatz)
 		$where = " where kapitel=\"$kapitel\" AND absatz=\"$absatz\" AND item<>\"0\"";
 	}
 
-	$q = "select id,item,kurz,stufe,muk,mk from $TABLE $where  order by stufe,kurz";
+	$q = "select id,item,kurz,stufe,muk,mk from $TABLE $where  order by stufe,item";
 	$result = mysql_query($q)  or die("Query Fert...$q");
 
 	mysql_close($db);
+	$style = $GLOBALS['style_datatable'];
 
-
-	echo "  <TD\n>"; //Daten bereich der Gesamttabelle
+	echo "<div $style >";
+	echo "<!--  DATEN Spalte   -->\n";
+	
 	echo "<table border=1 BGCOLOR=\"\">\n";
 
 	//Kopfzeile
@@ -650,7 +647,6 @@ function print_fert($ID,$char,$kapitel,$absatz)
 		echo "\t<td><b>".mysql_field_name($result,$i)."</b></td>\n";
 	};
 	echo "</tr>\n";
-	echo "<hr>\n";
 	//Liste der Datensätze
 	while ($row = mysql_fetch_row($result))
 	{
@@ -660,8 +656,8 @@ function print_fert($ID,$char,$kapitel,$absatz)
 			// aufruf der Deateildaten
 			if ($i==0)
 			{
-				echo "\t<td><a href=\"$PHP_SELF?md=1&ID=$ID&ref=$row[0]&char=$char\">\n";
-				print_menu_icon (9);
+				echo "\t<td><a href=\"$PHP_SELF?md=".char_add."&ID=$ID&auswahl=$row[0]&daten=$char\">\n";
+				print_menu_icon ("_point");
 				echo "\t</a></td>\n";
 			} else
 			{
@@ -671,85 +667,141 @@ function print_fert($ID,$char,$kapitel,$absatz)
 		echo "<tr>";
 	}
 	echo "</table>";
-	echo " </TD\n>"; //ENDE Daten bereich der Gesamttabelle
-
+	
+	echo '</div>';
+  echo "<!--  ENDE DATEN Spalte   -->\n";
+	
 };
 
+function get_menu_char_mag($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $home)
+{
+  switch ($md):
+  case char_add: // Erfassen eines neuen Datensatzes
+    $menu = array (0=>array("icon" => "99","caption" => "ALCHIMIE","link" => ""),
+    1=>array("icon" => "1","caption" => "ERFASSEN","link" => ""),
+    2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&daten=$daten")
+    );
+    break;
+  case char_del: // Delete eines bestehenden Datensatzes
+    $menu = array (0=>array("icon" => "99","caption" => "ALCHIMIE","link" => ""),
+    1=>array("icon" => "1","caption" => "LÖSCHEN","link" => ""),
+    9=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&daten=$daten")
+    );
+    break;
+  case char_edit: // Bearbeiten Form
+    $menu = array (0=>array("icon" => "99","caption" => "ALCHIMIE","link" => ""),
+    1=>array("icon" => "1","caption" => "BEARBEITEN","link" => ""),
+    2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&daten=$daten")
+    );
+    break;
+  case char_auswahl: // Erfassen eines neuen Datensatzes
+    $menu = array (0=>array("icon" => "99","caption" => "ALCHIMIE","link" => ""),
+    1=>array("icon" => "1","caption" => "FERTIGKEIT","link" => ""),
+    2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&daten=$daten")
+    );
+    break;
+  case alch_gift: // Erfassen eines neuen Datensatzes
+    $menu = array (0=>array("icon" => "99","caption" => "ALCHIMIE","link" => ""),
+    1=>array("icon" => "1","caption" => "NEUTRAL","link" => ""),
+    2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&daten=$daten")
+    );
+    break;
+  case alch_trank: // Erfassen eines neuen Datensatzes
+    $menu = array (0=>array("icon" => "99","caption" => "ALCHIMIE","link" => ""),
+    1=>array("icon" => "1","caption" => "WEISS","link" => ""),
+    2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&daten=$daten")
+    );
+    break;
+  case alch_heil: // Erfassen eines neuen Datensatzes
+    $menu = array (0=>array("icon" => "99","caption" => "ALCHIMIE","link" => ""),
+    1=>array("icon" => "1","caption" => "HEILUNG","link" => ""),
+    2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&daten=$daten")
+    );
+    break;
+  default:  // die einzelnen Bildseiten 11-xx
+    $menu = array (0=>array("icon" => "99","caption" => "ALCHIMIE","link" => ""),
+		2=>array("icon" => "_tadd","caption" => "Fertigkeiten","link" => "$PHP_SELF?md=".char_auswahl."&ID=$ID&daten=$daten"),
+		3=>array("icon" => "_tadd","caption" => "Giftkunde","link" => "$PHP_SELF?md=".alch_gift."&ID=$ID&daten=$daten"),
+		4=>array("icon" => "_tadd","caption" => "Trankkunde","link" => "$PHP_SELF?md=".alch_trank."&ID=$ID&daten=$daten"),
+		5=>array("icon" => "_tadd","caption" => "Heiltrank","link" => "$PHP_SELF?md=".alch_heil."&ID=$ID&daten=$daten"),
+		19=>array("icon" => "_stop","caption" => "Zurück","link" => "char_kopf_liste.php?md=0&ID=$ID&id=$daten")
+    );
+    break;
+  endswitch;
+  
+    return $menu;
+}
 
 // ---------------------------------------------------------------
 // ---------    MAIN ---------------------------------------------
 //
 // keinerlei Ausgabe vor  der header() Zeile !!!!!!!!!!!!!!!!!!!!!
 // ----------------------------------------------------------------
-$c_md 	= $_COOKIE['md'];
+	$BEREICH = 'INTERN';
+	
+	$md     = GET_md(0);
+	$daten  = GET_daten("");
+	$sub    = GET_sub("");
+	$id     = GET_id(0);
+	$auswahl= GET_auswahl(0);
+	
+	$p_md   = POST_md(0);
+	$p_id 	= POST_id(0);
+	$p_row 	= POST_row("");
+	//$p_editor1 = POST_editor1("");
+	
+	
+	$ID     = GET_SESSIONID("");
+	session_id ($ID);
+	session_start();
+	$user       = $_SESSION["user"];
+	$user_lvl   = $_SESSION["user_lvl"];
+	$spieler_id = $_SESSION["spieler_id"];
+	$user_id 	= $_SESSION["user_id"];
+	$SID        = $_SESSION["ID"];
+	
+	if ($ID != $SID)
+	{
+		header ("Location: main.php?md=0&ID=$ID");  // Umleitung des Browsers
+		exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
+		// Code ausgeführt wird.
+	}
+	
+	if (is_user()==FALSE)
+	{
+	//  echo "no lvl";	
+	  header ("Location: main.php?md=0&ID=$ID");  // Umleitung des Browsers
+	    exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
+	  // Code ausgeführt wird.
+	}
 
-$p_md 	= $_POST['md'];
-$p_id 	= $_POST['id'];
-$p_row 	= $_POST['row'];
+  $TABLE = "char_trank";
 
-$md = $_GET['md'];
-$ID = $_GET['ID'];
-$id = $_GET['id'];
-$char = $_GET['char'];
-$ref  = $_GET['ref'];
-$kapitel= $_GET['kapitel'];
-$absatz = $_GET['absatz'];
-
-session_start ($ID);
-$user       = $_SESSION[user];
-$user_lvl   = $_SESSION[user_lvl];
-$spieler_id = $_SESSION[spieler_id];
-$user_id 		= $_SESSION[user_id];
-
-if ($ID == "")
-{
-	$session_id = 'FFFF';
-	header ("Location: main.php");  // Umleitung des Browsers
-	exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
-	// Code ausgeführt wird.
-}
-
-
-// Prüfung ob User  berechtigt ist
-if (getuser($user,$pw) != "TRUE")
-{
-	$session_id = 'FFFF';
-	//  echo "ID:$session_id ";
-	chdir("..");
-	//  Bei fehlendem oder falscher Rechten ins ROOT HTML
-	header ("Location: ../larp.html");  /* Umleitung des Browsers
-	zur PHP-Web-Seite. */
-	exit;  /* Sicher stellen, das nicht trotz Umleitung nachfolgender
-	Code ausgeführt wird. */
-}
-
-$TABLE = "char_trank";
-
-switch ($p_md):
-case 5:  // MAIN-Menu
-	insert($p_row);
-header ("Location: $PHP_SELF?md=0&ID=$ID&char=$char");  /* Auf sich Selbst*/
-exit;  /* Sicher stellen, das nicht nachfolgender Code ausgeführt wird. */
-break;
-case 6: // Update eines bestehnden Datensatzes
-	// Update SQL
-	update($p_row);
-	header ("Location: $PHP_SELF?md=0&ID=$ID&char=$char");  /* Auf sich Selbst*/
-	exit;  /* Sicher stellen, das nicht nachfolgender Code ausgeführt wird. */
-	break;
-default :
-	break;
-	endswitch;
-
-	switch ($md):
-case 7: // Delete eines bestehenden Datensatzes
-		// SQL delete
-		loeschen($id);
-	header ("Location: $PHP_SELF?md=0&ID=$ID&char=$char");  /* Auf sich Selbst*/
-	exit;  /* Sicher stellen, das nicht nachfolgender Code ausgeführt wird. */
-	break;
-default :
-	break;
+  switch ($p_md):
+  case char_insert:  // MAIN-Menu
+  	insert($p_row);
+  header ("Location: $PHP_SELF?md=0&ID=$ID&daten=$daten");  /* Auf sich Selbst*/
+  exit;  /* Sicher stellen, das nicht nachfolgender Code ausgeführt wird. */
+  break;
+  case char_update: // Update eines bestehnden Datensatzes
+  	// Update SQL
+  	update($p_row);
+  	header ("Location: $PHP_SELF?md=0&ID=$ID&daten=$daten");  /* Auf sich Selbst*/
+  	exit;  /* Sicher stellen, das nicht nachfolgender Code ausgeführt wird. */
+  	break;
+  default :
+  	break;
+  	endswitch;
+  
+  	switch ($md):
+  case char_delete: // Delete eines bestehenden Datensatzes
+  		// SQL delete
+  		loeschen($id);
+  	header ("Location: $PHP_SELF?md=3&ID=$ID&daten=$daten");  /* Auf sich Selbst*/
+  	exit;  /* Sicher stellen, das nicht nachfolgender Code ausgeführt wird. */
+  	break;
+  default :
+  	break;
 	endswitch;
 
 	print_header("Charakterliste");
@@ -758,75 +810,58 @@ default :
 
 	$spieler_name = get_spieler($spieler_id); //Auserwählter\n";
 
-	//    echo "POST : $p_md / GET : $md / id = $id / char = $char / Cookie = $c_md";
 
-	print_cbasis($char,$ID);
-
-	print_md();
-
+	$isnsc = print_kopf_liste($daten,$ID);
+	
+	if($isnsc == true)
+	{
+	  $home = "con_nsc_liste.php";
+	}else
+	{
+	  $home = "char_kopf_liste.php";
+	}
+  $titel = "Charakterdaten";
+	
+	$menu = get_menu_char_mag($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $home);
+	
 	switch ($md):
-case 0:  // MAIN-Menu
-		$menu = array (0=>array("icon" => "99","caption" => "ALCHIMIE","link" => ""),
-				2=>array("icon" => "2","caption" => "Erfassen","link" => "$PHP_SELF?md=8&ID=$ID&id=$id&char=$char"),
-				3=>array("icon" => "4","caption" => "Löschen","link" => "$PHP_SELF?md=3&ID=$ID&id=$id&char=$char"),
-				9=>array("icon" => "6","caption" => "Zurück","link" => "char_kopf_liste.php?md=0&ID=$ID&id=$char")
-		);
-		print_menu($menu);
-		print_liste($char,$ID);
-		break;
-case 1: // Erfassen eines neuen Datensatzes
-	$menu = array (0=>array("icon" => "99","caption" => "ALCHIMIE","link" => ""),
-	1=>array("icon" => "99","caption" => "ERFASSEN","link" => ""),
-	2=>array("icon" => "6","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&char=$char")
-	);
-	print_menu($menu);
-	print_maske($char,$ID,5,1,$ref);
-	break;
-case 2: // ANSEHEN Form
-	$menu = array (0=>array("icon" => "99","caption" => "ALCHIMIE","link" => ""),
-	1=>array("icon" => "99","caption" => "ANSEHEN","link" => ""),
-	2=>array("icon" => "6","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&char=$char")
-	);
-	print_menu($menu);
-	Print_info($id, $ID,$char);
-	break;
-case 3: // Delete eines bestehenden Datensatzes
-	$menu = array (0=>array("icon" => "99","caption" => "ALCHIMIE","link" => ""),
-	1=>array("icon" => "99","caption" => "LÖSCHEN","link" => ""),
-	9=>array("icon" => "6","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&char=$char")
-	);
-	print_menu($menu);
-	print_loeschen($char,$ID);
-	break;
-case 4: // Bearbeiten Form
-	$menu = array (0=>array("icon" => "99","caption" => "ALCHIMIE","link" => ""),
-	1=>array("icon" => "99","caption" => "BEARBEITEN","link" => ""),
-	2=>array("icon" => "6","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&char=$char")
-	);
-	print_menu($menu);
-	print_maske($id,$ID,6,0,$char);
-	break;
-case 8: // Erfassen eines neuen Datensatzes
-	$menu = array (0=>array("icon" => "99","caption" => "ALCHIMIE","link" => ""),
-	1=>array("icon" => "99","caption" => "AUSWAHL","link" => ""),
-	2=>array("icon" => "6","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&char=$char")
-	);
-	print_menu($menu);
-	print_bereich($ID,$char);
-	break;
-case 9: // Erfassen eines neuen Datensatzes
-	$menu = array (0=>array("icon" => "99","caption" => "ALCHIMIE","link" => ""),
-	1=>array("icon" => "99","caption" => "AUSWAHL","link" => ""),
-	2=>array("icon" => "6","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&char=$char")
-	);
-	print_menu($menu);
-	print_fert($ID,$char,$kapitel,$absatz);
-	break;
-default:  // die einzelnen Bildseiten 11-xx
-	break;
+  case char_add: // Erfassen eines neuen Datensatzes
+  	print_menu_status($menu);
+  	print_maske($id,$ID,char_insert,true,$auswahl,$daten);
+  	break;
+  case char_del: // Delete eines bestehenden Datensatzes
+  	print_menu_status($menu);
+  	print_loeschen($id,$ID,$daten);
+  	break;
+  case char_edit: // Bearbeiten Form
+  	print_menu_status($menu);
+  	//      print_char_menu($menu);
+  	print_maske($id,$ID,char_update,false,0,$daten);
+  	break;
+  case char_auswahl: // Erfassen eines neuen Datensatzes
+   	print_menu_status($menu);
+   	print_fert($ID,$daten);
+   	break;
+  case alch_gift: // Erfassen eines neuen Datensatzes
+   	print_menu_status($menu);
+   	print_fertmagie($ID, $daten, 9, 2);
+   	break;
+  case alch_trank: // Erfassen eines neuen Datensatzes
+   	print_menu_status($menu);
+   	print_fertmagie($ID, $daten, 9, 3);
+   	break;
+  case alch_heil: // Erfassen eines neuen Datensatzes
+   	print_menu_status($menu);
+   	print_fertmagie($ID,$daten, 9, 4);
+   	break;
+  default:  // die einzelnen Bildseiten 11-xx
+  	print_menu($menu);
+  	print_liste($daten,$ID);
+    break;
 	endswitch;
 
 
 	print_body_ende();
 
 	?>
+	

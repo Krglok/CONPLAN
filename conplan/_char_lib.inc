@@ -50,6 +50,19 @@ define("char_info", 14);
 define("char_check", 15);
 define("char_editor", 16);
 define("char_auswahl",17);
+define("mag_nt",50);
+define("mag_wm",51);
+define("mag_hm",52);
+define("mag_el",53);
+define("mag_pm",54);
+define("mag_ru",55);
+define("mag_sm",56);
+define("mag_ne",57);
+define("mag_dm",58);
+define("mag_ri",59);
+define("alch_gift",61);
+define("alch_trank",62);
+define("alch_heil",63);
 
 define("char_insert", 21);
 define("char_update", 22);
@@ -442,7 +455,7 @@ function list_cfert($id,$ID)
 			// aufruf der Deateildaten
 			if ($i==0)
 			{
-				echo "\t<td><a href=\"char_fert_liste.php?md=4&ID=$ID&id=$row[$i]&daten=$id\">\n";
+				echo "\t<td><a href=\"char_fert_liste.php?md=".char_edit."&ID=$ID&id=$row[$i]&daten=$id\">\n";
 				print_menu_icon ("_point");
 				echo "\t</a></td>\n";
 			} else
@@ -513,7 +526,7 @@ function list_cnach($id,$ID)
 			// aufruf der Deateildaten
 			if ($i==0)
 			{
-				echo "\t<td><a href=\"char_nach_liste.php?md=4&ID=$ID&id=$row[$i]&daten=$id\">\n";
+				echo "\t<td><a href=\"char_nach_liste.php?md=".char_edit."&ID=$ID&id=$row[$i]&daten=$id\">\n";
 				print_menu_icon ("_point_o");
 				echo "\t</a></td>\n";
 			} else
@@ -584,7 +597,7 @@ function list_cvor($id,$ID)
 			// aufruf der Deateildaten
 			if ($i==0)
 			{
-				echo "\t<td><a href=\"char_vor_liste.php?md=4&ID=$ID&id=$row[$i]&daten=$id\">\n";
+				echo "\t<td><a href=\"char_vor_liste.php?md=".char_edit."&ID=$ID&id=$row[$i]&daten=$id\">\n";
 				print_menu_icon ("_point_g");
 				echo "\t</a></td>\n";
 			} else
@@ -656,7 +669,7 @@ function list_cwaf($id,$ID)
 			// aufruf der Deateildaten
 			if ($i==0)
 			{
-				echo "\t<td><a href=\"char_waf_liste.php?md=4&ID=$ID&id=$row[$i]&daten=$id\">\n";
+				echo "\t<td><a href=\"char_waf_liste.php?md=".char_edit."&ID=$ID&id=$row[$i]&daten=$id\">\n";
 				print_menu_icon ("_point");
 				echo "\t</a></td>\n";
 			} else
@@ -731,7 +744,7 @@ function list_cmag($id,$ID)
 				// aufruf der Deateildaten
 				if ($i==0)
 				{
-					echo "\t<td><a href=\"char_mag_liste.php?md=4&ID=$ID&id=$row[$i]&daten=$id\">\n";
+					echo "\t<td><a href=\"char_mag_liste.php?md=".char_edit."&ID=$ID&id=$row[$i]&daten=$id\">\n";
 					print_menu_icon ("_point");
 					echo "\t</a></td>\n";
 				} else
@@ -807,7 +820,7 @@ function list_ctrank($id,$ID)
 				// aufruf der Deateildaten
 				if ($i==0)
 				{
-					echo "\t<td><a href=\"char_alch_liste.php?md=4&ID=$ID&id=$row[$i]&daten=$id\">\n";
+					echo "\t<td><a href=\"char_alch_liste.php?md=".char_edit."&ID=$ID&id=$row[$i]&daten=$id\">\n";
 					print_menu_icon ("_point");
 					echo "\t</a></td>\n";
 				} else
@@ -946,72 +959,79 @@ function check_char($char,$ID)
 
 	$kopf = mysql_fetch_row($result);
 
-	// Auswertung tage
-	$TABLE = 'char_tage';
-	$q = "select sum(sonder_ep),sum(con_ep) from $TABLE where char_id=\"$char\" group by char_id";
-	$result = mysql_query($q)  or die("KOPF Fehler...");
-	$sum = mysql_fetch_row($result);
-
-	$kopf[10] =  $sum[0] + $sum[1];;
-
-	// Auswertung Vorteile
-	$TABLE = 'char_vor';
-	$q = "select sum(ep) from $TABLE where char_id=\"$char\" group by char_id";
-	$result = mysql_query($q)  or die("KOPF Fehler...");
-	$sum = mysql_fetch_row($result);
-
-	$kopf[11] =  $sum[0];;
-
-	// Auswertung Nachteile
-	$TABLE = 'char_nach';
-	$q = "select sum(ep) from $TABLE where char_id=\"$char\" group by char_id";
-	$result = mysql_query($q)  or die("KOPF Fehler...");
-	$sum = mysql_fetch_row($result);
-
-	$kopf[12] =  $sum[0];;
-
-
-	// Auswertung fertigkeiten
-	$TABLE = 'char_fert';
-	$q = "select sum(ep) from $TABLE where char_id=\"$char\" group by char_id";
-	$result = mysql_query($q)  or die("KOPF Fehler...");
-	$sum = mysql_fetch_row($result);
-
-	$kopf[13] = -1 * $sum[0];
-
-	// Auswertung Waffen
-	$TABLE = 'char_waf';
-	$q = "select sum(ep) from $TABLE where char_id=\"$char\" group by char_id";
-	$result = mysql_query($q)  or die("KOPF Fehler...");
-	$sum = mysql_fetch_row($result);
-
-	$kopf[14] = -1 * $sum[0];
-
-	// Auswertung Magie
-	$TABLE = 'char_mag';
-	$q = "select sum(ep) from $TABLE where char_id=\"$char\" group by char_id";
-	$result = mysql_query($q)  or die("KOPF Fehler...");
-	$sum = mysql_fetch_row($result);
-
-	$kopf[15] = -1 * $sum[0];
-
-	// Auswertung Alchimie
-	$TABLE = 'char_trank';
-	$q = "select sum(ep) from $TABLE where char_id=\"$char\" group by char_id";
-	$result = mysql_query($q)  or die("KOPF Fehler...");
-	$sum = mysql_fetch_row($result);
-
-	$kopf[16] = -1 * $sum[0];
-
-	// Summe aller EP
-	$kopf[17] = $kopf[9]+$kopf[10]+$kopf[11]+$kopf[12]+$kopf[13]+$kopf[14]+$kopf[15]+$kopf[16];
-
-	mysql_close($db);
+	if ($kopf[0] > 0)
+	{
+		// Auswertung tage
+		$TABLE = 'char_tage';
+		$q = "select sum(sonder_ep),sum(con_ep) from $TABLE where char_id=\"$char\" group by char_id";
+		$result = mysql_query($q)  or die("KOPF Fehler...");
+		$sum = mysql_fetch_row($result);
+	
+		$kopf[10] =  $sum[0] + $sum[1];;
+	
+		// Auswertung Vorteile
+		$TABLE = 'char_vor';
+		$q = "select sum(ep) from $TABLE where char_id=\"$char\" group by char_id";
+		$result = mysql_query($q)  or die("KOPF Fehler...");
+		$sum = mysql_fetch_row($result);
+	
+		$kopf[11] =  $sum[0];;
+	
+		// Auswertung Nachteile
+		$TABLE = 'char_nach';
+		$q = "select sum(ep) from $TABLE where char_id=\"$char\" group by char_id";
+		$result = mysql_query($q)  or die("KOPF Fehler...");
+		$sum = mysql_fetch_row($result);
+	
+		$kopf[12] =  $sum[0];;
+	
+	
+		// Auswertung fertigkeiten
+		$TABLE = 'char_fert';
+		$q = "select sum(ep) from $TABLE where char_id=\"$char\" group by char_id";
+		$result = mysql_query($q)  or die("KOPF Fehler...");
+		$sum = mysql_fetch_row($result);
+	
+		$kopf[13] = -1 * $sum[0];
+	
+		// Auswertung Waffen
+		$TABLE = 'char_waf';
+		$q = "select sum(ep) from $TABLE where char_id=\"$char\" group by char_id";
+		$result = mysql_query($q)  or die("KOPF Fehler...");
+		$sum = mysql_fetch_row($result);
+	
+		$kopf[14] = -1 * $sum[0];
+	
+		// Auswertung Magie
+		$TABLE = 'char_mag';
+		$q = "select sum(ep) from $TABLE where char_id=\"$char\" group by char_id";
+		$result = mysql_query($q)  or die("KOPF Fehler...");
+		$sum = mysql_fetch_row($result);
+	
+		$kopf[15] = -1 * $sum[0];
+	
+		// Auswertung Alchimie
+		$TABLE = 'char_trank';
+		$q = "select sum(ep) from $TABLE where char_id=\"$char\" group by char_id";
+		$result = mysql_query($q)  or die("KOPF Fehler...");
+		$sum = mysql_fetch_row($result);
+	
+		$kopf[16] = -1 * $sum[0];
+	
+		// Summe aller EP
+		$kopf[17] = $kopf[9]+$kopf[10]+$kopf[11]+$kopf[12]+$kopf[13]+$kopf[14]+$kopf[15]+$kopf[16];
+	
+		mysql_close($db);
 
 	// Update der kopfdaten
-	update($kopf);
+	   update($kopf);
+	   return true;
+	} else
+	{
+		return false;
+	}
 
-
+	
 };
 
 function get_char_aktiv()
