@@ -59,7 +59,7 @@ include_once '_mfd_lib.inc';
  */
 function show_mfd_def($table, $ID)
 {
-    global $PHP_SELF;
+  global $PHP_SELF;
 	$mfd = show_mfd($table, $ID);
 	$next = 5;	// Insert mfd Data
 	$style = $GLOBALS['style_datatab'];
@@ -88,7 +88,7 @@ function show_mfd_def($table, $ID)
 	
 	echo '</div>';
 	echo "<!--  ENDE DATEN Spalte   -->\n";
-	
+	return;
 }
 
 /**
@@ -119,9 +119,18 @@ function show_mfd_col_def($table, $ID)
     echo "</form>";
 	echo '</div>';
 	echo "<!--  ENDE DATEN Spalte   -->\n";
-
+  return;
 }
 
+function show_mfd_docu($table, $ID)
+{
+	global $PHP_SELF;
+	$mfd = show_mfd($table, $ID);
+	echo '------------------<br>';
+	$mfd_Cols = show_mfd_cols($table, $ID);
+	
+  return;
+}
 
 
 /**
@@ -180,11 +189,23 @@ function print_table_list($ID)
 	{
 		$name = $pages[$i];
 		echo "\t<tr> \n";
-		echo "\t\t<td width=\"25\"> \n";
+			echo "\t\t<td width=\"25\"> \n";
 		if ($i>0)
 		{
 			echo "<a href=\"$PHP_SELF?md=2&daten=$name&ID=$ID \" >";
 			print_menu_icon("_db","Show Default MFD");
+			echo "</a>";
+		} else
+		{
+			echo '.';
+		}
+		echo "\t\t</td> \n";
+		
+		echo "\t\t<td width=\"25\"> \n";
+		if ($i>0)
+		{
+			echo "<a href=\"$PHP_SELF?md=4&daten=$name&ID=$ID \" >";
+			print_menu_icon("_txt","Show Table Docu");
 			echo "</a>";
 		} else
 		{
@@ -333,6 +354,7 @@ case 3:
 	show_mfd_col_def($daten,$ID);
 	break;
 case 4:
+	show_mfd_docu($daten,$ID);
 	break;
 case 10:
 	break;

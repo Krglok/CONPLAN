@@ -163,17 +163,18 @@ default:
 endswitch;
 
 print_menu_status($menu);
-$table = 'sys_log';
+$table = 'syslog';
 $mfd_list = make_mfd_table($table, $table);
 
 switch ($md):
 case mfd_list:
 	echo "MFD FILTER MASKE";
-    $result = log_data_result($mfd_list);
+    $result = log_data_result100($mfd_list);
     print_log_data($result,$ID);
 	break;
 default:
-    $result = log_data_result100($mfd_list);
+	echo "DEFAULT";
+	$result = log_data_result100($mfd_list);
     print_log_data($result,$ID);
   	break;
 	endswitch;

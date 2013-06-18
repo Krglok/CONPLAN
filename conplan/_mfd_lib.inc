@@ -193,7 +193,7 @@ function show_mfd($table,$ID)
   $next = 5;
   //  $name = "";
   $sub  = "admin";
-  print_table_list($ID);
+//  print_table_list($ID);
 
   $mfd = make_mfd_table($table,$table);
 
@@ -296,10 +296,10 @@ function show_mfd($table,$ID)
  */
 function show_mfd_cols($table,$ID)
 {
-  print_table_list($ID);
   $mfd_name = "mfd_".$table;
   $mfd_cols = make_mfd_cols_default($table, $mfd_name);
-
+//  print_table_list($ID);
+  
   $style = $GLOBALS['style_datalist'];
   echo "<div $style > \n";
   echo "<!--  DATEN Spalte   -->\n";
@@ -930,11 +930,18 @@ function mfd_update_name($name, $row)
  */
 function get_fieldlist($table)
 {
-  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+//	echo 'get_fieldlist:'.$table.'<br>';
+	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 
   $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)  or die("Fehler beim verbinden!");
   mysql_select_db($DB_NAME);
-  $result = mysql_query("SHOW COLUMNS FROM $table");
+  $q = "SHOW COLUMNS FROM $table";
+  $result = mysql_query($q);
+  if (!$result) {
+    $message  = ' ' . mysql_error() . "<br>";
+    $message .= 'Query: ' . $q;
+    die($message);
+  }
   return $result;
 }
 
@@ -985,9 +992,8 @@ function get_fieldtyp_width($typ)
  */
 function get_fieldname_list($table)
 {
-  $result = get_fieldlist($table);
-
-
+//	echo 'get_fieldname_list:'.$table.'<br>';
+	$result = get_fieldlist($table);
   $row = mysql_fetch_row($result);
   $list = "$table.".$row[0];
   while ($row = mysql_fetch_row($result))
@@ -1005,7 +1011,8 @@ function get_fieldname_list($table)
  */
 function make_mfd_table($table, $mfd_name)
 {
-  $mfd_list['mfd'] = $mfd_name;
+//	echo 'make_mfd_table:'.$table.'<br>';
+	$mfd_list['mfd'] = $mfd_name;
   $mfd_list['table'] = $table;
   $mfd_list['titel'] = $table;
   $mfd_list['fields'] = get_fieldname_list($table);
