@@ -174,7 +174,7 @@ case mfd_list:
 	break;
 default:
 	echo "DEFAULT";
-	$result = log_data_result100($mfd_list);
+	  $result = log_data_result100($mfd_list);
     print_log_data($result,$ID);
   	break;
 	endswitch;

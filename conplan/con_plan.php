@@ -510,7 +510,7 @@ function print_main_data($ID)
 	echo "<!--  ENDE DATEN Spalte   -->\n";
 };
 
-function ref_ablauf($tag)
+function ref_ablauf($tag, $ref)
 {
 
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
@@ -518,23 +518,25 @@ function ref_ablauf($tag)
 	$TABLE = "con_ablauf";
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
 	mysql_select_db($DB_NAME);
-	$q = "select * from $TABLE where S0=\"$tag\" order by S1,S2";
+	$q = "select * from $TABLE where S0=\"$tag\" and R_NSC=\"$ref\" order by S1,S2";
 	$result = mysql_query($q) or die("Query Fehler...");
 	mysql_close($db);
-	echo "<table border=1 BGCOLOR=\"\">\n";
+	echo "<table border=1 BGCOLOR=\"green\">\n";
 	//Liste der Datensätze
 	while ($row = mysql_fetch_row($result))
 	{
 		echo "<tr>";
-		for ($i=2; $i<7; $i++)
+		for ($i=5; $i<7; $i++)
 		{
 			// aufruf der Deateildaten
 			echo "\t<td  BGCOLOR=\"silver\" >$row[$i]&nbsp;</td>\n";
 		}
-		ref_orte($tag,$row[2]);
-		ref_nsc($tag,$row[2]);
-		ref_geruecht($tag,$row[2]);
-		ref_buch($tag,$row[2]);
+		echo "</tr>";
+
+// 		ref_orte($tag,$row[2]);
+// 		ref_nsc($tag,$row[2]);
+// 		ref_geruecht($tag,$row[2]);
+// 		ref_buch($tag,$row[2]);
 	}
 	echo "</table>";
 
@@ -593,7 +595,7 @@ function ref_nsc($tag,$ref)
 	$TABLE = "con_nsc";
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
 	mysql_select_db($DB_NAME);
-	$q = "select * from $TABLE where S0=\"$tag\" AND s1=\"$ref\" order by S1";
+	$q = "select * from $TABLE where S0=\"$tag\"  order by S1";
 	$result = mysql_query($q) or die("Query Fehler...");
 	mysql_close($db);
 		
@@ -601,22 +603,41 @@ function ref_nsc($tag,$ref)
 	echo "<td>";
 	echo "</td>";
 	echo "<td>";
-	echo "NSC \n";
-	echo "</td>";
-	echo "<td colspan=3>";
-	echo "<table width=\"100%\" border=1 BGCOLOR=\"\">\n";
+	echo "<table width=\"100%\" border=1 BGCOLOR=\"silver\">\n";
 	//Liste der Datensätze
 	while ($row = mysql_fetch_row($result))
 	{
-		echo "<tr>";
+		echo "<tr  border=1 >";
+		// die Felder 2 ...6 werden ausgegeben
 		for ($i=2; $i<7; $i++)
 		{
 			// aufruf der Deateildaten
 			//        echo "\t<td>$row[$i]&nbsp;</td>\n";
 			$s = substr($row[$i],0,50);
-			echo "\t<td>$s&nbsp;</td>\n";
+			echo "\t<td border=1 >$s&nbsp;</td>\n";
+			
 		}
+		echo "</tr>";
 		echo "<tr>";
+			echo "\t<td></td>\n";
+			echo "\t<td></td>\n";
+			echo "\t<td></td>\n";
+			echo "\t<td>Ablauf</td>\n";
+			echo "\t<td>\n";
+			ref_ablauf($tag, $row[4]);
+			echo "\t</td>\n";
+		echo "</tr>";
+
+		echo "<tr>";
+		echo "\t<td></td>\n";
+		echo "\t<td></td>\n";
+		echo "\t<td></td>\n";
+		echo "\t<td>Gerücht</td>\n";
+		echo "\t<td>\n";
+		ref_geruecht($tag, $row[4]);
+		echo "\t</td>\n";
+		echo "</tr>";
+		
 	}
 	echo "</table>";
 	echo "</td>";
@@ -631,17 +652,10 @@ function ref_geruecht($tag,$ref)
 	$TABLE = "con_geruecht";
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
 	mysql_select_db($DB_NAME);
-	$q = "select * from $TABLE where S0=\"$tag\" AND S1=\"$ref\" order by S1"; //AND S1=\"$ref\"
+	$q = "select * from $TABLE where S0=\"$tag\" AND R_NSC=\"$ref\" order by S1"; //AND S1=\"$ref\"
 	$result = mysql_query($q) or die("Query Fehler...");
 	mysql_close($db);
-	echo "<tr>";
-	echo "<td>";
-	echo "</td>";
-	echo "<td>";
-	echo "Geruecht \n";
-	echo "</td>";
-	echo "<td colspan=3>";
-	echo "<table width=\"100%\" border=1 BGCOLOR=\"\">\n";
+	echo "<table width=\"100%\" border=1 BGCOLOR=\"red\">\n";
 	//Liste der Datensätze
 	while ($row = mysql_fetch_row($result))
 	{
@@ -656,8 +670,6 @@ function ref_geruecht($tag,$ref)
 		echo "</tr>";
 	}
 	echo "</table>";
-	echo "</td>";
-	echo "</tr>";
 }
 
 function ref_buch($tag,$ref)
@@ -738,7 +750,7 @@ function print_ref_data($ID)
 	global  $TAG;
 
 	echo "    <TD>\n";
-	echo "      <TABLE WIDTH=\"100%\" BORDER=\"0\" BGCOLOR=\"\" >\n";
+	echo "      <TABLE WIDTH=\"100%\" BORDER=\"1\" BGCOLOR=\"\" >\n";
 	echo "        <TR>\n";
 	echo "          <TD><!-- Row:1, Col:1 -->\n";
 	echo "            <FONT size=+0>\n";
@@ -746,43 +758,41 @@ function print_ref_data($ID)
 	echo "            <B>$TAG &nbsp;&nbsp;".get_tag_name($TAG)."<B>";
 	echo "            <BR>\n";
 	echo "            <BR>\n";
-	echo "            <TABLE  >\n";
-	echo "            <TR>\n";
-	echo "            <TD>\n";// item
-	echo "            <LI>Ablauf\n";
-	echo "            </TD>\n";
-	echo "            <TD>\n";// Erklärung zu item
-	ref_ablauf($TAG);
-	echo "            </TD>\n";
-	echo "            </TR>\n";
-	echo "            <TR>\n";
-	echo "            <TD>\n";// item
-	echo "            <LI>Orte\n";
-	echo "            </TD>\n";
-	echo "            <TD>\n";// Erklärung zu item
-	echo " <table>\n";
-	echo " <tr>\n";
-	echo " <td>\n";
-	ref_orte($TAG,"");
-	echo " </td>\n";
-	echo " </tr>\n";
-	echo " </table>\n";
-	echo "            </TD>\n";
-	echo "            </TR>\n";
+	echo "            <TABLE BORDER=\"1\" BGCOLOR=\"\"  >\n";
+
+// 	echo "            <TR>\n";
+// 	echo "            <TD>\n";// item
+// 	echo "            <LI>Ablauf\n";
+// 	echo "            </TD>\n";
+// 	echo "            <TD>\n";// Erklärung zu item
+// 	ref_ablauf($TAG);
+// 	echo "            </TD>\n";
+// 	echo "            </TR>\n";
+
+// 	echo "            <TR>\n";
+// 	echo "            <TD>\n";// item
+// 	echo "            <LI>Orte\n";
+// 	echo "            </TD>\n";
+// 	echo "            <TD>\n";// Erklärung zu item
+// 	echo " <table>\n";
+// 	echo " <tr>\n";
+// 	echo " <td>\n";
+// 	ref_orte($TAG,"");
+// 	echo " </td>\n";
+// 	echo " </tr>\n";
+// 	echo " </table>\n";
+// 	echo "            </TD>\n";
+// 	echo "            </TR>\n";
+
 	echo "            <TR>\n";
 	echo "            <TD>\n";// item
 	echo "            <LI>NSC\n";
 	echo "            </TD>\n";
 	echo "            <TD>\n";// Erklärung zu item
-	echo " <table>\n";
-	echo " <tr>\n";
-	echo " <td>\n";
-	ref_nsc($TAG,"");
-	echo " </td>\n";
-	echo " </tr>\n";
-	echo " </table>\n";
 	echo "            </TD>\n";
 	echo "            </TR>\n";
+	ref_nsc($TAG,"");
+
 	echo "            <TR>\n";
 	echo "            <TD>\n";// item
 	echo "            <LI>Gerüchte\n";
@@ -797,58 +807,64 @@ function print_ref_data($ID)
 	echo " </table>\n";
 	echo "            </TD>\n";
 	echo "            </TR>\n";
-	echo "            <TR>\n";
-	echo "            <TD>\n";// item
-	echo "            <LI>Bücher \n";
-	echo "            </TD>\n";
-	echo "            <TD>\n";// Erklärung zu item
-	echo " <table>\n";
-	echo " <tr>\n";
-	echo " <td>\n";
-	ref_buch($TAG,"");
-	echo " </td>\n";
-	echo " </tr>\n";
-	echo " </table>\n";
-	echo "            </TD>\n";
-	echo "            </TR>\n";
-	echo "            <TR>\n";
-	echo "            <TD>\n";// item
-	echo "            <LI>Artefakte \n";
-	echo "            </TD>\n";
-	echo "            <TD>\n";// Erklärung zu item
-	echo " <table>\n";
-	echo " <tr>\n";
-	echo " <td>\n";
-	get_artefakte($TAG);
-	echo " </td>\n";
-	echo " </tr>\n";
-	echo " </table>\n";
-	echo "            </TD>\n";
-	echo "            </TR>\n";
-	echo "            <TR>\n";
-	echo "            <TD>\n";// item
-	echo "            <LI> \n";
-	echo "            </TD>\n";
-	echo "            <TD>\n";// Erklärung zu item
-	echo "            \n";
-	echo "            </TD>\n";
-	echo "            </TR>\n";
-	echo "            <TR>\n";
-	echo "            <TD>\n";// item
-	echo "            <LI> \n";
-	echo "            </TD>\n";
-	echo "            <TD>\n";// Erklärung zu item
-	echo "            \n";
-	echo "            </TD>\n";
-	echo "            </TR>\n";
-	echo "            <TR>\n";
-	echo "            <TD>\n";// item
-	echo "            <LI> \n";
-	echo "            </TD>\n";
-	echo "            <TD>\n";// Erklärung zu item
-	echo "            \n";
-	echo "            </TD>\n";
-	echo "            </TR>\n";
+
+// 	echo "            <TR>\n";
+// 	echo "            <TD>\n";// item
+// 	echo "            <LI>Bücher \n";
+// 	echo "            </TD>\n";
+// 	echo "            <TD>\n";// Erklärung zu item
+// 	echo " <table>\n";
+// 	echo " <tr>\n";
+// 	echo " <td>\n";
+// 	ref_buch($TAG,"");
+// 	echo " </td>\n";
+// 	echo " </tr>\n";
+// 	echo " </table>\n";
+// 	echo "            </TD>\n";
+// 	echo "            </TR>\n";
+
+// 	echo "            <TR>\n";
+// 	echo "            <TD>\n";// item
+// 	echo "            <LI>Artefakte \n";
+// 	echo "            </TD>\n";
+// 	echo "            <TD>\n";// Erklärung zu item
+// 	echo " <table>\n";
+// 	echo " <tr>\n";
+// 	echo " <td>\n";
+// 	get_artefakte($TAG);
+// 	echo " </td>\n";
+// 	echo " </tr>\n";
+// 	echo " </table>\n";
+// 	echo "            </TD>\n";
+// 	echo "            </TR>\n";
+
+// 	echo "            <TR>\n";
+// 	echo "            <TD>\n";// item
+// 	echo "            <LI> \n";
+// 	echo "            </TD>\n";
+// 	echo "            <TD>\n";// Erklärung zu item
+// 	echo "            \n";
+// 	echo "            </TD>\n";
+// 	echo "            </TR>\n";
+
+// 	echo "            <TR>\n";
+// 	echo "            <TD>\n";// item
+// 	echo "            <LI> \n";
+// 	echo "            </TD>\n";
+// 	echo "            <TD>\n";// Erklärung zu item
+// 	echo "            \n";
+// 	echo "            </TD>\n";
+// 	echo "            </TR>\n";
+
+// 	echo "            <TR>\n";
+// 	echo "            <TD>\n";// item
+// 	echo "            <LI> \n";
+// 	echo "            </TD>\n";
+// 	echo "            <TD>\n";// Erklärung zu item
+// 	echo "            \n";
+// 	echo "            </TD>\n";
+// 	echo "            </TR>\n";
+
 	echo "            </TABLE  >\n";
 	echo "          </TD>\n";
 	echo "        </TR>\n";
@@ -959,7 +975,7 @@ case 3:
 	break;
 case 4:
 	break;
-case 5:
+case 5: // print referenz
 	print_ref_data($ID);
 	break;
 case 10:

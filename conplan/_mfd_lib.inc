@@ -193,7 +193,7 @@ function show_mfd($table,$ID)
   $next = 5;
   //  $name = "";
   $sub  = "admin";
-//  print_table_list($ID);
+  print_table_list($ID);
 
   $mfd = make_mfd_table($table,$table);
 
@@ -202,6 +202,9 @@ function show_mfd($table,$ID)
   echo "<!--  DATEN Spalte   -->\n";
   echo "<TABLE > \n";
   echo "<TR> \n";
+  echo "<TD width=\"10\">\n";
+  echo "";
+  echo "</TD> \n";
   echo "<TD>\n";
   echo "Breich";
   echo "</TD> \n";
@@ -212,6 +215,9 @@ function show_mfd($table,$ID)
 
   echo "<TBODY> \n";
   echo "<TR> \n";
+  echo "<TD width=\"10\">\n";
+  echo "";
+  echo "</TD> \n";
   echo "<TD>\n";
   echo "Sub";
   echo "</TD> \n";
@@ -221,6 +227,9 @@ function show_mfd($table,$ID)
   echo "</TR> \n";
 
   echo "<TR> \n";
+  echo "<TD width=\"10\">\n";
+  echo "";
+  echo "</TD> \n";
   echo "<TD>\n";
   echo "Mfd";
   echo "</TD> \n";
@@ -230,6 +239,9 @@ function show_mfd($table,$ID)
   echo "</TR> \n";
 
   echo "<TR> \n";
+  echo "<TD width=\"10\">\n";
+  echo "";
+  echo "</TD> \n";
   echo "<TD> \n";
   echo "Table \n";
   echo "</TD> \n";
@@ -239,6 +251,9 @@ function show_mfd($table,$ID)
   echo "</TR> \n";
 
   echo "<TR> \n";
+  echo "<TD width=\"10\">\n";
+  echo "";
+  echo "</TD> \n";
   echo "<TD> \n";
   echo "Fields \n";
   echo "</TD> \n";
@@ -248,6 +263,9 @@ function show_mfd($table,$ID)
   echo "</TR> \n";
 
   echo "<TR> \n";
+  echo "<TD width=\"10\">\n";
+  echo "";
+  echo "</TD> \n";
   echo "<TD> \n";
   echo "Join \n";
   echo "</TD> \n";
@@ -262,6 +280,9 @@ function show_mfd($table,$ID)
   echo "</TR> \n";
 
   echo "<TR> \n";
+  echo "<TD width=\"10\">\n";
+  echo "";
+  echo "</TD> \n";
   echo "<TD> \n";
   echo "Where \n";
   echo "</TD> \n";
@@ -272,6 +293,9 @@ function show_mfd($table,$ID)
   echo "</TR> \n";
 
   echo "<TR> \n";
+  echo "<TD width=\"10\">\n";
+  echo "";
+  echo "</TD> \n";
   echo "<TD> \n";
   echo "Order \n";
   echo "</TD> \n";
@@ -298,7 +322,7 @@ function show_mfd_cols($table,$ID)
 {
   $mfd_name = "mfd_".$table;
   $mfd_cols = make_mfd_cols_default($table, $mfd_name);
-//  print_table_list($ID);
+  print_table_list($ID);
   
   $style = $GLOBALS['style_datalist'];
   echo "<div $style > \n";
@@ -306,6 +330,9 @@ function show_mfd_cols($table,$ID)
   echo "<TABLE > \n";
   echo "<TBODY> \n";
   echo "<TR> \n";
+  echo "<TD width=\"10\">\n";
+  echo "";
+  echo "</TD> \n";
   echo "<TD> \n";
   echo "<i></i> \n";
   echo "</TD> \n";
@@ -324,6 +351,9 @@ function show_mfd_cols($table,$ID)
   echo "</TR> \n";
 
   echo "<TR> \n";
+  echo "<TD width=\"10\">\n";
+  echo "";
+  echo "</TD> \n";
   echo "<TD> \n";
   echo "<i></i> \n";
   echo "</TD> \n";
@@ -342,6 +372,9 @@ function show_mfd_cols($table,$ID)
   echo "</TR> \n";
 
   echo "<TR> \n";
+  echo "<TD width=\"10\">\n";
+  echo "";
+  echo "</TD> \n";
   echo "<TD> \n";
   echo "<i>Nr</i> \n";
   echo "</TD> \n";
@@ -367,7 +400,10 @@ function show_mfd_cols($table,$ID)
   foreach ($mfd_cols as $mfd_col)
   {
     echo "<TR> \n";
-  	echo "<TD> \n";
+  echo "<TD width=\"10\">\n";
+  echo "";
+  echo "</TD> \n";
+    echo "<TD> \n";
   	echo "<i>$i</i> \n";
   	echo "</TD> \n";
     

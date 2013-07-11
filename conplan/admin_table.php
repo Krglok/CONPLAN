@@ -125,9 +125,104 @@ function show_mfd_col_def($table, $ID)
 function show_mfd_docu($table, $ID)
 {
 	global $PHP_SELF;
-	$mfd = show_mfd($table, $ID);
-	echo '------------------<br>';
-	$mfd_Cols = show_mfd_cols($table, $ID);
+  
+	$mfd_name = "mfd_".$table;
+	$mfd_cols = make_mfd_cols_default($table, $mfd_name);
+	//  print_table_list($ID);
+	
+	$style = $GLOBALS['style_datalist'];
+	echo "<div $style > \n";
+	echo "<!--  DATEN Spalte   -->\n";
+	    echo "<TABLE > \n";
+	    echo "<TBODY> \n";
+	    echo "<TR> \n";
+	    echo "<TD> \n";
+	    echo "<i></i> \n";
+	    echo "</TD> \n";
+	
+	    echo "<TD>\n";
+	    echo "Tabelle";
+	    echo "</TD> \n";
+	
+	    echo "<TD> \n";
+	    echo "<b>$table</b>";
+	    echo "</TD> \n";
+	
+	    echo "<TD> \n";
+	    echo "";
+  echo "</TD> \n";
+  echo "</TR> \n";
+	
+  echo "<TR> \n";
+  echo "<TD> \n";
+  echo "<i></i> \n";
+  echo "</TD> \n";
+	
+	    echo "<TD>\n";
+  echo "<i>MFD-Referenz</i>";
+  echo "</TD> \n";
+	
+  echo "<TD> \n";
+	  echo "<b>$mfd_name</b>";
+  echo "</TD> \n";
+	
+  echo "<TD> \n";
+	      echo "";
+  echo "</TD> \n";
+  echo "</TR> \n";
+	
+  echo "<TR> \n";
+  echo "<TD> \n";
+  echo "<i>Nr</i> \n";
+  echo "</TD> \n";
+	
+  echo "<TD> \n";
+  echo "<i>Fieldname</i> \n";
+  echo "</TD> \n";
+	
+  echo "<TD> \n";
+  echo "<i>Titel</i> \n";
+  echo "</TD> \n";
+	
+  echo "<TD> \n";
+  echo "<i>Width</i> \n";
+  echo "</TD> \n";
+	
+  echo "<TD> \n";
+  echo "<i>Typ</i> \n";
+  echo "</TD> \n";
+  echo "</TR> \n";
+	
+	  $i =0;
+	  foreach ($mfd_cols as $mfd_col)
+	    {
+    echo "<TR> \n";
+  	echo "<TD> \n";
+	    echo "<i>$i</i> \n";
+  	echo "</TD> \n";
+	
+  	echo "<TD> \n";
+	    echo $mfd_col["mfd_field"];
+	    echo "</TD> \n";
+	
+	    echo "<TD> \n";
+	    echo $mfd_col["mfd_field_titel"];
+	    echo "</TD> \n";
+	   
+	  echo "<TD> \n";
+	  echo $mfd_col["mfd_width"];
+	  echo "</TD> \n";
+	
+	  echo "<TD> \n";
+	  echo $mfd_col["mfd_field_typ"];
+	  echo "</TD> \n";
+	      echo "</TR> \n";
+	      $i++;
+	  }
+	  echo "</TBODY> \n";
+	  echo "</TABLE> \n";
+	  echo "</div> \n";
+	  echo "<!--  ENDE DATEN Spalte   -->\n";
 	
   return;
 }
@@ -205,7 +300,7 @@ function print_table_list($ID)
 		if ($i>0)
 		{
 			echo "<a href=\"$PHP_SELF?md=4&daten=$name&ID=$ID \" >";
-			print_menu_icon("_txt","Show Table Docu");
+			print_menu_icon("_tinfo","Show Table Docu");
 			echo "</a>";
 		} else
 		{
@@ -319,29 +414,35 @@ case 6: // Insert -> Erfassen
 
 
 	switch ($md):
-case 2: // erfassen
-		$menu = array (0=>array("icon" => "7","caption" => "TABLE","link" => "$PHP_SELF?md=1&ID=$ID"),
-				1=>array("icon" => "1","caption" => "MFD","link" => ""),
-				2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
-		);
-		break;
-case 3:  //Bearbeiten
-	$menu = array (0=>array("icon" => "7","caption" => "TABLE","link" => "$PHP_SELF?md=1&ID=$ID"),
-	1=>array("icon" => "1","caption" => "MFD-COLS","link" => ""),
-	2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=1&ID=$ID")
-	);
-	break;
-case 10: // main
-	$menu = array (0=>array("icon" => "7","caption" => "TABLE","link" => "$PHP_SELF?md=1&ID=$ID"),
-	1=>array ("icon" => "_plus","caption" => "Erfassen","link" => "$PHP_SELF?md=2&ID=$ID"),
-	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_main.php?md=0&ID=$ID")
-	);
-	break;
-default: // main
-	$menu = array (0=>array("icon" => "7","caption" => "TABLE","link" => "$PHP_SELF?md=1&ID=$ID"),
-	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_config.php?md=0&ID=$ID")
-	);
-	break;
+  case 2: // erfassen
+  		$menu = array (0=>array("icon" => "7","caption" => "TABLE","link" => "$PHP_SELF?md=1&ID=$ID"),
+  				1=>array("icon" => "1","caption" => "MFD","link" => ""),
+  				2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID")
+  		);
+  		break;
+  case 3:  //Bearbeiten
+  	$menu = array (0=>array("icon" => "7","caption" => "TABLE","link" => "$PHP_SELF?md=1&ID=$ID"),
+  	1=>array("icon" => "1","caption" => "MFD-COLS","link" => ""),
+  	2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=1&ID=$ID")
+  	);
+  	break;
+  case 4:  //Bearbeiten
+  	$menu = array (0=>array("icon" => "7","caption" => "TABLE","link" => "$PHP_SELF?md=1&ID=$ID"),
+  	1=>array("icon" => "1","caption" => "MFD-COLS","link" => ""),
+  	2=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=1&ID=$ID")
+  	);
+  	break;
+  case 10: // main
+  	$menu = array (0=>array("icon" => "7","caption" => "TABLE","link" => "$PHP_SELF?md=1&ID=$ID"),
+  	1=>array ("icon" => "_plus","caption" => "Erfassen","link" => "$PHP_SELF?md=2&ID=$ID"),
+  	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_main.php?md=0&ID=$ID")
+  	);
+  	break;
+  default: // main
+  	$menu = array (0=>array("icon" => "7","caption" => "TABLE","link" => "$PHP_SELF?md=1&ID=$ID"),
+  	5=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_config.php?md=0&ID=$ID")
+  	);
+  	break;
 	endswitch;
 
 	print_menu_status($menu);

@@ -171,7 +171,7 @@ function log_data_result100($mfd_list)
 	$fields = $mfd_list["fields"];
 	$join =  $mfd_list["join"];
 	$where = $mfd_list["where"];
-	$order = $mfd_list["order"];
+	$order = $mfd_list["order"].' desc';
 
 	$q = "SELECT $fields FROM $table $join where $where  order by $order LIMIT 100 ";
 
