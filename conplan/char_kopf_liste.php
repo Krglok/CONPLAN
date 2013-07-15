@@ -686,7 +686,7 @@ function get_menu_char_kopf($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $hom
 		case char_add: // Erfassen eines neuen Datensatzes
 			print_menu_status($menu);
   		print_maske($id,$ID,char_insert,1);
-		break;
+		  break;
 		case char_del: // Delete eines bestehenden Datensatzes
 			print_menu_status($menu);
 			break;

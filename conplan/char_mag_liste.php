@@ -492,9 +492,9 @@ function print_maske($id,$ID,$next,$iserf,$ref,$daten)
 			$len[$i] = 5;
 		}
 		// Welche Felder sollen NICHT angezeigt werden !!!
-		if (($i!=3)  AND ($i!=5))
+		if (($i!=5)  )  //AND ($i!=3)
 		{
-			if (($i!=0) AND ($i!=1) AND ($i!=5))
+			if (($i!=0) AND ($i!=1) ) //AND ($i!=5)
 			{
 				if ($type[$i]!="blob")
 				{
