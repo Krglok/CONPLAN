@@ -324,6 +324,23 @@ function GET_auswahl($value = 0)
   return $value;
 }
 
+function GET_bibid($value = 0)
+{
+	if (isset($_GET['bibid'])==true)
+	{
+		return $_GET['bibid'];
+	}
+	return $value;
+}
+
+function GET_THEMA($value = "")
+{
+	if (isset($_GET['THEMA'])==true)
+	{
+		return $_GET['THEMA'];
+	}
+	return $value;
+}
 
 function GET_SESSIONID($value = "")
 {
