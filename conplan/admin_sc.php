@@ -227,7 +227,7 @@ function insert_sp($row) //$name,$vorname,$charakter,$email,$telefon,$geb,$bemer
 	$u_id = mysql_insert_id();
 	$username = $row[8];
 	$pw = "_"."$row[8]";
-	$q = "insert into user_liste (username,spieler_id,pword,lvl) VALUES (\"$username\",\"$u_id\",password(\"$pw\"),\"".lvl_user."\")";
+	$q = "insert into user_liste (username,spieler_id,pword,lvl) VALUES (\"$username\",\"$u_id\",old_password(\"$pw\"),\"".lvl_user."\")";
 	$result = mysql_query($q) or die("insert Fehler....$q.");
 	mysql_close($db);
 
