@@ -378,6 +378,15 @@ function POST_row($value=0)
 	return $value;
 }
 
+function POST_bild($value="")
+{
+	if (isset($_POST['bild'])==true)
+	{
+		return $_POST['bild'];
+	}
+	return $value;
+}
+
 function POST_top_id($value = "0")
 {  if (isset($_POST['top_id'])==true)
 {

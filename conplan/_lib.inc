@@ -1603,6 +1603,16 @@ function tumb_erzeugen($bild_url,$zieldir,$max_x,$max_y,$type)
 			//    echo "<br>";
 			//    echo "JPEG BILD";
 		}
+			if ($type == 'image/png')
+		{ // JPG
+			$altesBild=imagecreatefrompng("$PicPathIn"."$bild_url");
+			$neuesBild=ImageCreate($neueBreite,$neueHoehe);
+//			imagecopyresampled($dst_image, $src_image, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h)
+			imagecopyresampled($neuesBild,$altesBild,0,0,0,0,$neueBreite,$neueHoehe,$breite,$hoehe);
+			Imagepng($neuesBild,"$PicPathOut"."$bild_url");
+			//    echo "<br>";
+			//    echo "JPEG BILD";
+		}
 	};
 
 }

@@ -234,7 +234,7 @@ function print_info($id,$ID,$TAG,$LISTE)
 	//Daten bereich
 	echo "  <TD\n>";  //Daten bereich der Gesamttabelle
 
-	echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST>\n";
+	echo "<FORM ACTION=\"$PHP_SELF?md=11&ID=$ID\" METHOD=POST>\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"ID\"  VALUE=\"$ID\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"id\"  VALUE=\"$id\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"TAG\" VALUE=\"$TAG\">\n";
@@ -276,9 +276,154 @@ function print_info($id,$ID,$TAG,$LISTE)
 
 };
 
+function insert($row,$bild)
+//==========================================================================
+// Function     :  insert
+//--------------------------------------------------------------------------
+// Beschreibun  :  Fügt einen Datensatz in eine Tabelle ein
+//                 Die Daten liegen als Array vor
+//                 die Spalten sind identisch mit
+//                 den Feldern der Tabelle.
+//                 Ebenso die Reihemfolge der Felder !
+//                 Ref_Tabelle >bilder_topic>
+//                 Ref_ID = row[1] <tag>
+//                          bestimmt path von img
+//
+// Argumente    :  $row = zu speichernde Daten
+//                 $bild = image des Bildes
+//
+// Returns      :  --
+//==========================================================================
+{
+	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
+	global $TABLE;
+	global $TABLE1;
+
+	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
+
+	//--- REFERENZ auf bilder_topic -------------------------------------------
+	$q = "select * from $TABLE1 where tag=\"$row[1]\"";
+	$result1 = mysql_query($q) or die("Query TABLE_1/$row[1]");
+	$row1 = mysql_fetch_row($result1);
+	$row[1] = $row1[2];
+	$fileendung = ".xxx";
+	if ($_FILES['bild']['type'] == 'image/gif')
+	{
+		$fileendung = ".gif";
+	}
+	elseif ($_FILES['bild']['type'] == 'image/jpeg')
+	{
+		$fileendung = ".jpg";
+	}
+	elseif ($_FILES['bild']['type'] == 'image/pjpeg')
+	{
+		$fileendung = ".jpg";
+	}
+	elseif ($_FILES['bild']['type'] == 'image/png')
+	{
+		$fileendung = ".png";
+	}
+	$row[6] = $fileendung;
+
+	//--- Felder von bilder ermitteln ------------------------------------------
+	$result = mysql_list_fields($DB_NAME,$TABLE)  or die("Query ERF...");
+	$field_num = mysql_num_fields($result);
+	for ($i=0; $i<$field_num; $i++)
+	{
+		$field_name[$i] =  mysql_field_name ($result, $i);
+	}
+	$q ="insert INTO  $TABLE  (";
+	$q = $q."$field_name[1]";
+	for ($i=2; $i<$field_num; $i++)
+	{
+		$q = $q.",$field_name[$i]";
+	};
+
+	$q = $q.") VALUES (\"$row[1]\" ";
+	for ($i=2; $i<$field_num; $i++)
+	{
+		$q = $q.",\"$row[$i]\" ";
+	};
+	$q = $q.")";
+
+	if (mysql_select_db($DB_NAME) != TRUE) {
+		echo "Fehler DB";
+	};
+	$result = mysql_query($q) or die("InsertFehler....$q.");
+
+	$name = mysql_insert_id(); //ermittelt die ID des gespeicherten Record
+
+	mysql_close($db);
+
+	$imagepath = realpath("./BILDER")."/";
+	$file_name = $name.$fileendung;
+	echo"<br>";
+	echo "temp: ".$_FILES['bild']['tmp_name'];
+	echo"<br>";
+	echo "move: ".$imagepath.$file_name;
+	echo"<br>";
+	echo "type: ".$_FILES['bild']['type'];
+	if(move_uploaded_file ($_FILES['bild']['tmp_name'],$imagepath.$file_name) )
+	{
+		tumb_erzeugen($file_name,$imagepath,100,50,$_FILES['bild']['type']);
+	}
+};
 
 
-function print_maske($id,$ID,$next,$erf,$TAG)
+function update($row)
+{
+	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
+	global $TABLE;
+
+	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+	or die("Fehler beim verbinden!");
+	$result = mysql_list_fields($DB_NAME,$TABLE)  or die("Query ERF...");
+	$field_num = mysql_num_fields($result);
+	for ($i=0; $i<$field_num; $i++)
+	{
+		$field_name[$i] =  mysql_field_name ($result, $i);
+	}
+	$q ="update $TABLE  SET ";
+	$q = $q."$field_name[1]=\"$row[1]\" ";
+	for ($i=2; $i<$field_num; $i++)
+	{
+		$q = $q.",$field_name[$i]=\"$row[$i]\" ";
+	};
+	$q = $q."where id=\"$row[0]\" ";
+
+	//  echo $q;
+	if (mysql_select_db($DB_NAME) != TRUE) {
+		echo "Fehler DB";
+	};
+	/**/
+	$result = mysql_query($q) or die("update Fehler....$q.");
+	/**/
+	mysql_close($db);
+
+};
+
+
+function delete($id)
+{
+	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
+	global $TABLE;
+
+	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)     or die("Fehler beim verbinden!");
+
+	if (mysql_select_db($DB_NAME) != TRUE) {
+		echo "Fehler DB";
+	};
+	/**/
+	$q = "delete from $TABLE where id=\"$id\" ";
+	//  echo $q;
+	$result = mysql_query($q) or die("Delete Fehler....$q.");
+	/**/
+	mysql_close($db);
+
+};
+
+
+function print_bearb($id,$ID,$next,$erf,$TAG)
 {
 	//==========================================================================
 	// Function     :  print_maske
@@ -463,6 +608,123 @@ function print_maske($id,$ID,$next,$erf,$TAG)
 
 };
 
+
+function print_erf($id,$ID,$next,$TAG,$LISTE)
+{
+	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+	global $TABLE;
+	global $TABLE1;
+	global $PHP_SELF;
+
+	     // ERFASSEN MODUS - Referenz auf Bildergruppe (Bilder_Topic)
+		$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+		or die("Fehler beim verbinden!");
+
+		mysql_select_db($DB_NAME);
+
+		$q = "select id,name,tag,sort from $TABLE1 where tag=\"$TAG\" order by tag,sort";
+		$result1 = mysql_query($q) or die("Query ERF TABLE 1");
+
+		//  Felder = ID,tag,sort,lfd,name,beschreibung,link
+		$q = "select * from $TABLE where id=0";
+		$result = mysql_query($q) or die("Query ERF TABLE");
+
+		mysql_close($db);
+
+		$row = mysql_fetch_array ($result);
+		$field_num = mysql_num_fields($result);
+	
+
+		//Daten bereich
+  $style = $GLOBALS['style_datalist'];
+  echo "<div $style >";
+  echo "<!--  DATEN Spalte   -->\n";
+
+	echo "<FORM ACTION=\"$PHP_SELF?md=11&ID=$ID\" METHOD=POST enctype=\"multipart/form-data\">\n";
+	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"2\">\n";
+	echo "<INPUT TYPE=\"hidden\" NAME=\"ID\" VALUE=\"$ID\">\n";
+	echo "<INPUT TYPE=\"hidden\" NAME=\"TAG\"  VALUE=\"$TAG\">\n";
+	echo "<INPUT TYPE=\"hidden\" NAME=\"LISTE\"  VALUE=\"$LISTE\">\n";
+
+	echo "<TABLE WIDTH=\"400\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"2\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\"
+			BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
+	echo "\t<tr>\n";
+	echo "\t<td width=100></td>\n";
+  echo "\t<td><center><b>NEUE BILDER</b></td>\n";
+	echo "\t</tr>\n";
+	for ($i=0; $i<$field_num; $i++)
+	{
+		$field_name[$i] =  mysql_field_name ($result, $i);
+		$type[$i]       =  mysql_field_type ($result, $i);
+		$len[$i]        =  mysql_field_len  ($result,$i);
+
+	}
+
+	//  Felder = ID,tag,sort,lfd,name,beschreibung,link
+	for ($i=1; $i<$field_num; $i++)
+	{
+		if ($type[$i]=="date") {
+			$len[$i] = 10;
+		}
+		if ($type[$i]=="int") {
+			$len[$i] = 5;
+		}
+
+		switch($i):
+		case 1 :   // Feld ersetzen durch auswahltabelle
+		echo "<tr>";
+		$row1 = mysql_fetch_row($result1);
+		echo "\t<td width=100>Tag&nbsp;</td>\n";
+		echo "<td><input type=\"text\" name=\"row[$i]\" SIZE=$len[$i] MAXLENGTH=$len[$i] VALUE=\"$TAG\" READONLY> $row1[1]</td>\n";
+		echo "</tr>\n";
+		break;
+		case 6 :
+				echo "<tr>";
+				echo "<td>\n";
+    		echo "<!-- MAX_FILE_SIZE muss vor dem Dateiupload Input Feld stehen -->";
+    		echo "<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"160000\" >";
+				echo "<!-- Der Name des Input Felds bestimmt den Namen im $ _ FILES Array -->";
+//    		echo "Diese Datei hochladen: <input name="userfile" type="file" />"
+				echo "</td>\n";
+				echo "<td>\n";
+				echo "\t<input type=file name=bild accept=image/*>\n";
+				echo "  <b>max 150kb Bildgröße</b>";
+				echo "</td>\n";
+				echo "</tr>";
+			break;
+		default:
+			if ($type[$i]!="blob")
+			{
+				echo "<tr>";
+				echo "<td width=100>$field_name[$i]&nbsp;</td>\n";
+				echo "<td><input type=\"text\" name=\"row[$i]\" SIZE=$len[$i] MAXLENGTH=$len[$i] VALUE=\"$row[$i]\"></td>\n";
+				echo "</tr>";
+			} else
+			{
+				echo "<tr>";
+				echo "<td><b></b></td>\n";
+				echo "<td><TEXTAREA NAME=\"row[$i]\" COLS=50 ROWS=12>$row[$i]</TEXTAREA>&nbsp;</td>\n";
+				echo "</tr>";
+			}
+			break;
+			endswitch;
+	}
+
+	echo "<tr>\n";
+	echo "<td></td>\n";
+	echo "<td> <INPUT TYPE=\"SUBMIT\" VALUE=\"SPEICHERN\">
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<INPUT TYPE=\"RESET\" VALUE=\"ABBRECHEN\">
+			</td>\n";
+	echo "</tr>\n";
+
+	echo "</table>";
+  
+  echo '</div>';
+  echo "<!--  ENDE DATEN Spalte   -->\n";
+			
+};
+
 function make_bild_menu($ID)
 //==========================================================================
 // Function     :  make_bild_menu
@@ -530,6 +792,11 @@ $TAG   = GET_TAG("1");
 $LISTE = GET_LISTE("");
 $ID    = GET_SESSIONID("");
 
+$p_md   = POST_md(0);
+$p_id 	= POST_id(0);
+$p_row 	= POST_row("");
+$p_bild = POST_bild("");
+
 session_id ($ID);
 session_start($ID);
 $user       = $_SESSION["user"];
@@ -544,6 +811,20 @@ if ($ID == "")
   exit;  // Sicher stellen, das nicht trotz Umleitung nachfolgender
   // Code ausgeführt wird.
 }
+
+switch($p_md):
+case mfd_insert: // Insert -> Erfassen
+	insert($p_row,$p_bild);
+  break;
+case mfd_update: // Insert -> Erfassen
+	update($mfd_list, $p_row);
+	break;
+case mfd_delete: // Delete => Loeschen
+	delete($mfd_list, $p_row[0]);
+	break;
+default: //
+	break;
+endswitch;
 
 print_header("Interner Bereich");
 print_body(2);
@@ -566,6 +847,27 @@ case 0:  // MAIN-Menu
     $daten='pages/main_bild_base.html';
     print_data($daten);
 break;
+case 1: // Erfassen eines neuen Datensatzes
+	$menu = array (0=>array("icon" => "99","caption" => "ERFASSEN","link" => ""),
+	2=>array("icon" => "6","caption" => "Zurück","link" => "$PHP_SELF?md=11&ID=$ID&TAG=$TAG&LISTE=$LISTE")
+	);
+	print_menu($menu);
+	print_erf($id,$ID,11,$TAG,$LISTE);
+	//print_maske($id,$ID,5,1,$TAG,$LISTE);
+	break;
+case 3: // Delete eines bestehenden Datensatzes
+	$menu = array (0=>array("icon" => "99","caption" => "LÖSCHEN","link" => ""),
+	9=>array("icon" => "6","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG&LISTE=$LISTE")
+	);
+	print_menu($menu);
+	break;
+case 4: // Bearbeiten Form
+	$menu = array (0=>array("icon" => "99","caption" => "BEARBEITEN","link" => ""),
+	2=>array("icon" => "6","caption" => "Zurück","link" => "$PHP_SELF?md=11&ID=$ID&TAG=$TAG&LISTE=$LISTE")
+	);
+	print_menu($menu);
+	print_maske($id,$ID,6,0,$TAG,$LISTE);
+	break;
 case 2: // ANSEHEN Form
 	$menu = array (0=>array("icon" => "99","caption" => "ANSEHEN","link" => ""),
 	2=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=11&ID=$ID&TAG=$TAG&LISTE=$LISTE")
@@ -575,6 +877,7 @@ case 2: // ANSEHEN Form
 	break;
 case 11:  // die einzelnen Bildseiten 11-xx
 	$menu = array (0=>array("icon" => "99","caption" => "$LISTE","link" => ""),
+	2=>array("icon" => "11","caption" => "Erfassen","link" => "$PHP_SELF?md=1&ID=$ID&TAG=$TAG&LISTE=$LISTE"),
 	8=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
 	);
 	print_menu($menu);
