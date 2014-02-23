@@ -277,35 +277,18 @@ function print_info($id,$ID,$TAG,$LISTE)
 };
 
 function insert($row,$bild)
-//==========================================================================
-// Function     :  insert
-//--------------------------------------------------------------------------
-// Beschreibun  :  Fügt einen Datensatz in eine Tabelle ein
-//                 Die Daten liegen als Array vor
-//                 die Spalten sind identisch mit
-//                 den Feldern der Tabelle.
-//                 Ebenso die Reihemfolge der Felder !
-//                 Ref_Tabelle >bilder_topic>
-//                 Ref_ID = row[1] <tag>
-//                          bestimmt path von img
-//
-// Argumente    :  $row = zu speichernde Daten
-//                 $bild = image des Bildes
-//
-// Returns      :  --
-//==========================================================================
 {
-	global $DB_HOST, $DB_USER, $DB_PASS,$DB_NAME;
+  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $TABLE;
 	global $TABLE1;
 
-	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
-
+	
 	//--- REFERENZ auf bilder_topic -------------------------------------------
-	$q = "select * from $TABLE1 where tag=\"$row[1]\"";
-	$result1 = mysql_query($q) or die("Query TABLE_1/$row[1]");
-	$row1 = mysql_fetch_row($result1);
-	$row[1] = $row1[2];
+// 	$q = "select * from $TABLE1 where tag=\"$row[1]\"";
+// 	$result1 = mysql_query($q) or die("Query $TABLE_1/$row[1]");
+// 	$row1 = mysql_fetch_row($result1);
+// 	$row[1] = $row1[2];
+	echo "tag:".$row[1];
 	$fileendung = ".xxx";
 	if ($_FILES['bild']['type'] == 'image/gif')
 	{
@@ -324,9 +307,13 @@ function insert($row,$bild)
 		$fileendung = ".png";
 	}
 	$row[6] = $fileendung;
-
+	echo "ext:".$fileendung;
+	
 	//--- Felder von bilder ermitteln ------------------------------------------
-	$result = mysql_list_fields($DB_NAME,$TABLE)  or die("Query ERF...");
+	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
+	$q = "SHOW COLUMNS FROM $TABLE;";
+	$result = mysql_query($q,$db)  or die("Query ERF...");
+	
 	$field_num = mysql_num_fields($result);
 	for ($i=0; $i<$field_num; $i++)
 	{
@@ -349,12 +336,12 @@ function insert($row,$bild)
 	if (mysql_select_db($DB_NAME) != TRUE) {
 		echo "Fehler DB";
 	};
-	$result = mysql_query($q) or die("InsertFehler....$q.");
+	$result = mysql_query($q,$db) or die("InsertFehler....$q.");
 
 	$name = mysql_insert_id(); //ermittelt die ID des gespeicherten Record
 
 	mysql_close($db);
-
+  echo "id:".$name;
 	$imagepath = realpath("./BILDER")."/";
 	$file_name = $name.$fileendung;
 	echo"<br>";
@@ -640,8 +627,8 @@ function print_erf($id,$ID,$next,$TAG,$LISTE)
   echo "<div $style >";
   echo "<!--  DATEN Spalte   -->\n";
 
-	echo "<FORM ACTION=\"$PHP_SELF?md=11&ID=$ID\" METHOD=POST enctype=\"multipart/form-data\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"2\">\n";
+	echo "<FORM ACTION=\"$PHP_SELF?md=$next&ID=$ID\" METHOD=POST enctype=\"multipart/form-data\">\n";
+	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"".mfd_insert."\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"ID\" VALUE=\"$ID\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"TAG\"  VALUE=\"$TAG\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"LISTE\"  VALUE=\"$LISTE\">\n";
@@ -672,11 +659,11 @@ function print_erf($id,$ID,$next,$TAG,$LISTE)
 
 		switch($i):
 		case 1 :   // Feld ersetzen durch auswahltabelle
-		echo "<tr>";
-		$row1 = mysql_fetch_row($result1);
-		echo "\t<td width=100>Tag&nbsp;</td>\n";
-		echo "<td><input type=\"text\" name=\"row[$i]\" SIZE=$len[$i] MAXLENGTH=$len[$i] VALUE=\"$TAG\" READONLY> $row1[1]</td>\n";
-		echo "</tr>\n";
+    		echo "<tr>";
+    		$row1 = mysql_fetch_row($result1);
+    		echo "\t<td width=100>Tag&nbsp;</td>\n";
+    		echo "<td><input type=\"text\" name=\"row[$i]\" SIZE=$len[$i] MAXLENGTH=$len[$i] VALUE=\"$TAG\" READONLY> $row1[1]</td>\n";
+    		echo "</tr>\n";
 		break;
 		case 6 :
 				echo "<tr>";
@@ -840,11 +827,12 @@ $TABLE1 = "bilder_topic";
 
 //print_md();
 
+echo "p_md:".$p_md;
 switch ($md):
 case 0:  // MAIN-Menu
 	$menu = make_bild_menu($ID);
-    print_menu($menu);
-    $daten='pages/main_bild_base.html';
+   print_menu($menu);
+   $daten='pages/main_bild_base.html';
     print_data($daten);
 break;
 case 1: // Erfassen eines neuen Datensatzes
