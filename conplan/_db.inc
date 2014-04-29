@@ -10,10 +10,10 @@
  * Am leichtesten geht dies durch ausklammern
  */
 // DB-Verbindung
-$DB_HOST='127.0.0.1';	// dies ist WICHTIG !!!!
+$DB_HOST='192.168.5.173';	// dies ist WICHTIG !!!!
 $DB_NAME='db451197603';		//
 $DB_USER='root';			// Achtung user muss vorhanden sein und die rechte auf die DB haben
-$DB_PASS='';				// !!
+$DB_PASS='_root';				// !!
 
 // $DB_HOST='db451197603.db.1and1.com';
 // $DB_NAME='db451197603';

@@ -1517,7 +1517,7 @@ function tumb_erzeugen($bild_url,$zieldir,$max_x,$max_y,$type)
 
 	$PicPathIn=$zieldir; // Dein Verzeichnis des Original Bildes z.B.bilder/
 	//	$PicPathOut=realpath($zieldir."thumb")."/"; // Dein Tumb Ziel Verzeichnis
-	$PicPathOut=realpath($GLOBALS['path_thumbnail']); // Dein Tumb Ziel Verzeichnis
+	$PicPathOut=$zieldir."/thumb"; //realpath($GLOBALS['path_thumbnail']); // Dein Tumb Ziel Verzeichnis
 
 	if ($max_x == 0) {
 		$max_x = 100;
@@ -1534,6 +1534,7 @@ function tumb_erzeugen($bild_url,$zieldir,$max_x,$max_y,$type)
 	//  echo "<br>";
 	//  echo " TYPE: $type";
 
+	echo ("thumb_ereugen ".$type);
 	if(!file_exists($PicPathIn . $bild_url))
 	{
 		/* Erzeugen eines leeren Bildes */

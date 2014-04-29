@@ -182,7 +182,7 @@ $anrede["formel"] = "Sei gegrüsst Meister ";
 print_kopf($admin_typ,$header_typ,"MFD Editor",$anrede,$menu_item);
 
 // fuer die Tabellen Operationen
-$ref_mfd = "kalender";
+$ref_mfd = "bilder_topic";
 $mfd_list=get_mfd($ref_mfd);
 $mfd_cols = get_mfd_cols($ref_mfd);
 
@@ -254,8 +254,7 @@ default: // main
 
   switch ($md):
 case mfd_add:
-//     echo "Add Maske";
-    print_mfd_erf($id, $ID, $mfd_list, $mfd_cols, $daten);
+    echo "Add Maske";
   break;
 case mfd_edit:
   print_mfd_edit($id, $ID, $mfd_list, $mfd_cols,$daten);

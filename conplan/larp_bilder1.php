@@ -116,13 +116,16 @@ function print_liste($ID,$TAG,$LISTE)
 	mysql_close($db);
 
 
-	echo "  <TD\n>"; //Daten bereich der Gesamttabelle
-
+  $style = "imgtable";
+  echo "<div $style >";
+  echo "<!--  DATEN Spalte   -->\n";
+	
 	//  echo "<table border=0 BGCOLOR=\"\">\n";
-	echo "\t <TABLE  BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"1\" >\n";
-
+// 	echo "\t <TABLE  BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"1\" >\n";
+	echo "\t <TABLE Border=\"1\"  >\n";
+	
 	// Kopfzeile
-	echo "<hr>\n";
+// 	echo "<hr>\n";
 	//Liste der Datensätze
 	while ($row = mysql_fetch_row($result))
 	{
@@ -189,8 +192,9 @@ function print_liste($ID,$TAG,$LISTE)
 		// Spalet 3
 	}
 	echo "</table>";
-	echo " </TD\n>"; //ENDE Daten bereich der Gesamttabelle
-
+  echo '</div>';
+  echo "<!--  ENDE DATEN Spalte   -->\n";
+	
 };
 
 function print_info($id,$ID,$TAG,$LISTE)
@@ -248,8 +252,13 @@ function print_info($id,$ID,$TAG,$LISTE)
 	echo "\t<td width=30>$row[3]</td>\n";
 	echo "\t<td>$row[4]</td>\n";
 	echo "\t<td>\n";
+	echo "\t<a href=\"$PHP_SELF?md=4&id=$id&ID=$ID&TAG=$TAG&LISTE=$LISTE\"> \n";
+	print_menu_icon ("_edit","Bearbeiten");
+	echo "\t</a>\n";
+	echo "\t</td>\n";
+	echo "\t<td>\n";
 	echo "\t<a href=\"$PHP_SELF?md=11&ID=$ID&TAG=$TAG&LISTE=$LISTE\"> \n";
-	print_menu_icon ("_stop");
+	print_menu_icon ("_stop", "Zurück");
 	echo "\t</a>\n";
 	echo "\t</td>\n";
 	echo "</tr>";
@@ -278,10 +287,10 @@ function print_info($id,$ID,$TAG,$LISTE)
 
 function insert($row,$bild)
 {
-  global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
+	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $TABLE;
-	global $TABLE1;
-
+	global $PHP_SELF;
+  	
 	
 	//--- REFERENZ auf bilder_topic -------------------------------------------
 // 	$q = "select * from $TABLE1 where tag=\"$row[1]\"";
@@ -307,18 +316,27 @@ function insert($row,$bild)
 		$fileendung = ".png";
 	}
 	$row[6] = $fileendung;
-	echo "ext:".$fileendung;
+	echo "|ext:".$fileendung;
 	
 	//--- Felder von bilder ermitteln ------------------------------------------
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
-	$q = "SHOW COLUMNS FROM $TABLE;";
-	$result = mysql_query($q,$db)  or die("Query ERF...");
+// 	$q = "SHOW COLUMNS FROM $TABLE";
+// 	$result = mysql_query($q) or die("|Fehler Query ERF... $q");
 	
-	$field_num = mysql_num_fields($result);
-	for ($i=0; $i<$field_num; $i++)
-	{
-		$field_name[$i] =  mysql_field_name ($result, $i);
-	}
+// 	$field_num = mysql_num_fields($result);
+// 	for ($i=0; $i<$field_num; $i++)
+// 	{
+// 		$field_name[$i] =  mysql_field_name ($result, $i);
+// 	}
+	$field_num = 7;
+	$field_name[0] = "ID";
+	$field_name[1] = "tag";
+	$field_name[2] = "sort";
+	$field_name[3] = "lfd";
+	$field_name[4] = "Name";
+	$field_name[5] = "beschreibung";
+	$field_name[6] = "imgtype";
+	
 	$q ="insert INTO  $TABLE  (";
 	$q = $q."$field_name[1]";
 	for ($i=2; $i<$field_num; $i++)
@@ -364,12 +382,21 @@ function update($row)
 
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
 	or die("Fehler beim verbinden!");
-	$result = mysql_list_fields($DB_NAME,$TABLE)  or die("Query ERF...");
-	$field_num = mysql_num_fields($result);
-	for ($i=0; $i<$field_num; $i++)
-	{
-		$field_name[$i] =  mysql_field_name ($result, $i);
-	}
+// 	$result = mysql_list_fields($DB_NAME,$TABLE)  or die("Query ERF...");
+// 	$field_num = mysql_num_fields($result);
+// 	for ($i=0; $i<$field_num; $i++)
+// 	{
+// 		$field_name[$i] =  mysql_field_name ($result, $i);
+// 	}
+	$field_num = 7;
+	$field_name[0] = "ID";
+	$field_name[1] = "tag";
+	$field_name[2] = "sort";
+	$field_name[3] = "lfd";
+	$field_name[4] = "Name";
+	$field_name[5] = "beschreibung";
+	$field_name[6] = "imgtype";
+	
 	$q ="update $TABLE  SET ";
 	$q = $q."$field_name[1]=\"$row[1]\" ";
 	for ($i=2; $i<$field_num; $i++)
@@ -410,29 +437,22 @@ function delete($id)
 };
 
 
-function print_bearb($id,$ID,$next,$erf,$TAG)
+function print_bearb($id,$ID,$next,$TAG,$LISTE)
 {
 	//==========================================================================
-	// Function     :  print_maske
+	// Function     :  print_bearb
 	//--------------------------------------------------------------------------
 	// Beschreibung : Bearbeiten der Felder der Tabelle <bilder>
 	//                Die Abfrage MUSS alle Felder beinhalten
 	//                linke Spalte = Feldnamem
 	//                rechte Spalte = Feld
-	//
 	//                Button = SUBMIT und CANCEL
 	//                Durch Switch auf die Feldnummer wird die Maske
 	//                individuell gestaltet.
 	//
-	//                durch $next kann die Maske sowohl für Erfassen als auch
-	//                Bearbeiten benutzt werden.
-	//
 	// Argumente    : $ID = Session_ID
 	//                $id   beinhaltet den zu bearbeitenden Datensatz
 	//                $next beinhaltet die nächste zu rufende Funktion
-	//                $erf  steurt die Variablen initialisierung
-	//                      0 = Bearbeiten der Daten
-	//                      1 = Erfassen neuer Daten
 	//                $TAG  referenziert die Kategorie
 	//
 	// Returns      : --
@@ -441,76 +461,53 @@ function print_bearb($id,$ID,$next,$erf,$TAG)
 	global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
 	global $TABLE;
 	global $TABLE1;
+	global $PHP_SELF;
+	
+  // BEARBEITEN-Modus  selectierten Datensatz lesen
+  $db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
+  or die("Fehler beim verbinden!");
+  
+  mysql_select_db($DB_NAME);
+  
+  //  Felder = ID,tag,sort,lfd,name,beschreibung,link
+  
+  $q = "select * from $TABLE where id=$id";
+  $result = mysql_query($q) or die("Query BEARB.");
+  
+  mysql_close($db);
+  
+  $field_num = mysql_num_fields($result);
+  //
+  $row = mysql_fetch_array ($result);
+  $len = mysql_fetch_row($result);
+  
 
-	if ($erf == 0 )
-	{    // BEARBEITEN-Modus  selectierten Datensatz lesen
-		$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-		or die("Fehler beim verbinden!");
-
-		mysql_select_db($DB_NAME);
-
-		//  Felder = ID,tag,sort,lfd,name,beschreibung,link
-
-		$q = "select * from $TABLE where id=$id";
-		$result = mysql_query($q) or die("Query BEARB.");
-
-		mysql_close($db);
-
-		$field_num = mysql_num_fields($result);
-		//
-		$row = mysql_fetch_array ($result);
-		$len = mysql_fetch_row($result);
-
-	} else
-	{     // ERFASSEN MODUS - Referenz auf Bildergruppe (Bilder_Topic)
-		$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS)
-		or die("Fehler beim verbinden!");
-
-		mysql_select_db($DB_NAME);
-
-		$q = "select id,name,tag,sort from $TABLE1 where tag=\"$TAG\" order by tag,sort";
-		$result1 = mysql_query($q) or die("Query ERF TABLE 1");
-
-		//  Felder = ID,tag,sort,lfd,name,beschreibung,link
-		$q = "select * from $TABLE where id=0";
-		$result = mysql_query($q) or die("Query ERF TABLE");
-
-		mysql_close($db);
-
-		$row = mysql_fetch_array ($result);
-		$field_num = mysql_num_fields($result);
-	}
-
-	echo "  <TD>\n";  //Daten bereich der Gesamttabelle
-
-	echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST enctype=\"multipart/form-data\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"$next\">\n";
+  $style = $GLOBALS['style_datalist'];
+  echo "<div $style >";
+  echo "<!--  DATEN Spalte   -->\n";
+  
+	echo "<FORM ACTION=\"$PHP_SELF?md=$next&ID=$ID&TAG=$TAG\" METHOD=POST enctype=\"multipart/form-data\">\n";
+// 	echo "<FORM ACTION=\"$PHP_SELF\" METHOD=POST enctype=\"multipart/form-data\">\n";
+	echo "<INPUT TYPE=\"hidden\" NAME=\"md\" VALUE=\"".mfd_update."\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"ID\" VALUE=\"$ID\">\n";
-	echo "<INPUT TYPE=\"hidden\" NAME=\"row[0]\"   VALUE=\"$id\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"TAG\"  VALUE=\"$TAG\">\n";
-
+	echo "<INPUT TYPE=\"hidden\" NAME=\"LISTE\"  VALUE=\"$LISTE\">\n";
+	
 	echo "<TABLE WIDTH=\"400\" BORDER=\"1\"  CELLPADDING=\"1\" CELLSPACING=\"2\" BGCOLOR=\"\" BORDERCOLOR=\"#EDDBCB\"
 			BORDERCOLORDARK=\"silver\" BORDERCOLORLIGHT=\"#ECD8C6\">\n";
 	echo "\t<tr>\n";
 	echo "\t<td width=100></td>\n";
-	if ($erf == 0 )
-	{    // BEARBEITEN-Modus  selectierten Datensatz lesen
+	    // BEARBEITEN-Modus  selectierten Datensatz lesen
 		echo "\t<td><center><b>BEARBEITEN BILDER</b></td>\n";
-	}else
-	{
-		echo "\t<td><center><b>NEUE BILDER</b></td>\n";
-	}
 	echo "\t</tr>\n";
 	for ($i=0; $i<$field_num; $i++)
 	{
 		$field_name[$i] =  mysql_field_name ($result, $i);
 		$type[$i]       =  mysql_field_type ($result, $i);
 		$len[$i]        =  mysql_field_len  ($result,$i);
-
 	}
-
 	//  Felder = ID,tag,sort,lfd,name,beschreibung,link
-	for ($i=1; $i<$field_num; $i++)
+	for ($i=0; $i<$field_num; $i++)
 	{
 		if ($type[$i]=="date") {
 			$len[$i] = 10;
@@ -520,49 +517,26 @@ function print_bearb($id,$ID,$next,$erf,$TAG)
 		}
 
 		switch($i):
+		case 0 :   // Feld ersetzen durch auswahltabelle
+			echo "<tr>";
+			echo "\t<td width=100>$field_name[$i]&nbsp;</td>\n";
+      echo "<td>";
+      echo "<INPUT TYPE=\"TEXT\" NAME=\"row[0]\" SIZE=$len[$i] MAXLENGTH=$len[$i] readonly VALUE=\"$row[$i]\">\n";
+      echo "</td>";
+// 			echo "<td><input type=\"text\" name=\"row[$i]\" SIZE=$len[$i] MAXLENGTH= readonly VALUE=\"$row[$i]\"></td>\n";
+		  echo "</tr>\n";
+		break;
 		case 1 :   // Feld ersetzen durch auswahltabelle
 			echo "<tr>";
-		if ($erf == 1)  // NUR beim erfassen aktivieren
-		{
-			$row1 = mysql_fetch_row($result1);
-			echo "\t<td width=100>Tag&nbsp;</td>\n";
-			echo "<td><input type=\"text\" name=\"row[$i]\" SIZE=$len[$i] MAXLENGTH=$len[$i] VALUE=\"$TAG\" READONLY> $row1[1]</td>\n";
-			/*
-			 echo "\t<td> \n";
-			echo "\t<SELECT NAME=\"row[$i]\"><BR>\n";
-			// Auswahltabelle kommt aus Tabelle  <bilder_topic>
-			$row1 = mysql_fetch_row($result1);
-			while ($row1 = mysql_fetch_row($result1))
-			{
-			echo "\t<OPTION VALUE=\"$row1[0]\">$row1[1]<BR> \n";
-			}
-			echo "\t</SELECT>\n";
-			echo "\t</td \n";
-			*/
-		} else
-		{
 			echo "\t<td width=100>$field_name[$i]&nbsp;</td>\n";
 			echo "<td><input type=\"text\" name=\"row[$i]\" SIZE=$len[$i] MAXLENGTH=$len[$i] VALUE=\"$row[$i]\"></td>\n";
-		}
-		echo "</tr>\n";
+		  echo "</tr>\n";
 		break;
 		case 6 :
-			if ($erf == 1)  // NUR beim erfassen aktivieren
-			{
-				echo "<tr>";
-				echo "<td>\n";
-				echo "</td>\n";
-				echo "<td>\n";
-				echo "\t<input type=file name=bild accept=image/*>\n";
-				echo "</td>\n";
-				echo "</tr>";
-			} else
-			{
 				echo "<tr>";
 				echo "<td width=100>$field_name[$i]&nbsp;</td>\n";
 				echo "<td><input type=\"text\" name=\"row[$i]\" SIZE=$len[$i] MAXLENGTH=$len[$i]  VALUE=\"$row[$i]\"></td>\n";
 				echo "</tr>";
-			}
 			break;
 		default:
 			if ($type[$i]!="blob")
@@ -588,11 +562,13 @@ function print_bearb($id,$ID,$next,$erf,$TAG)
 			&nbsp;&nbsp;&nbsp;&nbsp;
 			<INPUT TYPE=\"RESET\" VALUE=\"ABBRECHEN\">
 			</td>\n";
+	
 	echo "</tr>\n";
 
 	echo "</table>";
-	echo "  </TD>\n"; //ENDE  Datenbereich der Gesamttabelle
-
+  echo '</div>';
+  echo "<!--  ENDE DATEN Spalte   -->\n";
+	
 };
 
 
@@ -627,7 +603,7 @@ function print_erf($id,$ID,$next,$TAG,$LISTE)
   echo "<div $style >";
   echo "<!--  DATEN Spalte   -->\n";
 
-	echo "<FORM ACTION=\"$PHP_SELF?md=$next&ID=$ID\" METHOD=POST enctype=\"multipart/form-data\">\n";
+	echo "<FORM ACTION=\"$PHP_SELF?md=$next&ID=$ID&TAG=$TAG\" METHOD=POST enctype=\"multipart/form-data\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"md\"   VALUE=\"".mfd_insert."\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"ID\" VALUE=\"$ID\">\n";
 	echo "<INPUT TYPE=\"hidden\" NAME=\"TAG\"  VALUE=\"$TAG\">\n";
@@ -799,15 +775,19 @@ if ($ID == "")
   // Code ausgeführt wird.
 }
 
+$TABLE = "bilder";
+$TABLE1 = "bilder_topic";
+
 switch($p_md):
 case mfd_insert: // Insert -> Erfassen
-	insert($p_row,$p_bild);
+  	insert($p_row,$p_bild);
   break;
 case mfd_update: // Insert -> Erfassen
-	update($mfd_list, $p_row);
+  echo "Update";
+	update($p_row);
 	break;
 case mfd_delete: // Delete => Loeschen
-	delete($mfd_list, $p_row[0]);
+	delete($p_row[0]);
 	break;
 default: //
 	break;
@@ -822,19 +802,11 @@ $menu_item = $menu_item_help;
 $anrede["name"] = $spieler_name;
 print_kopf($logo_typ,$header_typ,"Intern",$anrede,$menu_item);
 
-$TABLE = "bilder";
-$TABLE1 = "bilder_topic";
 
 //print_md();
 
-echo "p_md:".$p_md;
+// echo "md:".$md;
 switch ($md):
-case 0:  // MAIN-Menu
-	$menu = make_bild_menu($ID);
-   print_menu($menu);
-   $daten='pages/main_bild_base.html';
-    print_data($daten);
-break;
 case 1: // Erfassen eines neuen Datensatzes
 	$menu = array (0=>array("icon" => "99","caption" => "ERFASSEN","link" => ""),
 	2=>array("icon" => "6","caption" => "Zurück","link" => "$PHP_SELF?md=11&ID=$ID&TAG=$TAG&LISTE=$LISTE")
@@ -854,7 +826,7 @@ case 4: // Bearbeiten Form
 	2=>array("icon" => "6","caption" => "Zurück","link" => "$PHP_SELF?md=11&ID=$ID&TAG=$TAG&LISTE=$LISTE")
 	);
 	print_menu($menu);
-	print_maske($id,$ID,6,0,$TAG,$LISTE);
+	print_bearb($id,$ID,11,$TAG,$LISTE);
 	break;
 case 2: // ANSEHEN Form
 	$menu = array (0=>array("icon" => "99","caption" => "ANSEHEN","link" => ""),
@@ -865,17 +837,19 @@ case 2: // ANSEHEN Form
 	break;
 case 11:  // die einzelnen Bildseiten 11-xx
 	$menu = array (0=>array("icon" => "99","caption" => "$LISTE","link" => ""),
-	2=>array("icon" => "11","caption" => "Erfassen","link" => "$PHP_SELF?md=1&ID=$ID&TAG=$TAG&LISTE=$LISTE"),
+	2=>array("icon" => "_tadd","caption" => "Neu","link" => "$PHP_SELF?md=1&ID=$ID&TAG=$TAG&LISTE=$LISTE"),
 	8=>array("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&ID=$ID&TAG=$TAG")
 	);
 	print_menu($menu);
 	print_liste($ID,$TAG,$LISTE);
 	break;
 default:  // die einzelnen Bildseiten 11-xx
-	$menu = make_bild_menu();
-	print_menu($menu);
-	print_main();
-	break;
+// 	case 0:  // MAIN-Menu
+	$menu = make_bild_menu($ID);
+   print_menu($menu);
+   $daten='pages/main_bild_base.html';
+    print_data($daten);
+break;
 	endswitch;
 
 	//print_md_ende();
