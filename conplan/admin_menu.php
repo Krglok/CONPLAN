@@ -65,7 +65,7 @@ function print_sub_list($ID,$sub)
   echo "<!--  MENU Spalte   -->\n";
 
   if (!$result) {
-    $message  = 'Invalid query: ' . mysql_error() . "\n";
+    $message  = 'Menu Item Invalid query: ' . mysql_error() . "\n";
     $message .= 'Whole query: ' . $q;
     die($message);
 

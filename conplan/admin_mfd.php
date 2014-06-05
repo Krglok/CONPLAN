@@ -179,12 +179,14 @@ $anrede["formel"] = "Sei gegrüsst Meister ";
 
 print_kopf($admin_typ,$header_typ,"MFD Konfigurator",$anrede,$menu_item);
 
-$bereich = "PUBLIC";
-$sub     = "main";
-$item		 = "regeln";
+// $bereich = "PUBLIC";
+// $sub     = "main";
+// $item		 = "regeln";
 
 // fuer die Tabellen Operationen
 $mfd_list = make_mfd_table("mfd_list", "mfd_list");
+$mfd_list['order'] = "mfd_name,id";
+
 // Fuer die Anzeige Listen
 $mfd_cols = make_mfd_cols_default($mfd_list['table'], $mfd_list['mfd']);
 

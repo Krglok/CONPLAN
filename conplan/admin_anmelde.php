@@ -182,7 +182,7 @@ $anrede["formel"] = "Sei gegrüsst Meister ";
 print_kopf($admin_typ,$header_typ,"MFD Editor",$anrede,$menu_item);
 
 // fuer die Tabellen Operationen
-$ref_mfd = "kalender";
+$ref_mfd = "con_anmeld";
 $mfd_list=get_mfd($ref_mfd);
 $mfd_cols = get_mfd_cols($ref_mfd);
 
@@ -214,35 +214,35 @@ default: //
 
   switch ($md):
 case mfd_add: // erfassen
-    $menu = array (0=>array("icon" => "7","caption" => "Kalender","link" => ""),
+    $menu = array (0=>array("icon" => "7","caption" => "Anmeldung","link" => ""),
         1=>array("icon" => "1","caption" =>$ref_mfd, "link" => ""),
         2=>array("icon" => "1","caption" => "NEU","link" => ""),
         9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink()."")
     );
     break;
 case mfd_edit:  //Bearbeiten
-  $menu = array (0=>array("icon" => "7","caption" => "Kalender","link" => ""),
+  $menu = array (0=>array("icon" => "7","caption" => "Anmeldung","link" => ""),
   1=>array("icon" => "1","caption" =>$ref_mfd, "link" => ""),
   2=>array("icon" => "1","caption" => " EDIT ","link" => ""),
   9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink()."")
   );
   break;
 case mfd_del: //
-  $menu = array (0=>array("icon" => "7","caption" => "Kalender","link" => ""),
+  $menu = array (0=>array("icon" => "7","caption" => "Anmeldung","link" => ""),
   1=>array("icon" => "1","caption" =>$ref_mfd, "link" => ""),
   2=>array("icon" => "1","caption" => "DELETE","link" => ""),
   9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink()."")
   );
   break;
 case mfd_info: //
-  $menu = array (0=>array("icon" => "7","caption" => "Kalender","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink().""),
+  $menu = array (0=>array("icon" => "7","caption" => "Anmeldung","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink().""),
   1=>array("icon" => "1","caption" =>$ref_mfd, "link" => ""),
   2=>array("icon" => "1","caption" => "MASKE","link" => ""),
   9=>array ("icon" => "_stop","caption" => "Zurück","link" => "$PHP_SELF?md=0&amp;daten=$daten&amp;ID=$ID".get_parentlink()."")
   );
   break;
 default: // main
-  $menu = array (0=>array("icon" => "7","caption" => "Kalender","link" => ""),
+  $menu = array (0=>array("icon" => "7","caption" => "Anmeldung","link" => ""),
   1=>array("icon" => "1","caption" =>$ref_mfd, "link" => ""),
   2=>array ("icon" => "_tadd","caption" => "Neu","link" => "$PHP_SELF?md=".mfd_add."&amp;daten=$daten&amp;ID=$ID".get_parentlink().""),
   5=>array ("icon" => "_stop","caption" => "Zurück","link" => get_home($BEREICH)."?md=0&amp;daten=$daten&amp;ID=$ID")
@@ -254,7 +254,8 @@ default: // main
 
   switch ($md):
 case mfd_add:
-    echo "Add Maske";
+//     echo "Add Maske";
+    print_mfd_erf($id, $ID, $mfd_list, $mfd_cols, $daten);
   break;
 case mfd_edit:
   print_mfd_edit($id, $ID, $mfd_list, $mfd_cols,$daten);

@@ -118,7 +118,7 @@ function get_menu_mfd_editor($md,$PHP_SELF, $ID,$titel,$id,$daten,$sub,$home)
   default: // main
     $menu = array (0=>array("icon" => "7","caption" => "MFD-EDITOR","link" => ""),
     1=>array("icon" => "1","caption" =>$titel, "link" => ""),
-    2=>array ("icon" => "_tadd","caption" => "Neu","link" => "$PHP_SELF?md=".mfd_add."&amp;daten=$daten&amp;ID=$ID".get_parentlink().""),
+    2=>array ("icon" => "_tadd","caption" => "Neu","link" => "$PHP_SELF?md=".mfd_edit_add."&amp;daten=$daten&amp;ID=$ID".get_parentlink().""),
     5=>array ("icon" => "_stop","caption" => "Zurück","link" => get_home($home)."?md=0&amp;daten=$daten&amp;ID=$ID")
     );
     break;

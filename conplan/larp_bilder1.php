@@ -82,6 +82,19 @@ include "_lib.inc";
 include "_head.inc";
 
 
+function make_tumb($row)
+
+{
+
+//    echo "filename: "."BILDER/$row[0]$row[6]";
+//     $neueBreite=100; //width=\".$neueBreite.px\"
+//     $neueHoehe=100; //height: .$neueHoehe.px; 
+//     echo "\t<IMG SRC=\"BILDER/$row[0]$row[6]\" BORDER=\"0\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>\n";
+    echo "\t<img title=\"click hier zum anzeigen\" style=\"width: .$neueBreite.px; height: .$neueHoehe.px;\" alt=\"thumb\" src=\"BILDER/$row[0]$row[6]\">";
+//     echo "\t<img title=\"click hier zum anzeigen\"  alt=\"thumb\" src=\"BILDER/$row[0]$row[6]\">";
+    
+    
+}
 
 
 
@@ -116,7 +129,7 @@ function print_liste($ID,$TAG,$LISTE)
 	mysql_close($db);
 
 
-  $style = "imgtable";
+  $style = "id=imgtable";
   echo "<div $style >";
   echo "<!--  DATEN Spalte   -->\n";
 	
@@ -130,31 +143,39 @@ function print_liste($ID,$TAG,$LISTE)
 	while ($row = mysql_fetch_row($result))
 	{
 		$row1 = mysql_fetch_row($result);
-		$row2 = mysql_fetch_row($result);
+// 		$row2 = mysql_fetch_row($result);
+    //---------------------------------------------------
+		// Zeile 1
 		echo "<tr>\n";
-		// Spalet 1
+		// Spalte 1
 		if ($row[0]!="")
 		{
 			echo "\t<td>$row[4]&nbsp; </td>\n";
 			echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=$row[0]&TAG=$TAG&LISTE=$LISTE\">\n";
+			echo "$row[0]/$row[2]/$row[3]";
 			echo "\t</a></td>\n";
 		}
-		// Spalet 2
+		// Spalte 2  
 		echo "\t<td>&nbsp;</td>\n";
+		// Spalte 3
 		if ($row1[0]!="")
 		{
 			echo "\t<td>$row1[4]&nbsp; </td>\n";
 			echo "\t<td><a href=\"$PHP_SELF?md=4&ID=$ID&id=$row1[0]&TAG=$TAG&LISTE=$LISTE\">\n";
+			echo "$row1[0]/$row1[2]/$row1[3]";
 			echo "\t</a></td>\n";
 		}
-		// Spalet 3
+		echo "</tr>";
+		//---------------------------------------------------
+		// Zeile 2
 		echo "<tr>";
-		// Spalet 1
+		// Spalte 1
 		echo "\t<td> \n";
 		if ($row[0]!="")
 		{
 			echo "\t<a href=\"$PHP_SELF?md=2&ID=$ID&id=$row[0]&TAG=$TAG&LISTE=$LISTE\">\n";
-			echo "\t<IMG SRC=\"BILDER/thumb/$row[0]$row[6]\" BORDER=\"0\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>\n";
+			make_tumb($row);
+// 			echo "\t<IMG SRC=\"BILDER/$row[0]$row[6]\" BORDER=\"0\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>\n";
 			echo "\t</a></td>\n";
 			$zeile=explode("\n",$row[5]);
 			$anz  = count($zeile);
@@ -166,15 +187,18 @@ function print_liste($ID,$TAG,$LISTE)
 				echo "\t$zeile[$ii]&nbsp;<br>\n";
 			  }
 			}
-			echo "\t</td>\n";
 		}
-		// Spalet 2
+		echo "\t</td>\n";
+		// Spalte 2
 		echo "\t<td>&nbsp;</td>\n";
+		// Spalte 3
 		echo "\t<td> \n";
+		//dtaen nur zeigen wenn vorhanden
 		if ($row1[0]!="")
 		{
 			echo "\t<a href=\"$PHP_SELF?md=2&ID=$ID&id=$row1[0]&TAG=$TAG&LISTE=$LISTE\">\n";
-			echo "\t<IMG SRC=\"BILDER/thumb/$row1[0]$row1[6]\" BORDER=\"0\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>\n";
+			make_tumb($row1);
+// 			echo "\t<IMG SRC=\"BILDER/thumb/$row1[0]$row1[6]\" BORDER=\"0\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>\n";
 			echo "\t</a></td>\n";
 			//        echo "\t<td>$row1[5]&nbsp;</td>\n";
 			$zeile=explode("\n",$row1[5]);
@@ -187,9 +211,9 @@ function print_liste($ID,$TAG,$LISTE)
 			    echo "\t$zeile[$ii]&nbsp;<br>\n";
 			  }
 			}
-			echo "\t</td>\n";
 		}
-		// Spalet 3
+		echo "\t</td>\n";
+		echo "</tr>";
 	}
 	echo "</table>";
   echo '</div>';
@@ -368,9 +392,10 @@ function insert($row,$bild)
 	echo "move: ".$imagepath.$file_name;
 	echo"<br>";
 	echo "type: ".$_FILES['bild']['type'];
-	if(move_uploaded_file ($_FILES['bild']['tmp_name'],$imagepath.$file_name) )
+	if(move_uploaded_file ($_FILES['bild']['tmp_name'],$imagepath.$file_name) == false )
 	{
-		tumb_erzeugen($file_name,$imagepath,100,50,$_FILES['bild']['type']);
+	  echo "Picture nicht gespeichert "+$file_name;
+// 		tumb_erzeugen($file_name,$imagepath,100,50,$_FILES['bild']['type']);
 	}
 };
 
@@ -848,7 +873,7 @@ default:  // die einzelnen Bildseiten 11-xx
 	$menu = make_bild_menu($ID);
    print_menu($menu);
    $daten='pages/main_bild_base.html';
-    print_data($daten);
+   print_data($daten);
 break;
 	endswitch;
 

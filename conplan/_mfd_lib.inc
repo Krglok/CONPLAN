@@ -414,7 +414,7 @@ function get_mfd_name($id)
 
   $result = mysql_query($q) ;
   if (!$result) {
-    $message  = 'Invalid query: ' . mysql_error() . "\n";
+    $message  = 'get_mfd_name Invalid query: ' . mysql_error() . "\n";
     $message .= 'Whole query: ' . $q;
     die($message);
     log_write_error($message);
@@ -488,7 +488,7 @@ function get_mfd($name)
 
   $result = mysql_query($q) ;
   if (!$result) {
-    $message  = 'Invalid query: ' . mysql_error() . "\n";
+    $message  = 'get_mfd Invalid query: ' . mysql_error() . "\n";
     $message .= 'Whole query: ' . $q;
     die($message);
 
@@ -531,7 +531,7 @@ function get_mfd_list()
 
   $result = mysql_query($q) ;
   if (!$result) {
-    $message  = 'Invalid query: ' . mysql_error() . "\n";
+    $message  = 'get_mfd_list Invalid query: ' . mysql_error() . "\n";
     $message .= 'Whole query: ' . $q;
     die($message);
 
@@ -624,7 +624,7 @@ function mfd_data_result($mfd_list)
   $result = mysql_query($q) ;
   if (!$result)
   {
-    $message  = 'Invalid query: ' . mysql_error() . "\n";
+    $message  = 'Mfd Data Invalid query: ' . mysql_error() . "\n";
     $message .= 'Whole query: ' . $q."\n";
     die($message);
   } else
@@ -995,10 +995,10 @@ function get_fieldname_list($table)
 //	echo 'get_fieldname_list:'.$table.'<br>';
 	$result = get_fieldlist($table);
   $row = mysql_fetch_row($result);
-  $list = "$table.".$row[0];
+  $list = $row[0];
   while ($row = mysql_fetch_row($result))
   {
-    $list = $list.", $table.".$row[0];
+    $list = $list.",".$row[0];
   }
   return $list;
 }
@@ -1039,7 +1039,7 @@ function print_mfd_link_check($link,$ID,$data)
   }else
   {
     echo "\t<td>\n"; //
-    echo "!".$data;
+    echo "".$data;
     echo "\t</td>\n";
   }
 }
@@ -1202,20 +1202,21 @@ function print_mfd_liste_field($ID, $mfd_list, $mfd_cols,$link_call_1, $link_cal
     
     for ($i=1; $i<$field_num; $i++)
     {
-      if (isset($row[$field_list[$i]]))
+      $fieldname = ltrim($field_list[$i]);
+      if (isset($row[$fieldname]))
       {
         
 		    //Textblock
 		    if(stripos($mfd_cols[$i]["mfd_field_typ"],"text")!== false)
 		    {
-		      print_textblock_td_short($row[$field_list[$i]]);
+		      print_textblock_td_short($row[$fieldname]);
 		    }else
 		    {
-		      print_text_td($row[$field_list[$i]],0);
+		      print_text_td($row[$fieldname],0);
 		    }
       } else
       {
-        print_text_td("!".$field_list[$i],0);
+        print_text_td("!".$fieldname,0);
       }
     }
     if ($id > 0)

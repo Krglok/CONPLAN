@@ -87,12 +87,12 @@ print_kopf($admin_typ,$header_typ,"<b>Admin Bereich</b>",$anrede,$menu_item);
 
 $menu = array (
     0=>array  ("icon" => "7","caption" => "ADMIN CONFIG","link" => ""),
-    13=>array ("icon" => "_list","caption" => "Log-File","link" => "admin_log.php?md=0&ID=$ID".get_parentlink().""),
-    14=>array ("icon" => "_list","caption" => "DataTable","link" => "admin_table.php?md=0&ID=$ID".get_parentlink().""),
-    15=>array ("icon" => "_list","caption" => "MFD Table","link" => "admin_mfd.php?md=0&ID=$ID".get_parentlink().""),
-    16=>array ("icon" => "_list","caption" => "MFD Edit","link" => "admin_mfd_edit.php?md=0&ID=$ID".get_parentlink().""),
-		20=>array ("icon" => "_list","caption" => "Menu Edit","link" => "admin_menu.php?md=0&ID=$ID".get_parentlink().""),
-    30=>array ("icon" => "_list","caption" => "Pages","link" => "admin_pages.php?md=0&ID=$ID".get_parentlink().""),
+    13=>array ("icon" => "_folder_n","caption" => "Log-File","link" => "admin_log.php?md=0&ID=$ID".get_parentlink().""),
+    14=>array ("icon" => "_folder_n","caption" => "DataTable","link" => "admin_table.php?md=0&ID=$ID".get_parentlink().""),
+    15=>array ("icon" => "_folder_n","caption" => "MFD Table","link" => "admin_mfd.php?md=0&ID=$ID".get_parentlink().""),
+    16=>array ("icon" => "_folder_n","caption" => "MFD Edit","link" => "admin_mfd_edit.php?md=0&ID=$ID".get_parentlink().""),
+		20=>array ("icon" => "_folder_n","caption" => "Menu Edit","link" => "admin_menu.php?md=0&ID=$ID".get_parentlink().""),
+    30=>array ("icon" => "_folder_n","caption" => "Pages","link" => "admin_pages.php?md=0&ID=$ID".get_parentlink().""),
     99=>array ("icon" => "_stop","caption" => "Zurück","link" => "admin_main.php?md=0&ID=$ID".get_parentlink()."")
 );
 

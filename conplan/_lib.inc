@@ -1504,13 +1504,6 @@ function tumb_erzeugen($bild_url,$zieldir,$max_x,$max_y,$type)
 //                 das thumbnail wird in einem vorgegeben Unterverzeichnis
 //                 gespeichert
 //                 ./thumb
-//
-// Kann mir jemand sagen wie ich dennoch die Bilder ohne Farbverlust
-// verkleinern kann
-// oder hat evtl. einen Codeschnippsel dafür parat...
-// Ich hatte das Problem auch mal und in einem Forum diese Funktion
-// Gefunden:
-//
 //==========================================================================
 
 {
@@ -1626,6 +1619,8 @@ function tumb_erzeugen($bild_url,$zieldir,$max_x,$max_y,$type)
  * @param unknown $bild   Bildaten
  * @param unknown $name   Bildname wurde automatisch erzeugt
  * @param unknown $imagepath  Bildpfad
+ * 
+ * // UNUSED
  */
 function bild_speichern($bild,$name,$imagepath)
 {
@@ -1653,7 +1648,7 @@ function bild_speichern($bild,$name,$imagepath)
 			break;
 	}
 	$row[6] = $fileendung;
-	$imagepath = realpath ($imagepath)."/";
+	$imagepath = realpath ($imagepath); /// ."/"; muss betriebsystemspezifisch sein
 
 	$file_name = $name.$fileendung;
 	if(is_uploaded_file ($bild) )
@@ -1672,7 +1667,7 @@ function bild_speichern($bild,$name,$imagepath)
 
 /**
  * Erzeugt ein Thumbnail
- *
+ *  ´´UNUSED
  * @param unknown $bild_url
  * @param unknown $zieldir
  * @param unknown $max_x
@@ -1680,25 +1675,6 @@ function bild_speichern($bild,$name,$imagepath)
  * @param unknown $type
  */
 function tumb_copy($bild_url,$zieldir,$max_x,$max_y,$type)
-//==========================================================================
-// Function     :  insert
-//--------------------------------------------------------------------------
-// Beschreibun  :  Verkleinert ein Bild zu einem thumbnail
-//                 für GIF, JPG, PNG
-//                 die Höhe wird fest vorgegeben.
-//                 hoehe = 80
-//                 die Breite wird auf max_y gesetzt
-//                 das thumbnail wird in einem vorgegeben Unterverzeichnis
-//                 gespeichert
-//                 ./thumb
-//
-// Kann mir jemand sagen wie ich dennoch die Bilder ohne Farbverlust
-// verkleinern kann
-// oder hat evtl. einen Codeschnippsel dafür parat...
-// Ich hatte das Problem auch mal und in einem Forum diese Funktion
-// Gefunden
-//
-//==========================================================================
 
 {
 

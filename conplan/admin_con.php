@@ -601,7 +601,9 @@ function get_menu_con_tage($md, $PHP_SELF, $ID, $titel, $id, $daten, $sub, $home
 	print_kopf($admin_typ,$header_typ,"Admin Bereich",$anrede,$menu_item);
 
 	$ref_mfd = "con_konst";
-	$mfd_list = make_mfd_table($ref_mfd, $ref_mfd);
+	$mfd_list=get_mfd($ref_mfd);
+	
+// 	$mfd_list = make_mfd_table($ref_mfd, $ref_mfd);
 	
 	switch ($p_md):
 	case mfd_insert: // Anlegen eines neuen des DAtensatzes

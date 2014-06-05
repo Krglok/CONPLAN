@@ -56,7 +56,7 @@ include_once '_mfd_edit.inc';
 function mfd_edit_edit_link($ID,$daten)
 {
 	global $PHP_SELF;
-	$link = $PHP_SELF."?md=".mfd_edit."&id=$daten&ID=$ID";
+	$link = ""; //$PHP_SELF."?md=".mfd_edit."&id=$daten&ID=$ID";
 	return $link;
 }
 
@@ -250,25 +250,26 @@ function get_menu_mfd_edit($md,$PHP_SELF, $ID,$titel,$id,$daten,$sub,$home)
 
 
 	switch ($md):
-  case mfd_add:
-      print_menu_status($menu);
-      print_mfd_erf($id, $ID, $mfd_list, $mfd_cols,$daten);
-	echo "Add Maske";
-  	break;
-  case mfd_edit:
-	  print_menu_status($menu);
-    print_mfd_edit($id, $ID, $mfd_list, $mfd_cols,$daten);
-  	break;
-  case mfd_del:
-  	//  echo "Delete Maske";
-	  print_menu_status($menu);
-    print_mfd_del($id, $ID, $mfd_list, $mfd_cols,$daten);
-  	break;
-  case mfd_info:
-  	//  echo "Info Maske:";
-	  print_menu_status($menu);
-    print_mfd_info($mfd_list,$id,$ID);
-  	break;
+//   case mfd_add:
+//       print_menu_status($menu);
+//       print_mfd_erf($id, $ID, $mfd_list, $mfd_cols,$daten);
+// 	echo "Add Maske";
+//   	break;
+//   case mfd_edit:
+// 	  print_menu_status($menu);
+//     print_mfd_edit($id, $ID, $mfd_list, $mfd_cols,$daten);
+// 	echo "Edit Maske:".$daten;
+//     break;
+//   case mfd_del:
+//   	//  echo "Delete Maske";
+// 	  print_menu_status($menu);
+//     print_mfd_del($id, $ID, $mfd_list, $mfd_cols,$daten);
+//   	break;
+//   case mfd_info:
+//   	//  echo "Info Maske:";
+// 	  print_menu_status($menu);
+//     print_mfd_info($mfd_list,$id,$ID);
+//   	break;
   case mfd_edit_add:
   case mfd_edit_edit:
   case mfd_edit_del:
