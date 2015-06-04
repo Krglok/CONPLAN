@@ -109,7 +109,7 @@ function get_menu_larp_main($md,$PHP_SELF, $ID,$titel,$id,$daten,$sub,$home)
 	//	"26"=>array ("icon" => "$menu_folder","caption" => "Bibliothek","link" => "larp_gdw_liste.php?md=0&ID=$ID","itemtyp"=>"0"),
 	"27"=>array ("icon" => "_folder","caption" => "GdW","link" => "larp_gdw.php?md=0&ID=$ID","itemtyp"=>"0"),
 	"29"=>array ("icon" => "_stop","caption" => "ENDE","link" => "main.php?md=99&ID=$ID&sub=main&item=regeln","itemtyp"=>"0"),
-	"30"=>array ("icon" => "_link","caption" => "Draskoria","link" => "http://www.draskoria.net/wiki \"target=draskoria\"","itemtyp"=>"0"),
+// 	"30"=>array ("icon" => "_link","caption" => "Draskoria","link" => "http://www.draskoria.net/wiki \"target=draskoria\"","itemtyp"=>"0"),
 	"31"=>array ("icon" => "_link","caption" => "Wiki","link" => "http://www.draskoria.de/wiki/doku.php  \"target=wiki\"","itemtyp"=>"0"),
 	"32"=>array ("icon" => "_link","caption" => "Liberi Effera","link" => "http://www.liberi-effera.de/ \"target=_blank\"","itemtyp"=>"0"),
 	);

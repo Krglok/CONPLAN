@@ -309,7 +309,11 @@ if (checkuser($user,$pw) == "TRUE")
       $sql = " select * from regelwerk order by kapitel, absatz, item ";
       echo db2xml($sql,$mode);
       break;
-  case 20:  // Trankliste
+  case 19:  // alle Regelwerk
+      $sql = " select * from regelwerk where typ = 'FE' order by kapitel, absatz, item ";
+      echo db2xml($sql,$mode);
+      break;
+      case 20:  // Trankliste
       $sql = " select * from trank_list ";
       echo db2xml($sql,$mode);
       break;

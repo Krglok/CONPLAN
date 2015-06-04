@@ -82,18 +82,14 @@ include "_lib.inc";
 include "_head.inc";
 
 
+/**
+ *  Darstellung des Bilds als Verkleinerung
+ *  Hinweis: die alte function des Thumbnail erstellen entfaellt 
+ */
 function make_tumb($row)
-
 {
-
-//    echo "filename: "."BILDER/$row[0]$row[6]";
-//     $neueBreite=100; //width=\".$neueBreite.px\"
-//     $neueHoehe=100; //height: .$neueHoehe.px; 
-//     echo "\t<IMG SRC=\"BILDER/$row[0]$row[6]\" BORDER=\"0\" ALT=\"\" HSPACE=\"0\" VSPACE=\"0\" ALIGN=ABSMIDDLE>\n";
-    echo "\t<img title=\"click hier zum anzeigen\" style=\"width: .$neueBreite.px; height: .$neueHoehe.px;\" alt=\"thumb\" src=\"BILDER/$row[0]$row[6]\">";
-//     echo "\t<img title=\"click hier zum anzeigen\"  alt=\"thumb\" src=\"BILDER/$row[0]$row[6]\">";
-    
-    
+  //;
+    echo "\t<img title=\"click hier zum anzeigen\" style=\" width: 50% height: 50%; \" alt=\"thumb\" src=\"BILDER/$row[0]$row[6]\">";
 }
 
 
@@ -193,7 +189,7 @@ function print_liste($ID,$TAG,$LISTE)
 		echo "\t<td>&nbsp;</td>\n";
 		// Spalte 3
 		echo "\t<td> \n";
-		//dtaen nur zeigen wenn vorhanden
+		//daten nur zeigen wenn vorhanden
 		if ($row1[0]!="")
 		{
 			echo "\t<a href=\"$PHP_SELF?md=2&ID=$ID&id=$row1[0]&TAG=$TAG&LISTE=$LISTE\">\n";
@@ -317,11 +313,7 @@ function insert($row,$bild)
   	
 	
 	//--- REFERENZ auf bilder_topic -------------------------------------------
-// 	$q = "select * from $TABLE1 where tag=\"$row[1]\"";
-// 	$result1 = mysql_query($q) or die("Query $TABLE_1/$row[1]");
-// 	$row1 = mysql_fetch_row($result1);
-// 	$row[1] = $row1[2];
-	echo "tag:".$row[1];
+// 	echo "tag:".$row[1]+":"+$_FILES['bild']['type']+":"+$_FILES['bild']['size'];
 	$fileendung = ".xxx";
 	if ($_FILES['bild']['type'] == 'image/gif')
 	{
@@ -340,18 +332,10 @@ function insert($row,$bild)
 		$fileendung = ".png";
 	}
 	$row[6] = $fileendung;
-	echo "|ext:".$fileendung;
+// 	echo "|ext:".$fileendung;
 	
 	//--- Felder von bilder ermitteln ------------------------------------------
 	$db = mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die("Fehler beim verbinden!");
-// 	$q = "SHOW COLUMNS FROM $TABLE";
-// 	$result = mysql_query($q) or die("|Fehler Query ERF... $q");
-	
-// 	$field_num = mysql_num_fields($result);
-// 	for ($i=0; $i<$field_num; $i++)
-// 	{
-// 		$field_name[$i] =  mysql_field_name ($result, $i);
-// 	}
 	$field_num = 7;
 	$field_name[0] = "ID";
 	$field_name[1] = "tag";
@@ -383,19 +367,19 @@ function insert($row,$bild)
 	$name = mysql_insert_id(); //ermittelt die ID des gespeicherten Record
 
 	mysql_close($db);
-  echo "id:".$name;
+
+// 	echo "id:".$name;
 	$imagepath = realpath("./BILDER")."/";
 	$file_name = $name.$fileendung;
-	echo"<br>";
-	echo "temp: ".$_FILES['bild']['tmp_name'];
-	echo"<br>";
-	echo "move: ".$imagepath.$file_name;
-	echo"<br>";
-	echo "type: ".$_FILES['bild']['type'];
+// 	echo"<br>";
+// 	echo "temp: ".$_FILES['bild']['tmp_name'];
+// 	echo"<br>";
+// 	echo "move: ".$imagepath.$file_name;
+// 	echo"<br>";
+// 	echo "type: ".$_FILES['bild']['type'];
 	if(move_uploaded_file ($_FILES['bild']['tmp_name'],$imagepath.$file_name) == false )
 	{
 	  echo "Picture nicht gespeichert "+$file_name;
-// 		tumb_erzeugen($file_name,$imagepath,100,50,$_FILES['bild']['type']);
 	}
 };
 
@@ -670,7 +654,7 @@ function print_erf($id,$ID,$next,$TAG,$LISTE)
 				echo "<tr>";
 				echo "<td>\n";
     		echo "<!-- MAX_FILE_SIZE muss vor dem Dateiupload Input Feld stehen -->";
-    		echo "<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"160000\" >";
+    		echo "<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"560000\" >";
 				echo "<!-- Der Name des Input Felds bestimmt den Namen im $ _ FILES Array -->";
 //    		echo "Diese Datei hochladen: <input name="userfile" type="file" />"
 				echo "</td>\n";
@@ -803,12 +787,20 @@ if ($ID == "")
 $TABLE = "bilder";
 $TABLE1 = "bilder_topic";
 
+
 switch($p_md):
 case mfd_insert: // Insert -> Erfassen
-  	insert($p_row,$p_bild);
+  if (array_key_exists ('bild' , $_FILES ))
+  {
+    echo "upload:"+":"+$_FILES['bild']['type']+":"+$_FILES['bild']['size'];
+    insert($p_row,$p_bild);
+  } else
+  {
+    echo "Kein Bild im Upload, wahrscheinlich zu gross!";
+  }
   break;
 case mfd_update: // Insert -> Erfassen
-  echo "Update";
+//   echo "Update";
 	update($p_row);
 	break;
 case mfd_delete: // Delete => Loeschen

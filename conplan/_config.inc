@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  Projekt : CONPLAN
 
 Datei   :
