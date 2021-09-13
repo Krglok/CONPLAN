@@ -1,5 +1,7 @@
 CONPLAN
 =======
+DEPRECIATE    based on PHP 5.x
+
 php homepage for larp orga and conplaning
 no multilanguage, german only (sorry)
 
@@ -15,7 +17,7 @@ Features:
 - Die Bereiche ab USER sind  mit login.
 - Eigene Userverwaltung mit Zugriffsgruppen.
 - Die Bereiche sind auch die Zugriffsgruppen.
-- Contentbearbeitung Online für HTML und Datenbank.
+- Contentbearbeitung Online fÃ¼r HTML und Datenbank.
 - Konfigureirbares Hilfesystem.
 - Datenbank MySQL
 - Scripte PHP 5.4, Javascript
@@ -31,8 +33,8 @@ Datenbank mit diversen Datentabellen fuer:
 - Charakterverwaltung
 - NSC-Verwaltung
 - Conplanung
-- Con-Anmeldung für User
-Das Layout kann mit CSS geändert werden.
+- Con-Anmeldung fÃ¼r User
+Das Layout kann mit CSS geÃ¤ndert werden.
 
 Detaillierte Beschreibung der Bereiche
 <h3>Bereich Public</h3>
@@ -96,13 +98,13 @@ Detaillierte Beschreibung der Bereiche
  - Steuerung der Applikation komplett in PHP
  - Einbinden von Datenbanktabellen als Listen oder Detailansichten
  - Einbinden von HTML-Seiten als Daten
- - RT-Editor (ckEditor) für die HTML-Seiten und Contenttexte
+ - RT-Editor (ckEditor) fÃ¼r die HTML-Seiten und Contenttexte
  - komplett auf CSS-Layout aufgebaut
  - konfigurierbar Hntergrund
  - konfigurierbare Bilder fuer Logos, Buttons
  - Userverwaltung mit hierarchischen Zugrifssrechten
  - Der gesamte Content ist Onluine bearbeitbar
- - Die Applikation läuft in einem Verzeichnis
+ - Die Applikation lÃ¤uft in einem Verzeichnis
  - erprobtes Sytem, die Applikation ist seit 2002 im Einsatz
  
  <h3>Voraussetzungen</h3>
@@ -112,7 +114,7 @@ Detaillierte Beschreibung der Bereiche
  - phpMyAdmin
   
   <h3>locale Testversion</h3>
-  Eine lokale Testversion läuft mit XAMP.
+  Eine lokale Testversion lÃ¤uft mit XAMP.
   Es gibt eine betriebsbereite, lokale Testinstalltion .
    
   ACHTUNG: Eine XAMP Installtion ist nicht fuer den Betrieb im Internet geeignet !!
